@@ -12,6 +12,6 @@
   </span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 </script>

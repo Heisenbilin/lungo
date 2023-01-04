@@ -704,18 +704,16 @@
     CloseCircleTwoTone,
   } from '@ant-design/icons-vue';
   import { handleUaParse, handleProjectParams, initEditFormData } from '../utils';
-  import { cloneDeep } from '@vben/utils';
   import UANoteIMG from '@/assets/images/huatuo/ua_note.jpg';
   import yachInputFilter from '../yachInputFilter.vue';
 
   import { useWeeklyReportUserSelect } from '../hooks/useWeeklyReportUserSelect';
   import { useAuth } from '../hooks/useAuth';
-  import { buildUUID } from '@vben/utils';
+  import { cloneDeep, buildUUID, delUrlParams } from '@vben/utils';
   import { useListStore } from '@/store/modules/list';
   import { storeToRefs } from 'pinia';
   // import { isEqual } from 'lodash-es';
   import LabelComponent from './labelComponent.vue';
-  import { delUrlParams } from '@vben/utils';
   import { saveAs } from 'file-saver';
   import { getRecommendSDKConfig, getVueRecommendSDKConfig } from './sdkConfig';
   import { CodeArea } from '@vben/components';
