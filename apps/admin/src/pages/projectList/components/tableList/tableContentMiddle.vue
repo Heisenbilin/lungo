@@ -84,14 +84,14 @@
       />
     </div> -->
     <div v-else>
-      <!-- <BasicChart :chartOption="chartOption" height="3.25rem" /> -->
+      <BasicChart :chartOption="chartOption" height="3.25rem" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
 import { getTendencyChartOption } from "../utils";
-// import { BasicChart } from "@vben/components";
+import { BasicChart } from "@vben/components";
 import TableTtem from "./tableItem.vue";
 
 const props = defineProps({

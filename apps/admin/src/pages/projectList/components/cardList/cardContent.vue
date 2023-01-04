@@ -18,7 +18,7 @@
         {{ filterState.dimension === "hour" ? "今日" : "本周" }}活跃趋势
       </div>
       <div class="mt-2 content">
-        <!-- <BasicChart :chartOption="chartOption" height="3.25rem" /> -->
+        <BasicChart :chartOption="chartOption" height="3.25rem" />
       </div>
     </div>
     <ContentItem
@@ -87,7 +87,7 @@ import { computed, ref, watch } from "vue";
 import { getProjectBoard } from "@/apis/projectList";
 import { CardProgress } from "@vben/components";
 import { getTendencyChartOption } from "./tendencyChartConfig";
-// import { BasicChart } from "@vben/components";
+import { BasicChart } from "@vben/components";
 import { Empty } from "ant-design-vue";
 import { useBoardStore } from "@/store/modules/board";
 import { storeToRefs } from "pinia";
