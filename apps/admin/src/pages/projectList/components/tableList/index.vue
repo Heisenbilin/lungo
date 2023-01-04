@@ -159,12 +159,6 @@
 </template>
 
 <script setup lang="ts">
-import columns from "./tableColumns";
-import tableActions from "./tableActions.vue";
-import tableHeader from "./tableHeader.vue";
-import tableScreen from "./tableScreen.vue";
-import tableContent from "./tableContent.vue";
-import tableSdk from "./tableSdk.vue";
 import { ref, watch } from "vue";
 import { message } from "ant-design-vue";
 import { getProjectList, getProjectBoard, modifyProjectParams } from "@/apis/projectList";
@@ -176,6 +170,12 @@ import { useBoardStore } from "@/store/modules/board";
 import { storeToRefs } from "pinia";
 import { addOrUpdateUrlParams, getUrlParams } from "@vben/utils";
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
+import columns from "./tableColumns";
+import tableActions from "./tableActions.vue";
+import tableHeader from "./tableHeader.vue";
+import tableScreen from "./tableScreen.vue";
+import tableContent from "./tableContent.vue";
+import tableSdk from "./tableSdk.vue";
 
 // const store = useStore();
 const listStore = useListStore();
@@ -262,6 +262,7 @@ const getHuatuoProjectList = debounce(async (page = currentPage.value) => {
   };
 
   getProjectList(params).then((result) => {
+    console.log(result)
     if (searchId !== lastSearchId) {
       // for fetch callback order
       return;
