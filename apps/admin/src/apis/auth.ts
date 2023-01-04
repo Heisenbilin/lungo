@@ -32,7 +32,7 @@ export function doLoginApi(
 ) {
   return request.post<LoginResultModel>(
     {
-      url: '/login',
+      url: '/basic-api/login',
       params,
     },
     {
@@ -43,15 +43,19 @@ export function doLoginApi(
 
 export function getUserInfoApi() {
   return request.get<UserInfoModel>(
-    { url: '/getUserInfo' },
+    { url: '/basic-api/getUserInfo' },
     { errorMessageMode: 'none' },
   )
 }
 
 export function getPermCode() {
-  return request.get<string[]>({ url: '/getPermCode' })
+  return request.get<string[]>({ url: '/basic-api/getPermCode' })
 }
 
 export function doLogoutApi() {
-  return request.get({ url: '/logout' })
+  return request.get({ url: '/basic-api/logout' })
+}
+
+export const checkLightHouseAuth = ( data: any ) => {
+  return request.post<any>({ url: '/v1/checkAuth', data })
 }

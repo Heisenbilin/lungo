@@ -9,7 +9,7 @@ import {
   SettingButtonPositionEnum,
   ThemeEnum,
   TriggerEnum,
-  RouterTransitionEnum
+  RouterTransitionEnum,
 } from '@vben/constants'
 import { LocaleType } from './config'
 // export type LocaleType = 'zh_CN' | 'en' | 'ru' | 'ja' | 'ko'

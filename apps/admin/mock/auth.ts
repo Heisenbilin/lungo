@@ -38,6 +38,21 @@ export function createFakeUserList() {
         },
       ],
     },
+    {
+      userId: '3',
+      username: 'test',
+      password: '123456',
+      realname: 'test user',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=339449197&s=640',
+      desc: 'tester',
+      accessToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoieGlvbmdiaWxpbiIsIm5hbWUiOiLnhornoqfmnpciLCJyb2xlIjoyLCJ3b3JrY29kZSI6IjMxMzMzOSIsImlhdCI6MTY3MjgwMjkzOCwiZXhwIjoxNjcyODg5MzM4fQ.f3TPBMLRo9ARrd_a3mGLQZCmRQFHWi0BZMyIkrK6J-Y',
+      roles: [
+        {
+          name: 'Tester',
+          value: 'test',
+        },
+      ],
+    },
   ]
 }
 
@@ -49,7 +64,7 @@ const fakeCodeList: any = {
 export default [
   // mock user login
   {
-    url: '/basic-api/login',
+    url: '/v1/basic-api/login',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {
@@ -67,7 +82,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/getUserInfo',
+    url: '/v1/basic-api/getUserInfo',
     method: 'get',
     response: (request: requestParams) => {
       const accessToken = getRequestToken(request)
@@ -85,7 +100,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/getPermCode',
+    url: '/v1/basic-api/getPermCode',
     timeout: 200,
     method: 'get',
     response: (request: requestParams) => {
@@ -103,7 +118,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/logout',
+    url: '/v1/basic-api/logout',
     timeout: 200,
     method: 'get',
     response: (request: requestParams) => {

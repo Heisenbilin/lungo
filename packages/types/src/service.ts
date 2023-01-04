@@ -22,8 +22,11 @@ export interface RequestOptions {
 }
 
 export interface RequestResult<T = any> {
-  code: number
-  type: 'success' | 'error' | 'warning'
-  message: string
-  result: T
+  stat?: 0 | 1
+  code?: number
+  type?: 'success' | 'error' | 'warning'
+  msg?: string
+  message?: string
+  data?: T
+  result?: T
 }

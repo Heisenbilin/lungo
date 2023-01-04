@@ -42,7 +42,7 @@ export function createFakeTableData() {
 export default [
   // mock user login
   {
-    url: '/basic-api/demo/table',
+    url: '/v1/basic-api/demo/table',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {

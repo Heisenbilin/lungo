@@ -26,3 +26,5 @@ screenMap.set(ScreenSizeEnum.XL, ScreenValueEnum.XL)
 screenMap.set(ScreenSizeEnum.XXL, ScreenValueEnum.XXL)
 
 export { screenMap }
+
+

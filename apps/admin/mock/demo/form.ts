@@ -237,7 +237,7 @@ export function createCascaderOptions(depth = 3, iterator = 1, prefix = '') {
 export default [
   // mock user login
   {
-    url: '/basic-api/demo/form/select',
+    url: '/v1/basic-api/demo/form/select',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {
@@ -245,7 +245,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/demo/form/treeSelect',
+    url: '/v1/basic-api/demo/form/treeSelect',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {
@@ -253,7 +253,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/demo/form/radio',
+    url: '/v1/basic-api/demo/form/radio',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {
@@ -261,7 +261,7 @@ export default [
     },
   },
   {
-    url: '/basic-api/demo/form/cascader',
+    url: '/v1/basic-api/demo/form/cascader',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {

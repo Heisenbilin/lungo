@@ -75,3 +75,13 @@ export enum ErrorTypeEnum {
   AJAX = 'ajax',
   PROMISE = 'promise',
 }
+
+export enum logTypeEnum {
+  PERFORMANCE = 'performance',
+  RUNTIME = 'runtime',
+  RESOURCE = 'resource',
+  FAULTTOLERANT = 'faultTolerant',
+  API = 'api',
+  GATEWAY = 'gateway',
+  DEFAULT = '',
+}

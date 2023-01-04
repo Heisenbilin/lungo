@@ -62,7 +62,7 @@ export function createAuthGuard(router: Router) {
     const token = userStore.getAccessToken
 
     // TODO Whitelist can be directly entered
-    if (whitePathList.includes(to.path as PageEnum)) {
+    if (true && whitePathList.includes(to.path as PageEnum)) {
       if (to.path === LOGIN_PATH && token) {
         const isSessionTimeout = userStore.getSessionTimeout
         try {

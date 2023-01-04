@@ -232,7 +232,7 @@ const linkRoute = {
 
 export default [
   {
-    url: '/basic-api/getMenuList',
+    url: '/v1/basic-api/getMenuList',
     timeout: 1000,
     method: 'get',
     response: (request: requestParams) => {

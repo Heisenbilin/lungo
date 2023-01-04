@@ -9,6 +9,9 @@ import { setupI18n } from '@vben/locale'
 import { pinia } from './pinia'
 import { initApplication } from './init-application'
 import { registerComponents } from '../init-components'
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+
 ;(async () => {
   const app = createApp(App)
 
@@ -22,6 +25,7 @@ import { registerComponents } from '../init-components'
   await setupI18n(app)
   // Init Router
   app.use(router)
+  app.use(Antd)
   await setupRouteGuard(router)
   await router.isReady()
   app.mount('#app')

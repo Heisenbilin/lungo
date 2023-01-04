@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { resolve } from 'path'
-import { red } from 'picocolors'
+// import { red } from 'picocolors'
 import { readPackageJSON } from 'pkg-types'
 import type { UserConfig } from 'vite'
 import { loadEnv, mergeConfig } from 'vite'
@@ -19,9 +19,9 @@ export async function createViteConfig(
   { preset }: { preset: PresetType },
 ): Promise<UserConfig> {
   console.log()
-  console.log(
-    red('当前处于开发测试阶段，还会有大量更新，仅供参考，请勿用于实际项目！\n'),
-  )
+  // console.log(
+  //   red('当前处于开发测试阶段，还会有大量更新，仅供参考，请勿用于实际项目！\n'),
+  // )
   console.log()
 
   const root = cwd
@@ -38,6 +38,7 @@ export async function createViteConfig(
     VITE_DROP_CONSOLE,
     VITE_USE_HTTPS,
   } = viteEnv
+  console.log(resolveProxy(VITE_PROXY))
   const commonConfig: UserConfig = {
     root,
     base: VITE_PUBLIC_PATH,

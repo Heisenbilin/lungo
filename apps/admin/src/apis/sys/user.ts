@@ -41,10 +41,10 @@ export interface GetUserInfoModel {
 }
 
 enum Api {
-  Login = '/login',
-  Logout = '/logout',
-  GetUserInfo = '/getUserInfo',
-  GetPermCode = '/getPermCode',
+  Login = '/basic-api/login',
+  Logout = '/basic-api/logout',
+  GetUserInfo = '/basic-api/getUserInfo',
+  GetPermCode = '/basic-api/getPermCode',
 }
 
 /**
