@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 /**
  *
@@ -7,7 +7,7 @@ import moment from 'moment';
  */
 export function handleDate({ time, type }) {
   let date = time;
-  if (date.toString().indexOf('GMT') == -1) {
+  if (date.toString().indexOf("GMT") == -1) {
     date = new Date(time);
   }
   //小时
@@ -33,17 +33,17 @@ export function handleDate({ time, type }) {
   // 年
   const year = date.getFullYear();
 
-  let dateTime = '';
-  if (type === 'YY-MM-DD HH-mm-ss') {
+  let dateTime = "";
+  if (type === "YY-MM-DD HH-mm-ss") {
     dateTime = `${year}/${monthName}/${dayName} ${hourName}:${minuteName}:${secondName}`;
   }
-  if (type === 'YY-MM-DD HH-mm') {
+  if (type === "YY-MM-DD HH-mm") {
     dateTime = `${year}/${monthName}/${dayName} ${hourName}:${minuteName}`;
   }
-  if (type === 'YY-MM-DD') {
+  if (type === "YY-MM-DD") {
     dateTime = `${year}-${monthName}-${dayName}`;
   }
-  if (type === 'YY-MM-DD HH') {
+  if (type === "YY-MM-DD HH") {
     dateTime = `${year}-${monthName}-${dayName} ${hourName}:00`;
   }
   return dateTime;
@@ -57,14 +57,14 @@ export function handleDate({ time, type }) {
  */
 export function formatDate(time, type) {
   if (!time) {
-    return '';
+    return "";
   }
   //若为2018-10-10这样的字符串，new Date默认hour为8 ，改为2018/10/10默认为0
   if (time.length === 10) {
-    time = time.replace(/-/g, '/');
+    time = time.replace(/-/g, "/");
   }
   let date = time;
-  if (date.toString().indexOf('GMT') === -1) {
+  if (date.toString().indexOf("GMT") === -1) {
     date = new Date(time);
   }
   //小时
@@ -74,7 +74,7 @@ export function formatDate(time, type) {
   // 分钟
   const minute = date.getMinutes();
   const minuteName = minute < 10 ? `0${minute}` : minute;
-  const minuteCount = parseInt(minute / 10) * 10;
+  const minuteCount = parseInt(`${minute / 10}`) * 10;
   const tenMinute = minuteCount < 30 ? `00` : 30;
 
   // 秒
@@ -92,26 +92,26 @@ export function formatDate(time, type) {
   // 年
   const year = date.getFullYear();
 
-  let dateTime = '';
-  if (type === 'YY-MM-DD HH-mm-ss') {
+  let dateTime = "";
+  if (type === "YY-MM-DD HH-mm-ss") {
     dateTime = `${year}-${monthName}-${dayName} ${hourName}:${minuteName}:${secondName}`;
-  } else if (type === 'YY-MM-DD HH-mm') {
+  } else if (type === "YY-MM-DD HH-mm") {
     dateTime = `${year}-${monthName}-${dayName} ${hourName}:${minuteName}`;
-  } else if (type === 'YY-MM-DD') {
+  } else if (type === "YY-MM-DD") {
     dateTime = `${year}-${monthName}-${dayName}`;
-  } else if (type === 'mm-dd') {
+  } else if (type === "mm-dd") {
     dateTime = `${monthName}-${dayName}`;
-  } else if (type === 'YY-MM-DD HH') {
+  } else if (type === "YY-MM-DD HH") {
     dateTime = `${year}-${monthName}-${dayName} ${hourName}:00`;
-  } else if (type === 'YY-MM-DD HH2') {
+  } else if (type === "YY-MM-DD HH2") {
     dateTime = `${year}-${monthName}-${dayName} ${hourName}:${tenMinute}`;
-  } else if (type === 'mm-dd HH') {
+  } else if (type === "mm-dd HH") {
     dateTime = `${monthName}-${dayName} ${hourName}:00`;
-  } else if (type === 'mm-dd HH2') {
+  } else if (type === "mm-dd HH2") {
     dateTime = `${monthName}-${dayName} ${hourName}:${tenMinute}`;
-  } else if (type === 'HH') {
+  } else if (type === "HH") {
     dateTime = `${hourName}:00`;
-  } else if (type === 'HH2') {
+  } else if (type === "HH2") {
     dateTime = `${hourName}:${tenMinute}`;
   }
   return dateTime;
@@ -119,25 +119,25 @@ export function formatDate(time, type) {
 
 export function getDateWeekday(date, chinese = true) {
   const dateTime = moment(date);
-  if (dateTime._isAMomentObject) {
+  if (dateTime.isValid()) {
     switch (dateTime.weekday()) {
       case 0:
-        return chinese ? '周一' : 1;
+        return chinese ? "周一" : 1;
       case 1:
-        return chinese ? '周二' : 2;
+        return chinese ? "周二" : 2;
       case 2:
-        return chinese ? '周三' : 3;
+        return chinese ? "周三" : 3;
       case 3:
-        return chinese ? '周四' : 4;
+        return chinese ? "周四" : 4;
       case 4:
-        return chinese ? '周五' : 5;
+        return chinese ? "周五" : 5;
       case 5:
-        return chinese ? '周六' : 6;
+        return chinese ? "周六" : 6;
       case 6:
-        return chinese ? '周日' : 7;
+        return chinese ? "周日" : 7;
     }
   }
-  return '';
+  return "";
 }
 
 // function converTime(timeString) {
@@ -163,14 +163,14 @@ export function getDay(day) {
 
   tDate = doHandleMonth(tDate);
 
-  return tYear + '-' + tMonth + '-' + tDate;
+  return tYear + "-" + tMonth + "-" + tDate;
 }
 
 function doHandleMonth(month) {
   var m = month;
 
   if (month.toString().length == 1) {
-    m = '0' + month;
+    m = "0" + month;
   }
 
   return m;

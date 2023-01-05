@@ -604,11 +604,7 @@
                     <a-input
                       placeholder="请输入KEY"
                       v-model:value="item.key"
-                      @change="
-                        (value) => {
-                          clearFieldsSpace(formState.auth_info.authForm, i, 'key', value.data);
-                        }
-                      "
+                      @change="() => clearFieldsSpace(formState.auth_info.authForm, i, 'key')"
                     />
                   </a-form-item>
                 </a-col>

@@ -1,4 +1,4 @@
-import { buildUUID,isUrl } from "@vben/utils";
+import { buildUUID, isUrl } from "@vben/utils";
 const REG_EN_CODE = /^[A-Za-z0-9_-]+$/;
 
 // 检验通知用户
@@ -62,7 +62,7 @@ const checkProjectUrl = (rule, value) => {
   return Promise.resolve();
 };
 
-export const DEFAULT_FORM = {
+export const DEFAULT_FORM: any = {
   basic_info: {
     log_handle: 1,
     log_version: 1,
