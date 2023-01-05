@@ -653,7 +653,7 @@
                     formRef,
                     formState.auth_info,
                     formState.auth_info.project_url,
-                    formState,
+                    formState
                   )
                 "
               >
@@ -689,407 +689,407 @@
 </template>
 
 <script setup lang="ts">
-  //添加应用 弹窗组件
-  import { computed, nextTick, onMounted, reactive, ref, toRaw, watch, h } from 'vue';
-  import { GroupUsersCheckbox } from '@xes/uc';
-  import { DEFAULT_FORM, VALIDATE_RULES, GATEWAYS } from './config';
-  import { getProject, modifyProject, addProject } from '@/apis/projectList';
-  import { checkValidGateway } from '@/apis/gateway';
-  import { message } from 'ant-design-vue';
-  import {
-    InfoCircleOutlined,
-    FormOutlined,
-    CloseOutlined,
-    PlusCircleTwoTone,
-    CloseCircleTwoTone,
-  } from '@ant-design/icons-vue';
-  import { handleUaParse, handleProjectParams, initEditFormData } from '../utils';
-  import UANoteIMG from '@/assets/images/huatuo/ua_note.jpg';
-  import yachInputFilter from '../yachInputFilter.vue';
+//添加应用 弹窗组件
+import { computed, nextTick, onMounted, reactive, ref, toRaw, watch, h } from "vue";
+import { GroupUsersCheckbox } from "@xes/uc";
+import { DEFAULT_FORM, VALIDATE_RULES, GATEWAYS } from "./config";
+import { getProject, modifyProject, addProject } from "@/apis/projectList";
+import { checkValidGateway } from "@/apis/gateway";
+import { message } from "ant-design-vue";
+import {
+  InfoCircleOutlined,
+  FormOutlined,
+  CloseOutlined,
+  PlusCircleTwoTone,
+  CloseCircleTwoTone,
+} from "@ant-design/icons-vue";
+import { handleUaParse, handleProjectParams, initEditFormData } from "../utils";
+import UANoteIMG from "@/assets/images/huatuo/ua_note.jpg";
+import yachInputFilter from "../yachInputFilter.vue";
 
-  import { useWeeklyReportUserSelect } from '../hooks/useWeeklyReportUserSelect';
-  import { useAuth } from '../hooks/useAuth';
-  import { cloneDeep, buildUUID, delUrlParams } from '@vben/utils';
-  import { useListStore } from '@/store/modules/list';
-  import { storeToRefs } from 'pinia';
-  // import { isEqual } from 'lodash-es';
-  import LabelComponent from './labelComponent.vue';
-  import { saveAs } from 'file-saver';
-  import { getRecommendSDKConfig, getVueRecommendSDKConfig } from './sdkConfig';
-  import { CodeArea } from '@vben/components';
+import { useWeeklyReportUserSelect } from "../hooks/useWeeklyReportUserSelect";
+import { useAuth } from "../hooks/useAuth";
+import { cloneDeep, buildUUID, delUrlParams } from "@vben/utils";
+import { useListStore } from "@/store/modules/list";
+import { storeToRefs } from "pinia";
+// import { isEqual } from 'lodash-es';
+import LabelComponent from "./labelComponent.vue";
+import { saveAs } from "file-saver";
+import { getRecommendSDKConfig, getVueRecommendSDKConfig } from "./sdkConfig";
+import { CodeArea } from "@vben/components";
 
-  const props = defineProps({
-    visible: {
-      type: Boolean,
-      default: () => false,
-    },
-    editProjectId: {
-      type: String,
-    },
-  });
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: () => false,
+  },
+  editProjectId: {
+    type: String,
+  },
+});
 
-  const emit = defineEmits(['update:visible', 'flash']);
+const emit = defineEmits(["update:visible", "flash"]);
 
-  // const store = useStore();
-  const listStore = useListStore();
-  //窗口可视
-  const drawerVisible = ref(props.visible);
-  const modalVisible = ref(false);
-  watch(
-    () => props.visible,
-    (val) => {
-      drawerVisible.value = val;
-      modalVisible.value = false;
-      recommendMode.value = 'normal';
-    },
-  );
-  //表单相关
-  const formRef = ref();
-  //表单信息
-  const formState = reactive(cloneDeep(DEFAULT_FORM));
-  //验证规则
-  const rules = { ...VALIDATE_RULES };
-  //可选用户组
-  const { ucGroups: groups } = storeToRefs(listStore);
+// const store = useStore();
+const listStore = useListStore();
+//窗口可视
+const drawerVisible = ref(props.visible);
+const modalVisible = ref(false);
+watch(
+  () => props.visible,
+  (val) => {
+    drawerVisible.value = val;
+    modalVisible.value = false;
+    recommendMode.value = "normal";
+  }
+);
+//表单相关
+const formRef = ref();
+//表单信息
+const formState = reactive(cloneDeep(DEFAULT_FORM));
+//验证规则
+const rules = { ...VALIDATE_RULES };
+//可选用户组
+const { ucGroups: groups } = storeToRefs(listStore);
 
-  const noticeSlot = h(LabelComponent);
+const noticeSlot = h(LabelComponent);
 
-  watch(groups, (newGroups) => {
-    const group_id = formState.basic_info.uc_group_id;
-    if (group_id && !newGroups.map((item) => item.group_id).includes(group_id)) {
-      formState.basic_info.uc_group_id = null;
-    }
-  });
+watch(groups, (newGroups) => {
+  const group_id = formState.basic_info.uc_group_id;
+  if (group_id && !newGroups.map((item) => item.group_id).includes(group_id)) {
+    formState.basic_info.uc_group_id = null;
+  }
+});
 
-  // SDK推荐配置
-  const recommendMode = ref('normal');
-  const recommendSDKConfig = computed(() => {
-    const params = [
-      formState.basic_info.appid,
-      formState.basic_info.eventid,
-      formState.basic_info.saas === 'yes',
-    ];
-    switch (recommendMode.value) {
-      case 'normal':
-        return getRecommendSDKConfig(...params);
-      case 'vue':
-        return getVueRecommendSDKConfig(...params);
-      default:
-        return '';
-    }
-  });
+// SDK推荐配置
+const recommendMode = ref("normal");
+const recommendSDKConfig = computed(() => {
+  const params = [
+    formState.basic_info.appid,
+    formState.basic_info.eventid,
+    formState.basic_info.saas === "yes",
+  ];
+  switch (recommendMode.value) {
+    case "normal":
+      return getRecommendSDKConfig(...params);
+    case "vue":
+      return getVueRecommendSDKConfig(...params);
+    default:
+      return "";
+  }
+});
 
-  //折叠面板
-  const activeKey = ref(['1']);
-  //确认按钮loading
-  const loading = ref(false);
-  //表单loading
-  const formLoading = ref(true);
+//折叠面板
+const activeKey = ref(["1"]);
+//确认按钮loading
+const loading = ref(false);
+//表单loading
+const formLoading = ref(true);
 
-  onMounted(() => {
-    listStore.requestUCGroups();
-    if (props.editProjectId) {
-      initProjectData();
-    } else {
-      formLoading.value = false;
-    }
-    // getPlatformList();
-  });
+onMounted(() => {
+  listStore.requestUCGroups();
+  if (props.editProjectId) {
+    initProjectData();
+  } else {
+    formLoading.value = false;
+  }
+  // getPlatformList();
+});
 
-  watch(activeKey, (val, preVal) => {
-    //表单还在加载，取消处理
-    if (formLoading.value === true) {
-      return;
-    }
-    // 登录认证
-    if (preVal.includes('4') !== val.includes('4')) {
-      //关闭全清空，开启设默认值
-      const need_login = val.includes('4') ? 1 : 2; //2不需要，1需要
-      formState.auth_info = {
-        need_login,
-        effective_time: null,
-        need_notify: null,
-        notice_users: [],
-        project_url: '',
-        checkLoading: false,
-        authForm: {
-          fields: [
+watch(activeKey, (val, preVal) => {
+  //表单还在加载，取消处理
+  if (formLoading.value === true) {
+    return;
+  }
+  // 登录认证
+  if (preVal.includes("4") !== val.includes("4")) {
+    //关闭全清空，开启设默认值
+    const need_login = val.includes("4") ? 1 : 2; //2不需要，1需要
+    formState.auth_info = {
+      need_login,
+      effective_time: null,
+      need_notify: null,
+      notice_users: [],
+      project_url: "",
+      checkLoading: false,
+      authForm: {
+        fields: [
+          {
+            index: buildUUID(),
+            field: "",
+            key: "",
+            value: "",
+          },
+        ],
+      },
+      auth_msg: [],
+    };
+  }
+  //sourcemap解析折叠菜单变化
+  if (preVal.includes("2") !== val.includes("2")) {
+    //关闭全清空，开启设默认值
+    const sourcemap_analysis = val.includes("2") ? 1 : 0; //0不解析，1解析
+    formState.sourcemap_info = {
+      sourcemap_analysis: sourcemap_analysis,
+      default_storage: 0,
+      enable_log: 0,
+      default_upload: 0,
+      notice_status: 0,
+      notice_values: [],
+    };
+  }
+  //UA解析折叠菜单变化
+  if (preVal.includes("3") !== val.includes("3")) {
+    //关闭置空，开启设默认值
+    formState.ua_info =
+      val.indexOf("3") === -1
+        ? []
+        : [
             {
-              index: buildUUID(),
-              field: '',
-              key: '',
-              value: '',
+              ua_name: "",
+              ua_flag: "",
+              parse_status: 0,
+              app_name: "",
+              app_version: "",
             },
-          ],
-        },
-        auth_msg: [],
-      };
-    }
-    //sourcemap解析折叠菜单变化
-    if (preVal.includes('2') !== val.includes('2')) {
-      //关闭全清空，开启设默认值
-      const sourcemap_analysis = val.includes('2') ? 1 : 0; //0不解析，1解析
-      formState.sourcemap_info = {
-        sourcemap_analysis: sourcemap_analysis,
-        default_storage: 0,
-        enable_log: 0,
-        default_upload: 0,
-        notice_status: 0,
-        notice_values: [],
-      };
-    }
-    //UA解析折叠菜单变化
-    if (preVal.includes('3') !== val.includes('3')) {
-      //关闭置空，开启设默认值
-      formState.ua_info =
-        val.indexOf('3') === -1
-          ? []
-          : [
-              {
-                ua_name: '',
-                ua_flag: '',
-                parse_status: 0,
-                app_name: '',
-                app_version: '',
-              },
-            ];
-    }
-  });
-
-  //表单为编辑项目时，根据项目id请求数据，初始化表单
-  async function initProjectData() {
-    const result = await getProject(props.editProjectId);
-    if (result.stat === 1) {
-      //清洗数据
-      const editFormData = initEditFormData(result.data);
-      //判断要打开的折叠面板
-      if (editFormData.sourcemap_info.sourcemap_analysis === 1) {
-        activeKey.value.push('2');
-      }
-      if (editFormData.ua_info[0].ua_flag) {
-        activeKey.value.push('3');
-      }
-      if (editFormData.auth_info.need_login === 1) {
-        activeKey.value.push('4');
-      }
-      //绑定数据到表单上
-      formState.basic_info = editFormData.basic_info;
-      formState.sourcemap_info = editFormData.sourcemap_info;
-      formState.ua_info = editFormData.ua_info;
-      formState.auth_info = editFormData.auth_info;
-      formState.auth_info_original_auth_msg = editFormData.auth_info_original_auth_msg;
-      //使用nextTick防止activeKey被监听
-      nextTick(() => {
-        formLoading.value = false;
-      });
-    } else {
-      message.error('请求异常');
-      emit('update:visible', false);
-    }
+          ];
   }
+});
 
-  //验证并提交表单
-  function handleOk(isShutDown = false) {
-    loading.value = true;
-    formRef.value
-      .validate() //验证表单
-      .then(() => addOrModifyProject(isShutDown)) //提交表单
-      .catch((error) => {
-        loading.value = false;
-        console.log('error', error);
-      });
+//表单为编辑项目时，根据项目id请求数据，初始化表单
+async function initProjectData() {
+  const result = await getProject(props.editProjectId);
+  if (result.stat === 1) {
+    //清洗数据
+    const editFormData = initEditFormData(result.data);
+    //判断要打开的折叠面板
+    if (editFormData.sourcemap_info.sourcemap_analysis === 1) {
+      activeKey.value.push("2");
+    }
+    if (editFormData.ua_info[0].ua_flag) {
+      activeKey.value.push("3");
+    }
+    if (editFormData.auth_info.need_login === 1) {
+      activeKey.value.push("4");
+    }
+    //绑定数据到表单上
+    formState.basic_info = editFormData.basic_info;
+    formState.sourcemap_info = editFormData.sourcemap_info;
+    formState.ua_info = editFormData.ua_info;
+    formState.auth_info = editFormData.auth_info;
+    formState.auth_info_original_auth_msg = editFormData.auth_info_original_auth_msg;
+    //使用nextTick防止activeKey被监听
+    nextTick(() => {
+      formLoading.value = false;
+    });
+  } else {
+    message.error("请求异常");
+    emit("update:visible", false);
   }
+}
 
-  //向后台提交表单数据
-  async function addOrModifyProject(isShutDown) {
-    // ua表单验证
-    const uaInfo = formState.ua_info;
-    for (let i = uaInfo.length - 1; i > -1; i--) {
-      if ((uaInfo[i].ua_name || uaInfo[i].ua_flag) && uaInfo[i].parse_status !== 1) {
-        message.error(`请先解析第${i + 1}条ua信息或${i === 0 ? '清空' : '删除'}`);
-        loading.value = false;
-        return;
-      } else if (!uaInfo[i].ua_name && !uaInfo[i].ua_flag) {
-        if (!(i === 0 && uaInfo.length === 1)) {
-          formState.ua_info.splice(i, 1);
-        }
+//验证并提交表单
+function handleOk(isShutDown = false) {
+  loading.value = true;
+  formRef.value
+    .validate() //验证表单
+    .then(() => addOrModifyProject(isShutDown)) //提交表单
+    .catch((error) => {
+      loading.value = false;
+      console.log("error", error);
+    });
+}
+
+//向后台提交表单数据
+async function addOrModifyProject(isShutDown) {
+  // ua表单验证
+  const uaInfo = formState.ua_info;
+  for (let i = uaInfo.length - 1; i > -1; i--) {
+    if ((uaInfo[i].ua_name || uaInfo[i].ua_flag) && uaInfo[i].parse_status !== 1) {
+      message.error(`请先解析第${i + 1}条ua信息或${i === 0 ? "清空" : "删除"}`);
+      loading.value = false;
+      return;
+    } else if (!uaInfo[i].ua_name && !uaInfo[i].ua_flag) {
+      if (!(i === 0 && uaInfo.length === 1)) {
+        formState.ua_info.splice(i, 1);
       }
     }
-    //处理数据
-    const params = handleProjectParams(toRaw(formState), isShutDown);
-    // if (params.loginParams.need_login === 1) {
-    //   let a = JSON.parse(formState.auth_info_original_auth_msg || '{}')
-    //   let b = params.loginParams.auth_msg
-    //   const flag = isEqual(a, b)
-    //   if (!flag) {
-    //     loading.value = false;
-    //     message.error('认证参数发生变化请点击检测')
-    //     return
-    //   }
-    // }
-
-    const result = props.editProjectId
-      ? await modifyProject(props.editProjectId, params)
-      : await addProject(params);
-    if (result.stat === 1) {
-      message.success('提交成功！');
-      //提交表单后，更新项目列表
-      emit('flash');
-      delUrlParams(['openUpdateDialog, project_id']);
-      emit('update:visible', false);
-    }
-    loading.value = false;
   }
+  //处理数据
+  const params = handleProjectParams(toRaw(formState), isShutDown);
+  // if (params.loginParams.need_login === 1) {
+  //   let a = JSON.parse(formState.auth_info_original_auth_msg || '{}')
+  //   let b = params.loginParams.auth_msg
+  //   const flag = isEqual(a, b)
+  //   if (!flag) {
+  //     loading.value = false;
+  //     message.error('认证参数发生变化请点击检测')
+  //     return
+  //   }
+  // }
 
-  function handleCancel() {
-    delUrlParams(['openUpdateDialog', 'project_id']);
-    emit('update:visible', false);
+  const result = props.editProjectId
+    ? await modifyProject(props.editProjectId, params)
+    : await addProject(params);
+  if (result.stat === 1) {
+    message.success("提交成功！");
+    //提交表单后，更新项目列表
+    emit("flash");
+    delUrlParams(["openUpdateDialog, project_id"]);
+    emit("update:visible", false);
   }
+  loading.value = false;
+}
 
-  //通过改变store状态打开用户组管理弹窗
-  function openUCGroup() {
-    listStore.ucGroupVisible = true;
+function handleCancel() {
+  delUrlParams(["openUpdateDialog", "project_id"]);
+  emit("update:visible", false);
+}
+
+//通过改变store状态打开用户组管理弹窗
+function openUCGroup() {
+  listStore.ucGroupVisible = true;
+}
+
+//选择用户组/网关时，用户自己输入时的筛选条件
+function filterOption(inputValue, options) {
+  return options.children[0].children.includes(inputValue);
+}
+
+//增加或删除ua
+function addOrDelUA(index) {
+  if (index > 0) {
+    formState.ua_info.splice(index, 1);
+  } else {
+    formState.ua_info.push({
+      ua_name: "",
+      ua_flag: "",
+      parse_status: 0,
+      parse_result: "",
+    });
   }
+}
 
-  //选择用户组/网关时，用户自己输入时的筛选条件
-  function filterOption(inputValue, options) {
-    return options.children[0].children.includes(inputValue);
-  }
+//隐藏解析结果
+function hideParse(index) {
+  const ua_info = formState.ua_info[index];
+  ua_info.parse_status = 0;
+  ua_info.app_name = ua_info.app_version = "";
+}
 
-  //增加或删除ua
-  function addOrDelUA(index) {
-    if (index > 0) {
-      formState.ua_info.splice(index, 1);
-    } else {
-      formState.ua_info.push({
-        ua_name: '',
-        ua_flag: '',
-        parse_status: 0,
-        parse_result: '',
-      });
-    }
-  }
-
-  //隐藏解析结果
-  function hideParse(index) {
-    const ua_info = formState.ua_info[index];
-    ua_info.parse_status = 0;
-    ua_info.app_name = ua_info.app_version = '';
-  }
-
-  //解析ua
-  //TODO:一条ua中关键字出现多次，匹配哪个？
-  async function parseUA(index) {
-    const nameList = [
-      ['ua_info', index, 'ua_name'],
-      ['ua_info', index, 'ua_flag'],
-    ];
-    try {
-      await formRef.value.validateFields(nameList);
-      const { app_name, app_version } = handleUaParse(
-        formState.ua_info[index].ua_name,
-        formState.ua_info[index].ua_flag,
-      );
-      if (!app_name) {
-        message.error('无法解析');
-        return;
-      }
-      formState.ua_info[index].app_name = app_name;
-      formState.ua_info[index].app_version = app_version;
-      formState.ua_info[index].parse_status = 1;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  /**
-   * 可接收质量周报用户逻辑
-   */
-  const { baseURL } = useWeeklyReportUserSelect();
-
-  /**
-   * alert 显示隐藏逻辑
-   */
-  const showAlert = ref(false);
-  const handleChangeUcGroup = () => {
-    showAlert.value = true;
-  };
-
-  const { addAuthField, removeAuthField, selectFields, clearFieldsSpace, checkAuth } = useAuth();
-
-  // 打开SDK推荐配置弹窗
-  const showSDKConfig = () => {
-    formRef.value
-      .validate() //验证表单
-      .then(() => {
-        modalVisible.value = true;
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
-  };
-
-  // 下载SDK推荐配置文件
-  const downloadSDKConfig = () => {
-    const blob = new Blob([recommendSDKConfig.value], { type: 'text/javascript' });
-    saveAs(blob, 'sdkConfig.js');
-  };
-
-  const changeMode = (mode) => {
-    recommendMode.value = mode;
-  };
-
-  const hasGatewayData = ref('');
-  const hasGatewayLoading = ref(false);
-
-  //检测是否有网关数据
-  const checkGateway = async () => {
-    const { gateway, domain } = formState.basic_info;
-    if (!(gateway && domain)) {
-      message.error('请先添加网关和域名');
-      return false;
-    }
-    hasGatewayLoading.value = true;
-    const data = await checkValidGateway({ gateway, domain });
-    if (data.stat === 1) {
-      hasGatewayData.value = data.data ? '有数据' : '无数据';
-      hasGatewayLoading.value = false;
+//解析ua
+//TODO:一条ua中关键字出现多次，匹配哪个？
+async function parseUA(index) {
+  const nameList = [
+    ["ua_info", index, "ua_name"],
+    ["ua_info", index, "ua_flag"],
+  ];
+  try {
+    await formRef.value.validateFields(nameList);
+    const { app_name, app_version } = handleUaParse(
+      formState.ua_info[index].ua_name,
+      formState.ua_info[index].ua_flag
+    );
+    if (!app_name) {
+      message.error("无法解析");
       return;
     }
-    hasGatewayData.value = '请求错误';
+    formState.ua_info[index].app_name = app_name;
+    formState.ua_info[index].app_version = app_version;
+    formState.ua_info[index].parse_status = 1;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+/**
+ * 可接收质量周报用户逻辑
+ */
+const { baseURL } = useWeeklyReportUserSelect();
+
+/**
+ * alert 显示隐藏逻辑
+ */
+const showAlert = ref(false);
+const handleChangeUcGroup = () => {
+  showAlert.value = true;
+};
+
+const { addAuthField, removeAuthField, selectFields, clearFieldsSpace, checkAuth } = useAuth();
+
+// 打开SDK推荐配置弹窗
+const showSDKConfig = () => {
+  formRef.value
+    .validate() //验证表单
+    .then(() => {
+      modalVisible.value = true;
+    })
+    .catch((error) => {
+      console.log("error", error);
+    });
+};
+
+// 下载SDK推荐配置文件
+const downloadSDKConfig = () => {
+  const blob = new Blob([recommendSDKConfig.value], { type: "text/javascript" });
+  saveAs(blob, "sdkConfig.js");
+};
+
+const changeMode = (mode) => {
+  recommendMode.value = mode;
+};
+
+const hasGatewayData = ref("");
+const hasGatewayLoading = ref(false);
+
+//检测是否有网关数据
+const checkGateway = async () => {
+  const { gateway, domain } = formState.basic_info;
+  if (!(gateway && domain)) {
+    message.error("请先添加网关和域名");
+    return false;
+  }
+  hasGatewayLoading.value = true;
+  const data = await checkValidGateway({ gateway, domain });
+  if (data.stat === 1) {
+    hasGatewayData.value = data.data ? "有数据" : "无数据";
     hasGatewayLoading.value = false;
-  };
+    return;
+  }
+  hasGatewayData.value = "请求错误";
+  hasGatewayLoading.value = false;
+};
 </script>
 
 <style lang="scss" scoped>
-  :deep(span.anticon:not(.app-iconify)) {
-    vertical-align: middle;
-  }
-  .shut-down-button {
-    color: #fff;
-    background: #ff7875;
-    border-color: #ff7875;
-    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
-    box-shadow: 0 2px #0000000b;
-  }
-  .shut-down-button:hover {
-    color: #fff;
-    background: #ffa39e;
-    border-color: #ffa39e;
-  }
-  :deep(.ant-divider.ant-divider-horizontal) {
-    margin: 3px 0 10px 0 !important;
-  }
-  :deep(.border) {
-    padding: 5px 15px !important;
-  }
+:deep(span.anticon:not(.app-iconify)) {
+  vertical-align: middle;
+}
+.shut-down-button {
+  color: #fff;
+  background: #ff7875;
+  border-color: #ff7875;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px #0000000b;
+}
+.shut-down-button:hover {
+  color: #fff;
+  background: #ffa39e;
+  border-color: #ffa39e;
+}
+:deep(.ant-divider.ant-divider-horizontal) {
+  margin: 3px 0 10px 0 !important;
+}
+:deep(.border) {
+  padding: 5px 15px !important;
+}
 
-  .json-parse {
-    position: relative;
-    :deep(.ant-typography-copy) {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
+.json-parse {
+  position: relative;
+  :deep(.ant-typography-copy) {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
+}
 </style>

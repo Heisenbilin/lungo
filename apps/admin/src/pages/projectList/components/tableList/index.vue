@@ -262,7 +262,6 @@ const getHuatuoProjectList = debounce(async (page = currentPage.value) => {
   };
 
   getProjectList(params).then((result) => {
-    console.log(result)
     if (searchId !== lastSearchId) {
       // for fetch callback order
       return;
