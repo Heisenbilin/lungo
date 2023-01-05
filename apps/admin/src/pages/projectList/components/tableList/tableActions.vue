@@ -21,7 +21,7 @@ import { ref } from "vue";
 
 import { SettingOutlined, LoadingOutlined, StarTwoTone, StarFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
-import { starProject } from "@/apis/projectList";
+import { starProject } from "@/apis/list";
 
 const props = defineProps({
   projectId: {

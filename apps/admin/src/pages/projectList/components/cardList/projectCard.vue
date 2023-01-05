@@ -165,7 +165,7 @@ import {
 import { useAppStore } from "@/store/modules/app";
 import { useListStore } from "@/store/modules/list";
 import { message } from "ant-design-vue";
-import { modifyProjectParams, starProject } from "@/apis/projectList";
+import { modifyProjectParams, starProject } from "@/apis/list";
 import CardContent from "./cardContent.vue";
 import moment from "moment";
 

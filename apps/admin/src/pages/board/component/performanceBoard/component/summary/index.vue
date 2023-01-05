@@ -1,0 +1,139 @@
+<template>
+  <div class="flex h-20 flex-row justify-center chart-container-full">
+    <a-spin size="large" class="flex self-center" v-if="loading" />
+    <template v-else>
+      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+        <div class="text-gray-500">
+          <a-tooltip title="均值"> 首字节 <QuestionCircleOutlined /> </a-tooltip>
+        </div>
+        <div class="flex items-end">
+          <div class="text-3xl font-medium">{{ commafy(averageData.firstbyte || '') }}</div>
+          <div class="text-gray-500">ms</div>
+        </div>
+      </div>
+      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+        <div class="text-gray-500">
+          <a-tooltip title="均值"> DOM Ready <QuestionCircleOutlined /> </a-tooltip>
+        </div>
+        <div class="flex items-end">
+          <div class="text-3xl font-medium">{{ commafy(averageData.ready || '') }}</div>
+          <div class="text-gray-500">ms</div>
+        </div>
+      </div>
+      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+        <div class="text-gray-500">
+          <a-tooltip title="均值"> 页面完全加载 <QuestionCircleOutlined /> </a-tooltip>
+        </div>
+        <div class="flex items-end">
+          <div class="text-3xl font-medium">{{ commafy(averageData.pageload || '') }}</div>
+          <div class="text-gray-500">ms</div>
+        </div>
+      </div>
+    </template>
+  </div>
+  <div class="chart-container-full">
+    <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
+      <template #tabBarExtraContent>
+        <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
+      </template>
+      <a-tab-pane key="average" tab="性能均值">
+        <BaseChart
+          :requestParams="requestParams2"
+          :requestFunc="PerformanceApis.getChartSummaryData"
+          :getOptionFunc="getSummaryOption"
+          :bindFuncs="{ legendselectchanged: handleLegendChange }"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
+      </a-tab-pane>
+    </a-tabs>
+  </div>
+  <div class="chart-container-full">
+    <a-tabs v-model:activeKey="activeKey2" class="box-border w-full">
+      <a-tab-pane key="waterfall" tab="页面加载均值瀑布图">
+        <BaseChart
+          :requestParams="requestParams"
+          :requestFunc="getAverageData"
+          :getOptionFunc="handleDataToWaterfallChartOption"
+        />
+      </a-tab-pane>
+    </a-tabs>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue';
+import { handleDataToWaterfallChartOption } from '../waterfallChart/chartConfig';
+import { getSummaryChartOption } from './chartConfig';
+import { PerformanceApis } from '/@/api/board/performance';
+import { QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { commafy } from '/@/utils/math/formatMumber';
+import { boardStore } from '/@/store/modules/board';
+import BaseChart from '/@/components/coreBoard/baseChart.vue';
+import { addTimeFilter } from '/@/components/boardNew/util/datePickerConfig';
+
+//请求参数
+const requestParams = computed(() => ({
+  project_id: `${boardStore.getBoardInfoState.id}`, //项目id
+  start_time: boardStore.getFilterState.start_time, //开始时间
+  end_time: boardStore.getFilterState.end_time, //结束时间
+  url: boardStore.getFilterState.url, //路由筛选
+  browser: boardStore.getFilterState.browser, //浏览器筛选
+  device: boardStore.getFilterState.device, //设备筛选
+  region: boardStore.getFilterState.region, //地区筛选
+  network: boardStore.getFilterState.network, //网络类型筛选
+  client: boardStore.getFilterState.client, //客户端筛选
+  os: boardStore.getFilterState.os, //操作系统筛选
+  performance_key: boardStore.getFilterState.performance_key, //性能筛选
+  performance_range: boardStore.getFilterState.performance_range, //性能筛选
+}));
+
+const requestParams2 = computed(() => ({
+  ...requestParams.value,
+  dimension: boardStore.getFilterState.dimension, //维度
+}));
+
+const activeKey = ref('average');
+const activeKey2 = ref('waterfall');
+
+const loading = ref(true);
+const averageData = ref({
+  firstbyte: '',
+  dom: '',
+  pageload: '',
+});
+
+const selectedLegend = ref({
+  selected: {
+    DNS: false,
+    TCP: false,
+    SSL: false,
+    请求响应: false,
+    内容传输: false,
+    DOM解析: false,
+    资源加载: false,
+    RTT: false,
+    FCP: false,
+    FP: false,
+    RD: false,
+    TTI: false,
+  },
+});
+
+//从后端获取均值瀑布图数据方法
+const getSummaryOption = data => getSummaryChartOption(data, selectedLegend.value);
+
+//从后端获取均值瀑布图数据方法
+const getAverageData = async params => {
+  loading.value = true;
+  //拦截请求结果，存入averageData中
+  const result = await PerformanceApis.getAverageData(params);
+  averageData.value = result?.data?.details ?? { firstbyte: '', dom: '', pageload: '' };
+  loading.value = false;
+  return result;
+};
+
+//监听筛选项的变化
+const handleLegendChange = params => {
+  selectedLegend.value = params;
+};
+</script>

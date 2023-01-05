@@ -163,7 +163,7 @@
 </template>
 <script setup lang="ts">
 import { ref, watch, h, computed } from "vue";
-import { checkProjectData } from "@/apis/projectList";
+import { checkProjectData } from "@/apis/list";
 import { message, Modal } from "ant-design-vue";
 import { AppstoreOutlined, UnorderedListOutlined } from "@ant-design/icons-vue";
 import { addOrUpdateUrlParams, getUrlParams } from "@vben/utils";

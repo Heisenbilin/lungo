@@ -2,11 +2,8 @@ import { Modal } from "ant-design-vue";
 import { ExclamationCircleOutlined } from "@ant-design/icons-vue";
 import { createVNode, h, reactive } from "vue";
 // import { huatuoApis } from "/@/api/huatuo";
-import {
-  checkWeeklyReportAuth as checkReportAuth,
-  removeWeeklyReportAuth as removeReportAuth,
-} from "@/apis/projectList";
-import {checkAlarmAuth as checkAuth, removeAlarmAuth as removeAAuth} from "@/apis/alarm";
+import { checkReportAuth, removeReportAuth } from "@/apis/bigfish";
+import { checkAlarmAuth as checkAuth, removeAlarmAuth as removeAAuth } from "@/apis/alarm";
 // import { useStore } from 'vuex';
 
 export const useCheckUserAuth = () => {
@@ -35,7 +32,7 @@ export const useCheckUserAuth = () => {
   const removeWeeklyReportAuth = async (group_id, user_account) => {
     const { stat } = await removeReportAuth(
       group_id,
-      user_account,
+      user_account
       // "xiongbilin" //'store.state.userInfo.account'
     );
     return stat === 1;

@@ -84,7 +84,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { getProjectBoard } from "@/apis/projectList";
+import { getProjectBoard } from "@/apis/list";
 import { CardProgress } from "@vben/components";
 import { getTendencyChartOption } from "./tendencyChartConfig";
 import { BasicChart } from "@vben/components";

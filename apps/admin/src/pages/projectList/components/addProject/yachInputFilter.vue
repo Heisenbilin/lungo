@@ -19,7 +19,7 @@
 //知音楼账号检索
 import { ref, watch } from "vue";
 import { debounce } from "@vben/utils";
-import { searchWorkerInfo } from "@/apis/yach";
+import { searchWorkerInfo } from "@/apis/tool";
 
 const props = defineProps({
   noticeValues: {

@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { Empty } from "ant-design-vue";
-import { getProjectList } from "@/apis/projectList";
+import { getProjectList } from "@/apis/list";
 import { caculatePageSizeByWidth } from "../utils";
 import { debounce } from "@vben/utils";
 import { addOrUpdateUrlParams, getUrlParams } from "@vben/utils";

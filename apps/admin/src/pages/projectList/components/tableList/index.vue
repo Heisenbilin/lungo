@@ -161,7 +161,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { message } from "ant-design-vue";
-import { getProjectList, getProjectBoard, modifyProjectParams } from "@/apis/projectList";
+import { getProjectList, getProjectBoard, modifyProjectParams } from "@/apis/list";
 import { caculatePageSizeByWidth } from "../utils";
 import { debounce } from "@vben/utils";
 // import { useStore } from "vuex";

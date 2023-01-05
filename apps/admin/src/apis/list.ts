@@ -8,8 +8,6 @@ enum Api {
   CHECK_PROJECT = "/project/checkProjectData",
   CHECK_PROJECT_AUTH = "/huatuo/checkAuth",
   GET_GROUPS = "/huatuo/groups",
-  PROXY = "/proxy",
-  PROXY_GET = "/proxyGet",
 }
 
 /**
@@ -77,53 +75,6 @@ export const checkProjectAuth = (project_id: any) =>
 
 export const getUserGroups = () => request.get<any>({ url: Api.GET_GROUPS });
 
-/**
- * @description: 根据用户组ID查询用户组用户信息
- */
-
-export const getGroupRoleUsers = (group_id: any, role: any, limit: any) =>
-  request.post<any>({
-    url: Api.PROXY_GET,
-    data: {
-      url: `//uc.xesv5.com/api/auth/groups/${group_id}/role_users`,
-      data: {
-        role,
-        limit,
-      },
-    },
-  });
-
-/**
- * @description: 检查用户质量周报权限
- */
-
-export const checkWeeklyReportAuth = (uc_group_id: any, user_account: any) =>
-  request.post<any>({
-    url: Api.PROXY_GET,
-    data: {
-      url: `//app.xesv5.com/bigfish/v1/interface/weeklyReportAuth`,
-      data: {
-        uc_group_id,
-        user_account,
-      },
-    },
-  });
-
-/**
- * @description: 移除用户质量周报权限
- */
-
-export const removeWeeklyReportAuth = (uc_group_id: any, user_account: any) =>
-  request.post<any>({
-    url: Api.PROXY,
-    data: {
-      url: `//app.xesv5.com/bigfish/v1/interface/weeklyReportAuth`,
-      data: {
-        uc_group_id,
-        user_account,
-      },
-    },
-  });
 
 /**
  * @description: 获取华佗菜单服务，不走拦截

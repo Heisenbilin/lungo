@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getUserGroups } from '@/apis/projectList';
+import { getUserGroups } from '@/apis/list';
 
 interface ListState {
   ucGroups: any[];

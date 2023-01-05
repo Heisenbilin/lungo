@@ -1,0 +1,165 @@
+<template>
+  <a-table
+    :columns="tableColumns"
+    :data-source="dataList"
+    :row-key="(_, i) => i"
+    size="middle"
+    :pagination="pagination"
+    @change="handleTableChange"
+    tableLayout="fixed"
+    :loading="loading"
+  >
+    <template #url="{ record }">
+      {{ record.url }}
+    </template>
+    <template #operation="{ record }">
+      <span v-if="record.url !== searchUrl">
+        <a @click="changeSearchUrl(record.url)">设为筛选</a>
+      </span>
+      <span v-else>
+        <a @click="cancelSearchUrl()">取消筛选</a>
+      </span>
+      <span class="ml-2">
+        <a @click="openLog(record.url)">查看日志</a>
+      </span>
+    </template>
+    <template #count="{ record }"> {{ commafy(record.count) }} </template>
+  </a-table>
+</template>
+
+<script setup>
+import { ref, computed, watch, reactive } from 'vue';
+import { GatewayApis } from '/@/api/gateway';
+import { debounce } from 'lodash-es';
+import { getDefaultColumns } from './resultTabTableConfig';
+import { commafy } from '/@/utils/math/formatMumber';
+import { boardStore } from '/@/store/modules/board';
+import { logTypeEnum } from '/@/enums/boardEnum';
+
+//api异常数据汇总Tab内部图表组件
+const props = defineProps({
+  type: {
+    type: String,
+    default: '',
+  },
+  searchUrl: {
+    type: String,
+    default: '',
+  },
+});
+const emit = defineEmits(['update:searchUrl']);
+
+//表格loading
+const loading = ref(true);
+//表格页码
+const pagination = reactive({
+  total: 0,
+  current: 1,
+  pageSize: 10,
+  showQuickJumper: false,
+});
+//生成表格序号
+const tableColumns = computed(() => {
+  const columns = getDefaultColumns();
+  columns[0].customRender = item => (pagination.current - 1) * pagination.pageSize + item.index + 1;
+  return columns;
+});
+
+//表格数据
+const dataList = ref([]);
+//请求序号，防止前面的请求返回结果覆盖后面的
+let lastSearchId = 0;
+const getResultTableData = debounce((page = pagination.current) => {
+  lastSearchId += 1;
+  const searchId = lastSearchId;
+  //开始loading
+  loading.value = true;
+  //开始请求
+  GatewayApis.getResultType({
+    project_id: boardStore.getBoardInfoState.id,
+    start_time: boardStore.getFilterState.start_time,
+    end_time: boardStore.getFilterState.end_time,
+    response_type: props.type,
+    request_url: props.searchUrl,
+    limit: pagination.pageSize,
+    page: page,
+  })
+    .then(data => {
+      if (searchId !== lastSearchId) {
+        // for fetch callback order
+        return;
+      }
+      if (data.stat === 1) {
+        dataList.value = data.data.list;
+        pagination.current = page;
+        pagination.total = data.data.total;
+        //为过多的分页添加快速跳转输入框
+        if (pagination.total && pagination.total / pagination.pageSize > 10) {
+          pagination.showQuickJumper = true;
+        }
+      } else {
+        dataList.value = [];
+        pagination.current = 1;
+        pagination.total = 0;
+        pagination.showQuickJumper = false;
+      }
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+}, 300);
+
+//表格变化时触发  , _, sorter
+const handleTableChange = page => {
+  //页面跳转，请求数据
+  if (page.current !== pagination.current) {
+    //case1: 页码无跳转，一定是有排序选择变化，跳转至首页进行排序
+    // pagination.current = 1;
+    //无order
+    // if (!sorter.order) {
+    pagination.current = page.current;
+    getResultTableData();
+    // } else {
+    //   this.getUrlByPro(1, sorter.order, sorter.field);
+    // }
+  }
+  // //case2: 非默认排序下的页面跳转，保留排序状态跳转页面
+  // else if (sorter.order) {
+  //   this.pagination.current = page.current;
+  //   this.getUrlByPro(page.current, sorter.order, sorter.field);
+  // }
+  // //case3: 默认排序下的页面跳转
+  // else {
+  //   this.pagination.current = page.current;
+  //   this.getUrlByPro(page.current);
+  // }
+};
+
+const changeSearchUrl = url => {
+  emit('update:searchUrl', url);
+};
+
+const cancelSearchUrl = () => {
+  emit('update:searchUrl', '');
+};
+
+//打开日志详情
+const openLog = url => {
+  boardStore.openLogInfoState({
+    type: logTypeEnum.GATEWAY,
+    visible: true,
+    requestParams: {
+      request_url: url,
+      response_type: props.type,
+    },
+  });
+};
+
+watch(
+  () => [props.searchUrl, boardStore.getFilterState.start_time, boardStore.getFilterState.end_time],
+  () => {
+    getResultTableData(1);
+  },
+  { immediate: true }
+);
+</script>

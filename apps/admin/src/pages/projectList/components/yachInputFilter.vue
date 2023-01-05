@@ -18,7 +18,7 @@
 <script>
 import { reactive, toRefs, watch } from 'vue';
 import { debounce } from '@vben/utils';
-import { searchWorkerInfo } from '@/apis/yach';
+import { searchWorkerInfo } from '@/apis/tool';
 
 //知音楼账号检索
 export default {
