@@ -1,59 +1,58 @@
-import { cloneDeep } from 'lodash';
-import { commafy } from '/@/utils/math/formatMumber';
-import { formatDate, getDateWeekday } from '/@/utils/date';
+import { cloneDeep, commafy } from "@vben/utils";
+import { formatDate, getDateWeekday } from "@/hooks/board/date";
 
 //图表基础配置
 //柱状图与曲线图结合，支持时间范围选择
-const summaryChartConfig = {
-  color: ['#5470C6', '#EE6666'],
+const summaryChartConfig: any = {
+  color: ["#5470C6", "#EE6666"],
   //热力线
   visualMap: {
     show: false,
-    type: 'continuous',
+    type: "continuous",
     seriesIndex: 1,
     min: 0,
     max: 100,
   },
   tooltip: {
     axisPointer: {
-      type: 'cross',
+      type: "cross",
     },
-    trigger: 'axis',
+    trigger: "axis",
     position(pt) {
-      return [pt[0], '10%'];
+      return [pt[0], "10%"];
     },
-    formatter: item => {
+    formatter: (item) => {
       return `${item[0].data.name.holeTime}<br/>
               异常数量：${commafy(item[0].value)}<br/>
-              ${item[0].data.name.isApi ? '请求总数' : 'PV数'}：
+              ${item[0].data.name.isApi ? "请求总数" : "PV数"}：
               ${commafy(item[0].data.name.total)}<br/>
-              异常率：${item[0].data.name.rate ? item[0].data.name.rate + '%' : ''}`;
+              异常率：${item[0].data.name.rate ? item[0].data.name.rate + "%" : ""}`;
     },
   },
   legend: {},
   grid: {
-    top: '10%',
-    left: '2%',
-    right: '2%',
-    bottom: '3%',
+    top: "10%",
+    left: "2%",
+    right: "2%",
+    bottom: "3%",
     containLabel: true,
   },
   xAxis: {
-    type: 'category',
+    type: "category",
   },
   yAxis: [
     {
-      name: '数量',
+      name: "数量",
       nameTextStyle: { padding: [0, 40, 0, 0] },
-      type: 'value',
+      type: "value",
     },
     {
-      name: '百分比',
+      name: "百分比",
       nameTextStyle: { padding: [0, 0, 0, 45] },
-      type: 'value',
-      position: 'right',
+      type: "value",
+      position: "right",
       axisLabel: {
-        formatter: '{value} %',
+        formatter: "{value} %",
       },
       splitLine: {
         show: false,
@@ -61,7 +60,7 @@ const summaryChartConfig = {
     },
   ],
   dataZoom: {
-    type: 'slider',
+    type: "slider",
     show: false,
     start: 0,
     end: 100,
@@ -69,31 +68,31 @@ const summaryChartConfig = {
   series: [
     {
       data: [],
-      type: 'bar',
-      name: '异常数量',
+      type: "bar",
+      name: "异常数量",
       barMaxWidth: 40,
     },
     {
       data: [],
-      type: 'line',
+      type: "line",
       smooth: true,
-      name: '异常率',
+      name: "异常率",
       yAxisIndex: 1,
     },
   ],
 };
 
 //获取运行时异常图表的option
-export function getSummaryChartOption(data, timeFormatStr, isApi = false) {
+export function getSummaryChartOption(data, timeFormatStr, isApi = "") {
   //1 数据为空时，返回null，图表为空状态
   if (!(Array.isArray(data) && data.length)) {
     return null;
   }
   const chartOption = cloneDeep(summaryChartConfig);
-  let timeList = []; //时间数据
-  let countList = []; //异常数
-  let rateList = []; //异常率
-  data.forEach(item => {
+  let timeList: any[] = []; //时间数据
+  let countList: any[] = []; //异常数
+  let rateList: any[] = []; //异常率
+  data.forEach((item) => {
     const count = isApi ? item.failCount : item.count;
     const totalCount = isApi ? item.count : item.pvCount;
     const rate = totalCount ? ((count * 100) / totalCount).toFixed(2) : null; //防止totalCount为0
@@ -103,7 +102,7 @@ export function getSummaryChartOption(data, timeFormatStr, isApi = false) {
       name: {
         total: totalCount,
         isApi,
-        holeTime: item.time + ' ' + getDateWeekday(item.time),
+        holeTime: item.time + " " + getDateWeekday(item.time),
         rate: rate,
       },
       value: count,
@@ -112,8 +111,8 @@ export function getSummaryChartOption(data, timeFormatStr, isApi = false) {
   });
 
   //设置热力线区间
-  const maxRate = Math.max(...rateList.map(item => (item ? item : 0)));
-  const minRate = Math.min(...rateList.map(item => (item ? item : 0)));
+  const maxRate = Math.max(...rateList.map((item) => (item ? item : 0)));
+  const minRate = Math.min(...rateList.map((item) => (item ? item : 0)));
   if (maxRate > 0) {
     chartOption.visualMap.max = Math.ceil(maxRate * 10) / 10; //向上取整，美化坐标轴、防止数据js溢出
     chartOption.visualMap.min = minRate * 0.5;
@@ -126,7 +125,7 @@ export function getSummaryChartOption(data, timeFormatStr, isApi = false) {
 
   if (timeList.length > 15) {
     chartOption.dataZoom.show = true;
-    chartOption.grid.bottom = '15%';
+    chartOption.grid.bottom = "15%";
   }
 
   return chartOption;

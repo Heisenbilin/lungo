@@ -690,7 +690,7 @@ import { computed, nextTick, onMounted, reactive, ref, toRaw, watch, h } from "v
 import { GroupUsersCheckbox } from "@xes/uc";
 import { DEFAULT_FORM, VALIDATE_RULES, GATEWAYS } from "./config";
 import { getProject, modifyProject, addProject } from "@/apis/list";
-import { checkValidGateway } from "@/apis/gateway";
+import { checkValidGateway } from "@/apis/board/gateway";
 import { message } from "ant-design-vue";
 import {
   InfoCircleOutlined,
