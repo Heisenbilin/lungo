@@ -24,7 +24,7 @@
     </div>
     <BaseChart
       :requestParams="requestParams"
-      :requestFunc="getPageViewData"
+      :requestFunc="requestPageViewData"
       :getOptionFunc="getChartOption"
       :zrFuncs="{ click: addTimeFilter }"
     />
@@ -41,62 +41,64 @@
     </div>
     <BaseChart
       :requestParams="requestParams"
-      :requestFunc="getUserViewData"
+      :requestFunc="requestUserViewData"
       :getOptionFunc="getChartOption"
       :zrFuncs="{ click: addTimeFilter }"
     />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // pv与uv图表
-import { computed, reactive } from 'vue';
-import { getPVUVChartOption } from './chartsConfig';
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
-import { PVApis } from '/@/api/board/pv';
-import { boardStore } from '/@/store/modules/board';
-import { commafy } from '/@/utils/math/formatMumber';
-import { addTimeFilter } from '/@/components/boardNew/util/datePickerConfig';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
+import { computed, reactive } from "vue";
+import { getPVUVChartOption } from "./chartsConfig";
+import { QuestionCircleOutlined } from "@ant-design/icons-vue";
+import { getPageViewData, getUserViewData } from "@/apis/board/pv";
+import { useBoardStore } from "@/store/modules/board";
+import { commafy } from "@vben/utils";
+import { addTimeFilter } from "../../util/datePickerConfig";
+import { BaseChart } from "@vben/components";
+
+const boardStore = useBoardStore();
 
 const loading = reactive({ pv: true, uv: true });
-const totalCount = reactive({ PVCount: '', UVCount: '' });
+const totalCount = reactive({ PVCount: "", UVCount: "" });
 
-const getPageViewData = async params => {
+const requestPageViewData = async (params) => {
   loading.pv = true;
-  const result = await PVApis.getPageViewData(params);
+  const result = await getPageViewData(params);
   totalCount.PVCount =
-    result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : '';
+    result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : "";
   loading.pv = false;
   return result;
 };
 
-const getUserViewData = async params => {
+const requestUserViewData = async (params) => {
   loading.uv = true;
-  const result = await PVApis.getUserViewData(params);
+  const result = await getUserViewData(params);
   totalCount.UVCount =
-    result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : '';
+    result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : "";
   loading.uv = false;
   return result;
 };
 
 // 请求参数
 const requestParams = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`, //项目id
-  start_time: boardStore.getFilterState.start_time, //开始时间
-  end_time: boardStore.getFilterState.end_time, //结束时间
-  dimension: boardStore.getFilterState.dimension, //维度
-  url: boardStore.getFilterState.url, //路由筛选
-  browser: boardStore.getFilterState.browser, //浏览器筛选
-  device: boardStore.getFilterState.device, //设备筛选
-  region: boardStore.getFilterState.region, //地区筛选
-  network: boardStore.getFilterState.network, //网络类型筛选
-  client: boardStore.getFilterState.client, //客户端筛选
-  os: boardStore.getFilterState.os, //操作系统筛选
-  performance_key: boardStore.getFilterState.performance_key, //性能筛选
-  performance_range: boardStore.getFilterState.performance_range, //性能筛选
+  project_id: `${boardStore.boardInfoState.id}`, //项目id
+  start_time: boardStore.filterState.start_time, //开始时间
+  end_time: boardStore.filterState.end_time, //结束时间
+  dimension: boardStore.filterState.dimension, //维度
+  url: boardStore.filterState.url, //路由筛选
+  browser: boardStore.filterState.browser, //浏览器筛选
+  device: boardStore.filterState.device, //设备筛选
+  region: boardStore.filterState.region, //地区筛选
+  network: boardStore.filterState.network, //网络类型筛选
+  client: boardStore.filterState.client, //客户端筛选
+  os: boardStore.filterState.os, //操作系统筛选
+  performance_key: boardStore.filterState.performance_key, //性能筛选
+  performance_range: boardStore.filterState.performance_range, //性能筛选
 }));
 
 // 获取图表option(PV、UV图表共用)
-const getChartOption = data => getPVUVChartOption(data, boardStore.getTimeFormatStr);
+const getChartOption = (data) => getPVUVChartOption(data, boardStore.getTimeFormatStr);
 </script>

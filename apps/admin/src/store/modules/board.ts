@@ -1,94 +1,73 @@
-import { addOrUpdateUrlParams, delUrlParams, getUrlParams } from '@vben/utils';
-import { logTypeEnum } from '@vben/constants';
-import { message } from 'ant-design-vue';
-import moment from 'moment';
-import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types';
-import { defineStore } from 'pinia';
+import { addOrUpdateUrlParams, delUrlParams, getUrlParams } from "@vben/utils";
+import { logTypeEnum } from "@vben/constants";
+import { message } from "ant-design-vue";
+import moment from "moment";
+import type { BoardInfo, filter, logInfo, BoardState } from "@vben/types";
+import { defineStore } from "pinia";
 
-const noNeedMessageKeys = ['start_time', 'end_time', 'dimension'];
+const noNeedMessageKeys = ["start_time", "end_time", "dimension"];
 
 const allFilterKeys = [
-  'start_time',
-  'end_time',
-  'dimension',
-  'url',
-  'string',
-  'browser',
-  'device',
-  'region',
-  'network',
-  'client',
-  'os',
-  'performance_key',
-  'performance_range',
-  'resource_type',
-  'api_status',
-  'api_range',
+  "start_time",
+  "end_time",
+  "dimension",
+  "url",
+  "string",
+  "browser",
+  "device",
+  "region",
+  "network",
+  "client",
+  "os",
+  "performance_key",
+  "performance_range",
+  "resource_type",
+  "api_status",
+  "api_range",
 ];
 
 const computeTimeFormatStr = (
   start_time: string,
   end_time: string,
-  dimension: string | undefined,
+  dimension: string | undefined
 ) => {
-  let result = '';
+  let result = "";
   if (!(start_time && start_time)) return result;
   typeof moment(start_time);
   const dura = moment.duration(moment(end_time).diff(moment(start_time)));
   const dime = dimension;
   if (dura.years() > 0) {
     //当跨度超过1年时，展示年份
-    result = dime === 'day' ? 'YY-MM-DD' : dime === 'hour' ? 'YY-MM-DD HH' : 'YY-MM-DD 2';
-  } else if (dura.days() > 0 || dime === 'day') {
+    result = dime === "day" ? "YY-MM-DD" : dime === "hour" ? "YY-MM-DD HH" : "YY-MM-DD 2";
+  } else if (dura.days() > 0 || dime === "day") {
     //当跨度不超过一年或者展示维度为1天时，不展示年份
-    result = dime === 'day' ? 'mm-dd' : dime === 'hour' ? 'mm-dd HH' : 'mm-dd HH2';
-  } else if (dime !== 'day') {
+    result = dime === "day" ? "mm-dd" : dime === "hour" ? "mm-dd HH" : "mm-dd HH2";
+  } else if (dime !== "day") {
     //当跨度不超过一天时且展示维度不为1天时，不展示天
-    result = dime === 'hour' ? 'HH' : 'HH2';
+    result = dime === "hour" ? "HH" : "HH2";
   }
   return result;
 };
 
 export const useBoardStore = defineStore({
-  id: 'app-board',
+  id: "app-board",
   state: (): BoardState => ({
     // 项目信息
-    boardInfoState: { appid: '', eventid: '', id: -1, project_name: '' },
+    boardInfoState: { appid: "", eventid: "", id: -1, project_name: "" },
     // 加载标志
     loadingState: false,
     // 筛选条件
-    filterState: { start_time: '', end_time: '', dimension: 'day' },
+    filterState: { start_time: "", end_time: "", dimension: "day" },
     // 日志详情
     logInfoState: { type: logTypeEnum.DEFAULT, visible: false, requestParams: {} },
     // 项目topicId
-    topicIdState: '',
+    topicIdState: "",
     // 最新sdk版本号
-    latestSDKVersionState: '',
+    latestSDKVersionState: "",
     // tab页
-    tabState: 'pageview',
+    tabState: "pageview",
   }),
   getters: {
-    getBoardInfoState(): BoardInfo {
-      return this.boardInfoState;
-    },
-    getLoadingState(): boolean {
-      return this.loadingState;
-    },
-    getFilterState(): filter {
-      return this.filterState;
-    },
-    getLogInfoState(): logInfo {
-      return this.logInfoState;
-    },
-    getTopicIdState(): string {
-      return this.topicIdState;
-    },
-    getLatestSDKVersionState(): string {
-      return this.latestSDKVersionState;
-    },
-    getTabState(): string | undefined {
-      return this.tabState;
-    },
     // 根据时间范围与展示维度计算合适的日期格式化规则
     getTimeFormatStr(): string {
       const { start_time, end_time, dimension } = this.filterState;
@@ -138,7 +117,7 @@ export const useBoardStore = defineStore({
     closeLogInfoState(): void {
       // 只有state中为true打开状态才生效
       if (!this.logInfoState.visible) return;
-      delUrlParams(['log_type', 'log_params']);
+      delUrlParams(["log_type", "log_params"]);
       this.logInfoState = {
         type: logTypeEnum.DEFAULT,
         visible: false,
@@ -180,8 +159,8 @@ export const useBoardStore = defineStore({
       this.commitBoardInfoState(info);
       const {
         dimension = this.getFilterState.dimension,
-        start_time = '',
-        end_time = '',
+        start_time = "",
+        end_time = "",
       } = getUrlParams();
       this.commitFilterState({ start_time, end_time, dimension });
       this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} });

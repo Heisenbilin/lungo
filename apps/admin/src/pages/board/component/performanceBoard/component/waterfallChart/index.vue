@@ -1,10 +1,10 @@
 <template>
   <BasicChart :chartOption="chartOption" />
 </template>
-<script setup>
-import { computed } from 'vue';
-import BasicChart from '/@/components/coreBoard/charts/basicChart.vue';
-import { getWaterfallChartOption } from './chartConfig';
+<script setup lang="ts">
+import { computed } from "vue";
+import { BasicChart } from "@vben/components";
+import { getWaterfallChartOption } from "./chartConfig";
 const props = defineProps({
   content: Object,
 });

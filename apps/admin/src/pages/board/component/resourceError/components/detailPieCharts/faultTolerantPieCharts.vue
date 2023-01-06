@@ -11,7 +11,7 @@
     </div>
     <BaseChart
       :requestParams="requestParams"
-      :requestFunc="ResourceApis.getErrorHrefData"
+      :requestFunc="getErrorHrefData"
       :getOptionFunc="getFaultTolerantOption"
     />
   </div>
@@ -27,7 +27,7 @@
     </div>
     <BaseChart
       :requestParams="requestParams"
-      :requestFunc="ResourceApis.getFErrorData"
+      :requestFunc="getFErrorData"
       :getOptionFunc="getFaultTolerantOption"
     />
   </div>
@@ -41,35 +41,37 @@
     </div>
     <BaseChart
       :requestParams="requestParams"
-      :requestFunc="ResourceApis.getFTimesData"
+      :requestFunc="getFTimesData"
       :bindFuncs="{ dblclick: openLog }"
       :getOptionFunc="getFaultTolerantTimesOption"
     />
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue';
-import { ResourceApis } from '/@/api/board/resource';
-import { getFaultTolerantOption, getFaultTolerantTimesOption } from '../../../util/pieChartConfig';
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
-import { logTypeEnum } from '/@/enums/boardEnum';
-import { boardStore } from '/@/store/modules/board';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
+<script setup lang="ts">
+import { computed } from "vue";
+import { getErrorHrefData, getFErrorData, getFTimesData } from "@/apis/board/resource";
+import { getFaultTolerantOption, getFaultTolerantTimesOption } from "../../../util/pieChartConfig";
+import { QuestionCircleOutlined } from "@ant-design/icons-vue";
+import { logTypeEnum } from "@vben/constants";
+import { useBoardStore } from "@/store/modules/board";
+import { BaseChart } from "@vben/components";
+
+const boardStore = useBoardStore();
 
 //请求参数
 const requestParams = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`, //项目id
-  start_time: boardStore.getFilterState.start_time, //开始时间
-  end_time: boardStore.getFilterState.end_time, //结束时间
-  url: boardStore.getFilterState.url, //路由筛选
-  browser: boardStore.getFilterState.browser, //浏览器筛选
-  device: boardStore.getFilterState.device, //设备筛选
-  region: boardStore.getFilterState.region, //地区筛选
-  network: boardStore.getFilterState.network, //网络类型筛选
-  client: boardStore.getFilterState.client, //客户端筛选
-  os: boardStore.getFilterState.os, //操作系统筛选
-  resource_type: boardStore.getFilterState.resource_type, //资源类型筛选
+  project_id: `${boardStore.boardInfoState.id}`, //项目id
+  start_time: boardStore.filterState.start_time, //开始时间
+  end_time: boardStore.filterState.end_time, //结束时间
+  url: boardStore.filterState.url, //路由筛选
+  browser: boardStore.filterState.browser, //浏览器筛选
+  device: boardStore.filterState.device, //设备筛选
+  region: boardStore.filterState.region, //地区筛选
+  network: boardStore.filterState.network, //网络类型筛选
+  client: boardStore.filterState.client, //客户端筛选
+  os: boardStore.filterState.os, //操作系统筛选
+  resource_type: boardStore.filterState.resource_type, //资源类型筛选
 }));
 
 // api异常详情相关饼图组件
@@ -81,8 +83,8 @@ const props = defineProps({
 });
 
 // 打开日志详情
-const openLog = title => {
-  const times = title.data.name.split('次')[0];
+const openLog = (title) => {
+  const times = title.data.name.split("次")[0];
   boardStore.openLogInfoState({
     type: logTypeEnum.FAULTTOLERANT,
     visible: true,

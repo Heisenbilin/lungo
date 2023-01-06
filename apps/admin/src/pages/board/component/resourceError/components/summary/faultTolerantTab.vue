@@ -1,36 +1,40 @@
 <template>
   <BaseChart
     :requestParams="requestParams"
-    :requestFunc="faultTolerantRequestFunc"
+    :requestFunc="getChartData"
     :getOptionFunc="getFaultTolerantption"
     :bindFuncs="{ legendselectchanged: handleLegendChange }"
     :zrFuncs="{ click: addTimeFilter }"
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 //容错统计图表
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
-import { getFaultTolerantChartOption } from './faultTolerantChartConfig';
-import { addTimeFilter } from '/@/components/boardNew/util/datePickerConfig';
-import { ResourceApis } from '/@/api/board/resource';
-import { litSquirrelApi } from '/@/api/littleSquirrel';
-import { boardStore } from '/@/store/modules/board';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
+import { computed, ref } from "vue";
+// import { useStore } from "vuex";
+import { getFaultTolerantChartOption } from "./faultTolerantChartConfig";
+import { addTimeFilter } from "../../../util/datePickerConfig";
+// import { ResourceApis } from "@/apis/board/resource";
+import { getChartData } from "@/apis/board/sourceMap";
+import { useBoardStore } from "@/store/modules/board";
+import { BaseChart } from "@vben/components";
 
-const store = useStore();
+const boardStore = useBoardStore();
 
-const { account: userid = '' } = store.state.userInfo;
+// const store = useStore();
+
+// const { account: userid = "" } = store.state.userInfo;
+const userid = "xiongbilin";
+
 const requestParams = computed(() => ({
-  boardid: '0x000',
+  boardid: "0x000",
   filter: {
-    gteTime: boardStore.getFilterState.start_time,
-    lteTime: boardStore.getFilterState.end_time,
+    gteTime: boardStore.filterState.start_time,
+    lteTime: boardStore.filterState.end_time,
   },
-  projectid: `${boardStore.getBoardInfoState.id}`,
+  projectid: `${boardStore.boardInfoState.id}`,
   userid,
-  estask_list: ['resource_success_num', 'resource_num', 'pv'],
+  estask_list: ["resource_success_num", "resource_num", "pv"],
 }));
 
 const selectedLegend = ref({
@@ -38,11 +42,10 @@ const selectedLegend = ref({
 });
 
 //监听筛选项的变化
-const handleLegendChange = params => {
+const handleLegendChange = (params) => {
   selectedLegend.value = params;
 };
 
-const faultTolerantRequestFunc = litSquirrelApi.boardTaskInfo.getChartData;
-const getFaultTolerantption = data =>
+const getFaultTolerantption = (data) =>
   getFaultTolerantChartOption(data, boardStore.getTimeFormatStr, selectedLegend.value);
 </script>

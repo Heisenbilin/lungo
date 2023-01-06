@@ -24,34 +24,37 @@
   </div>
 </template>
 
-<script setup>
-import { nextTick, watch, ref } from 'vue';
-import { useStore } from 'vuex';
-import { litSquirrelApi } from '/@/api/littleSquirrel';
-import { boardConfigs, getPerformanceChartOption } from './performanceChartsConfig';
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
-import { addTimeFilter } from '/@/components/boardNew/util/datePickerConfig';
-import { boardStore } from '/@/store/modules/board';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
+<script setup lang="ts">
+import { nextTick, watch, ref } from "vue";
+// import { useStore } from "vuex";
+import { getTimeSlotDataByType, getChartData } from "@/apis/board/sourceMap";
+import { boardConfigs, getPerformanceChartOption } from "./performanceChartsConfig";
+import { QuestionCircleOutlined } from "@ant-design/icons-vue";
+import { addTimeFilter } from "../../../util/datePickerConfig";
+import { useBoardStore } from "@/store/modules/board";
+import { BaseChart } from "@vben/components";
+
+const boardStore = useBoardStore();
 
 // 请求参数
-const store = useStore();
-const { account: userid = '' } = store.state.userInfo;
+// const store = useStore();
+// const { account: userid = "" } = store.state.userInfo;
+const userid = "xiongbilin";
 
-const requestParams = ref({
-  boardid: '0x000',
+const requestParams = ref<any>({
+  boardid: "0x000",
   filter: {
-    gteTime: boardStore.getFilterState.start_time,
-    lteTime: boardStore.getFilterState.end_time,
-    boardType: 'dns',
+    gteTime: boardStore.filterState.start_time,
+    lteTime: boardStore.filterState.end_time,
+    boardType: "dns",
   },
-  projectid: `${boardStore.getBoardInfoState.id}`,
+  projectid: `${boardStore.boardInfoState.id}`,
   userid,
 });
 
-const chartName = ref('dns');
+const chartName = ref("dns");
 
-watch(chartName, val => {
+watch(chartName, (val) => {
   if (boardConfigs[val].type === 1) {
     nextTick(() => {
       requestParams.value.filter.boardType = val;
@@ -67,23 +70,20 @@ watch(chartName, val => {
 
 // 数据清洗成图表option方法
 const getChartOptionFuncs = [
-  data => getPerformanceChartOption(data, boardStore.getTimeFormatStr, chartName.value),
-  data => getPerformanceChartOption(data, boardStore.getTimeFormatStr),
+  (data) => getPerformanceChartOption(data, boardStore.getTimeFormatStr, chartName.value),
+  (data) => getPerformanceChartOption(data, boardStore.getTimeFormatStr, undefined),
 ];
 
 // 获取数据api
-const getChartDataFuncs = [
-  litSquirrelApi.boardTaskInfo.getTimeSlotDataByType,
-  litSquirrelApi.boardTaskInfo.getChartData,
-];
+const getChartDataFuncs = [getTimeSlotDataByType, getChartData];
 
-const addFilter = title => {
-  if (title.seriesType !== 'pie') return;
-  const range = title.data.name.split(' to ');
+const addFilter = (title) => {
+  if (title.seriesType !== "pie") return;
+  const range = title.data.name.split(" to ");
   if (range.length === 2) {
     boardStore.addFilterValue({
       performance_key: chartName,
-      performance_range: range.map(item => (item = parseInt(item))),
+      performance_range: range.map((item) => (item = parseInt(item))),
     });
   }
 };

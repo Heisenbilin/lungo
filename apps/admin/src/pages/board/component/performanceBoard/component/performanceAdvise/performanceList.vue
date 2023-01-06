@@ -34,15 +34,16 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps, ref, computed, watch } from 'vue';
-import { prepareReportResult } from '/@/components/boardReport/detail/util';
-import { getLighthouseAudits } from '/@/components/boardReport/apis';
-import auditLayout from '/@/components/boardReport/detail/audit/auditLayout.vue';
-import { showAsPassed, _getWastedMs } from '/@/components/boardReport/detail/util';
-import { useRouter } from 'vue-router';
-import { reportStore } from '/@/store/modules/board';
-// import { useRoute } from 'vue-router';
+<script setup lang="ts">
+import { defineProps, ref, computed, watch } from "vue";
+import { prepareReportResult } from "/@/components/boardReport/detail/util";
+import { getLighthouseAudits } from "/@/components/boardReport/apis";
+import auditLayout from "/@/components/boardReport/detail/audit/auditLayout.vue";
+import { showAsPassed, _getWastedMs } from "/@/components/boardReport/detail/util";
+import { useRouter } from "vue-router";
+import { useReportStore } from "@/store/modules/board";
+
+const reportStore = useReportStore();
 
 const props = defineProps({
   successList: {
@@ -80,7 +81,7 @@ const diagnosticAudits = ref([]);
 async function initAudits() {
   const lighthouseParams = {
     project_url: currentUrl.value,
-    start_time: props.startTime + ' 00:00:00',
+    start_time: props.startTime + " 00:00:00",
     project_id: props.projectId,
   };
 
@@ -101,20 +102,20 @@ async function initAuditsShow() {
   // Opportunities
   // console.log(preparedLighthouse.value.auditRefs);
   opportunityAudits.value = preparedLighthouse.value.auditRefs
-    .filter(audit => {
-      return audit.group === 'load-opportunities' && !showAsPassed(audit.result);
+    .filter((audit) => {
+      return audit.group === "load-opportunities" && !showAsPassed(audit.result);
     })
     .sort((auditA, auditB) => {
       return _getWastedMs(auditB) - _getWastedMs(auditA);
     });
   // Diagnostics
   diagnosticAudits.value = preparedLighthouse.value.auditRefs
-    .filter(audit => {
-      return audit.group === 'diagnostics' && !showAsPassed(audit.result);
+    .filter((audit) => {
+      return audit.group === "diagnostics" && !showAsPassed(audit.result);
     })
     .sort((a, b) => {
-      const scoreA = a.result.scoreDisplayMode === 'informative' ? 100 : Number(a.result.score);
-      const scoreB = b.result.scoreDisplayMode === 'informative' ? 100 : Number(b.result.score);
+      const scoreA = a.result.scoreDisplayMode === "informative" ? 100 : Number(a.result.score);
+      const scoreB = b.result.scoreDisplayMode === "informative" ? 100 : Number(b.result.score);
       return scoreA - scoreB;
     });
 }
@@ -140,8 +141,8 @@ watch(
 );
 
 //跳转页面详细质量周报处理
-const toReport = url => {
-  const path = props.type ? '/huatuo/reportUrl' : '/projectboard/qcReport';
+const toReport = (url) => {
+  const path = props.type ? "/huatuo/reportUrl" : "/projectboard/qcReport";
 
   const query = {
     project_id: props.projectId,

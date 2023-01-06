@@ -6,8 +6,8 @@
   </div>
 </template>
 
-<script setup>
-import SummaryData from './components/summary/summaryData.vue';
-import ResultTabs from './components/resultTable/resultTabs.vue';
-import DetailPieCharts from './components/detailPieCharts.vue';
+<script setup lang="ts">
+import SummaryData from "./components/summary/summaryData.vue";
+import ResultTabs from "./components/resultTable/resultTabs.vue";
+import DetailPieCharts from "./components/detailPieCharts.vue";
 </script>

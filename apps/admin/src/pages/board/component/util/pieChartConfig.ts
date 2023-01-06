@@ -1,18 +1,13 @@
-import { cloneDeep } from 'lodash';
-import { commafy } from '/@/utils/math/formatMumber';
-import { compare } from '/@/utils/sort';
-import { getMainInfo } from '/@/utils/echarts/formatChartConfig';
-import {
-  pieChartOption,
-  logInfoTitle,
-} from '/@/components/coreBoard/charts/configs/chartDefaultOptions';
+import { cloneDeep, commafy, compare, getMainInfo } from "@vben/utils";
+import { pieChartOption, logInfoTitle } from "@vben/constants";
+import { EChartsOption } from "@vben/hooks";
 
 // 客户端数字key对应的客户端类型
 export const clientUserAgent = {
-  7: 'pc',
-  8: 'web',
-  9: 'android',
-  10: 'ios',
+  7: "pc",
+  8: "web",
+  9: "android",
+  10: "ios",
 };
 
 //将接口返回值处理成“异常Top10”图表数据
@@ -21,17 +16,17 @@ export function getTop10Option(data, infoLength = 40) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('board_count')).slice(0, 10); //数据排序并取前十
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("board_count")).slice(0, 10); //数据排序并取前十
+  let seriesData = data.map((item) => ({
     value: item.board_count,
-    name: item.board_key || '未知',
+    name: item.board_key || "未知",
   }));
-  chartOption.legend.formatter = name => getMainInfo(name, infoLength);
-  chartOption.tooltip.formatter = item =>
+  chartOption.legend!.formatter! = (name) => getMainInfo(name, infoLength);
+  chartOption.tooltip!.formatter! = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>异常内容：${
       item.data.name
     }</div>次数：${commafy(item.data.value)} (${item.percent}%)`;
-  chartOption.series[0].data = seriesData;
+  chartOption.series![0].data = seriesData;
   return chartOption;
 }
 
@@ -41,13 +36,13 @@ export function getErrorTypeOption(data) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('count'));
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("count"));
+  let seriesData = data.map((item) => ({
     value: item.count,
-    name: item.type || '未知',
+    name: item.type || "未知",
   }));
-  chartOption.legend.formatter = name => getMainInfo(name, 40);
-  chartOption.tooltip.formatter = item =>
+  chartOption.legend.formatter = (name) => getMainInfo(name, 40);
+  chartOption.tooltip.formatter = (item) =>
     `<div>错误类型：${item.data.name}</div>
     资源数：${commafy(item.data.value)} (${item.percent}%)`;
   chartOption.series[0].data = seriesData;
@@ -60,13 +55,13 @@ export function getFaultTolerantOption(data) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('board_count'));
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("board_count"));
+  let seriesData = data.map((item) => ({
     value: item.board_count,
-    name: item.board_key || '未知',
+    name: item.board_key || "未知",
   }));
-  chartOption.legend.formatter = name => getMainInfo(name, 40);
-  chartOption.tooltip.formatter = item =>
+  chartOption.legend.formatter = (name) => getMainInfo(name, 40);
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>域名：${
       item.data.name
     }</div>资源数：${commafy(item.data.value)} (${item.percent}%)`;
@@ -81,11 +76,11 @@ export function getFaultTolerantTimesOption(data) {
   }
   const chartOption = cloneDeep(pieChartOption);
   // data = data.sort(compare('board_count'));
-  let seriesData = data.map(item => ({
+  let seriesData = data.map((item) => ({
     value: item.board_count,
-    name: item.board_key + '次',
+    name: item.board_key + "次",
   }));
-  chartOption.tooltip.formatter = item =>
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>${
       item.data.name
     }：${commafy(item.data.value)}条资源 (${item.percent}%)</div>`;
@@ -101,14 +96,14 @@ export function getTop10UrlOption(data, type) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('board_count')).slice(0, 10);
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("board_count")).slice(0, 10);
+  let seriesData = data.map((item) => ({
     value: item.board_count,
-    name: item.board_url || '未知',
+    name: item.board_url || "未知",
   }));
   chartOption.title = logInfoTitle;
-  chartOption.legend.formatter = name => getMainInfo(name, 40);
-  chartOption.tooltip.formatter = item =>
+  chartOption.legend.formatter = (name) => getMainInfo(name, 40);
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>URL：${
       item.data.name
     }</div>异常数：${commafy(item.data.value)} (${item.percent}%)`;
@@ -122,15 +117,15 @@ export function getStatusChartOption(data) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('count'));
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("count"));
+  let seriesData = data.map((item) => ({
     value: item.count,
-    name: item.status || '未知',
+    name: item.status || "未知",
   }));
   chartOption.legend.selected = {
     200: false,
   };
-  chartOption.tooltip.formatter = item =>
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>响应码：${
       item.data.name
     }</div>次数：${commafy(item.data.value)} (${item.percent}%)`;
@@ -144,15 +139,15 @@ export function getCostTimeChartOption(data) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('count'));
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("count"));
+  let seriesData = data.map((item) => ({
     value: item.count,
     name: item.costTime,
   }));
   chartOption.legend.selected = {
-    '0 to 200': false,
+    "0 to 200": false,
   };
-  chartOption.tooltip.formatter = item =>
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>耗时区间：${
       item.data.name
     } ms</div>
@@ -163,19 +158,19 @@ export function getCostTimeChartOption(data) {
 
 //将接口返回值处理成网关“耗时统计”图表数据
 export function getGateWayCostTimeChartOption(data) {
-  if (!(typeof data === 'object' && Object.keys(data).length)) {
+  if (!(typeof data === "object" && Object.keys(data).length)) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  let seriesData = data.map(item => ({
+  let seriesData = data.map((item) => ({
     name: item.costTime,
     value: item.count,
   }));
   chartOption.title = logInfoTitle;
   chartOption.legend.selected = {
-    '0 to 200': false,
+    "0 to 200": false,
   };
-  chartOption.tooltip.formatter = item =>
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>耗时区间：${
       item.data.name
     } ms</div>
@@ -190,14 +185,14 @@ export function getNetworkTypeOption(data) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('board_count'));
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("board_count"));
+  let seriesData = data.map((item) => ({
     value: item.board_count,
-    name: item.board_key || '未知',
+    name: item.board_key || "未知",
     pageload: item.pageload || 0,
   }));
-  chartOption.legend.formatter = name => getMainInfo(name, 40);
-  chartOption.tooltip.formatter = item =>
+  chartOption.legend.formatter = (name) => getMainInfo(name, 40);
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>网络类型：${
       item.data.name
     }</div>PV数：${commafy(item.data.value)} (${item.percent}%)<br/>页面平均加载时间：${commafy(
@@ -213,14 +208,14 @@ export function getClientTypeOption(data) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('board_count'));
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("board_count"));
+  let seriesData = data.map((item) => ({
     value: item.board_count,
-    name: clientUserAgent[item.board_key] || '未知',
+    name: clientUserAgent[item.board_key] || "未知",
     pageload: item.pageload || 0,
   }));
-  chartOption.legend.formatter = name => getMainInfo(name, 40);
-  chartOption.tooltip.formatter = item =>
+  chartOption.legend.formatter = (name) => getMainInfo(name, 40);
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>客户端：${
       item.data.name
     }</div>PV数：${commafy(item.data.value)} (${item.percent}%)<br/>页面平均加载时间：${commafy(
@@ -236,14 +231,14 @@ export function getDeviceTypeOption(data) {
     return null;
   }
   const chartOption = cloneDeep(pieChartOption);
-  data = data.sort(compare('board_count')).slice(0, 50);
-  let seriesData = data.map(item => ({
+  data = data.sort(compare("board_count")).slice(0, 50);
+  let seriesData = data.map((item) => ({
     value: item.board_count,
-    name: item.board_key || '未知',
+    name: item.board_key || "未知",
     pageload: item.pageload || 0,
   }));
-  chartOption.legend.formatter = name => getMainInfo(name, 40);
-  chartOption.tooltip.formatter = item =>
+  chartOption.legend.formatter = (name) => getMainInfo(name, 40);
+  chartOption.tooltip.formatter = (item) =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>设备：${
       item.data.name
     }</div>PV数：${commafy(item.data.value)} (${item.percent}%)<br/>页面平均加载时间：${commafy(

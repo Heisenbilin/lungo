@@ -19,7 +19,11 @@
 
 <script setup lang="ts">
 import { useBoardStore } from "@/store/modules/board";
+<<<<<<< HEAD
 import { storeToRefs } from 'pinia'
+=======
+import { storeToRefs } from "pinia";
+>>>>>>> 4cd26f9c5ae157141283908b94bd6feb6e89af95
 import boardInfo from "./board.vue";
 const boardStore = useBoardStore();
 

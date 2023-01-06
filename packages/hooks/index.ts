@@ -1,3 +1,3 @@
-export * from './src'
+export * from "./src";
 
-export { graphic } from 'echarts'
+export { graphic, getMap, registerMap } from "echarts";

@@ -1,8 +1,8 @@
 /*
  *为数字或字符串添加千分位
  */
- export function commafy(num) {
-  return (num + '').replace(/\B(?=(\d{3})+\b)/g, ',');
+export function commafy(num) {
+  return (num + "").replace(/\B(?=(\d{3})+\b)/g, ",");
 }
 
 /**
@@ -15,11 +15,11 @@ export function formatDuration(timeInMilliseconds) {
   console.log(timeInMilliseconds);
   let timeInSeconds = timeInMilliseconds / 1000;
   if (Math.round(timeInSeconds) === 0) {
-    return 'None';
+    return "None";
   }
 
   /** @type {Array<string>} */
-  const parts:string[] = [];
+  const parts: string[] = [];
   /** @type {Record<string, number>} */
   const unitLabels = {
     d: 60 * 60 * 24,
@@ -28,7 +28,7 @@ export function formatDuration(timeInMilliseconds) {
     s: 1,
   };
 
-  Object.keys(unitLabels).forEach(label => {
+  Object.keys(unitLabels).forEach((label) => {
     const unit = unitLabels[label];
     const numberOfUnits = Math.floor(timeInSeconds / unit);
     if (numberOfUnits > 0) {
@@ -37,7 +37,7 @@ export function formatDuration(timeInMilliseconds) {
     }
   });
 
-  return parts.join(' ');
+  return parts.join(" ");
 }
 
 // 将数组转换为和为100的百分比
@@ -88,5 +88,5 @@ export function getPercentValue(valueList, precision) {
     ++currentSum;
   }
   // 这时候的seats就会总数占比会100%
-  return seats.map(item => item / 100);
+  return seats.map((item) => item / 100);
 }

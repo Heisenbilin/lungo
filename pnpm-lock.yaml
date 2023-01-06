@@ -69,6 +69,7 @@ importers:
       ant-design-vue: ^3.2.0
       dayjs: ^1.11.7
       file-saver: ^2.0.5
+      intro.js: ^6.0.0
       mockjs: ^1.1.0
       moment: ^2.29.4
       monaco-editor: ^0.34.1
@@ -100,6 +101,7 @@ importers:
       ant-design-vue: registry.npmmirror.com/ant-design-vue/3.2.15_vue@3.2.45
       dayjs: registry.npmmirror.com/dayjs/1.11.7
       file-saver: registry.npmmirror.com/file-saver/2.0.5
+      intro.js: registry.npmmirror.com/intro.js/6.0.0
       mockjs: 1.1.0
       moment: registry.npmmirror.com/moment/2.29.4
       monaco-editor: registry.npmmirror.com/monaco-editor/0.34.1
@@ -277,7 +279,10 @@ importers:
       '@types/qrcode': registry.npmmirror.com/@types/qrcode/1.5.0
 
   packages/constants:
-    specifiers: {}
+    specifiers:
+      '@vben/hooks': workspace:*
+    dependencies:
+      '@vben/hooks': link:../hooks
 
   packages/demo:
     specifiers:
@@ -11819,6 +11824,12 @@ packages:
       p-is-promise: registry.npmmirror.com/p-is-promise/1.1.0
     dev: false
 
+  registry.npmmirror.com/intro.js/6.0.0:
+    resolution: {integrity: sha512-ZUiR6BoLSvPSlLG0boewnWVgji1fE1gBvP/pyw5pgCKXEDQz1mMeUxarggClPNs71UTq364LwSk9zxz17A9gaQ==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/intro.js/-/intro.js-6.0.0.tgz}
+    name: intro.js
+    version: 6.0.0
+    dev: false
+
   registry.npmmirror.com/ip/1.1.8:
     resolution: {integrity: sha512-PuExPYUiu6qMBQb4l06ecm6T6ujzhmh+MeJcW9wa89PoAz5pvd4zPgN5WJV104mb6S2T1AwNIAaB70JNrLQWhg==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/ip/-/ip-1.1.8.tgz}
     name: ip
@@ -11829,6 +11840,15 @@ packages:
     resolution: {integrity: sha512-WKa+XuLG1A1R0UWhl2+1XQSi+fZWMsYKffMZTTYsiZaUD8k2yDAj5atimTUD2TZkyCkNEeYE5NhFZmupOGtjYQ==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/ip/-/ip-2.0.0.tgz}
     name: ip
     version: 2.0.0
+    dev: false
+
+  registry.npmmirror.com/is-accessor-descriptor/0.1.6:
+    resolution: {integrity: sha512-e1BM1qnDbMRG3ll2U9dSK0UMHuWOs3pY3AtcFsmvwPtKL3MML/Q86i+GilLfvqEs4GW+ExB91tQ3Ig9noDIZ+A==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/is-accessor-descriptor/-/is-accessor-descriptor-0.1.6.tgz}
+    name: is-accessor-descriptor
+    version: 0.1.6
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      kind-of: registry.npmmirror.com/kind-of/3.2.2
     dev: false
 
   registry.npmmirror.com/is-accessor-descriptor/1.0.0:
@@ -11933,6 +11953,15 @@ packages:
     dependencies:
       has: registry.npmmirror.com/has/1.0.3
 
+  registry.npmmirror.com/is-data-descriptor/0.1.4:
+    resolution: {integrity: sha512-+w9D5ulSoBNlmw9OHn3U2v51SyoCd0he+bB3xMl62oijhrspxowjU+AIcDY0N3iEJbUEkB15IlMASQsxYigvXg==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/is-data-descriptor/-/is-data-descriptor-0.1.4.tgz}
+    name: is-data-descriptor
+    version: 0.1.4
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      kind-of: registry.npmmirror.com/kind-of/3.2.2
+    dev: false
+
   registry.npmmirror.com/is-data-descriptor/1.0.0:
     resolution: {integrity: sha512-jbRXy1FmtAoCjQkVmIVYwuuqDFUbaOeDjmed1tOGPrsMhtJA4rD9tkgA0F1qJ3gRFRXcHYVkdeaP50Q5rE/jLQ==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/is-data-descriptor/-/is-data-descriptor-1.0.0.tgz}
     name: is-data-descriptor
@@ -11957,8 +11986,8 @@ packages:
     version: 0.1.6
     engines: {node: '>=0.10.0'}
     dependencies:
-      is-accessor-descriptor: 0.1.6
-      is-data-descriptor: 0.1.4
+      is-accessor-descriptor: registry.npmmirror.com/is-accessor-descriptor/0.1.6
+      is-data-descriptor: registry.npmmirror.com/is-data-descriptor/0.1.4
       kind-of: registry.npmmirror.com/kind-of/5.1.0
     dev: false
 

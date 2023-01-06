@@ -39,7 +39,7 @@
       <a-tab-pane key="1" tab="异常量与异常率">
         <BaseChart
           :requestParams="requestParams"
-          :requestFunc="getSummaryData"
+          :requestFunc="requestSummaryData"
           :getOptionFunc="getSummaryOption"
           :zrFuncs="{ click: addTimeFilter }"
         />
@@ -48,49 +48,51 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 //runtime异常数据汇总组件
-import { ref, computed } from 'vue';
-import { boardStore } from '/@/store/modules/board';
-import { getSummaryChartOption } from '../../../util/errorSummaryChartConfig';
-import { commafy } from '/@/utils/math/formatMumber';
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
-import { RuntimeApis } from '/@/api/board/runtime';
-import { addTimeFilter } from '/@/components/boardNew/util/datePickerConfig';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
+import { ref, computed } from "vue";
+import { useBoardStore } from "@/store/modules/board";
+import { getSummaryChartOption } from "../../../util/errorSummaryChartConfig";
+import { commafy } from "@vben/utils";
+import { QuestionCircleOutlined } from "@ant-design/icons-vue";
+import { getSummaryData } from "@/apis/board/runtime";
+import { addTimeFilter } from "../../../util/datePickerConfig";
+import { BaseChart } from "@vben/components";
+
+const boardStore = useBoardStore();
 
 const loading = ref(true);
-const activeKey = ref('1');
+const activeKey = ref("1");
 
 //请求参数
 const requestParams = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`, //项目id
-  start_time: boardStore.getFilterState.start_time, //开始时间
-  end_time: boardStore.getFilterState.end_time, //结束时间
-  dimension: boardStore.getFilterState.dimension, //维度
-  url: boardStore.getFilterState.url, //路由筛选
-  browser: boardStore.getFilterState.browser, //浏览器筛选
-  device: boardStore.getFilterState.device, //设备筛选
-  region: boardStore.getFilterState.region, //地区筛选
-  network: boardStore.getFilterState.network, //网络类型筛选
-  client: boardStore.getFilterState.client, //客户端筛选
-  os: boardStore.getFilterState.os, //操作系统筛选
+  project_id: `${boardStore.boardInfoState.id}`, //项目id
+  start_time: boardStore.filterState.start_time, //开始时间
+  end_time: boardStore.filterState.end_time, //结束时间
+  dimension: boardStore.filterState.dimension, //维度
+  url: boardStore.filterState.url, //路由筛选
+  browser: boardStore.filterState.browser, //浏览器筛选
+  device: boardStore.filterState.device, //设备筛选
+  region: boardStore.filterState.region, //地区筛选
+  network: boardStore.filterState.network, //网络类型筛选
+  client: boardStore.filterState.client, //客户端筛选
+  os: boardStore.filterState.os, //操作系统筛选
 }));
 
 const summaryData = ref({
-  summaryCount: '',
-  errorType: '',
-  errorRate: '',
-  pvTotal: '',
+  summaryCount: "",
+  errorType: "",
+  errorRate: "",
+  pvTotal: "",
 });
 
-const getSummaryOption = data => getSummaryChartOption(data, boardStore.getTimeFormatStr);
+const getSummaryOption = (data) => getSummaryChartOption(data, boardStore.getTimeFormatStr);
 
 //从后端获取均值瀑布图数据方法
-const getSummaryData = async params => {
+const requestSummaryData = async (params) => {
   loading.value = true;
   //拦截请求结果，存入summaryData中
-  const result = await RuntimeApis.getSummaryData(params);
+  const result = await getSummaryData(params);
   const data = result.data;
   const percent = ((data.errorTotal / data.pvTotal) * 100).toFixed(2);
   summaryData.value = Object.keys(data).length
@@ -98,9 +100,9 @@ const getSummaryData = async params => {
         summaryCount: data.errorTotal,
         errorType: data.errorType,
         pvTotal: data.pvTotal,
-        errorRate: isNaN(percent) || percent === 'Infinity' ? 0 : percent,
+        errorRate: isNaN(+percent) || percent === "Infinity" ? "0" : percent,
       }
-    : { summaryCount: '', errorType: '', errorRate: '', pvTotal: '' };
+    : { summaryCount: "", errorType: "", errorRate: "", pvTotal: "" };
   loading.value = false;
   result.data = data?.list ?? [];
   return result;

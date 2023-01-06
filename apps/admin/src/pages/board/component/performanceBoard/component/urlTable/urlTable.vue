@@ -15,7 +15,7 @@
           <template #url="{ record }">
             <a-tooltip title="点击跳转至该页面">
               <a :href="record.current_href" target="_blank">
-                {{ record.current_href || '未知' }}
+                {{ record.current_href || "未知" }}
               </a>
             </a-tooltip>
           </template>
@@ -35,29 +35,30 @@
   </div>
 </template>
 
-<script setup>
-import { computed, watch, ref, reactive } from 'vue';
-import { getDefaultColumns } from './urlTableConfig';
-import { PerformanceApis } from '/@/api/board/performance';
-import { debounce } from 'lodash-es';
-import { commafy } from '/@/utils/math/formatMumber';
-import { boardStore } from '/@/store/modules/board';
-import { logTypeEnum } from '/@/enums/boardEnum';
+<script setup lang="ts">
+import { computed, watch, ref, reactive } from "vue";
+import { getDefaultColumns } from "./urlTableConfig";
+import { getUrlListData } from "@/apis/board/performance";
+import { debounce, commafy } from "@vben/utils";
+import { useBoardStore } from "@/store/modules/board";
+import { logTypeEnum } from "@vben/constants";
+
+const boardStore = useBoardStore();
 
 //请求参数
 const requestParams = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`, //项目id
-  start_time: boardStore.getFilterState.start_time, //开始时间
-  end_time: boardStore.getFilterState.end_time, //结束时间
-  url: boardStore.getFilterState.url, //路由筛选
-  browser: boardStore.getFilterState.browser, //浏览器筛选
-  device: boardStore.getFilterState.device, //设备筛选
-  region: boardStore.getFilterState.region, //地区筛选
-  network: boardStore.getFilterState.network, //网络类型筛选
-  client: boardStore.getFilterState.client, //客户端筛选
-  os: boardStore.getFilterState.os, //操作系统筛选
-  performance_key: boardStore.getFilterState.performance_key, //性能筛选
-  performance_range: boardStore.getFilterState.performance_range, //性能筛选
+  project_id: `${boardStore.boardInfoState.id}`, //项目id
+  start_time: boardStore.filterState.start_time, //开始时间
+  end_time: boardStore.filterState.end_time, //结束时间
+  url: boardStore.filterState.url, //路由筛选
+  browser: boardStore.filterState.browser, //浏览器筛选
+  device: boardStore.filterState.device, //设备筛选
+  region: boardStore.filterState.region, //地区筛选
+  network: boardStore.filterState.network, //网络类型筛选
+  client: boardStore.filterState.client, //客户端筛选
+  os: boardStore.filterState.os, //操作系统筛选
+  performance_key: boardStore.filterState.performance_key, //性能筛选
+  performance_range: boardStore.filterState.performance_range, //性能筛选
 }));
 
 //表格loading
@@ -72,12 +73,13 @@ const pagination = reactive({
 //生成表格序号
 const tableColumns = computed(() => {
   const columns = getDefaultColumns();
-  columns[0].customRender = item => (pagination.current - 1) * pagination.pageSize + item.index + 1;
+  columns[0].customRender = (item) =>
+    (pagination.current - 1) * pagination.pageSize + item.index + 1;
   return columns;
 });
 
 //tab页key值与对应的看板type
-const activeKey = ref('url');
+const activeKey = ref("url");
 
 //表格数据
 const dataList = ref([]);
@@ -90,12 +92,12 @@ const getTableData = debounce((page = pagination.current) => {
   //开始loading
   loading.value = true;
   //开始请求
-  PerformanceApis.getUrlListData({
+  getUrlListData({
     ...requestParams.value,
     limit: `${pagination.pageSize}`,
     page: `${page}`,
   })
-    .then(data => {
+    .then((data) => {
       if (searchId !== lastSearchId) {
         // for fetch callback order
         return;
@@ -121,7 +123,7 @@ const getTableData = debounce((page = pagination.current) => {
 }, 300);
 
 //表格变化时触发  , _, sorter
-const handleTableChange = page => {
+const handleTableChange = (page) => {
   //页面跳转，请求数据
   if (page.current !== pagination.current) {
     // case1: 页码无跳转，一定是有排序选择变化，跳转至首页进行排序
@@ -149,16 +151,16 @@ const handleTableChange = page => {
 watch(requestParams, () => getTableData(1), { immediate: true });
 
 // 设为筛选
-const addFilter = url => {
+const addFilter = (url) => {
   boardStore.addFilterValue({ url });
 };
 
 // 取消筛选
 const delFilter = () => {
-  boardStore.delFilterValue('url');
+  boardStore.delFilterValue("url");
 };
 
-const openLog = url => {
+const openLog = (url) => {
   boardStore.openLogInfoState({
     type: logTypeEnum.PERFORMANCE,
     visible: true,

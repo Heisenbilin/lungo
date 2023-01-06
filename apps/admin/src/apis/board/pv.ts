@@ -59,7 +59,23 @@ export const getOSData = (params: any) => request.post<any>({ url: Api.GET_OS_DA
 export const getClientData = (params: any) =>
   request.post<any>({ url: Api.GET_CLIENT_DATA, params });
 
+<<<<<<< HEAD
 // 获取客户端数据
 export const getRegionData=(params:any) =>
   request.post({ url: Api.GET_REGION_DATA, params});
 
+=======
+/**
+ * @description: 获取网络数据
+ */
+
+export const getNetworkData = (params: any) =>
+  request.post<any>({ url: Api.GET_NETWORK_DATA, params });
+
+/**
+ * @description: 获取地区数据
+ */
+
+export const getRegionData = (params: any) =>
+  request.post<any>({ url: Api.GET_REGION_DATA, params });
+>>>>>>> 4cd26f9c5ae157141283908b94bd6feb6e89af95
