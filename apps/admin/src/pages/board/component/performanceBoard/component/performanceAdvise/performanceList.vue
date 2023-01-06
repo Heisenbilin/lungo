@@ -41,7 +41,7 @@ import { getLighthouseAudits } from "/@/components/boardReport/apis";
 import auditLayout from "/@/components/boardReport/detail/audit/auditLayout.vue";
 import { showAsPassed, _getWastedMs } from "/@/components/boardReport/detail/util";
 import { useRouter } from "vue-router";
-import { useReportStore } from "@/store/modules/board";
+import { useReportStore } from "@/store/modules/report";
 
 const reportStore = useReportStore();
 
@@ -146,7 +146,7 @@ const toReport = (url) => {
 
   const query = {
     project_id: props.projectId,
-    project_name: encodeURIComponent(reportStore.getBoardInfoState.project_name),
+    project_name: encodeURIComponent(reportStore.boardInfoState.project_name),
     url: encodeURIComponent(url),
     start_time: props.startTime,
     end_time: props.endTime,

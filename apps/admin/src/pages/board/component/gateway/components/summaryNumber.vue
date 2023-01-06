@@ -34,31 +34,33 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 //网关监控数据汇总组件
-import { ref, watch } from 'vue';
-import { GatewayApis } from '/@/api/gateway';
-import { commafy } from '/@/utils/math/formatMumber';
-import { boardStore } from '/@/store/modules/board';
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { ref, watch } from "vue";
+import { getSummary } from "@/apis/board/gateway";
+import { commafy } from "@vben/utils";
+import { useBoardStore } from "@/store/modules/board";
+import { QuestionCircleOutlined } from "@ant-design/icons-vue";
+
+const boardStore = useBoardStore();
 
 const loading = ref(true);
-const summaryData = ref({ summaryCount: '', successRate: '', averageTime: '' });
+const summaryData = ref({ summaryCount: "", successRate: "", averageTime: "" });
 
-const getSummaryData = async params => {
+const getSummaryData = async (params) => {
   loading.value = true;
-  const result = await GatewayApis.getSummary(params);
-  summaryData.value = result?.data ?? { summaryCount: '', successRate: '', averageTime: '' };
+  const result = await getSummary(params);
+  summaryData.value = result?.data ?? { summaryCount: "", successRate: "", averageTime: "" };
   loading.value = false;
 };
 
 watch(
   () => ({
-    project_id: boardStore.getBoardInfoState.id,
-    start_time: boardStore.getFilterState.start_time,
-    end_time: boardStore.getFilterState.end_time,
+    project_id: boardStore.boardInfoState.id,
+    start_time: boardStore.filterState.start_time,
+    end_time: boardStore.filterState.end_time,
   }),
-  params => getSummaryData(params),
+  (params) => getSummaryData(params),
   { immediate: true }
 );
 </script>

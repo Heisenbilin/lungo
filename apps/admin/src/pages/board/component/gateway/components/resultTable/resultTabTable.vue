@@ -27,27 +27,28 @@
   </a-table>
 </template>
 
-<script setup>
-import { ref, computed, watch, reactive } from 'vue';
-import { GatewayApis } from '/@/api/gateway';
-import { debounce } from 'lodash-es';
-import { getDefaultColumns } from './resultTabTableConfig';
-import { commafy } from '/@/utils/math/formatMumber';
-import { boardStore } from '/@/store/modules/board';
-import { logTypeEnum } from '/@/enums/boardEnum';
+<script setup lang="ts">
+import { ref, computed, watch, reactive } from "vue";
+import { getResultType } from "@/apis/board/gateway";
+import { debounce, commafy } from "@vben/utils";
+import { getDefaultColumns } from "./resultTabTableConfig";
+import { useBoardStore } from "@/store/modules/board";
+import { logTypeEnum } from "@vben/constants";
+
+const boardStore = useBoardStore();
 
 //api异常数据汇总Tab内部图表组件
 const props = defineProps({
   type: {
     type: String,
-    default: '',
+    default: "",
   },
   searchUrl: {
     type: String,
-    default: '',
+    default: "",
   },
 });
-const emit = defineEmits(['update:searchUrl']);
+const emit = defineEmits(["update:searchUrl"]);
 
 //表格loading
 const loading = ref(true);
@@ -60,8 +61,9 @@ const pagination = reactive({
 });
 //生成表格序号
 const tableColumns = computed(() => {
-  const columns = getDefaultColumns();
-  columns[0].customRender = item => (pagination.current - 1) * pagination.pageSize + item.index + 1;
+  const columns: any[] = getDefaultColumns();
+  columns[0].customRender = (item) =>
+    (pagination.current - 1) * pagination.pageSize + item.index + 1;
   return columns;
 });
 
@@ -75,16 +77,16 @@ const getResultTableData = debounce((page = pagination.current) => {
   //开始loading
   loading.value = true;
   //开始请求
-  GatewayApis.getResultType({
-    project_id: boardStore.getBoardInfoState.id,
-    start_time: boardStore.getFilterState.start_time,
-    end_time: boardStore.getFilterState.end_time,
+  getResultType({
+    project_id: boardStore.boardInfoState.id,
+    start_time: boardStore.filterState.start_time,
+    end_time: boardStore.filterState.end_time,
     response_type: props.type,
     request_url: props.searchUrl,
     limit: pagination.pageSize,
     page: page,
   })
-    .then(data => {
+    .then((data) => {
       if (searchId !== lastSearchId) {
         // for fetch callback order
         return;
@@ -110,7 +112,7 @@ const getResultTableData = debounce((page = pagination.current) => {
 }, 300);
 
 //表格变化时触发  , _, sorter
-const handleTableChange = page => {
+const handleTableChange = (page) => {
   //页面跳转，请求数据
   if (page.current !== pagination.current) {
     //case1: 页码无跳转，一定是有排序选择变化，跳转至首页进行排序
@@ -135,16 +137,16 @@ const handleTableChange = page => {
   // }
 };
 
-const changeSearchUrl = url => {
-  emit('update:searchUrl', url);
+const changeSearchUrl = (url) => {
+  emit("update:searchUrl", url);
 };
 
 const cancelSearchUrl = () => {
-  emit('update:searchUrl', '');
+  emit("update:searchUrl", "");
 };
 
 //打开日志详情
-const openLog = url => {
+const openLog = (url) => {
   boardStore.openLogInfoState({
     type: logTypeEnum.GATEWAY,
     visible: true,
@@ -156,7 +158,7 @@ const openLog = url => {
 };
 
 watch(
-  () => [props.searchUrl, boardStore.getFilterState.start_time, boardStore.getFilterState.end_time],
+  () => [props.searchUrl, boardStore.filterState.start_time, boardStore.filterState.end_time],
   () => {
     getResultTableData(1);
   },
