@@ -1,0 +1,207 @@
+.lh-audit {
+  border-top: 1px solid #ebebeb;
+  line-height: 24px;
+  summary {
+    list-style-type: none;
+    .lh-audit__header {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+    .lh-audit-opportunity__header {
+      padding: 8px 0;
+      display: block;
+      align-items: center;
+      font-weight: 500;
+      .lh-load-opportunity__cols {
+        display: flex;
+        align-items: flex-start;
+        .lh-load-opportunity__col {
+          display: flex;
+        }
+        .lh-load-opportunity__col--one {
+          flex: 5;
+          align-items: center;
+          margin-right: 2px;
+        }
+        .lh-load-opportunity__col--two {
+          flex: 4;
+          text-align: right;
+          .lh-load-opportunity__sparkline {
+            flex: 1;
+            margin: 10px 5px 0;
+            .lh-sparkline {
+              height: 5px;
+              width: 100%;
+              .lh-sparkline__bar {
+                height: 100%;
+                float: right;
+              }
+            }
+          }
+        }
+      }
+    }
+    .lh-audit-detail-icon {
+      margin: 0 auto;
+      a {
+        color: #424242;
+      }
+    }
+    .lh-audit__score-icon {
+      width: 12px;
+      height: 12px;
+      margin: 0 12px 0 4px;
+    }
+    .lh-audit__title-and-text {
+      flex: 1;
+    }
+    .lh-chevron-container {
+      margin-right: 0 5px;
+    }
+    .lh-audit__display-text {
+      margin: 0 5px;
+    }
+    .lh-audit__display-text-line:not(:empty):before {
+      content: '—';
+      margin: 0 5px 0 15px;
+    }
+  }
+  .lh-audit__description {
+    color: #424242;
+    --inner-audit-padding-right: 10px;
+    padding: 8px 10px 18px 28px;
+  }
+}
+
+.lh-audit--fail {
+  .lh-audit__score-icon {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid #ff4e42;
+  }
+  .lh-audit__display-text {
+    color: #eb0f00;
+  }
+  .lh-sparkline__bar {
+    background: #ff4e42;
+  }
+}
+
+.lh-audit--average {
+  .lh-audit__score-icon {
+    background: #ffa400;
+    width: 10px;
+    height: 10px;
+  }
+  .lh-audit__display-text {
+    color: #d04900;
+  }
+  .lh-sparkline__bar {
+    background: #ffa400;
+  }
+}
+
+.lh-audit--informative {
+  .lh-audit__score-icon {
+    border: none;
+    border-radius: 100%;
+    background: #bdbdbd;
+  }
+  .lh-audit__display-text {
+    color: #757575;
+  }
+  .lh-sparkline__bar {
+    background: #bdbdbd;
+  }
+}
+
+.lh-audit-group {
+  position: relative;
+  margin-bottom: 40px;
+  .lh-audit-group__header {
+    font-size: 16px;
+    margin: 0 0 8px;
+    max-width: calc(100% - 12px);
+    .lh-audit-group__title {
+      font-weight: bold;
+    }
+    .lh-audit-group__description {
+      font-weight: 400;
+      color: #757575;
+    }
+    .lh-audit-group__description::before {
+      // content: '—';
+      margin: 0px 5px 0px 15px;
+    }
+  }
+  .lh-load-opportunity__header {
+    display: flex;
+    align-items: flex-start;
+    .lh-load-opportunity__col {
+      color: #757575;
+      display: unset;
+      line-height: 40px;
+    }
+    .lh-load-opportunity__col--one {
+      flex: 5;
+      align-items: center;
+      margin-right: 2px;
+    }
+    .lh-load-opportunity__col--two {
+      flex: 4;
+      text-align: right;
+    }
+  }
+}
+
+.audit-detail {
+  .lh-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .lh-text__url-host {
+    margin-left: 8px;
+    opacity: 0.6;
+    font-size: 90%;
+    display: inline;
+  }
+  .lh-thumbnail {
+    object-fit: cover;
+    width: 48px;
+    height: 48px;
+    display: block;
+  }
+  .lh-node__snippet {
+    color: #0938c2;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .table-hassubs {
+    width: 100%;
+    td {
+      border: none;
+    }
+  }
+  .table-nosubs {
+    width: 100%;
+    overflow: hidden;
+  }
+}
+
+.lh-crc-container {
+  width: 100%;
+  .lh-crc__summary-value {
+    margin-bottom: 10px;
+    .lh-crc__longest_duration {
+      font-weight: bold;
+    }
+  }
+  .lh-crc {
+    .crc-initial-nav {
+      color: #595959;
+      font-style: italic;
+    }
+  }
+}
