@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { headerRef, height } from './data'
-import LayoutMenu from './components/menu/index.vue'
-import LayoutHeader from './components/header.vue'
-import { context } from '../bridge'
-const { useMenuSetting } = context
+import { headerRef, height } from "./data";
+import LayoutMenu from "./components/menu/index.vue";
+import LayoutHeader from "./components/header.vue";
+import { context } from "../bridge";
+const { useMenuSetting } = context;
 
-const { toggleCollapsed, getCollapsed, getMenuWidth } = useMenuSetting()
+const { toggleCollapsed, getCollapsed, getMenuWidth } = useMenuSetting();
 </script>
 <template>
   <VbenLayout has-sider class="h-full">

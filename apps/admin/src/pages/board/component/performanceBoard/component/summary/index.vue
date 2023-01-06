@@ -7,7 +7,7 @@
           <a-tooltip title="均值"> 首字节 <QuestionCircleOutlined /> </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ commafy(averageData.firstbyte || '') }}</div>
+          <div class="text-3xl font-medium">{{ commafy(averageData.firstbyte || "") }}</div>
           <div class="text-gray-500">ms</div>
         </div>
       </div>
@@ -16,7 +16,7 @@
           <a-tooltip title="均值"> DOM Ready <QuestionCircleOutlined /> </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ commafy(averageData.ready || '') }}</div>
+          <div class="text-3xl font-medium">{{ commafy(averageData.ready || "") }}</div>
           <div class="text-gray-500">ms</div>
         </div>
       </div>
@@ -25,7 +25,7 @@
           <a-tooltip title="均值"> 页面完全加载 <QuestionCircleOutlined /> </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ commafy(averageData.pageload || '') }}</div>
+          <div class="text-3xl font-medium">{{ commafy(averageData.pageload || "") }}</div>
           <div class="text-gray-500">ms</div>
         </div>
       </div>
@@ -39,7 +39,7 @@
       <a-tab-pane key="average" tab="性能均值">
         <BaseChart
           :requestParams="requestParams2"
-          :requestFunc="PerformanceApis.getChartSummaryData"
+          :requestFunc="getChartSummaryData"
           :getOptionFunc="getSummaryOption"
           :bindFuncs="{ legendselectchanged: handleLegendChange }"
           :zrFuncs="{ click: addTimeFilter }"
@@ -52,7 +52,7 @@
       <a-tab-pane key="waterfall" tab="页面加载均值瀑布图">
         <BaseChart
           :requestParams="requestParams"
-          :requestFunc="getAverageData"
+          :requestFunc="requestAverageData"
           :getOptionFunc="handleDataToWaterfallChartOption"
         />
       </a-tab-pane>
@@ -60,46 +60,49 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue';
-import { handleDataToWaterfallChartOption } from '../waterfallChart/chartConfig';
-import { getSummaryChartOption } from './chartConfig';
-import { PerformanceApis } from '/@/api/board/performance';
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
-import { commafy } from '/@/utils/math/formatMumber';
-import { boardStore } from '/@/store/modules/board';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
-import { addTimeFilter } from '/@/components/boardNew/util/datePickerConfig';
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { handleDataToWaterfallChartOption } from "../waterfallChart/chartConfig";
+import { getSummaryChartOption } from "./chartConfig";
+import { getChartSummaryData, getAverageData } from "@/apis/board/performance";
+import { QuestionCircleOutlined } from "@ant-design/icons-vue";
+import { commafy } from "@vben/utils";
+import { useBoardStore } from "@/store/modules/board";
+import { BaseChart } from "@vben/components";
+import { addTimeFilter } from "../../../util/datePickerConfig";
+
+const boardStore = useBoardStore();
 
 //请求参数
 const requestParams = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`, //项目id
-  start_time: boardStore.getFilterState.start_time, //开始时间
-  end_time: boardStore.getFilterState.end_time, //结束时间
-  url: boardStore.getFilterState.url, //路由筛选
-  browser: boardStore.getFilterState.browser, //浏览器筛选
-  device: boardStore.getFilterState.device, //设备筛选
-  region: boardStore.getFilterState.region, //地区筛选
-  network: boardStore.getFilterState.network, //网络类型筛选
-  client: boardStore.getFilterState.client, //客户端筛选
-  os: boardStore.getFilterState.os, //操作系统筛选
-  performance_key: boardStore.getFilterState.performance_key, //性能筛选
-  performance_range: boardStore.getFilterState.performance_range, //性能筛选
+  project_id: `${boardStore.boardInfoState.id}`, //项目id
+  start_time: boardStore.filterState.start_time, //开始时间
+  end_time: boardStore.filterState.end_time, //结束时间
+  url: boardStore.filterState.url, //路由筛选
+  browser: boardStore.filterState.browser, //浏览器筛选
+  device: boardStore.filterState.device, //设备筛选
+  region: boardStore.filterState.region, //地区筛选
+  network: boardStore.filterState.network, //网络类型筛选
+  client: boardStore.filterState.client, //客户端筛选
+  os: boardStore.filterState.os, //操作系统筛选
+  performance_key: boardStore.filterState.performance_key, //性能筛选
+  performance_range: boardStore.filterState.performance_range, //性能筛选
 }));
 
 const requestParams2 = computed(() => ({
   ...requestParams.value,
-  dimension: boardStore.getFilterState.dimension, //维度
+  dimension: boardStore.filterState.dimension, //维度
 }));
 
-const activeKey = ref('average');
-const activeKey2 = ref('waterfall');
+const activeKey = ref("average");
+const activeKey2 = ref("waterfall");
 
 const loading = ref(true);
 const averageData = ref({
-  firstbyte: '',
-  dom: '',
-  pageload: '',
+  firstbyte: "",
+  dom: "",
+  pageload: "",
+  ready: "",
 });
 
 const selectedLegend = ref({
@@ -120,20 +123,20 @@ const selectedLegend = ref({
 });
 
 //从后端获取均值瀑布图数据方法
-const getSummaryOption = data => getSummaryChartOption(data, selectedLegend.value);
+const getSummaryOption = (data) => getSummaryChartOption(data, selectedLegend.value);
 
 //从后端获取均值瀑布图数据方法
-const getAverageData = async params => {
+const requestAverageData = async (params) => {
   loading.value = true;
   //拦截请求结果，存入averageData中
-  const result = await PerformanceApis.getAverageData(params);
-  averageData.value = result?.data?.details ?? { firstbyte: '', dom: '', pageload: '' };
+  const result = await getAverageData(params);
+  averageData.value = result?.data?.details ?? { firstbyte: "", dom: "", pageload: "", ready: "" };
   loading.value = false;
   return result;
 };
 
 //监听筛选项的变化
-const handleLegendChange = params => {
+const handleLegendChange = (params) => {
   selectedLegend.value = params;
 };
 </script>

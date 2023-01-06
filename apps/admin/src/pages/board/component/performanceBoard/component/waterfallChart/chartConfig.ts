@@ -1,6 +1,4 @@
-import { cloneDeep } from 'lodash-es';
-import { accAdd, accSub } from '/@/utils/math/compute';
-import { commafy } from '/@/utils/math/formatMumber';
+import { cloneDeep, accAdd, accSub, commafy } from "@vben/utils";
 
 //性能优良差标准的阈值
 const performanceStandards = {
@@ -14,23 +12,23 @@ const performanceStandards = {
 };
 
 const performanceRules = {
-  dns: 't.domainLookupEnd - t.domainLookupStart',
-  tcp: 't.connectEnd - t.connectStart',
-  pagessl: 't.connectEnd - t.secureConnectionStart',
-  ttfb: 't.responseStart - t.requestStart',
-  trans: 't.responseEnd - t.responseStart',
-  dom: 't.domInteractive - t.responseEnd',
-  res: 't.loadEventStart - t.domContentLoadedEventEnd',
+  dns: "t.domainLookupEnd - t.domainLookupStart",
+  tcp: "t.connectEnd - t.connectStart",
+  pagessl: "t.connectEnd - t.secureConnectionStart",
+  ttfb: "t.responseStart - t.requestStart",
+  trans: "t.responseEnd - t.responseStart",
+  dom: "t.domInteractive - t.responseEnd",
+  res: "t.loadEventStart - t.domContentLoadedEventEnd",
 };
 
 //瀑布图基础配置
-const waterfallChartOption = {
+const waterfallChartOption: any = {
   tooltip: {
-    trigger: 'axis',
+    trigger: "axis",
     axisPointer: {
-      type: 'shadow',
+      type: "shadow",
     },
-    formatter: params => {
+    formatter: (params) => {
       const tar = params[1];
       const standard = performanceStandards[tar.name];
       const color = getColor(standard, tar.value);
@@ -43,32 +41,32 @@ const waterfallChartOption = {
     },
   },
   grid: {
-    left: '-162',
-    right: '',
-    bottom: '',
-    top: '10%',
+    left: "-162",
+    right: "",
+    bottom: "",
+    top: "10%",
     containLabel: true,
   },
   // tooltip: { show: false },
   xAxis: { show: false },
   yAxis: [
     {
-      type: 'category',
+      type: "category",
       splitLine: { show: false },
       data: [
-        '资源加载 Resource Download',
-        'DOM解析 DOM Parse',
-        '内容传输 Content Download',
-        '请求响应 Waiting(TTFB)',
-        'SSL建连 SSL',
-        'TCP连接 Initial Connection',
-        'DNS查询 DNS Lookup',
+        "资源加载 Resource Download",
+        "DOM解析 DOM Parse",
+        "内容传输 Content Download",
+        "请求响应 Waiting(TTFB)",
+        "SSL建连 SSL",
+        "TCP连接 Initial Connection",
+        "DNS查询 DNS Lookup",
       ],
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: {
         margin: 165,
-        align: 'left',
+        align: "left",
       },
     },
     {
@@ -78,38 +76,38 @@ const waterfallChartOption = {
       axisTick: { show: false },
       axisLabel: {
         margin: 10,
-        align: 'right',
-        formatter: item => `${commafy(item)}ms`,
+        align: "right",
+        formatter: (item) => `${commafy(item)}ms`,
       },
     },
   ],
   series: [
     {
-      type: 'bar',
-      stack: 'Total',
+      type: "bar",
+      stack: "Total",
       itemStyle: {
-        borderColor: 'transparent',
-        color: 'transparent',
+        borderColor: "transparent",
+        color: "transparent",
       },
     },
     {
-      name: '耗时',
-      type: 'bar',
-      stack: 'Total',
+      name: "耗时",
+      type: "bar",
+      stack: "Total",
     },
   ],
 };
 
-export const getWaterfallChartOption = data => {
+export const getWaterfallChartOption = (data) => {
   const chartOption = cloneDeep(waterfallChartOption);
-  const color = ['#a2d2ff', '#bde0fe', '#ffafcc', '#ffc8dd', '#cdb4db', '#bdb2ff', '#a0c4ff'];
+  const color = ["#a2d2ff", "#bde0fe", "#ffafcc", "#ffc8dd", "#cdb4db", "#bdb2ff", "#a0c4ff"];
   var sum = 0;
-  const performanceKeys = ['dns', 'tcp', 'pagessl', 'ttfb', 'trans', 'dom', 'res'];
-  const arr = [[], [], []];
-  performanceKeys.forEach(key => {
+  const performanceKeys = ["dns", "tcp", "pagessl", "ttfb", "trans", "dom", "res"];
+  const arr: [any[], any[], any[]] = [[], [], []];
+  performanceKeys.forEach((key) => {
     //考虑到数据差值，这里进行补齐
-    if (key === 'trans') sum = data.firstbyte || 0;
-    if (key === 'res') sum = data.ready || 0;
+    if (key === "trans") sum = data.firstbyte || 0;
+    if (key === "res") sum = data.ready || 0;
     //存入数据到暂存数组中
     arr[1].unshift({
       name: key,
@@ -122,7 +120,7 @@ export const getWaterfallChartOption = data => {
         color: getColor(performanceStandards[key], data[key] || 0), //根据标准动态设置颜色
       },
     });
-    if (key === 'pagessl') {
+    if (key === "pagessl") {
       arr[0].unshift(accSub(sum, data[key] || 0));
     } else {
       arr[0].unshift(sum);
@@ -150,9 +148,9 @@ export const getWaterfallChartOption = data => {
           xAxis: data.pageload,
         },
       ],
-      symbol: ['none', 'none'],
+      symbol: ["none", "none"],
       label: {
-        formatter: item => `${item.name}：${commafy(item.value)}ms`,
+        formatter: (item) => `${item.name}：${commafy(item.value)}ms`,
       },
     };
   }
@@ -160,7 +158,7 @@ export const getWaterfallChartOption = data => {
   return chartOption;
 };
 
-const colors = ['green', 'orange', 'red'];
+const colors = ["green", "orange", "red"];
 
 const getColor = (standard, value) => {
   for (let i = 0; i < 3; i++) {
@@ -171,8 +169,8 @@ const getColor = (standard, value) => {
   return colors[2];
 };
 
-export const handleDataToWaterfallChartOption = data => {
-  if (!(typeof data?.details === 'object' && Object.keys(data?.details).length)) {
+export const handleDataToWaterfallChartOption = (data) => {
+  if (!(typeof data?.details === "object" && Object.keys(data?.details).length)) {
     return null;
   }
   return getWaterfallChartOption(data.details);

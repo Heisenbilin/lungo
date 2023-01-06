@@ -1,43 +1,45 @@
-import { cloneDeep } from 'lodash';
-import { boardStore } from '/@/store/modules/board';
-import { formatDate } from '/@/utils/date';
+import { cloneDeep } from "@vben/utils";
+import { useBoardStore } from "@/store/modules/board";
+import { formatDate } from "@/hooks/board/date";
+
+const boardStore = useBoardStore();
 
 //图表基础配置
 //柱状图与曲线图结合，支持时间范围选择
-const summaryChartConfig = {
+const summaryChartConfig: any = {
   tooltip: {
     axisPointer: {
-      type: 'cross',
+      type: "cross",
     },
-    trigger: 'axis',
+    trigger: "axis",
     position(pt) {
-      return [pt[0], '10%'];
+      return [pt[0], "10%"];
     },
   },
   legend: {},
   grid: {
-    top: '10%',
-    left: '2%',
-    right: '2%',
-    bottom: '3%',
+    top: "10%",
+    left: "2%",
+    right: "2%",
+    bottom: "3%",
     containLabel: true,
   },
   xAxis: {
-    type: 'category',
+    type: "category",
   },
   yAxis: [
     {
-      name: 'PV数',
+      name: "PV数",
       nameTextStyle: { padding: [0, 0, 0, 45] },
-      type: 'value',
-      position: 'right',
+      type: "value",
+      position: "right",
     },
     {
-      name: '耗时',
+      name: "耗时",
       nameTextStyle: { padding: [0, 50, 0, 0] },
-      type: 'value',
+      type: "value",
       axisLabel: {
-        formatter: '{value} ms',
+        formatter: "{value} ms",
       },
       splitLine: {
         show: false,
@@ -52,8 +54,8 @@ const summaryChartConfig = {
   series: [
     {
       data: [],
-      type: 'bar',
-      name: 'PV数',
+      type: "bar",
+      name: "PV数",
       barMaxWidth: 40,
     },
   ],
@@ -61,22 +63,22 @@ const summaryChartConfig = {
 
 const keysConfig = {
   time: { value: [] },
-  count: { name: 'PV值', value: [] },
-  firstbyte: { name: '首字节', value: [] },
-  ready: { name: 'DOM Ready', value: [] },
-  pageload: { name: '页面完全加载', value: [] },
-  dns: { name: 'DNS', value: [] },
-  tcp: { name: 'TCP', value: [] },
-  pagessl: { name: 'SSL', value: [] },
-  ttfb: { name: '请求响应', value: [] },
-  trans: { name: '内容传输', value: [] },
-  dom: { name: 'DOM解析', value: [] },
-  res: { name: '资源加载', value: [] },
-  rtt: { name: 'RTT', value: [] },
-  fcp: { name: 'FCP', value: [] },
-  fp: { name: 'FP', value: [] },
-  rd: { name: 'RD', value: [] },
-  tti: { name: 'TTI', value: [] },
+  count: { name: "PV值", value: [] },
+  firstbyte: { name: "首字节", value: [] },
+  ready: { name: "DOM Ready", value: [] },
+  pageload: { name: "页面完全加载", value: [] },
+  dns: { name: "DNS", value: [] },
+  tcp: { name: "TCP", value: [] },
+  pagessl: { name: "SSL", value: [] },
+  ttfb: { name: "请求响应", value: [] },
+  trans: { name: "内容传输", value: [] },
+  dom: { name: "DOM解析", value: [] },
+  res: { name: "资源加载", value: [] },
+  rtt: { name: "RTT", value: [] },
+  fcp: { name: "FCP", value: [] },
+  fp: { name: "FP", value: [] },
+  rd: { name: "RD", value: [] },
+  tti: { name: "TTI", value: [] },
 };
 
 var latestsSelectedLegend =
@@ -100,8 +102,8 @@ export function getSummaryChartOption(data, selectedLegend) {
 
   //3.1 数据转换，存入valueArrs
   try {
-    data.forEach(item => {
-      Object.keys(item).forEach(key => valueArrs[key].value.push(item[key]));
+    data.forEach((item) => {
+      Object.keys(item).forEach((key) => valueArrs[key].value.push(item[key]));
     });
   } catch (e) {
     console.log(e);
@@ -110,25 +112,25 @@ export function getSummaryChartOption(data, selectedLegend) {
   const timeFormatStr = boardStore.getTimeFormatStr;
   //3.2 将valueArrs中的数据存入chartOption中
   //3.2.1 横坐标：时间数据
-  chartOption.xAxis.data = valueArrs.time.value.map(time => ({
+  chartOption.xAxis.data = valueArrs.time.value.map((time) => ({
     value: formatDate(time, timeFormatStr),
     name: time,
   }));
   //时间数据过多时，添加底部滑块
   if (valueArrs.time.value.length > 15) {
     chartOption.dataZoom.show = true;
-    chartOption.grid.bottom = '15%';
+    chartOption.grid.bottom = "15%";
   }
 
   //3.2.2 series0存入PV数据
   chartOption.series[0].data = valueArrs.count.value;
 
   //3.2.3 依此往后续series存入性能指标曲线数据，并获取
-  Object.keys(valueArrs).forEach(key => {
-    if (!['count', 'time'].includes(key)) {
+  Object.keys(valueArrs).forEach((key) => {
+    if (!["count", "time"].includes(key)) {
       chartOption.series.push({
         data: valueArrs[key].value,
-        type: 'line',
+        type: "line",
         smooth: true,
         name: valueArrs[key].name,
         yAxisIndex: 1,

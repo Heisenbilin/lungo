@@ -1,10 +1,8 @@
-import { cloneDeep } from 'lodash';
-import { commafy } from '/@/utils/math/formatMumber';
-import { formatDate } from '/@/utils/date';
+import { cloneDeep, commafy, formatDate } from "@vben/utils";
 // import { getDateWeekday } from '/@/utils/date';
 
 //“PV”与“UV”图表基础配置
-const PVUVChartConfig = {
+const PVUVChartConfig: any = {
   xAxis: {
     boundaryGap: false,
     axisTick: {
@@ -14,17 +12,17 @@ const PVUVChartConfig = {
   },
   grid: {
     top: 10,
-    left: '2%',
-    right: '3%',
-    bottom: '3%',
+    left: "2%",
+    right: "3%",
+    bottom: "3%",
     containLabel: true,
   },
   tooltip: {
-    trigger: 'axis',
+    trigger: "axis",
     axisPointer: {
-      type: 'cross',
+      type: "cross",
     },
-    formatter: item => {
+    formatter: (item) => {
       return `<font style="color:green">${item[0].data.name}</font><br/>
               数量：${commafy(item[0].value)}<br/>
               单击添加<font style="color:green">${item[0].data.name}</font>为筛选条件`;
@@ -34,11 +32,11 @@ const PVUVChartConfig = {
     axisTick: {
       show: false,
     },
-    type: 'value',
+    type: "value",
   },
   dataZoom: [
     {
-      type: 'slider',
+      type: "slider",
       start: 0,
       end: 100,
       show: false,
@@ -47,7 +45,7 @@ const PVUVChartConfig = {
   series: [
     {
       data: [],
-      type: 'line',
+      type: "line",
       animation: false,
     },
   ],
@@ -59,9 +57,9 @@ export function getPVUVChartOption(data, timeFormatStr) {
     return null;
   }
   const chartOption = cloneDeep(PVUVChartConfig);
-  let timeList = []; //时间数据
-  let countList = []; //异常数
-  data.forEach(item => {
+  let timeList: any[] = []; //时间数据
+  let countList: any[] = []; //异常数
+  data.forEach((item) => {
     timeList.push({ value: formatDate(item.time, timeFormatStr), name: item.time });
     countList.push({
       value: item.count,
@@ -73,7 +71,7 @@ export function getPVUVChartOption(data, timeFormatStr) {
 
   if (timeList.length > 20) {
     chartOption.dataZoom[0].show = true;
-    chartOption.grid.bottom = '15%';
+    chartOption.grid.bottom = "15%";
   }
 
   return chartOption;

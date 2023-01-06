@@ -15,11 +15,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 //通用看板组件
-import PVUVSummary from './component/pvuvsummary.vue';
-import uaInfo from './component/uaInfo/index.vue';
-import UrlTable from './component/urlTable/urlTable.vue';
-import UAMap from './component/uaMap/index.vue';
-import DetailPieCharts from './component/detailPieCharts.vue';
+import PVUVSummary from "./component/pvuvsummary.vue";
+import uaInfo from "./component/uaInfo/index.vue";
+import UrlTable from "./component/urlTable/urlTable.vue";
+import UAMap from "./component/uaMap/index.vue";
+import DetailPieCharts from "./component/detailPieCharts.vue";
 </script>

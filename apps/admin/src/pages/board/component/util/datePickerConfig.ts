@@ -1,32 +1,34 @@
-import moment from 'moment';
-import { boardStore } from '/@/store/modules/board';
+import moment from "moment";
+import { useBoardStore } from "@/store/modules/board";
+const boardStore = useBoardStore();
+
 export const datePickerRanges = {
   今天: [
-    moment().startOf('day').subtract(0, 'day'),
+    moment().startOf("day").subtract(0, "day"),
     moment()
       .minute(10 * Math.floor(moment().minutes() / 10))
       .second(0),
   ],
   最近三天: [
-    moment().startOf('day').subtract(3, 'day'),
+    moment().startOf("day").subtract(3, "day"),
     moment()
       .minute(10 * Math.floor(moment().minutes() / 10))
       .second(0),
   ],
   最近一周: [
-    moment().startOf('day').subtract(7, 'day'),
+    moment().startOf("day").subtract(7, "day"),
     moment()
       .minute(10 * Math.floor(moment().minutes() / 10))
       .second(0),
   ],
   最近两周: [
-    moment().startOf('day').subtract(14, 'day'),
+    moment().startOf("day").subtract(14, "day"),
     moment()
       .minute(10 * Math.floor(moment().minutes() / 10))
       .second(0),
   ],
   最近三周: [
-    moment().startOf('day').subtract(21, 'day'),
+    moment().startOf("day").subtract(21, "day"),
     moment()
       .minute(10 * Math.floor(moment().minutes() / 10))
       .second(0),
@@ -35,7 +37,7 @@ export const datePickerRanges = {
 
 export const addTimeFilter = (params, chart) => {
   let pointInPixel = [params.offsetX, params.offsetY];
-  if (chart.containPixel('grid', pointInPixel)) {
+  if (chart.containPixel("grid", pointInPixel)) {
     let pointInGrid = chart.convertFromPixel({ seriesIndex: 0 }, pointInPixel);
     let xIndex = pointInGrid[0]; //索引
     let handleIndex = Number(xIndex);
@@ -45,18 +47,18 @@ export const addTimeFilter = (params, chart) => {
     let time = op.xAxis[0].data[handleIndex]; //获取点击的列名
     try {
       time = moment(time.name || time); // 点击的时间
-      const dimension = boardStore.getFilterState.dimension || 'day'; // 维度
-      const start_time = time.format('YYYY-MM-DD HH:mm:ss'); // 开始时间
-      let end_time = ''; // 结束时间
+      const dimension = boardStore.getFilterState.dimension || "day"; // 维度
+      const start_time = time.format("YYYY-MM-DD HH:mm:ss"); // 开始时间
+      let end_time = ""; // 结束时间
       switch (dimension) {
-        case 'day':
-          time.add(1, 'd');
+        case "day":
+          time.add(1, "d");
           break;
-        case 'hour':
-          time.add(1, 'h');
+        case "hour":
+          time.add(1, "h");
           break;
-        case 'halfHour':
-          time.add(30, 'm');
+        case "halfHour":
+          time.add(30, "m");
           break;
         default:
           return;
@@ -65,9 +67,9 @@ export const addTimeFilter = (params, chart) => {
         end_time = moment()
           .minute(10 * Math.floor(moment().minutes() / 10))
           .second(0)
-          .format('YYYY-MM-DD HH:mm:ss');
+          .format("YYYY-MM-DD HH:mm:ss");
       } else {
-        end_time = time.format('YYYY-MM-DD HH:mm:ss');
+        end_time = time.format("YYYY-MM-DD HH:mm:ss");
       }
       boardStore.addFilterValue({ start_time, end_time });
     } catch (e) {

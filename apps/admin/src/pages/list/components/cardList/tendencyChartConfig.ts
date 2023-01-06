@@ -1,8 +1,8 @@
-import { cloneDeep } from '@vben/utils';
-import { graphic } from '@vben/hooks';
+import { cloneDeep } from "@vben/utils";
+import { graphic } from "@vben/hooks";
 const linearGradient = graphic.LinearGradient;
 
-const defaultOption = {
+const defaultOption: any = {
   grid: {
     bottom: 0,
     left: 0,
@@ -11,7 +11,7 @@ const defaultOption = {
   },
   xAxis: {
     show: false,
-    data: ['1', '2'],
+    data: ["1", "2"],
   },
   yAxis: {
     show: false,
@@ -19,21 +19,21 @@ const defaultOption = {
   series: [
     {
       data: [0, 0],
-      type: 'line',
-      sampling: 'lttb',
-      symbol: 'none',
+      type: "line",
+      sampling: "lttb",
+      symbol: "none",
       itemStyle: {
-        color: '#f77f00',
+        color: "#f77f00",
       },
       areaStyle: {
         color: new linearGradient(0, 0, 0, 1, [
           {
             offset: 0,
-            color: '#f77f00',
+            color: "#f77f00",
           },
           {
             offset: 1,
-            color: '#fff',
+            color: "#fff",
           },
         ]),
       },
@@ -41,12 +41,12 @@ const defaultOption = {
   ],
 };
 
-export const getTendencyChartOption = data => {
+export const getTendencyChartOption = (data) => {
   const chartOption = cloneDeep(defaultOption);
   if (!(Array.isArray(data) && data.length)) return chartOption;
-  const timeList = data.length === 1 ? ['1'] : [];
+  const timeList = data.length === 1 ? ["1"] : [];
   const countList = data.length === 1 ? [0] : [];
-  data.forEach(item => {
+  data.forEach((item) => {
     timeList.push(item.query_time);
     countList.push(item.board_count);
   });

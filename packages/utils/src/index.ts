@@ -12,8 +12,9 @@ export * from "./mitt";
 export * from "./urlParams";
 export * from "./compare";
 export * from "./compute";
-export * from "./formatNumber";
+export * from "./format";
 export * from "./uuid";
 export * from "./checkAuth";
+export * from "./chart";
 
 // export * from 'lodash-es'

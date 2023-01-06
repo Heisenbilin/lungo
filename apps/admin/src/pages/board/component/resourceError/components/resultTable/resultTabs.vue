@@ -27,10 +27,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 //api异常数据汇总图表Tab框
-import { ref } from 'vue';
-import ResultTabTable from './resultTabTable.vue';
+import { ref } from "vue";
+import ResultTabTable from "./resultTabTable.vue";
 
 const props = defineProps({
   faultTolerantStatus: {
@@ -40,12 +40,12 @@ const props = defineProps({
 });
 
 //tab页key值与对应的看板type
-const activeKey = ref('resource');
+const activeKey = ref("resource");
 
 //搜索内容
-const searchValue = ref('');
+const searchValue = ref("");
 
-const onSearch = value => {
+const onSearch = (value) => {
   searchValue.value = value.trim();
 };
 </script>

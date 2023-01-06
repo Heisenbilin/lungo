@@ -13,7 +13,7 @@
       "vite/client",
       "@vben/constant",
       "@vben/types/shims/pinia",
-      "@vben/types/shims/vue-router",
+      "@vben/types/shims/vue-router"
     ]
   },
   "include": [

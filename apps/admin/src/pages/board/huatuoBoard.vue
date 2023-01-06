@@ -8,7 +8,7 @@
             <a-breadcrumb-item>
               <router-link :to="'/huatuo/index'">WEB端质量监控</router-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item>{{ boardInfoState.projectName }}</a-breadcrumb-item>
+            <a-breadcrumb-item>{{ boardInfoState.project_name }}</a-breadcrumb-item>
           </a-breadcrumb>
         </div>
       </div>
@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import { useBoardStore } from "@/store/modules/board";
+import { storeToRefs } from "pinia";
 import boardInfo from "./board.vue";
 const boardStore = useBoardStore();
 

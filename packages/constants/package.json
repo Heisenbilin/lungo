@@ -6,5 +6,8 @@
   "license": "MIT",
   "scripts": {
     "clean": "pnpm rimraf node_modules && pnpm rimraf dist && pnpm rimraf .turbo"
+  },
+  "dependencies": {
+    "@vben/hooks": "workspace:*"
   }
 }

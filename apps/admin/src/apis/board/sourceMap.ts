@@ -1,6 +1,7 @@
 import { request } from "@vben/request";
 enum Api {
   GET_BOARD_DATA = "/board/chartdata",
+  GET_TIME_SLOT_DATA = "/board/chartdata/getTimeSlotData",
   GET_ERR_SUMMARY = "/sourcemap/errSummary",
   GET_ERR_TYPE_SUMMARY = "/sourcemap/errTypeSummary",
   GET_RUNTIME_LIST = "/sourcemap/runtimeList",
@@ -16,6 +17,13 @@ enum Api {
  */
 
 export const getChartData = (params: any) => request.post<any>({ url: Api.GET_BOARD_DATA, params });
+
+/**
+ * @description: 获取自定义看板图表数据
+ */
+
+export const getTimeSlotDataByType = (params: any) =>
+  request.post<any>({ url: Api.GET_TIME_SLOT_DATA, params });
 
 /**
  * @description: 获取错误异常信息汇总

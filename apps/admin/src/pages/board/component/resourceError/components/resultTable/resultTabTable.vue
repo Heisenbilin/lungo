@@ -12,7 +12,7 @@
     <template #url="{ record }">
       <a-tooltip title="点击跳转该页面">
         <a :href="record.resource_currenthref" target="_blank">
-          {{ record.resource_currenthref || '未知' }}
+          {{ record.resource_currenthref || "未知" }}
         </a>
       </a-tooltip>
     </template>
@@ -33,28 +33,29 @@
   </a-table>
 </template>
 
-<script setup>
+<script setup lang="ts">
 //资源异常数据汇总Tab内部图表组件
-import { ref, computed, watch, reactive } from 'vue';
-import { ResourceApis } from '/@/api/board/resource';
-import { debounce } from 'lodash-es';
-import { getDefaultColumns } from './resultTabTableConfig';
-import { commafy } from '/@/utils/math/formatMumber';
-import { boardStore } from '/@/store/modules/board';
-import { logTypeEnum } from '/@/enums/boardEnum';
+import { ref, computed, watch, reactive } from "vue";
+import { getFErrorListData, getListData } from "@/apis/board/resource";
+import { debounce, commafy } from "@vben/utils";
+import { getDefaultColumns } from "./resultTabTableConfig";
+import { useBoardStore } from "@/store/modules/board";
+import { logTypeEnum } from "@vben/constants";
+
+const boardStore = useBoardStore();
 
 const props = defineProps({
   type: {
     type: String,
-    default: '',
+    default: "",
   },
   searchValue: {
     type: String,
-    default: '',
+    default: "",
   },
 });
 
-const isFaultTolerant = props.type === 'faultTolerant' ? true : false;
+const isFaultTolerant = props.type === "faultTolerant" ? true : false;
 
 // 表格loading
 const loading = ref(true);
@@ -69,7 +70,8 @@ const pagination = reactive({
 // 表格列，自动生成表格序号
 const tableColumns = computed(() => {
   const columns = getDefaultColumns(props.type);
-  columns[0].customRender = item => (pagination.current - 1) * pagination.pageSize + item.index + 1;
+  columns[0].customRender = (item) =>
+    (pagination.current - 1) * pagination.pageSize + item.index + 1;
   return columns;
 });
 // 表格数据
@@ -82,17 +84,17 @@ let lastSearchId = 0;
 const requestParams = computed(() => {
   return Object.assign(
     {
-      project_id: `${boardStore.getBoardInfoState.id}`, //项目id
-      start_time: boardStore.getFilterState.start_time, //开始时间
-      end_time: boardStore.getFilterState.end_time, //结束时间
-      url: boardStore.getFilterState.url, //路由筛选
-      browser: boardStore.getFilterState.browser, //浏览器筛选
-      device: boardStore.getFilterState.device, //设备筛选
-      region: boardStore.getFilterState.region, //地区筛选
-      network: boardStore.getFilterState.network, //网络类型筛选
-      client: boardStore.getFilterState.client, //客户端筛选
-      os: boardStore.getFilterState.os, //操作系统筛选
-      resource_type: boardStore.getFilterState.resource_type, //资源类型筛选
+      project_id: `${boardStore.boardInfoState.id}`, //项目id
+      start_time: boardStore.filterState.start_time, //开始时间
+      end_time: boardStore.filterState.end_time, //结束时间
+      url: boardStore.filterState.url, //路由筛选
+      browser: boardStore.filterState.browser, //浏览器筛选
+      device: boardStore.filterState.device, //设备筛选
+      region: boardStore.filterState.region, //地区筛选
+      network: boardStore.filterState.network, //网络类型筛选
+      client: boardStore.filterState.client, //客户端筛选
+      os: boardStore.filterState.os, //操作系统筛选
+      resource_type: boardStore.filterState.resource_type, //资源类型筛选
       limit: `${pagination.pageSize}`,
     },
     isFaultTolerant
@@ -104,10 +106,8 @@ const requestParams = computed(() => {
   );
 });
 
-const getApiData = async params => {
-  return await (isFaultTolerant
-    ? ResourceApis.getFErrorListData(params)
-    : ResourceApis.getListData(params));
+const getApiData = async (params) => {
+  return await (isFaultTolerant ? getFErrorListData(params) : getListData(params));
 };
 
 const getResultTableData = debounce((page = pagination.current) => {
@@ -120,7 +120,7 @@ const getResultTableData = debounce((page = pagination.current) => {
     ...requestParams.value,
     page: `${page}`,
   })
-    .then(data => {
+    .then((data) => {
       if (searchId !== lastSearchId) {
         // for fetch callback order
         return;
@@ -146,7 +146,7 @@ const getResultTableData = debounce((page = pagination.current) => {
 }, 500);
 
 //表格变化时触发  , _, sorter
-const handleTableChange = page => {
+const handleTableChange = (page) => {
   //页面跳转，请求数据
   if (page.current !== pagination.current) {
     //case1: 页码无跳转，一定是有排序选择变化，跳转至首页进行排序
@@ -172,14 +172,14 @@ const handleTableChange = page => {
 };
 
 // 改变日志state，打开日志详情
-const openLog = record => {
-  if (props.type === 'href' || props.type === 'domain') {
+const openLog = (record) => {
+  if (props.type === "href" || props.type === "domain") {
     boardStore.openLogInfoState({
       type: logTypeEnum.RESOURCE,
       visible: true,
       requestParams: {
         error_type: props.type,
-        err_content: props.type === 'href' ? record.resource_url : record.resource_currenthref,
+        err_content: props.type === "href" ? record.resource_url : record.resource_currenthref,
       },
     });
   }
@@ -195,13 +195,13 @@ const openLog = record => {
 };
 
 // 设为筛选
-const changeSearchUrl = url => {
+const changeSearchUrl = (url) => {
   boardStore.addFilterValue({ url });
 };
 
 // 取消筛选
 const cancelSearchUrl = () => {
-  boardStore.delFilterValue('url');
+  boardStore.delFilterValue("url");
 };
 
 watch(

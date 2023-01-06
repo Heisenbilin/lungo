@@ -51,7 +51,7 @@
         <BaseChart
           v-else
           :requestParams="requestParams"
-          :requestFunc="getSummaryData"
+          :requestFunc="requestSummaryData"
           :getOptionFunc="getSummaryOption"
           :zrFuncs="{ click: addTimeFilter }"
         />
@@ -83,17 +83,19 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 //resource异常数据汇总组件
-import { ref, computed, watch } from 'vue';
-import { ResourceApis } from '/@/api/board/resource';
-import { getSummaryChartOption } from '../../../util/errorSummaryChartConfig';
-import { commafy } from '/@/utils/math/formatMumber';
-import { boardStore } from '/@/store/modules/board';
-import { addTimeFilter } from '/@/components/boardNew/util/datePickerConfig';
-import { QuestionCircleOutlined } from '@ant-design/icons-vue';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
-import FaultTolerantTab from './faultTolerantTab.vue';
+import { ref, computed, watch } from "vue";
+import { getSummaryData } from "@/apis/board/resource";
+import { getSummaryChartOption } from "../../../util/errorSummaryChartConfig";
+import { commafy } from "@vben/utils";
+import { useBoardStore } from "@/store/modules/board";
+import { addTimeFilter } from "../../../util/datePickerConfig";
+import { QuestionCircleOutlined } from "@ant-design/icons-vue";
+import { BaseChart } from "@vben/components";
+import FaultTolerantTab from "./faultTolerantTab.vue";
+
+const boardStore = useBoardStore();
 
 const props = defineProps({
   faultTolerantStatus: {
@@ -104,36 +106,36 @@ const props = defineProps({
 
 //请求参数
 const requestParams = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`, //项目id
-  start_time: boardStore.getFilterState.start_time, //开始时间
-  end_time: boardStore.getFilterState.end_time, //结束时间
-  dimension: boardStore.getFilterState.dimension, //维度
-  url: boardStore.getFilterState.url, //路由筛选
-  browser: boardStore.getFilterState.browser, //浏览器筛选
-  device: boardStore.getFilterState.device, //设备筛选
-  region: boardStore.getFilterState.region, //地区筛选
-  network: boardStore.getFilterState.network, //网络类型筛选
-  client: boardStore.getFilterState.client, //客户端筛选
-  os: boardStore.getFilterState.os, //操作系统筛选
-  resource_type: boardStore.getFilterState.resource_type, //资源类型筛选
+  project_id: `${boardStore.boardInfoState.id}`, //项目id
+  start_time: boardStore.filterState.start_time, //开始时间
+  end_time: boardStore.filterState.end_time, //结束时间
+  dimension: boardStore.filterState.dimension, //维度
+  url: boardStore.filterState.url, //路由筛选
+  browser: boardStore.filterState.browser, //浏览器筛选
+  device: boardStore.filterState.device, //设备筛选
+  region: boardStore.filterState.region, //地区筛选
+  network: boardStore.filterState.network, //网络类型筛选
+  client: boardStore.filterState.client, //客户端筛选
+  os: boardStore.filterState.os, //操作系统筛选
+  resource_type: boardStore.filterState.resource_type, //资源类型筛选
 }));
 
 const loading = ref(true);
-const activeKey = ref('summary');
+const activeKey = ref("summary");
 
 const summaryData = ref({
-  summaryCount: '',
-  pvTotal: '',
-  successCount: '',
-  percentage: '',
+  summaryCount: "",
+  pvTotal: "",
+  successCount: "",
+  percentage: "",
 });
 
-const getSummaryOption = data => getSummaryChartOption(data, boardStore.getTimeFormatStr);
+const getSummaryOption = (data) => getSummaryChartOption(data, boardStore.getTimeFormatStr);
 
-const getSummaryData = async params => {
+const requestSummaryData = async (params) => {
   loading.value = true;
   //拦截请求结果，存入summaryData中
-  const result = await ResourceApis.getSummaryData(params);
+  const result = await getSummaryData(params);
   const data = result.data;
   // console.log(data, 'getSummaryData');
   const percent = ((data.errTotal / (data.pvTotal || 0)) * 100).toFixed(2);
@@ -143,9 +145,9 @@ const getSummaryData = async params => {
           summaryCount: data.errTotal,
           pvTotal: data.pvTotal || 0,
           successCount: data.successCount,
-          percentage: isNaN(percent) || percent === 'Infinity' ? 0 : percent,
+          percentage: isNaN(+percent) || percent === "Infinity" ? "0" : percent,
         }
-      : { summaryCount: '', pvTotal: '', successCount: '', percentage: '' };
+      : { summaryCount: "", pvTotal: "", successCount: "", percentage: "" };
   loading.value = false;
   result.data = data?.details ?? [];
   return result;
@@ -153,7 +155,7 @@ const getSummaryData = async params => {
 watch(
   () => requestParams,
   () => {
-    if (props.faultTolerantStatus === 'accessed') getSummaryData(requestParams.value);
+    if (props.faultTolerantStatus === "accessed") requestSummaryData(requestParams.value);
   },
   {
     deep: true,

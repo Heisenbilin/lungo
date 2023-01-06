@@ -58,3 +58,17 @@ export const getOSData = (params: any) => request.post<any>({ url: Api.GET_OS_DA
 
 export const getClientData = (params: any) =>
   request.post<any>({ url: Api.GET_CLIENT_DATA, params });
+
+/**
+ * @description: 获取网络数据
+ */
+
+export const getNetworkData = (params: any) =>
+  request.post<any>({ url: Api.GET_NETWORK_DATA, params });
+
+/**
+ * @description: 获取地区数据
+ */
+
+export const getRegionData = (params: any) =>
+  request.post<any>({ url: Api.GET_REGION_DATA, params });

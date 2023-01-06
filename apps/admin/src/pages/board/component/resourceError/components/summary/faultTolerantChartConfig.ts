@@ -1,30 +1,28 @@
-import { cloneDeep } from 'lodash';
-import { commafy } from '/@/utils/math/formatMumber';
-import { getDateWeekday } from '/@/utils/date';
-import { dataAggregateByTime } from '../../../util/aggregate';
-import { accSub } from '/@/utils/math/compute';
+import { cloneDeep, commafy, accSub } from "@vben/utils";
+import { getDateWeekday } from "@/hooks/board/date";
+import { dataAggregateByTime } from "../../../util/aggregate";
 
 //图表基础配置
 //柱状图与曲线图结合，支持时间范围选择
-const summaryChartConfig = {
-  color: ['#5470C6', '#91CC75', '#EE6666'],
+const summaryChartConfig: any = {
+  color: ["#5470C6", "#91CC75", "#EE6666"],
   //热力线
   visualMap: {
     show: false,
-    type: 'continuous',
+    type: "continuous",
     seriesIndex: 2,
     min: 0,
     max: 100,
   },
   tooltip: {
     axisPointer: {
-      type: 'cross',
+      type: "cross",
     },
-    trigger: 'axis',
+    trigger: "axis",
     position(pt) {
-      return [pt[0], '10%'];
+      return [pt[0], "10%"];
     },
-    formatter: item => {
+    formatter: (item) => {
       return `${item[0].data.name.holeTime}<br/>
       PV数：${commafy(item[0].data.name.pvCount)}<br/>
       异常资源数：${commafy(item[0].value)}次 （异常率：${item[0].data.name.afterRate}%）<br/>
@@ -37,28 +35,28 @@ const summaryChartConfig = {
   },
   legend: {},
   grid: {
-    top: '10%',
-    left: '2%',
-    right: '2%',
-    bottom: '3%',
+    top: "10%",
+    left: "2%",
+    right: "2%",
+    bottom: "3%",
     containLabel: true,
   },
   xAxis: {
-    type: 'category',
+    type: "category",
   },
   yAxis: [
     {
-      name: '数量',
+      name: "数量",
       nameTextStyle: { padding: [0, 40, 0, 0] },
-      type: 'value',
+      type: "value",
     },
     {
-      name: '百分比',
+      name: "百分比",
       nameTextStyle: { padding: [0, 0, 0, 45] },
-      type: 'value',
-      position: 'right',
+      type: "value",
+      position: "right",
       axisLabel: {
-        formatter: '{value} %',
+        formatter: "{value} %",
       },
       splitLine: {
         show: false,
@@ -66,7 +64,7 @@ const summaryChartConfig = {
     },
   ],
   dataZoom: {
-    type: 'slider',
+    type: "slider",
     show: false,
     start: 0,
     end: 100,
@@ -74,37 +72,37 @@ const summaryChartConfig = {
   series: [
     {
       data: [],
-      type: 'bar',
-      name: '异常资源数',
+      type: "bar",
+      name: "异常资源数",
       barMaxWidth: 40,
     },
     {
       data: [],
-      type: 'bar',
-      name: '容错成功数',
+      type: "bar",
+      name: "容错成功数",
       barMaxWidth: 40,
     },
     {
       data: [],
-      type: 'line',
+      type: "line",
       smooth: true,
-      name: '异常率',
-      nameTextStyle: { align: 'right' },
+      name: "异常率",
+      nameTextStyle: { align: "right" },
       yAxisIndex: 1,
     },
     {
       data: [],
-      type: 'line',
+      type: "line",
       smooth: true,
-      name: '接入容错前异常率',
-      nameTextStyle: { align: 'right' },
+      name: "接入容错前异常率",
+      nameTextStyle: { align: "right" },
       yAxisIndex: 1,
     },
     {
       data: [],
-      type: 'line',
+      type: "line",
       smooth: true,
-      name: '容错失败率',
+      name: "容错失败率",
       yAxisIndex: 1,
     },
   ],
@@ -127,13 +125,13 @@ export const getFaultTolerantChartOption = (data, timeFormatStr, selectedLegend)
 
   //3 非legend变换（data变换或者timeFormatStr变换），处理data数据成图表Option
   const chartOption = cloneDeep(summaryChartConfig);
-  let timeList = []; //时间数据
-  let countList = []; //异常资源数
-  let successCountList = []; //异常容错数
-  let rateList = []; //异常率
-  let beforeRateList = []; //容错前异常率
-  let afterRateList = []; //容错后异常率
-  data.forEach(item => {
+  let timeList: any[] = []; //时间数据
+  let countList: any[] = []; //异常资源数
+  let successCountList: any[] = []; //异常容错数
+  let rateList: any[] = []; //异常率
+  let beforeRateList: any[] = []; //容错前异常率
+  let afterRateList: any[] = []; //容错后异常率
+  data.forEach((item) => {
     const count = item.count;
     const successCount = item.successCount;
     const pvCount = item.pvCount;
@@ -151,7 +149,7 @@ export const getFaultTolerantChartOption = (data, timeFormatStr, selectedLegend)
         beforeRate,
         totalCount,
         afterRate,
-        holeTime: item.time + ' ' + getDateWeekday(item.originTime),
+        holeTime: item.time + " " + getDateWeekday(item.originTime),
       },
       value: count,
     });
@@ -165,8 +163,8 @@ export const getFaultTolerantChartOption = (data, timeFormatStr, selectedLegend)
   });
 
   //设置异常率热力线的区间
-  const maxRate = Math.max(...afterRateList.map(item => (item ? item : 0)));
-  const minRate = Math.max(...afterRateList.map(item => (item ? item : 0)));
+  const maxRate = Math.max(...afterRateList.map((item) => (item ? item : 0)));
+  const minRate = Math.max(...afterRateList.map((item) => (item ? item : 0)));
   if (maxRate > 0) {
     chartOption.visualMap.max = Math.ceil(maxRate * 10) / 10; //向上取整，美化坐标轴、防止数据js溢出
     chartOption.visualMap.min = minRate * 0.5;
@@ -182,7 +180,7 @@ export const getFaultTolerantChartOption = (data, timeFormatStr, selectedLegend)
 
   if (timeList.length > 15) {
     chartOption.dataZoom.show = true;
-    chartOption.grid.bottom = '15%';
+    chartOption.grid.bottom = "15%";
   }
 
   //绑定legend选择的状态
@@ -202,8 +200,8 @@ const cleanData = (data, timeFormatStr) => {
     resource_success_num: [],
   };
   //按照类型聚合数据
-  data.forEach(item => {
-    const key = item.board_type.split('_').slice(1).join('_'); //去掉前置id
+  data.forEach((item) => {
+    const key = item.board_type.split("_").slice(1).join("_"); //去掉前置id
     //按key来区分
     if (result[key]) {
       result[key].push(item);
@@ -215,10 +213,10 @@ const cleanData = (data, timeFormatStr) => {
   for (const key in result) {
     result[key] = dataAggregateByTime(result[key], timeFormatStr);
   }
-  const chartData = [];
+  const chartData: any[] = [];
 
-  if ('pv' in result && Object.keys(result.pv).length) {
-    Object.keys(result.pv).forEach(time => {
+  if ("pv" in result && Object.keys(result.pv).length) {
+    Object.keys(result.pv).forEach((time) => {
       //资源异常资源数据是否有对应容错数据标志
       const flag1 =
         Object.keys(result.resource_num).length && result.resource_num[time]?.boardCount;

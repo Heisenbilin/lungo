@@ -28,13 +28,13 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
 // import { useStore } from 'vuex';
-import { getUrlParams } from "/@/utils/url/urlParams";
-import { boardStore } from "/@/store/modules/board";
+import { getUrlParams } from "@vben/utils";
+import { useBoardStore } from "@/store/modules/board";
 
 import intro from "intro.js";
 import "intro.js/introjs.css";
 
-import drawWatermark from "/@/utils/watermark";
+import { useWatermark } from "@vben/hooks";
 
 import BasicBoard from "./pvBoard/index.vue";
 import PerformanceBoard from "./performanceBoard/index.vue";
@@ -42,8 +42,8 @@ import RuntimeErrorBoard from "./runtimeError/index.vue";
 import ResourceErrorBoard from "./resourceError/index.vue";
 import ApiErrorBoard from "./apiError/index.vue";
 import GatewayBoard from "./gateway/index.vue";
-import LogDrawer from "./component/logDetail/logDrawer.vue";
-import FAQ from "./component/FAQ.vue";
+import LogDrawer from "../../component/logDetail/logDrawer.vue";
+import FAQ from "../../component/FAQ.vue";
 
 const safeTabKeys = ["pageview", "performance", "runtime", "resource", "api", "gateway"];
 
@@ -53,6 +53,8 @@ const props = defineProps({
     type: String,
   },
 });
+
+const boardStore = useBoardStore();
 // const store = useStore();
 
 const username = "xiongbilin";
@@ -66,7 +68,7 @@ const username = "xiongbilin";
 const { tabkey = "" } = getUrlParams();
 const activeKey = ref(safeTabKeys.includes(tabkey) ? tabkey : "pageview");
 //tab页的key值与路由绑定
-watch(activeKey, (val) => boardStore.commitTabState(val), { immediate: true });
+watch(activeKey, (val) => boardStore.commitTabState(val.value), { immediate: true });
 
 onMounted(() => {
   createWatermark();
@@ -101,8 +103,8 @@ onMounted(() => {
 // 生成水印
 function createWatermark() {
   const projectName = boardStore.getBoardInfoState.project_name || "";
-  drawWatermark({
-    container: document.getElementById("general-board-container"),
+  useWatermark({
+    container: document.getElementById("general-board-container") || undefined,
     content: `${props.platformType ? "华佗" : "小松鼠"}-${projectName}-${username}`,
     // rotate默认30度，因此长宽比为1.732:1能最大程度利用空间（容纳最多字符）
     width: "400px",
