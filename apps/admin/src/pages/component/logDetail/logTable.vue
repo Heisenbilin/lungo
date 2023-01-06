@@ -1,26 +1,21 @@
 <template>
-  <a-table
-    :loading="loading"
-    :columns="columns"
-    :data-source="dataList"
-    size="middle"
-    :row-key="(_, index) => index"
-    :pagination="pagination"
-    @change="handleTableChange"
-    tableLayout="fixed"
-    bordered
-  >
+  <a-table :loading="loading" :columns="columns" :data-source="dataList" size="middle" :row-key="(_, index) => index"
+    :pagination="pagination" @change="handleTableChange" tableLayout="fixed" bordered>
     <template #expandedRowRender="{ record }">
       <LogContent :content="record" />
     </template>
   </a-table>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import { getTableColumns, getDataList } from './util';
-import { boardStore, reportStore } from '/@/store/modules/board';
+import { useBoardStore } from '@/store/modules/board';
+import { useReportStore } from '@/store/modules/report';
 import LogContent from './logContent.vue';
+
+const boardStore = useBoardStore();
+const reportStore = useReportStore();
 
 const props = defineProps({
   boardType: {
@@ -38,7 +33,7 @@ const pagination = reactive({
   pageSize: 10,
   showQuickJumper: false,
 });
-const columns = getTableColumns(store.getLogInfoState.type);
+const columns = getTableColumns(store.logInfoState.type);
 const dataList = ref([]);
 
 const handleTableChange = page => {
@@ -48,12 +43,12 @@ const handleTableChange = page => {
 
 const getAndSetTableData = async () => {
   loading.value = true;
-  const data = await getDataList(
-    store.getLogInfoState.type,
+  const data: any = await getDataList(
+    store.logInfoState.type,
     store.logRequestParams,
     pagination.current,
     pagination.pageSize,
-    store.getBoardInfoState.ua_flag
+    store.boardInfoState.ua_flag
   );
   const { result, total } = data;
   dataList.value = result;

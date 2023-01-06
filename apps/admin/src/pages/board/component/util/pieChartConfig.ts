@@ -1,6 +1,5 @@
 import { cloneDeep, commafy, compare, getMainInfo } from "@vben/utils";
 import { pieChartOption, logInfoTitle } from "@vben/constants";
-import { EChartsOption } from "@vben/hooks";
 
 // 客户端数字key对应的客户端类型
 export const clientUserAgent = {

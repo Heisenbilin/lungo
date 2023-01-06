@@ -2,30 +2,22 @@
   <h1>三、项目性能指标</h1>
   <div class="w-full p-4">
     <div class="chart-title">本周页面加载均值瀑布图</div>
-    <BaseChart
-      :requestParams="requestParams"
-      :requestFunc="PerformanceApis.getAverageData"
-      :getOptionFunc="handleDataToWaterfallChartOption"
-      height="360px"
-    />
+    <BaseChart :requestParams="requestParams" :requestFunc="PerformanceApis.getAverageData"
+      :getOptionFunc="useDataToWaterfallChartOption" height="360px" />
   </div>
   <div class="w-full p-4">
     <div class="chart-title">上周页面加载均值瀑布图</div>
-    <BaseChart
-      :requestParams="lastWeekRequestParams"
-      :requestFunc="PerformanceApis.getAverageData"
-      :getOptionFunc="handleDataToWaterfallChartOption"
-      height="360px"
-    />
+    <BaseChart :requestParams="lastWeekRequestParams" :requestFunc="PerformanceApis.getAverageData"
+      :getOptionFunc="useDataToWaterfallChartOption" height="360px" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 // @ts-ignore
-import { handleDataToWaterfallChartOption } from '@/pages/component/performanceBoard/component/waterfallChart/chartConfig';
+import { useDataToWaterfallChartOption } from '@vben/hooks';
 
-import * as PerformanceApis  from '@/apis/board/performance';
+import * as PerformanceApis from '@/apis/board/performance';
 import BaseChart from '@vben/components/src/chart/baseChart.vue';
 import moment from 'moment'
 import { useReportStore } from '@/store/modules/report';

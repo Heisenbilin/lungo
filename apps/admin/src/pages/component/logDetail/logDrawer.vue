@@ -1,13 +1,6 @@
 <template>
-  <a-drawer
-    :visible="logVisible"
-    width="1000px"
-    :bodyStyle="{ paddingTop: '10px' }"
-    :headerStyle="{ padding: '0px 20px' }"
-    @close="handleCancel"
-    :footer="null"
-    :closable="false"
-  >
+  <a-drawer :visible="logVisible" width="1000px" :bodyStyle="{ paddingTop: '10px' }"
+    :headerStyle="{ padding: '0px 20px' }" @close="handleCancel" :footer="null" :closable="false">
     <template #title>
       <div class="flex justify-between">
         <div class="self-center">{{ drawerName }}</div>
@@ -19,23 +12,23 @@
         </div>
       </div>
     </template>
-    <LogContent
-      v-if="activeName === 'recent'"
-      :loading="recentContentLoading"
-      :content="recentContent"
-    />
+    <LogContent v-if="activeName === 'recent'" :loading="recentContentLoading" :content="recentContent" />
     <LogTable v-if="activeName === 'more'" :boardType="boardType" />
   </a-drawer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // 日志详情抽屉
 import { computed, ref } from 'vue';
 import { getDataList } from './util';
-import { getRequestParameters } from '/@/utils/index';
-import { boardStore, reportStore } from '/@/store/modules/board';
+import { getUrlParams } from '@vben/utils';
+import { useBoardStore } from '@/store/modules/board';
+import { useReportStore } from '@/store/modules/report';
 import LogContent from './logContent.vue';
 import LogTable from './logTable.vue';
+
+const boardStore = useBoardStore();
+const reportStore = useReportStore();
 
 const props = defineProps({
   boardType: {
@@ -48,13 +41,13 @@ const store = props.boardType === 'general' ? boardStore : reportStore;
 
 // 抽屉可视
 const logVisible = computed(() => {
-  const visible = store.getLogInfoState.visible;
+  const visible = store.logInfoState.visible;
   if (visible) getRecentData(); // 打开抽屉时请求最近一次日志数据
   return visible;
 });
-const type = computed(() => store.getLogInfoState.type); // 抽屉类型
+const type = computed(() => store.logInfoState.type); // 抽屉类型
 const params = computed(() => store.logRequestParams); //请求参数
-const ua_flag = computed(() => store.getBoardInfoState.ua_flag); //ua关键字
+const ua_flag = computed(() => store.boardInfoState.ua_flag); //ua关键字
 
 //抽屉名称
 const drawerName = computed(() => {
@@ -86,14 +79,15 @@ const recentContentLoading = ref(true);
 const getRecentData = async () => {
   activeName.value = 'recent';
   recentContentLoading.value = true;
-  const { result } = await getDataList(type.value, params.value, 1, 1, ua_flag.value);
+  const data: any = await getDataList(type.value, params.value, 1, 1, ua_flag.value);
+  const { result } = data;
   recentContent.value = result[0];
   recentContentLoading.value = false;
 };
 
 const initDrawer = () => {
   // 路由中若有log_type参数，打开日志详情
-  const urlParams = getRequestParameters();
+  const urlParams = getUrlParams();
   if ('log_type' in urlParams && 'log_params' in urlParams) {
     try {
       store.openLogInfoState({

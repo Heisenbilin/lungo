@@ -47,7 +47,7 @@ export const addTimeFilter = (params, chart) => {
     let time = op.xAxis[0].data[handleIndex]; //获取点击的列名
     try {
       time = moment(time.name || time); // 点击的时间
-      const dimension = boardStore.getFilterState.dimension || "day"; // 维度
+      const dimension = boardStore.filterState.dimension || "day"; // 维度
       const start_time = time.format("YYYY-MM-DD HH:mm:ss"); // 开始时间
       let end_time = ""; // 结束时间
       switch (dimension) {

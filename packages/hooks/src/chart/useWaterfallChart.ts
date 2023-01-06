@@ -98,7 +98,7 @@ const waterfallChartOption: any = {
   ],
 };
 
-export const getWaterfallChartOption = (data) => {
+export const useWaterfallChartOption = (data) => {
   const chartOption = cloneDeep(waterfallChartOption);
   const color = ["#a2d2ff", "#bde0fe", "#ffafcc", "#ffc8dd", "#cdb4db", "#bdb2ff", "#a0c4ff"];
   var sum = 0;
@@ -169,9 +169,9 @@ const getColor = (standard, value) => {
   return colors[2];
 };
 
-export const handleDataToWaterfallChartOption = (data) => {
+export const useDataToWaterfallChartOption = (data) => {
   if (!(typeof data?.details === "object" && Object.keys(data?.details).length)) {
     return null;
   }
-  return getWaterfallChartOption(data.details);
+  return useWaterfallChartOption(data.details);
 };

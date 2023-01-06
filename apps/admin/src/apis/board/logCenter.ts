@@ -7,5 +7,5 @@ enum Api {
  * @description: 获取topicId
  */
 
-export const getTopicId = (href: any) =>
+export const getKibanaTopicId = (href: any) =>
   request.get<any>({ url: Api.GET_TOPIC_ID, params: { href } });

@@ -1,4 +1,5 @@
 import { request } from "@vben/request";
+
 enum Api {
   GET_SUMMARY_DATA = "/resource/errSummary",
   GET_FILE_TYPE_DATA = "/resource/errTypeSummary",
@@ -9,6 +10,8 @@ enum Api {
   GET_F_TIMES_DATA = "/resource/faultTolerantTimes",
   GET_ERROR_HREF_DATA = "/resource/errHref",
   CHECK_FAULT_TOLERANT = "/resource/checkResource",
+  GET_ERROR_DETAILS = "/resource/errDetails",
+  GET_F_ERROR_DETAILS = "/resource/faultTolerantErrorDetails",
 }
 
 /**
@@ -71,3 +74,17 @@ export const getErrorHrefData = (params: any) =>
 
 export const checkFaultTolerant = (params: any) =>
   request.post<any>({ url: Api.CHECK_FAULT_TOLERANT, params });
+
+/**
+ * @description: 获取错误日志详情数据
+ */
+
+export const getErrorDetails = (params: any) =>
+  request.get<any>({ url: Api.GET_ERROR_DETAILS, params });
+
+/**
+ * @description: 获取容错详情数据
+ */
+
+export const getFErrorDetails = (params: any) =>
+  request.get<any>({ url: Api.GET_F_ERROR_DETAILS, params });

@@ -22,14 +22,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 //api异常数据汇总图表Tab框
 import { ref } from 'vue';
 import ResultTabTable from './resultTabTable.vue';
 
 //tab页key值与对应的看板type
-const activeKey = ref('all');
+const activeKey = ref<string>('all');
 
 //搜索内容
-const searchValue = ref('');
+const searchValue = ref<string>('');
 </script>

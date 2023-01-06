@@ -13,5 +13,6 @@ export { default as BaseChart } from "./src/chart/baseChart.vue";
 export { default as BasicChart } from "./src/chart/basicChart.vue";
 export { default as CardProgress } from "./src/chart/cardProgress.vue";
 export { default as CircleProgress } from "./src/chart/circleProgress.vue";
+export { default as WaterfallChart } from "./src/chart/waterfallChart.vue";
 
 export type { QrCodeActionType } from "./src/qrcode/typing";

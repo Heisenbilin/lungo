@@ -5,11 +5,7 @@
   <div v-else>
     <div class="grid grid-cols-2 gap-3">
       <div class="chart-container">
-        <InfoCard
-          :projectId="projectId"
-          :projectList="projectList"
-          :platformType="props.platformType"
-        />
+        <InfoCard :projectId="projectId" :projectList="projectList" :platformType="props.platformType" />
       </div>
       <div class="chart-container">
         <FilterCard />
@@ -28,7 +24,7 @@
       <div v-if="boardLoading" class="flex min-h-150 justify-center items-center">
         <a-spin size="large" />
       </div>
-      <GeneralBoard v-else :platformType="props.platformType" />
+      <Content v-else :platformType="props.platformType" />
     </template>
   </div>
 </template>
@@ -44,7 +40,7 @@ import { useBoardStore } from "@/store/modules/board";
 
 import InfoCard from "../component/infoCard/index.vue";
 import FilterCard from "../component/filterCard/index.vue";
-import GeneralBoard from "./component/generalBoard.vue";
+import Content from "./component/content.vue";
 
 const boardStore = useBoardStore();
 
@@ -57,7 +53,7 @@ const { currentRoute } = useRouter();
 const projectId = ref<undefined | number>(undefined);
 //loading
 const loading = ref(true);
-const boardLoading = computed(() => boardStore.getLoadingState);
+const boardLoading = computed(() => boardStore.loadingState);
 //项目列表
 const projectList = ref<any[]>([]);
 //项目管理员信息

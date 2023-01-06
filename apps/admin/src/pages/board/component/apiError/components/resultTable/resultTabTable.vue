@@ -1,14 +1,6 @@
 <template>
-  <a-table
-    :columns="tableColumns"
-    :data-source="dataList"
-    :row-key="(_, i) => i"
-    size="middle"
-    :pagination="pagination"
-    @change="handleTableChange"
-    tableLayout="fixed"
-    :loading="loading"
-  >
+  <a-table :columns="tableColumns" :data-source="dataList" :row-key="(_, i) => i" size="middle" :pagination="pagination"
+    @change="handleTableChange" tableLayout="fixed" :loading="loading">
     <template #url="{ record }">
       <a-tooltip title="点击跳转至该页面">
         <a :href="record.currenthref" target="_blank">
@@ -33,14 +25,15 @@
   </a-table>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, reactive } from 'vue';
-import { ApiErrorApis } from '/@/api/board/apiError';
-import { debounce } from 'lodash-es';
+import { getResultListData } from '@/apis/board/apiError';
+import { debounce, commafy } from '@vben/utils';
 import { getDefaultColumns } from './resultTabTableConfig';
-import { commafy } from '/@/utils/math/formatMumber';
-import { boardStore } from '/@/store/modules/board';
-import { logTypeEnum } from '/@/enums/boardEnum';
+import { useBoardStore } from '@/store/modules/board';
+import { logTypeEnum } from '@vben/constants';
+
+const boardStore = useBoardStore();
 
 //api异常数据汇总Tab内部图表组件
 const props = defineProps({
@@ -56,18 +49,18 @@ const props = defineProps({
 
 //请求参数
 const requestParams = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`, //项目id
-  start_time: boardStore.getFilterState.start_time, //开始时间
-  end_time: boardStore.getFilterState.end_time, //结束时间
-  url: boardStore.getFilterState.url, //路由筛选
-  browser: boardStore.getFilterState.browser, //浏览器筛选
-  device: boardStore.getFilterState.device, //设备筛选
-  region: boardStore.getFilterState.region, //地区筛选
-  network: boardStore.getFilterState.network, //网络类型筛选
-  client: boardStore.getFilterState.client, //客户端筛选
-  os: boardStore.getFilterState.os, //操作系统筛选
-  api_status: boardStore.getFilterState.api_status, //api状态码筛选
-  api_range: boardStore.getFilterState.api_range, //api耗时筛选
+  project_id: `${boardStore.boardInfoState.id}`, //项目id
+  start_time: boardStore.filterState.start_time, //开始时间
+  end_time: boardStore.filterState.end_time, //结束时间
+  url: boardStore.filterState.url, //路由筛选
+  browser: boardStore.filterState.browser, //浏览器筛选
+  device: boardStore.filterState.device, //设备筛选
+  region: boardStore.filterState.region, //地区筛选
+  network: boardStore.filterState.network, //网络类型筛选
+  client: boardStore.filterState.client, //客户端筛选
+  os: boardStore.filterState.os, //操作系统筛选
+  api_status: boardStore.filterState.api_status, //api状态码筛选
+  api_range: boardStore.filterState.api_range, //api耗时筛选
 }));
 
 // 表格type
@@ -84,7 +77,7 @@ const pagination = reactive({
 });
 // 生成表格序号
 const tableColumns = computed(() => {
-  const columns = getDefaultColumns(interfaceType.value);
+  const columns: any[] = getDefaultColumns(interfaceType.value);
   columns[0].customRender = item => (pagination.current - 1) * pagination.pageSize + item.index + 1;
   return columns;
 });
@@ -99,7 +92,7 @@ const getResultTableData = debounce((page = pagination.current) => {
   // 开始loading
   loading.value = true;
   // 开始请求
-  ApiErrorApis.getResultListData({
+  getResultListData({
     ...requestParams.value,
     response_type: responseType.value,
     interface_type: interfaceType.value,

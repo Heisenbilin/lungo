@@ -1,11 +1,11 @@
 import type { EChartsOption } from "echarts";
 import type { Ref } from "vue";
-import { useTimeoutFn } from "./core/useTimeout";
+import { useTimeoutFn } from "../core/useTimeout";
 import { tryOnUnmounted } from "@vueuse/core";
 import { unref, nextTick, watch, computed, ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
-import { useEventListener } from "./event/useEventListener";
-import { useBreakpoint } from "./event/useBreakpoint";
+import { useEventListener } from "../event/useEventListener";
+import { useBreakpoint } from "../event/useBreakpoint";
 import * as echarts from 'echarts';
 // import { useRootSetting } from './setting/useRootSetting';
 // import { useMenuSetting } from './setting/useMenuSetting';

@@ -102,7 +102,7 @@ onMounted(() => {
 
 // 生成水印
 function createWatermark() {
-  const projectName = boardStore.getBoardInfoState.project_name || "";
+  const projectName = boardStore.boardInfoState.project_name || "";
   useWatermark({
     container: document.getElementById("general-board-container") || undefined,
     content: `${props.platformType ? "华佗" : "小松鼠"}-${projectName}-${username}`,
