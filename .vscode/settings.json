@@ -75,7 +75,8 @@
   "[vue]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": false
-    }
+    },
+    "editor.defaultFormatter": "Vue.volar"
   },
   "i18n-ally.localesPaths": ["packages/locale/src/lang"],
   "i18n-ally.keystyle": "nested",
@@ -119,5 +120,6 @@
     "esbuild"
   ],
   "commentTranslate.multiLineMerge": true,
-  "typescript.suggest.autoImports": false
+  "typescript.suggest.autoImports": false,
+  "nuxt.isNuxtApp": false
 }

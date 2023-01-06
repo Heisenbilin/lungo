@@ -126,10 +126,10 @@ enum TaskType {
   REPORT_CHECK_RESOURCE= '/report/checkResource',
   REPORT_CHECK_CDN= '/report/checkCDN',
   REPORT_GET_PROJECT_LIGHTHOUSE_STATUS = '/report/getProjectLighthouseStatus',
- REPORT_RETRY_LIGHTHOUSE = '/report/retryLighthouse',
+  REPORT_RETRY_LIGHTHOUSE = '/report/retryLighthouse',
   COMMON_GROUPS = '/common/groups',
   HUA_YAN_GROUPS = '/huayan/groups',
- ACCOUNT ='account',
+  ACCOUNT ='account',
 }
 //质量周报相关接口
 export const reportApis = {

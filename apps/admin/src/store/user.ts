@@ -21,9 +21,7 @@ interface UserState {
 
 export const useUserStore = defineStore({
   id: 'app-user-store',
-  persist: {
-    strategies: [{ paths: ['userInfo', 'accessToken', 'roles'] }],
-  },
+
   state: (): UserState => ({
     userInfo: null,
     accessToken: undefined,
@@ -79,7 +77,7 @@ export const useUserStore = defineStore({
     ): Promise<UserInfo | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params
-        var { accessToken } = await doLoginApi(loginParams, mode)
+        let { accessToken } = await doLoginApi(loginParams, mode)
         accessToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoieGlvbmdiaWxpbiIsIm5hbWUiOiLnhornoqfmnpciLCJyb2xlIjoyLCJ3b3JrY29kZSI6IjMxMzMzOSIsImlhdCI6MTY3MjgwMjkzOCwiZXhwIjoxNjcyODg5MzM4fQ.f3TPBMLRo9ARrd_a3mGLQZCmRQFHWi0BZMyIkrK6J-Y"
 
         // save token
@@ -159,9 +157,14 @@ export const useUserStore = defineStore({
       }
     },
   },
+  // @ts-ignore
+  persist: {
+    strategies: [{ paths: ['userInfo', 'accessToken', 'roles'] }],
+  },
 })
 
 // Need to be used outside the setup
 export function useUserStoreWithout() {
   return useUserStore(pinia)
 }
+
