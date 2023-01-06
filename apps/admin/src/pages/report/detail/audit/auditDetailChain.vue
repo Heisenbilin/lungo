@@ -17,22 +17,42 @@
   </div>
 </template>
 
-<script>
+<script setup lang = 'ts'>
 // import linkText from '../linkText.vue';
-
 //建议框架组件
-export default {
-  name: 'AuditDetailChain',
-  // components: {
-  //   linkText,
-  // },
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['details'],
-  setup(props) {
-    //console.log(props.details);
-    const treeData = initTreeNode(props.details.chains);
+// export default {
+//   name: 'AuditDetailChain',
+
+//   props: ['details'],
+//   setup(props) {
+//     //console.log(props.details);
+//     const treeData = initTreeNode(props.details.chains);
+//     //console.log(treeData)
+//     function initTreeNode(data) {
+//       let treeNode = [];
+//       if (data) {
+//         treeNode = Object.keys(data).map(key => ({
+//           key: key,
+//           title: data[key].request.url,
+//           request: data[key].request,
+//           children: initTreeNode(data[key].children),
+//           slots: { customRender: 'treenode' },
+//         }));
+//       }
+//       return treeNode;
+//     }
+
+//     return {
+//       treeData,
+//     };
+//   },
+// };
+const props = defineProps({
+  details: Object,
+});
+const treeData = initTreeNode(props.details.chains);
     //console.log(treeData)
-    function initTreeNode(data) {
+function initTreeNode(data) {
       let treeNode = [];
       if (data) {
         treeNode = Object.keys(data).map(key => ({
@@ -46,11 +66,7 @@ export default {
       return treeNode;
     }
 
-    return {
-      treeData,
-    };
-  },
-};
+  
 </script>
 
 <style scoped lang="scss">

@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { defineProps, ref, computed, watch } from "vue";
 import { prepareReportResult } from "/@/components/boardReport/detail/util";
-import { getLighthouseAudits } from "/@/components/boardReport/apis";
+import { getLighthouseAudits } from "@/apis/report/apis";
 import auditLayout from "/@/components/boardReport/detail/audit/auditLayout.vue";
 import { showAsPassed, _getWastedMs } from "/@/components/boardReport/detail/util";
 import { useRouter } from "vue-router";

@@ -14,15 +14,19 @@
   </template>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useStore } from 'vuex';
+// import { useStore } from 'vuex';
 import { litSquirrelApi } from '/@/api/littleSquirrel';
 import { getUAOption, getUAVersionOption } from './uaInfoConfig';
-import { boardDataStore, reportStore } from '/@/store/modules/board';
+import { useBoardDataStore} from '@/store/modules/panel';
+import { useReportStore } from '@/store/modules/report'
 // import { boardDataStore } from '/@/store/modules/boardData';
 import BaseChart from '/@/components/coreBoard/baseChart.vue';
 import BasicChart from '/@/components/coreBoard/charts/basicChart.vue';
+
+const reportStore = useReportStore()
+const boardDataStore = useBoardDataStore
 
 const props = defineProps({
   type: {
@@ -37,18 +41,19 @@ const props = defineProps({
 
 const storeBoard = props.boardType === 'data' ? boardDataStore : reportStore;
 
-const store = useStore();
-const { account: userid = '' } = store.state.userInfo;
+// const store = useStore();
+// const { account: userid = '' } = store.state.userInfo;
+const userid = "xiongbilin"
 
 // 请求参数
 const requestParams = computed(() => ({
   boardid: '0x000',
   filter: {
-    gteTime: storeBoard.getFilterState.start_time,
-    lteTime: storeBoard.getFilterState.end_time,
+    gteTime: storeBoard.filterState.start_time,
+    lteTime: storeBoard.filterState.end_time,
     uaType: 'ua_' + props.type + '_name',
   },
-  projectid: `${storeBoard.getBoardInfoState.id}`,
+  projectid: `${storeBoard.boardInfoState.id}`,
   userid,
 }));
 

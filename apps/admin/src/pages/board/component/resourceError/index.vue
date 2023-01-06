@@ -10,10 +10,9 @@
 <script setup lang="ts">
 //resource异常Tab页
 import { ref, watch } from "vue";
-import { checkResourceStatus } from "@/apis/report";
+import { reportApis } from "@/apis/littleSquirrel";
 // import { ResourceApis } from '/@/api/board/resource';
 import { useBoardStore } from "@/store/modules/board";
-
 import SummaryData from "./components/summary/summaryData.vue";
 import ResultTabs from "./components/resultTable/resultTabs.vue";
 import ResourcePieCharts from "./components/detailPieCharts/resourcePieCharts.vue";
@@ -31,7 +30,7 @@ watch(
     end_time: boardStore.filterState.end_time,
   }),
   async (val) => {
-    const result = await checkResourceStatus(val);
+    const result = await reportApis.checkResourceStatus(val);
     if (result.stat === 1) {
       faultTolerantStatus.value = result.data.resourceResult === true ? "accessed" : "notAccess";
     }
