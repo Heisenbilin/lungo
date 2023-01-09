@@ -26,22 +26,22 @@
 </template>
 
 <script setup lang="ts">
-import { AreaChartOutlined, FundOutlined, PieChartOutlined } from "@ant-design/icons-vue";
-import { useLinkToUrl } from "@/hooks/board/useLink";
+import { AreaChartOutlined, FundOutlined, PieChartOutlined } from '@ant-design/icons-vue'
+import { useLinkToUrl } from '@/hooks/board/useLink'
 
 const props = defineProps({
   project: {
     type: Object,
     required: true,
   },
-});
+})
 
 //是否为编辑器应用
-const isEditProject = props.project.appid === "1001970";
+const isEditProject = props.project.appid === '1001970'
 //点击监控跳转的路由
-const boardUrl = useLinkToUrl(props.project.id, 'board');
+const boardUrl = useLinkToUrl(props.project.id, 'board')
 //点击质量周报按钮跳转的路由
-const reportUrl = useLinkToUrl(props.project.id, 'report');
+const reportUrl = useLinkToUrl(props.project.id, 'report')
 //点击数据大盘按钮跳转的路由
-const dataBoardUrl = useLinkToUrl(props.project.id, 'data');
+const dataBoardUrl = useLinkToUrl(props.project.id, 'data')
 </script>

@@ -10,9 +10,9 @@
   </template>
 </template>
 <script setup lang="ts">
-import { useLinkToUrl } from '@/hooks/board/useLink';
-import { Empty } from 'ant-design-vue';
-import tableContentMiddle from './tableContentMiddle.vue';
+import { useLinkToUrl } from '@/hooks/board/useLink'
+import { Empty } from 'ant-design-vue'
+import tableContentMiddle from './tableContentMiddle.vue'
 const props = defineProps({
   projectId: {
     type: Number,
@@ -24,10 +24,9 @@ const props = defineProps({
     required: true,
   },
   loading: Boolean,
-});
+})
 
-const linkToUrl = useLinkToUrl(props.projectId, 'board');
+const linkToUrl = useLinkToUrl(props.projectId, 'board')
 
-const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
-
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>

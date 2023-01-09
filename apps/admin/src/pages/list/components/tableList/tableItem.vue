@@ -10,17 +10,21 @@
       <!-- 正常 -->
       <div class="flex my-1 items-center whitespace-nowrap center">
         <div class="text-1xl text-gray-700 font-medium center">
-          {{ needCommafy? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
+          {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
         <div class="text-gray-500 center" v-if="unit.length">{{ unit }}</div>
       </div>
     </router-link>
-    <router-link v-else class="grid justify-items-center content-center w-full opacity-80" :to="jumpUrl">
+    <router-link
+      v-else
+      class="grid justify-items-center content-center w-full opacity-80"
+      :to="jumpUrl"
+    >
       <!-- 具有一定灰度、字体更小 -->
 
       <div class="flex my-1 items-center center">
         <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center">
-          {{ needCommafy? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
+          {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
         <div class="text-gray-500 center" v-if="unit.length">{{ unit }}</div>
       </div>
@@ -29,7 +33,7 @@
 </template>
 <script setup lang="ts">
 // import { computed } from 'vue';
-import { commafy } from "@vben/utils";
+import { commafy } from '@vben/utils'
 // import { boardStore } from '/@/store/modules/board';
 
 defineProps({
@@ -44,7 +48,7 @@ defineProps({
   },
   unit: {
     type: String,
-    default: "",
+    default: '',
   },
   needCommafy: {
     type: Boolean,
@@ -56,9 +60,9 @@ defineProps({
   },
   jumpUrl: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+})
 // const dimension = computed(() => boardStore.getFilterState.dimension);
 // const last = computed(() => (dimension.value === 'hour' ? '昨日' : '上周'));
 // const current = computed(() => (dimension.value === 'hour' ? '今日' : '本周'));

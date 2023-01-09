@@ -1,7 +1,7 @@
 export const getRecommendSDKConfig = (
   appid = '',
   eventid = '',
-  isSaas = false
+  isSaas = false,
 ) => `const SDKConfig = {
   // *****SDK推荐配置*****
   // 完整配置项及其说明请访问https://app.xesv5.com/doc/pages/fedata/fe-log-sdk/access.html查看
@@ -14,12 +14,12 @@ export const getRecommendSDKConfig = (
   // 包含xueersi、xesv5、vdyoo、xiwang等域名的API网关下, 大部分默认支持该跨域规则，故推荐打开
   trace: { open: true }, //打开traceid上传
   vue: { errorHandler: true }, // 捕获Vue抛出的错误
-}`;
+}`
 
 export const getVueRecommendSDKConfig = (
   appid = '',
   eventid = '',
-  isSaas = false
+  isSaas = false,
 ) => `import XesLoggerSDK from '@xes/xes_fe_log'
 const SDKConfig = {
   // *****SDK推荐配置*****
@@ -34,4 +34,4 @@ const SDKConfig = {
   trace: { open: true }, //打开traceid上传
   vue: { errorHandler: true }, // 捕获Vue抛出的错误
 }
-Vue.use(XesLoggerSDK, SDKConfig)  //注册，建议最先use`;
+Vue.use(XesLoggerSDK, SDKConfig)  //注册，建议最先use`

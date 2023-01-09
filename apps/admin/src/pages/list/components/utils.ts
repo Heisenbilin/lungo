@@ -1,44 +1,44 @@
-import { buildUUID, changeFormFormat } from "@vben/utils";
-import { handleDate } from "../../../hooks/board/date";
-import { cloneDeep } from "@vben/utils";
-import { graphic } from "@vben/hooks";
-const linearGradient = graphic.LinearGradient;
+import { buildUUID, changeFormFormat } from '@vben/utils'
+import { handleDate } from '../../../hooks/board/date'
+import { cloneDeep } from '@vben/utils'
+import { graphic } from '@vben/hooks'
+const linearGradient = graphic.LinearGradient
 
 export const adminUsers = [
-  "liguojing",
-  "gengxiaofei",
-  "tianfeng1",
-  "liming20",
-  "chenjian11",
-  "wangliuqi",
-  "xiongbilin",
-  "jiangnan21",
-  "botao",
-  "hehongyan3",
-];
+  'liguojing',
+  'gengxiaofei',
+  'tianfeng1',
+  'liming20',
+  'chenjian11',
+  'wangliuqi',
+  'xiongbilin',
+  'jiangnan21',
+  'botao',
+  'hehongyan3',
+]
 
 const paramsObj = {
-  1: "参数有效",
-  2: "参数无效",
-  3: "检测异常",
-};
+  1: '参数有效',
+  2: '参数无效',
+  3: '检测异常',
+}
 
 //ua解析
 export function handleUaParse(ua_name, ua_flag) {
   //根据keywords解析ua名
   const keywords = ua_flag
-    .replace(/\n/gi, ",")
-    .replace(/\s/gi, "")
-    .replace(/，/gi, ",")
-    .split(",")
-    .join("|");
-  let pattern = `(${keywords})w*[\\/:]?[\\d.]*`;
-  let regex = new RegExp(pattern, "ig");
-  let res = regex.exec(ua_name);
-  if (!res) return {};
+    .replace(/\n/gi, ',')
+    .replace(/\s/gi, '')
+    .replace(/，/gi, ',')
+    .split(',')
+    .join('|')
+  let pattern = `(${keywords})w*[\\/:]?[\\d.]*`
+  let regex = new RegExp(pattern, 'ig')
+  let res = regex.exec(ua_name)
+  if (!res) return {}
   else {
-    let [app_name, app_version] = res[0].replace(/:/gi, "/").split("/");
-    return { app_name, app_version };
+    let [app_name, app_version] = res[0].replace(/:/gi, '/').split('/')
+    return { app_name, app_version }
   }
   //上面返回解析到的第一个ua，若想返回多条可以修改注释，执行循环
   // while (res && res[0]) {
@@ -54,11 +54,11 @@ export function handleUaParse(ua_name, ua_flag) {
 //把表单数据处理成接口请求参数
 export function handleProjectParams(form, isShutDown) {
   //是否关闭项目
-  const close_project = isShutDown === true ? 1 : 0;
+  const close_project = isShutDown === true ? 1 : 0
   // 登录参数
-  let loginParams = {
+  let loginParams: any = {
     need_login: 2,
-  };
+  }
   if (form.auth_info.need_login === 1) {
     // 1、需要登录 2、不需要登录
     loginParams = {
@@ -70,11 +70,11 @@ export function handleProjectParams(form, isShutDown) {
       last_check_status: form.auth_info.authForm.last_check_status,
       auth_msg: changeFormFormat(form.auth_info.authForm.fields),
       project_url: form.auth_info.project_url,
-    };
+    }
   }
 
   //基础信息
-  let params = {
+  let params: any = {
     name: form.basic_info.project_name,
     saas: form.basic_info.saas,
     belong_project: form.basic_info.belong_project,
@@ -84,16 +84,16 @@ export function handleProjectParams(form, isShutDown) {
     domain: form.basic_info.domain,
     log_version: 1, //ES中日志解析版本默认为1（新版本）
     log_handle: 1, //ES中日志解析默认1（开启日志解析）
-    platforms: "huatuo.xesv5.com,fedata.xesv5.com", //生效平台默认华佗、小松鼠
+    platforms: 'huatuo.xesv5.com,fedata.xesv5.com', //生效平台默认华佗、小松鼠
     href: form.basic_info.href,
     uc_group_id: form.basic_info.uc_group_id,
     git: form.basic_info.git,
     project_desc: form.basic_info.project_desc,
     weekly_report_receivers: form.basic_info.weekly_report_receivers,
-  };
+  }
   //若项目开启了sourcemap解析
   if (form.sourcemap_info.sourcemap_analysis === 1) {
-    params.sourcemap_analysis = 1;
+    params.sourcemap_analysis = 1
     //使用私有存储
     if (
       form.sourcemap_info.default_storage === 1 &&
@@ -101,69 +101,69 @@ export function handleProjectParams(form, isShutDown) {
         form.sourcemap_info.access_key_secret ||
         form.sourcemap_info.bucket)
     ) {
-      params.access_key_id = form.sourcemap_info.access_key_id;
-      params.access_key_secret = form.sourcemap_info.access_key_secret;
-      params.bucket = form.sourcemap_info.bucket;
+      params.access_key_id = form.sourcemap_info.access_key_id
+      params.access_key_secret = form.sourcemap_info.access_key_secret
+      params.bucket = form.sourcemap_info.bucket
     } else {
-      params.access_key_id = "";
-      params.access_key_secret = "";
-      params.bucket = "";
+      params.access_key_id = ''
+      params.access_key_secret = ''
+      params.bucket = ''
     }
-    params.enable_log = form.sourcemap_info.enable_log;
+    params.enable_log = form.sourcemap_info.enable_log
     //自定义map文件位置
     if (
       form.sourcemap_info.default_upload === 1 &&
       (form.sourcemap_info.upload_from || form.sourcemap_info.upload_to)
     ) {
-      params.upload_from = form.sourcemap_info.upload_from;
-      params.upload_to = form.sourcemap_info.upload_to;
+      params.upload_from = form.sourcemap_info.upload_from
+      params.upload_to = form.sourcemap_info.upload_to
     } else {
-      params.upload_from = "";
-      params.upload_to = "";
+      params.upload_from = ''
+      params.upload_to = ''
     }
     //知音楼消息提醒
     if (form.sourcemap_info.notice_status === 1 && form.sourcemap_info.notice_values.length) {
-      let names = [];
-      let ids = [];
-      form.sourcemap_info.notice_values.forEach((element) => {
-        const values = element.split("(");
-        names.push(values[0]);
-        ids.push(values[1].slice(0, -1));
-      });
-      params.notice_status = 1;
-      params.notice_ids = ids.join("|");
-      params.notice_names = names.join(",");
+      let names: any[] = []
+      let ids: any[] = []
+      form.sourcemap_info.notice_values.forEach(element => {
+        const values = element.split('(')
+        names.push(values[0])
+        ids.push(values[1].slice(0, -1))
+      })
+      params.notice_status = 1
+      params.notice_ids = ids.join('|')
+      params.notice_names = names.join(',')
     } else {
-      params.notice_status = 0;
-      params.notice_ids = "";
-      params.notice_names = "";
+      params.notice_status = 0
+      params.notice_ids = ''
+      params.notice_names = ''
     }
   } else {
-    params.sourcemap_analysis = 0;
+    params.sourcemap_analysis = 0
   }
   //若项目开启了自定义UA解析
   if (form.ua_info.length) {
-    params.project_ua = form.ua_info.map((item) => item.ua_name).join(",");
-    params.ua_flag = form.ua_info.map((item) => item.ua_flag).join(",");
+    params.project_ua = form.ua_info.map(item => item.ua_name).join(',')
+    params.ua_flag = form.ua_info.map(item => item.ua_flag).join(',')
   }
-  return { close_project, ...params, loginParams };
+  return { close_project, ...params, loginParams }
 }
 
 //将接口数据初始化成表单数据
 export function initEditFormData(resultData) {
-  const ua_flag = resultData.ua_flag;
-  const project_uas = resultData.project_ua.split(",");
-  const formData = {
+  const ua_flag = resultData.ua_flag
+  const project_uas = resultData.project_ua.split(',')
+  const formData: any = {
     //基本信息
     basic_info: {
       project_name: resultData.project_name,
-      saas: resultData.saas === "yes" || resultData.saas === "no" ? resultData.saas : undefined,
+      saas: resultData.saas === 'yes' || resultData.saas === 'no' ? resultData.saas : undefined,
       eventid: resultData.eventid,
       appid: resultData.appid,
       gateway: resultData.gateway,
       domain: resultData.domain,
       uc_group_id: resultData.uc_group_id,
-      href: resultData.href === "-1" ? "" : resultData.href,
+      href: resultData.href === '-1' ? '' : resultData.href,
       git: resultData.git,
       belong_project: resultData.belong_project,
       project_desc: resultData.project_desc,
@@ -184,20 +184,20 @@ export function initEditFormData(resultData) {
       notice_status: resultData.notice_status,
       notice_values: resultData.notice_ids
         ? resultData.notice_ids
-            .split("|")
-            .map((id, index) => `${resultData.notice_names.split(",")[index]}(${id})`)
+            .split('|')
+            .map((id, index) => `${resultData.notice_names.split(',')[index]}(${id})`)
         : [],
     },
     //ua解析配置
-    ua_info: ua_flag.split(",").map((item, i) => {
-      const flag = project_uas[i].length && item.length;
+    ua_info: ua_flag.split(',').map((item, i) => {
+      const flag = project_uas[i].length && item.length
       return {
         ua_name: project_uas[i],
         ua_flag: item,
         parse_status: flag ? 1 : 0,
-        app_name: flag ? handleUaParse(project_uas[i], item).app_name : "",
-        app_version: flag ? handleUaParse(project_uas[i], item).app_version : "",
-      };
+        app_name: flag ? handleUaParse(project_uas[i], item).app_name : '',
+        app_version: flag ? handleUaParse(project_uas[i], item).app_version : '',
+      }
     }),
     auth_info: {
       need_login: +resultData.need_login,
@@ -209,49 +209,49 @@ export function initEditFormData(resultData) {
         last_check_status: resultData.last_check_status,
         last_check_time: resultData.last_check_time,
         last_check_time_txt: resultData.last_check_time
-          ? handleDate({ time: resultData.last_check_time, type: "YY-MM-DD HH-mm-ss" })
-          : "",
-        last_check_statusTxt: "",
+          ? handleDate({ time: resultData.last_check_time, type: 'YY-MM-DD HH-mm-ss' })
+          : '',
+        last_check_statusTxt: '',
       },
     },
     auth_info_original_auth_msg: resultData.auth_msg,
-  };
+  }
   if (resultData.auth_msg) {
-    const auth_msg = JSON.parse(resultData.auth_msg);
-    let arr = [];
+    const auth_msg = JSON.parse(resultData.auth_msg)
+    let arr: any[] = []
     for (let key in auth_msg) {
-      auth_msg[key].forEach((element) => {
-        arr.push({ index: buildUUID(), field: `${key}`, ...element });
-      });
+      auth_msg[key].forEach(element => {
+        arr.push({ index: buildUUID(), field: `${key}`, ...element })
+      })
     }
-    formData.auth_info.authForm.fields = arr;
+    formData.auth_info.authForm.fields = arr
   }
   formData.auth_info.authForm.last_check_statusTxt = resultData.last_check_status
     ? paramsObj[+resultData.last_check_status]
-    : "";
+    : ''
   if (!resultData.last_check_status) {
-    formData.auth_info.authForm.last_check_time_txt = "";
+    formData.auth_info.authForm.last_check_time_txt = ''
   }
-  return formData;
+  return formData
 }
 
 export function caculatePageSizeByWidth(w) {
   if (w) {
     if (w < 1280) {
-      return 6;
+      return 6
     }
     if (w < 1536) {
-      return 10;
+      return 10
     }
     if (w < 2000) {
-      return 12;
+      return 12
     }
     // if (w < 2520) {
     //   return 16;
     // }
-    return 16;
+    return 16
   }
-  return 10;
+  return 10
 }
 
 const defaultOption = {
@@ -263,7 +263,7 @@ const defaultOption = {
   },
   xAxis: {
     show: false,
-    data: ["1", "2"],
+    data: ['1', '2'],
   },
   yAxis: {
     show: false,
@@ -271,121 +271,121 @@ const defaultOption = {
   series: [
     {
       data: [0, 0],
-      type: "line",
-      sampling: "lttb",
-      symbol: "none",
+      type: 'line',
+      sampling: 'lttb',
+      symbol: 'none',
       itemStyle: {
-        color: "#f77f00",
+        color: '#f77f00',
       },
       areaStyle: {
         color: new linearGradient(0, 0, 0, 1, [
           {
             offset: 0,
-            color: "#f77f00",
+            color: '#f77f00',
           },
           {
             offset: 1,
-            color: "#fff",
+            color: '#fff',
           },
         ]),
       },
     },
   ],
-};
+}
 
-export const getTendencyChartOption = (data) => {
-  const chartOption = cloneDeep(defaultOption);
-  if (!(Array.isArray(data) && data.length)) return chartOption;
-  let timeList = data.length === 1 ? ["1"] : [];
-  let countList = data.length === 1 ? [0] : [];
-  data.forEach((item) => {
-    timeList.push(item.query_time);
-    countList.push(item.board_count);
-  });
-  chartOption.xAxis.data = timeList;
-  chartOption.series[0].data = countList;
-  return chartOption;
-};
+export const getTendencyChartOption = data => {
+  const chartOption: any = cloneDeep(defaultOption)
+  if (!(Array.isArray(data) && data.length)) return chartOption
+  let timeList = data.length === 1 ? ['1'] : []
+  let countList = data.length === 1 ? [0] : []
+  data.forEach(item => {
+    timeList.push(item.query_time)
+    countList.push(item.board_count)
+  })
+  chartOption.xAxis.data = timeList
+  chartOption.series[0].data = countList
+  return chartOption
+}
 
 export const tableColumns = [
   {
-    title: "应用名称",
-    dataIndex: "name",
-    key: "name",
-    slots: { customRender: "rendername" },
-    fixed: "left",
-    width: "160px",
+    title: '应用名称',
+    dataIndex: 'name',
+    key: 'name',
+    slots: { customRender: 'rendername' },
+    fixed: 'left',
+    width: '160px',
   },
   {
-    title: "SDK版本",
-    dataIndex: "sdk",
-    key: "sdk",
-    slots: { customRender: "sdk" },
-    width: "35px",
+    title: 'SDK版本',
+    dataIndex: 'sdk',
+    key: 'sdk',
+    slots: { customRender: 'sdk' },
+    width: '35px',
   },
   {
-    title: "实时评分",
-    dataIndex: "score",
-    key: "score",
-    slots: { customRender: "score" },
-    width: "50px",
-    align: "center",
+    title: '实时评分',
+    dataIndex: 'score',
+    key: 'score',
+    slots: { customRender: 'score' },
+    width: '50px',
+    align: 'center',
   },
   {
-    title: "PV量",
-    dataIndex: "pv",
-    key: "pv",
-    slots: { customRender: "pv" },
-    width: "50px",
-    align: "center",
+    title: 'PV量',
+    dataIndex: 'pv',
+    key: 'pv',
+    slots: { customRender: 'pv' },
+    width: '50px',
+    align: 'center',
   },
   {
-    title: "UV量",
-    key: "uv",
-    dataIndex: "uv",
-    slots: { customRender: "uv" },
-    width: "50px",
-    align: "center",
+    title: 'UV量',
+    key: 'uv',
+    dataIndex: 'uv',
+    slots: { customRender: 'uv' },
+    width: '50px',
+    align: 'center',
   },
   {
-    title: "活跃趋势",
-    key: "chartOption",
-    dataIndex: "chartOption",
-    slots: { customRender: "chartOption" },
-    width: "100px",
-    align: "center",
+    title: '活跃趋势',
+    key: 'chartOption',
+    dataIndex: 'chartOption',
+    slots: { customRender: 'chartOption' },
+    width: '100px',
+    align: 'center',
   },
   {
-    title: "页面加载",
-    key: "pageloadData",
-    dataIndex: "pageloadData",
-    slots: { customRender: "pageloadData" },
-    width: "60px",
-    align: "center",
+    title: '页面加载',
+    key: 'pageloadData',
+    dataIndex: 'pageloadData',
+    slots: { customRender: 'pageloadData' },
+    width: '60px',
+    align: 'center',
   },
   {
-    title: "运行时异常率",
-    key: "runtimeError",
-    dataIndex: "runtimeError",
-    slots: { customRender: "runtimeError" },
-    width: "50px",
-    align: "center",
+    title: '运行时异常率',
+    key: 'runtimeError',
+    dataIndex: 'runtimeError',
+    slots: { customRender: 'runtimeError' },
+    width: '50px',
+    align: 'center',
   },
   {
-    title: "资源异常率",
-    key: "error",
-    dataIndex: "error",
-    slots: { customRender: "resourceError" },
-    width: "50px",
-    align: "center",
+    title: '资源异常率',
+    key: 'error',
+    dataIndex: 'error',
+    slots: { customRender: 'resourceError' },
+    width: '50px',
+    align: 'center',
   },
   {
-    title: "请求成功率",
-    key: "success",
-    dataIndex: "success",
-    slots: { customRender: "success" },
-    width: "50px",
-    align: "center",
+    title: '请求成功率',
+    key: 'success',
+    dataIndex: 'success',
+    slots: { customRender: 'success' },
+    width: '50px',
+    align: 'center',
   },
   // {
   //   title: '活跃趋势',
@@ -396,21 +396,21 @@ export const tableColumns = [
   //   align: 'center',
   // },
   {
-    title: "看板",
-    key: "screen",
-    dataIndex: "screen",
-    slots: { customRender: "screen" },
-    width: "150px",
-    fixed: "right",
-    align: "center",
+    title: '看板',
+    key: 'screen',
+    dataIndex: 'screen',
+    slots: { customRender: 'screen' },
+    width: '150px',
+    fixed: 'right',
+    align: 'center',
   },
   {
-    title: "操作",
-    key: "action",
-    dataIndex: "action",
-    slots: { customRender: "action" },
-    fixed: "right",
-    width: "50px",
-    align: "center",
+    title: '操作',
+    key: 'action',
+    dataIndex: 'action',
+    slots: { customRender: 'action' },
+    fixed: 'right',
+    width: '50px',
+    align: 'center',
   },
-];
+]

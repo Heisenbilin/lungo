@@ -4,14 +4,14 @@
       <div class="text-gray-800">
         <div v-if="needCommafy">
           {{ last }}同比{{ title }}：{{ commafy(parseFloat(data.yesterdayData))
-          }}{{ unit.length ? unit : "" }}
+          }}{{ unit.length ? unit : '' }}
         </div>
         <div v-else>
           {{ current }}{{ numName }}：{{ commafy(parseFloat(data.todayData))
           }}{{
             data.todayTotalData !== undefined
               ? `（总请求量：${commafy(parseFloat(data.todayTotalData))})`
-              : ""
+              : ''
           }}
           <br />
           {{ current }}{{ title }}：{{ parseFloat(data.todayRate) }}%
@@ -20,7 +20,7 @@
           }}{{
             data.yesterTotalData !== undefined
               ? `（总请求量：${commafy(parseFloat(data.yesterTotalData))})`
-              : ""
+              : ''
           }}
           <br />
           {{ last }}同比{{ title }}：{{ parseFloat(data.yesterdayRate) }}%
@@ -54,7 +54,7 @@
           {{ parseFloat(data.increaseRate) }}%<ArrowUpOutlined />
         </span>
         <span v-else :class="reverseColor ? 'text-green-600' : 'text-red-600'">
-          {{ parseFloat(data.increaseRate.split("-")[1]) }}%<ArrowDownOutlined />
+          {{ parseFloat(data.increaseRate.split('-')[1]) }}%<ArrowDownOutlined />
         </span>
       </div>
     </router-link>
@@ -83,7 +83,7 @@
           {{ parseFloat(data.increaseRate) }}%<ArrowUpOutlined />
         </span>
         <span v-else :class="reverseColor ? 'text-green-600' : 'text-red-600'">
-          {{ parseFloat(data.increaseRate.split("-")[1]) }}%<ArrowDownOutlined />
+          {{ parseFloat(data.increaseRate.split('-')[1]) }}%<ArrowDownOutlined />
         </span>
       </div>
     </router-link>
@@ -91,13 +91,13 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons-vue";
-import { computed } from "vue";
-import { commafy } from "@vben/utils";
-import { useBoardStore } from "@/store/modules/board";
-import { storeToRefs } from "pinia";
+import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons-vue'
+import { computed } from 'vue'
+import { commafy } from '@vben/utils'
+import { useBoardStore } from '@/store/modules/board'
+import { storeToRefs } from 'pinia'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 const props = defineProps({
   data: {
@@ -111,7 +111,7 @@ const props = defineProps({
   },
   unit: {
     type: String,
-    default: "",
+    default: '',
   },
   needCommafy: {
     type: Boolean,
@@ -127,17 +127,17 @@ const props = defineProps({
   },
   numName: {
     type: String,
-    default: "",
+    default: '',
   },
   jumpUrl: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+})
 
-const { filterState } = storeToRefs(boardStore);
-const last = computed(() => (filterState.value.dimension === "hour" ? "昨日" : "上周"));
-const current = computed(() => (filterState.value.dimension === "hour" ? "今日" : "本周"));
+const { filterState } = storeToRefs(boardStore)
+const last = computed(() => (filterState.value.dimension === 'hour' ? '昨日' : '上周'))
+const current = computed(() => (filterState.value.dimension === 'hour' ? '今日' : '本周'))
 </script>
 
 <style lang="less" scoped>

@@ -13,5 +13,5 @@
 </template>
 
 <script setup lang="ts">
-import { InfoCircleOutlined } from "@ant-design/icons-vue";
+import { InfoCircleOutlined } from '@ant-design/icons-vue'
 </script>

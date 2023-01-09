@@ -104,6 +104,6 @@ const columns = [
     width: '50px',
     align: 'center',
   },
-];
+]
 
-export default columns;
+export default columns

@@ -14,18 +14,16 @@
 </template>
 
 <script setup lang="ts">
-import { useLinkToUrl } from "@/hooks/board/useLink";
+import { useLinkToUrl } from '@/hooks/board/useLink'
 
 const props = defineProps({
   project: {
     type: Object,
     required: true,
   },
-});
+})
 
-
-const linkToUrl = useLinkToUrl(props.project.id, 'board');
-
+const linkToUrl = useLinkToUrl(props.project.id, 'board')
 </script>
 
 <style lang="scss" scoped>

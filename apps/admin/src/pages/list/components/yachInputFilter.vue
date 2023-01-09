@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import { reactive, toRefs, watch } from 'vue';
-import { debounce } from '@vben/utils';
-import { searchWorkerInfo } from '@/apis/tool';
+import { reactive, toRefs, watch } from 'vue'
+import { debounce } from '@vben/utils'
+import { searchWorkerInfo } from '@/apis/tool'
 
 //知音楼账号检索
 export default {
@@ -31,29 +31,29 @@ export default {
   },
   emits: ['update:noticeValues'],
   setup(props, context) {
-    let lastFetchId = 0;
+    let lastFetchId = 0
     const state = reactive({
       data: [],
       //value格式：['account（id)','account(id)']
       value: props.noticeValues,
       fetching: false,
-    });
+    })
 
     //监听选中变化，想父组件双向绑定参数传值
     watch(
       () => state.value,
       () => {
-        context.emit('update:noticeValues', state.value);
-      }
-    );
+        context.emit('update:noticeValues', state.value)
+      },
+    )
 
     const fetchUser = debounce(value => {
       // 匹配中文
-      const reg = /[^\x00-\xff]/g;
+      const reg = /[^\x00-\xff]/g
       // 匹配数字
-      const regNum = /^\d{6}$/g;
+      const regNum = /^\d{6}$/g
       // 匹配英文字母 不区分大小写
-      const regEng = /^[A-Za-z0-9]{4,}$/g;
+      const regEng = /^[A-Za-z0-9]{4,}$/g
 
       const params = reg.test(value)
         ? { name: value }
@@ -61,35 +61,35 @@ export default {
         ? { workcode: value }
         : regEng.test(value)
         ? { account: value }
-        : null;
+        : null
       if (params) {
-        lastFetchId += 1;
-        const fetchId = lastFetchId;
-        state.data = [];
-        state.fetching = true;
+        lastFetchId += 1
+        const fetchId = lastFetchId
+        state.data = []
+        state.fetching = true
         searchWorkerInfo(params).then(result => {
           if (fetchId !== lastFetchId) {
             // for fetch callback order
-            return;
+            return
           }
-          state.fetching = false;
+          state.fetching = false
           state.data =
             result?.data.map(user => ({
               label: `${user.account}(${user.workcode})`,
               value: `${user.account}(${user.workcode})`,
-            })) ?? [];
-        });
-        return;
+            })) ?? []
+        })
+        return
       }
-    }, 300);
+    }, 300)
     watch(state.value, () => {
-      state.data = [];
-      state.fetching = false;
-    });
+      state.data = []
+      state.fetching = false
+    })
 
-    return { ...toRefs(state), fetchUser };
+    return { ...toRefs(state), fetchUser }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped></style>

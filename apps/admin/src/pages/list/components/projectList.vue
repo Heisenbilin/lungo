@@ -16,21 +16,35 @@
 
           <a-tooltip placement="top">
             <template v-if="currentGroup" #title>
-              {{ currentGroup.group_name.length > 10 ? currentGroup.group_name : "" }}
+              {{ currentGroup.group_name.length > 10 ? currentGroup.group_name : '' }}
             </template>
-            <a-select v-model:value="groupId" allowClear showSearch :filterOption="filterOption" style="width: 200px">
+            <a-select
+              v-model:value="groupId"
+              allowClear
+              showSearch
+              :filterOption="filterOption"
+              style="width: 200px"
+            >
               <a-select-option value="" key="全部用户组" title="全部用户组">
                 全部用户组
               </a-select-option>
 
-              <a-select-option v-for="item in groups" :value="item.group_id" :key="item.group_id"
-                :title="item.group_name">
+              <a-select-option
+                v-for="item in groups"
+                :value="item.group_id"
+                :key="item.group_id"
+                :title="item.group_name"
+              >
                 {{ item.group_name }}
               </a-select-option>
             </a-select>
           </a-tooltip>
-          <a-input-search v-model:value="searchValue" style="width: 200px" placeholder="输入名称/appid/eventid"
-            @keydown="onInputKeyDown" />
+          <a-input-search
+            v-model:value="searchValue"
+            style="width: 200px"
+            placeholder="输入名称/appid/eventid"
+            @keydown="onInputKeyDown"
+          />
         </div>
         <div>
           <span class="pr-1">数据维度:</span>
@@ -45,112 +59,146 @@
         <a-button type="primary" @click="addProject">创建应用</a-button>
         <div>
           <a-tooltip title="列表展示">
-            <UnorderedListOutlined :style="{
-              color: state === 'table' ? 'rgba(43, 96, 179)' : 'gray',
-              fontSize: '20px',
-            }" @click="handleToggleShow('table')" />
+            <UnorderedListOutlined
+              :style="{
+                color: state === 'table' ? 'rgba(43, 96, 179)' : 'gray',
+                fontSize: '20px',
+              }"
+              @click="handleToggleShow('table')"
+            />
           </a-tooltip>
           <a-tooltip title="卡片展示">
-            <AppstoreOutlined :style="{
-              color: state === 'card' ? 'rgba(43, 96, 179)' : 'gray',
-              fontSize: '20px',
-              padding: '10px',
-            }" @click="handleToggleShow('card')" />
+            <AppstoreOutlined
+              :style="{
+                color: state === 'card' ? 'rgba(43, 96, 179)' : 'gray',
+                fontSize: '20px',
+                padding: '10px',
+              }"
+              @click="handleToggleShow('card')"
+            />
           </a-tooltip>
         </div>
       </div>
     </template>
     <a-tab-pane key="all" tab="应用列表">
       <div v-if="state === 'card'">
-        <cardList :requestParams="{
-          name: searchValue.trim(),
-          projectType: projectType,
-          saasType: saasType,
-          groupid: groupId,
-          show: state,
-        }" :forceFlash="forceFlashFlag.all" :isStar="false" :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime" @edit="editProjectInfo" />
+        <cardList
+          :requestParams="{
+            name: searchValue.trim(),
+            projectType: projectType,
+            saasType: saasType,
+            groupid: groupId,
+            show: state,
+          }"
+          :forceFlash="forceFlashFlag.all"
+          :isStar="false"
+          :startTime="dimension === 'week' ? startWeek : startTime"
+          :endTime="endTime"
+          @edit="editProjectInfo"
+        />
       </div>
       <div v-else>
-        <tableList :requestParams="{
-          name: searchValue.trim(),
-          projectType: projectType,
-          saasType: saasType,
-          groupid: groupId,
-          show: state,
-        }" :forceFlash="forceFlashFlag.all" :isStar="false" :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime" @edit="editProjectInfo" />
+        <tableList
+          :requestParams="{
+            name: searchValue.trim(),
+            projectType: projectType,
+            saasType: saasType,
+            groupid: groupId,
+            show: state,
+          }"
+          :forceFlash="forceFlashFlag.all"
+          :isStar="false"
+          :startTime="dimension === 'week' ? startWeek : startTime"
+          :endTime="endTime"
+          @edit="editProjectInfo"
+        />
       </div>
     </a-tab-pane>
     <a-tab-pane key="star" tab="我的收藏">
       <div v-if="state === 'card'">
-        <cardList :requestParams="{
-          name: searchValue.trim(),
-          projectType: projectType,
-          saasType: saasType,
-          groupid: groupId,
-          show: state,
-        }" :forceFlash="forceFlashFlag.star" :isStar="true" :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime" @edit="editProjectInfo" />
+        <cardList
+          :requestParams="{
+            name: searchValue.trim(),
+            projectType: projectType,
+            saasType: saasType,
+            groupid: groupId,
+            show: state,
+          }"
+          :forceFlash="forceFlashFlag.star"
+          :isStar="true"
+          :startTime="dimension === 'week' ? startWeek : startTime"
+          :endTime="endTime"
+          @edit="editProjectInfo"
+        />
       </div>
       <div v-else>
-        <tableList :requestParams="{
-          name: searchValue.trim(),
-          projectType: projectType,
-          saasType: saasType,
-          groupid: groupId,
-          show: state,
-        }" :forceFlash="forceFlashFlag.star" :isStar="true" :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime" @edit="editProjectInfo" />
+        <tableList
+          :requestParams="{
+            name: searchValue.trim(),
+            projectType: projectType,
+            saasType: saasType,
+            groupid: groupId,
+            show: state,
+          }"
+          :forceFlash="forceFlashFlag.star"
+          :isStar="true"
+          :startTime="dimension === 'week' ? startWeek : startTime"
+          :endTime="endTime"
+          @edit="editProjectInfo"
+        />
       </div>
     </a-tab-pane>
   </a-tabs>
-  <addProjectModal v-if="addProjectVisible" v-model:visible="addProjectVisible" :editProjectId="editProjectId"
-    @flash="forceFlashList" />
+  <addProjectModal
+    v-if="addProjectVisible"
+    v-model:visible="addProjectVisible"
+    :editProjectId="editProjectId"
+    @flash="forceFlashList"
+  />
   <uc-group-modal />
 </template>
 <script setup lang="ts">
-import { ref, watch, h, computed } from "vue";
-import { checkProjectData } from "@/apis/list";
-import { message, Modal } from "ant-design-vue";
-import { AppstoreOutlined, UnorderedListOutlined } from "@ant-design/icons-vue";
-import { addOrUpdateUrlParams, getUrlParams } from "@vben/utils";
-import { useBoardStore } from "@/store/modules/board";
-import { useListStore } from "@/store/modules/list";
-import { useAppStore } from "@/store/modules/app";
-import { storeToRefs } from "pinia";
-import cardList from "./cardList/index.vue";
-import tableList from "./tableList/index.vue";
-import addProjectModal from "./addProject/addProjectDrawer.vue";
-import UcGroupModal from "./ucGroupModal.vue";
-import moment from "moment";
+import { ref, watch, h, computed } from 'vue'
+import { checkProjectData } from '@/apis/list'
+import { message, Modal } from 'ant-design-vue'
+import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
+import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
+import { useBoardStore } from '@/store/modules/board'
+import { useListStore } from '@/store/modules/list'
+import { useAppStore } from '@/store/modules/app'
+import { storeToRefs } from 'pinia'
+import cardList from './cardList/index.vue'
+import tableList from './tableList/index.vue'
+import addProjectModal from './addProject/addProjectDrawer.vue'
+import UcGroupModal from './ucGroupModal.vue'
+import moment from 'moment'
 
 const {
-  tabKey = "all",
-  name = "",
-  type = "0",
-  saas = "",
-  dimen = "week",
-  groupid = "",
-  show = "table",
-} = getUrlParams();
+  tabKey = 'all',
+  name = '',
+  type = '0',
+  saas = '',
+  dimen = 'week',
+  groupid = '',
+  show = 'table',
+} = getUrlParams()
 
-const listStore = useListStore();
-const boardStore = useBoardStore();
-const appStore = useAppStore();
+const listStore = useListStore()
+const boardStore = useBoardStore()
+const appStore = useAppStore()
 
 // const store = useStore();
-const userName = "xiongbilin"; //store.state.userInfo.account || '';
-const { forceFlashFlag } = storeToRefs(listStore);
-const isAdminUser = appStore.checkIsAdmin(userName);
+const userName = 'xiongbilin' //store.state.userInfo.account || '';
+const { forceFlashFlag } = storeToRefs(listStore)
+const isAdminUser = appStore.checkIsAdmin(userName)
 // 项目初始展示形态
-let state = ref(show);
+let state = ref(show)
 // 切换颜色以及展示组件
 function handleToggleShow(value) {
-  if (value == "card") {
-    state.value = "card";
+  if (value == 'card') {
+    state.value = 'card'
   } else {
-    state.value = "table";
+    state.value = 'table'
   }
 }
 
@@ -158,75 +206,75 @@ function handleToggleShow(value) {
 const forceFlashList = () => {
   if (!editProjectId.value) {
     //若为新增项目，跳转到"全部应用"Tab
-    activeKey.value = "all";
-    listStore.forceFlashFlag["all"] = !listStore.forceFlashFlag["all"];
+    activeKey.value = 'all'
+    listStore.forceFlashFlag['all'] = !listStore.forceFlashFlag['all']
     // store.dispatch('actSetForceFlashFlag', activeKey.value);
   } else {
     //若为编辑项目，刷新两个列表
-    listStore.forceFlashFlag["all"] = !listStore.forceFlashFlag["all"];
-    listStore.forceFlashFlag["star"] = !listStore.forceFlashFlag["star"];
+    listStore.forceFlashFlag['all'] = !listStore.forceFlashFlag['all']
+    listStore.forceFlashFlag['star'] = !listStore.forceFlashFlag['star']
     // store.dispatch('actSetForceFlashFlag', 'all');
     // store.dispatch('actSetForceFlashFlag', 'star');
   }
-};
+}
 
 // 获取UCGroups
 // store.dispatch('actGetUCGroups');
-listStore.requestUCGroups();
-const groupId = ref(+groupid === 0 ? "" : +groupid);
-const { ucGroups: groups } = storeToRefs(listStore);
+listStore.requestUCGroups()
+const groupId = ref(+groupid === 0 ? '' : +groupid)
+const { ucGroups: groups } = storeToRefs(listStore)
 // const groups = computed(() => store.state.ucGroups);
 
 const currentGroup = computed(
-  () => groups.value.find((item) => item.group_id === groupId.value) || { group_name: "全部用户组" }
-);
+  () => groups.value.find(item => item.group_id === groupId.value) || { group_name: '全部用户组' },
+)
 
 //选择用户组时，用户自己输入时的搜索关键字
 function filterOption(inputValue, options) {
-  return options.children[0].children.includes(inputValue);
+  return options.children[0].children.includes(inputValue)
 }
 //tabKey
-const activeKey = ref(tabKey);
+const activeKey = ref(tabKey)
 //监听tabKey变化，更新url Parameter
-watch(activeKey, (val) => addOrUpdateUrlParams({ tabKey: val }));
+watch(activeKey, val => addOrUpdateUrlParams({ tabKey: val }))
 
 //时间范围
-const startTime = moment().startOf("day").format("YYYY-MM-DD HH:mm:ss");
-const startWeek = moment().startOf("day").subtract(6, "d").format("YYYY-MM-DD HH:mm:ss");
+const startTime = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+const startWeek = moment().startOf('day').subtract(6, 'd').format('YYYY-MM-DD HH:mm:ss')
 const endTime = moment()
   .minute(10 * Math.floor(moment().minutes() / 10))
   .second(0)
-  .format("YYYY-MM-DD HH:mm:ss");
+  .format('YYYY-MM-DD HH:mm:ss')
 
 //对比维度
-const dimension = ref(dimen);
+const dimension = ref(dimen)
 
 //监听数据维度变化，更新store
 watch(
   dimension,
-  (val) => {
-    const dimension = val.value === "week" ? "day" : "hour";
-    boardStore.addFilterValue({ dimension });
-    addOrUpdateUrlParams({ dimen: val });
+  val => {
+    const dimension = val.value === 'week' ? 'day' : 'hour'
+    boardStore.addFilterValue({ dimension })
+    addOrUpdateUrlParams({ dimen: val })
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 
 //创建应用弹窗可视性
-const addProjectVisible = ref(false);
+const addProjectVisible = ref(false)
 //编辑项目的项目ID
-const editProjectId = ref("");
+const editProjectId = ref('')
 //搜索框value
-const searchValue = ref(name);
+const searchValue = ref(name)
 
 //应用类型
-const projectType = ref(+type);
+const projectType = ref(+type)
 //Saas类型
-const saasType = ref(saas);
+const saasType = ref(saas)
 
 //处理路由中的项目
 const handleEditParams = () => {
-  const { openUpdateDialog, project_id } = getUrlParams();
+  const { openUpdateDialog, project_id } = getUrlParams()
   if (+openUpdateDialog === 1 && project_id) {
     //判断是否有该项目权限、且项目是否是开启中
     // let hasAuthority = false;
@@ -237,7 +285,7 @@ const handleEditParams = () => {
     //   message.error('项目已关闭');
     //   window.history.replaceState({}, 0, window.location.href.split('?openUpdateDialog')[0]);
     // } else {
-    editProjectInfo(project_id);
+    editProjectInfo(project_id)
     // }
     //   }
     // }
@@ -245,65 +293,65 @@ const handleEditParams = () => {
     //   message.error('无该项目的查看权限！');
     // }
   }
-};
+}
 
-const editProjectInfo = (project_id) => {
-  const { openUpdateDialog } = getUrlParams();
+const editProjectInfo = project_id => {
+  const { openUpdateDialog } = getUrlParams()
   if (+openUpdateDialog !== 1) {
-    addOrUpdateUrlParams({ openUpdateDialog: 1, project_id: project_id });
+    addOrUpdateUrlParams({ openUpdateDialog: 1, project_id: project_id })
   }
-  editProjectId.value = `${project_id}`;
-  addProjectVisible.value = true;
-};
-handleEditParams();
+  editProjectId.value = `${project_id}`
+  addProjectVisible.value = true
+}
+handleEditParams()
 
 //添加应用处理
 function addProject() {
-  editProjectId.value = "";
-  addProjectVisible.value = true;
+  editProjectId.value = ''
+  addProjectVisible.value = true
 }
 
 //项目巡检loading
-const checking = ref(false);
+const checking = ref(false)
 
 //巡检项目数据
 const checkProject = async () => {
-  checking.value = true;
-  message.success("巡检中，请勿离开此页面！");
-  const result: any = await checkProjectData();
+  checking.value = true
+  message.success('巡检中，请勿离开此页面！')
+  const result: any = await checkProjectData()
   if (result.stat === 1) {
     Modal.success({
-      title: "巡检成功",
-      content: h("div", {}, [
-        h("a", { href: result.data.ossUrl, target: "_blank" }, "点击查看无数据项目统计表"),
+      title: '巡检成功',
+      content: h('div', {}, [
+        h('a', { href: result.data.ossUrl, target: '_blank' }, '点击查看无数据项目统计表'),
       ]),
-    });
+    })
   } else {
-    message.error("巡检失败");
+    message.error('巡检失败')
   }
-  checking.value = false;
-};
+  checking.value = false
+}
 
 // 控制action的样式
 const styles = ref({
-  floatAction: "right",
-});
+  floatAction: 'right',
+})
 // 监听窗口size变化
-window.addEventListener("resize", () => {
+window.addEventListener('resize', () => {
   if (document.body.clientWidth < 1350) {
-    styles.value.floatAction = "none";
+    styles.value.floatAction = 'none'
   } else {
-    styles.value.floatAction = "right";
+    styles.value.floatAction = 'right'
   }
-});
+})
 // 阻止input框中冒泡的tab默认键盘事件
-const onInputKeyDown = (e) => {
-  e.stopPropagation();
-};
+const onInputKeyDown = e => {
+  e.stopPropagation()
+}
 </script>
 
 <style scoped>
 :deep(.ant-tabs-extra-content) {
-  float: v-bind("styles.floatAction") !important;
+  float: v-bind('styles.floatAction') !important;
 }
 </style>

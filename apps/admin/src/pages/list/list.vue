@@ -7,11 +7,11 @@
 </template>
 
 <script setup lang="ts">
-import ProjectList from "./components/projectList.vue";
-import { useListStore } from "@/store/modules/list";
+import ProjectList from './components/projectList.vue'
+import { useListStore } from '@/store/modules/list'
 
-const listStore = useListStore();
-listStore.platform = ""
+const listStore = useListStore()
+listStore.platform = ''
 
 // import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 
@@ -21,7 +21,6 @@ listStore.platform = ""
 // if (w < 1536 && !getCollapsed.value) {
 //   toggleCollapsed();
 // }
-
 </script>
 
 <style scoped>

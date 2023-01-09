@@ -27,17 +27,17 @@
 
 <script setup lang="ts">
 //华佗Web应用监控
-import ProjectList from './components/projectList.vue';
-import { useListStore } from '@/store/modules/list';
+import ProjectList from './components/projectList.vue'
+import { useListStore } from '@/store/modules/list'
 // import { useStore } from 'vuex';
-const listStore = useListStore();
-listStore.platform = 'huatuo';
+const listStore = useListStore()
+listStore.platform = 'huatuo'
 
 // const store = useStore();
 const handleGroupVisible = () => {
-  listStore.ucGroupVisible = true;
+  listStore.ucGroupVisible = true
   // store.dispatch('actSetUCGroupVisible', true);
-};
+}
 </script>
 
 <style lang="scss" scoped>
