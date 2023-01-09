@@ -7,6 +7,7 @@ importers:
 
   .:
     specifiers:
+      '@bcc/prettier-config': ^1.0.1
       '@changesets/cli': ^2.24.4
       '@config/lint': workspace:*
       '@types/fs-extra': ^9.0.13
@@ -25,6 +26,7 @@ importers:
       unbuild: ^1.0.2
       vitest: ^0.25.6
     devDependencies:
+      '@bcc/prettier-config': 1.0.1
       '@changesets/cli': registry.npmmirror.com/@changesets/cli/2.25.2
       '@config/lint': link:configs/lint
       '@types/fs-extra': 9.0.13
@@ -541,6 +543,10 @@ packages:
       '@babel/helper-string-parser': 7.19.4
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: registry.npmmirror.com/to-fast-properties/2.0.0
+
+  /@bcc/prettier-config/1.0.1:
+    resolution: {integrity: sha512-oR/6eRVVRATHcINSDgJ69Kv0NQ50NwhyBr6y1a3ZnR9a18x6mqxR6mddDqUgphieSdDqlewxRBCjhlXniZ0+iA==}
+    dev: true
 
   /@bcc/url-fallback/1.1.0:
     resolution: {integrity: sha512-ME/bPIfJu5D6oNtKa73lXreg0JwIK+3K5uvK/6dSf9swABEWv/QHwgR95L+xLaqh0cLvcx9XRPM4/U9KrWEJYA==}

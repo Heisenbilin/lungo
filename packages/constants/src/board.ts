@@ -32,11 +32,28 @@ export const tabActiveFilters = {
   gateway: [],
 };
 
-export const tabName = {
-  pageview: "页面访问",
-  performance: "性能指标",
-  runtime: "运行时异常",
-  resource: "资源异常",
-  api: "接口异常",
-  gateway: "网关监控",
+export enum tabListEnum {
+  PAGE_VIEW = "pageview",
+  PERFORMANCE = "performance",
+  RUNTIME = "runtime",
+  RESOURCE = "resource",
+  API = "api",
+  GATEWAY = "gateway",
+}
+
+export type tabNameType =
+  | tabListEnum.PAGE_VIEW
+  | tabListEnum.PERFORMANCE
+  | tabListEnum.RUNTIME
+  | tabListEnum.RESOURCE
+  | tabListEnum.API
+  | tabListEnum.GATEWAY;
+
+export const tabNameConfig = {
+  [tabListEnum.PAGE_VIEW]: "页面浏览",
+  [tabListEnum.PERFORMANCE]: "性能监控",
+  [tabListEnum.RUNTIME]: "运行时监控",
+  [tabListEnum.RESOURCE]: "资源监控",
+  [tabListEnum.API]: "接口监控",
+  [tabListEnum.GATEWAY]: "网关监控",
 };

@@ -37,6 +37,7 @@
     "bin-wrapper": "npm:bin-wrapper-china"
   },
   "devDependencies": {
+    "@bcc/prettier-config": "^1.0.1",
     "@changesets/cli": "^2.24.4",
     "@config/lint": "workspace:*",
     "@types/fs-extra": "^9.0.13",

@@ -44,8 +44,7 @@ import ApiErrorBoard from "./apiError/index.vue";
 import GatewayBoard from "./gateway/index.vue";
 import LogDrawer from "../../component/logDetail/logDrawer.vue";
 import FAQ from "../../component/FAQ.vue";
-
-const safeTabKeys = ["pageview", "performance", "runtime", "resource", "api", "gateway"];
+import { tabListEnum } from "@vben/constants"
 
 //数据看板：管理时间、维度与展示tab
 const props = defineProps({
@@ -66,7 +65,7 @@ const username = "xiongbilin";
 //tab页key值
 //将路由中的tabkey与activeKey同步
 const { tabkey = "" } = getUrlParams();
-const activeKey = ref(safeTabKeys.includes(tabkey) ? tabkey : "pageview");
+const activeKey = ref(tabListEnum[tabkey] ? tabkey : "pageview");
 //tab页的key值与路由绑定
 watch(activeKey, (val) => boardStore.commitTabState(val.value), { immediate: true });
 

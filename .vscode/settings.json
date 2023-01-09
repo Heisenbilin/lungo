@@ -4,6 +4,7 @@
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.eol": "\n",
+  "prettier.configPath": ".prettierrc.js",
   "files.associations": {
     "*.env.*": "dotenv"
   },
