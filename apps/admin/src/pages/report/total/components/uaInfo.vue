@@ -17,16 +17,17 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 // import { useStore } from 'vuex';
-import { litSquirrelApi } from '/@/api/littleSquirrel';
+import { litSquirrelApi } from '@/apis/litSquirrel';
 import { getUAOption, getUAVersionOption } from './uaInfoConfig';
 import { useBoardDataStore} from '@/store/modules/panel';
 import { useReportStore } from '@/store/modules/report'
 // import { boardDataStore } from '/@/store/modules/boardData';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
-import BasicChart from '/@/components/coreBoard/charts/basicChart.vue';
+import BaseChart from '@vben/components/src/chart/baseChart.vue';
+// @ts-ignore
+import BasicChart from '@vben/components/src/chart/basicChart.vue';
 
 const reportStore = useReportStore()
-const boardDataStore = useBoardDataStore
+const boardDataStore = useBoardDataStore()
 
 const props = defineProps({
   type: {

@@ -47,13 +47,27 @@
 //     };
 //   },
 // };
-const props = defineProps({
-  details: Object,
+// interface propsType {
+//  details:Object
+// }
+// interface treeNodeType{
+//   key:string,
+//   title:any,
+//   request:any,
+//   children:[],
+//   slots:any,
+// }
+const props:any = defineProps({
+  details:{
+    type:Object,
+    default:()=>{}
+
+  },
 });
 const treeData = initTreeNode(props.details.chains);
     //console.log(treeData)
 function initTreeNode(data) {
-      let treeNode = [];
+  let treeNode:any= [];
       if (data) {
         treeNode = Object.keys(data).map(key => ({
           key: key,

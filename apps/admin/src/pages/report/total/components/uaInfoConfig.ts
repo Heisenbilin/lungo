@@ -114,7 +114,7 @@ export const getUAOption = (data, hightLightName = "") => {
 export const getUAVersionOption = (data, type, tag) => {
   data = setVersionData(data, type, tag);
 
-  let chartOption = cloneDeep(defaultUAVersionOption);
+  const chartOption = cloneDeep(defaultUAVersionOption);
 
   chartOption.yAxis.data = data[0];
   chartOption.legend.data = data[1];
@@ -150,10 +150,10 @@ const setVersionData = (data, type, tag) => {
   });
 
   //数据清洗整理
-  let res: [any[], any[], any[]] = [[], [], []]; //res[0]为柱状图列名，res[1]为legend，res[2]为每行的数值
+  const res: [any[], any[], any[]] = [[], [], []]; //res[0]为柱状图列名，res[1]为legend，res[2]为每行的数值
   //空数据处理
   if (!(versionList.length && bigVersionResult.length)) return res;
-  let count: any[] = []; //每行数值，最终翻转后存入res[2]
+   const count: any[] = []; //每行数值，最终翻转后存入res[2]
   res[0] = bigVersionResult.map((item) => {
     let name = "";
     let list = [];

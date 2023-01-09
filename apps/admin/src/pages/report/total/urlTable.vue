@@ -42,7 +42,7 @@
 <script setup lang="ts">
 //页面详细质量周报表格
 import { ref, watch, computed, reactive } from 'vue';
-import { getListById, retryLighthouse, getProjectLighthouseStatus } from '../apis';
+import { getListById, retryLighthouse, getProjectLighthouseStatus } from '@/apis/report/apis';
 import { defaultColumns } from './config';
 // import { commafy } from '/@/utils/math/formatMumber';
 import { commafy } from "@vben/utils";

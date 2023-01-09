@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { reportApis } from '@/apis/littleSquirrel';
+import { reportApis } from '@/apis/report';
 import { getTwoWeeksOption } from './utils/configs';
 import * as PVApis  from '@/apis/board/pv';
 import { useReportStore } from '@/store/modules/report';

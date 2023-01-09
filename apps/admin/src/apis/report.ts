@@ -6,111 +6,111 @@ export const BigfishApiPre = ApiConfig.bigfish.host + ApiConfig.bigfish.version;
 // TODO : whether use proxyTable ? cover all tripartite interface?
 // TODO : use proxyTable, but how to config proxyTable?
 
-// '/proxy',
-const proxyBigfish = {
-  getUserInfo(token = '') {
-    return request.post({
-      url: BigfishApiPre + '/get/userInfo',
-      data: {
-        token,
-        href: ApiConfig.littleSquirrel.href,
-      },
-    });
-  },
-  getUserProjectList(account) {
-    return request.post({
-      url: BigfishApiPre + '/get/projectList',
-      data: {
-        account,
-        href: ApiConfig.littleSquirrel.href,
-      },
-    });
-  },
-  // '/proxyGet', 
-  getProjectById(project_id) {
-    return request.post({
-      url: BigfishApiPre + '/interface/getProjectById',
-      data: {
-        project_id,
-      },
-    });
-  },
-  isProjectUseSourceMap(project_id) {
-    return request.post({
-      url: BigfishApiPre + '/interface/isProjectUseSourceMap',
-      data: {
-        project_id,
-      },
-    });
-  },
-  getPlatformInfo() {
-    return request.post({
-      url: BigfishApiPre + '/get/platformInfo',
-      data: {
-        date: 1,
-      },
-    });
-  },
-};
-// -----------------littleSquirrel-----------------
-const TaskPath = '/board/taskinfo';
+// '/proxy',  该部分移入apps/admin/src/apis/bigfish.ts
+// const proxyBigfish = {
+//   getUserInfo(token = '') {
+//     return request.post({
+//       url: BigfishApiPre + '/get/userInfo',
+//       data: {
+//         token,
+//         href: ApiConfig.littleSquirrel.href,
+//       },
+//     });
+//   },
+//   getUserProjectList(account) {
+//     return request.post({
+//       url: BigfishApiPre + '/get/projectList',
+//       data: {
+//         account,
+//         href: ApiConfig.littleSquirrel.href,
+//       },
+//     });
+//   },
+//   // '/proxyGet', 
+//   getProjectById(project_id) {
+//     return request.post({
+//       url: BigfishApiPre + '/interface/getProjectById',
+//       data: {
+//         project_id,
+//       },
+//     });
+//   },
+//   isProjectUseSourceMap(project_id) {
+//     return request.post({
+//       url: BigfishApiPre + '/interface/isProjectUseSourceMap',
+//       data: {
+//         project_id,
+//       },
+//     });
+//   },
+//   getPlatformInfo() {
+//     return request.post({
+//       url: BigfishApiPre + '/get/platformInfo',
+//       data: {
+//         date: 1,
+//       },
+//     });
+//   },
+// };
 
-const boardTaskInfo = {
-  create(insertData) {
-    return request.post({
-      url: `${TaskPath}`,
-      data: insertData
-    });
-  },
-  delete(boardid) {
-    return request.delete({
-      url: `${TaskPath}/${boardid}`,
-    });
-  },
-  get(userid, projectid, appid, eventid) {
-    return request.get({
-      url: `${TaskPath}`,
-      params: {
-        userid,
-        projectid,
-        appid,
-        eventid,
-      },
-    });
-  },
-  update(updateData) {
-    return request.put({
-      url: `${TaskPath}`,
-      data: updateData,
-    });
-  },
-  getChartData(data) {
-    return request.post({
-      url: `${TaskPath}/chartdata`,
-      data,
-    }
-    );
-  },
-  getUAData(data) {
-    return request.post({ url: '/ua/chartdata', data });
-  },
-  getBoardData(data) {
-    return request.post({ url: '/board/chartdata/getByType', data });
-  },
-  getTimeSlotDataByType(data) {
-    return request.post({ url: 'board/chartdata/getTimeSlotDataByType', data });
-  },
-  searchEsDataByQuery({ logindex, query, gte, lte }) {
-    return request.post({
-      url: '/board/chartdata/get_es_info_by_query', data: {
-        logindex,
-        query,
-        gte,
-        lte,
-      }
-    });
-  },
-};
+// -----------------littleSquirrel-----------------
+// const TaskPath = '/board/taskinfo';
+// const boardTaskInfo = {
+//   create(insertData) {
+//     return request.post({
+//       url: `${TaskPath}`,
+//       data: insertData
+//     });
+//   },
+//   delete(boardid) {
+//     return request.delete({
+//       url: `${TaskPath}/${boardid}`,
+//     });
+//   },
+//   get(userid, projectid, appid, eventid) {
+//     return request.get({
+//       url: `${TaskPath}`,
+//       params: {
+//         userid,
+//         projectid,
+//         appid,
+//         eventid,
+//       },
+//     });
+//   },
+//   update(updateData) {
+//     return request.put({
+//       url: `${TaskPath}`,
+//       data: updateData,
+//     });
+//   },
+//   getChartData(data) {
+//     return request.post({
+//       url: `${TaskPath}/chartdata`,
+//       data,
+//     }
+//     );
+//   },
+//   getUAData(data) {
+//     return request.post({ url: '/ua/chartdata', data });
+//   },
+//   getBoardData(data) {
+//     return request.post({ url: '/board/chartdata/getByType', data });
+//   },
+//   getTimeSlotDataByType(data) {
+//     return request.post({ url: 'board/chartdata/getTimeSlotDataByType', data });
+//   },
+//   searchEsDataByQuery({ logindex, query, gte, lte }) {
+//     return request.post({
+//       url: '/board/chartdata/get_es_info_by_query', data: {
+//         logindex,
+//         query,
+//         gte,
+//         lte,
+//       }
+//     });
+//   },
+// };
 enum TaskType {
   TOOL_SENDRULENOTICE='/tool/sendrulenotice',
   REPORT_GETPROJECTBOARDURL='/report/getProjectBoardUrl',
@@ -248,8 +248,8 @@ export const reportApis = {
     });
   },
 };
-export const BigfishApi = proxyBigfish;
-export const litSquirrelApi = { boardTaskInfo };
+// export const BigfishApi = proxyBigfish;
+// export const litSquirrelApi = { boardTaskInfo };
 
 /**
  * 获取用户组列表

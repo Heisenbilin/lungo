@@ -10,7 +10,7 @@
 <script setup lang="ts">
 //resource异常Tab页
 import { ref, watch } from "vue";
-import { reportApis } from "@/apis/littleSquirrel";
+import { reportApis } from "@/apis/report";
 // import { ResourceApis } from '/@/api/board/resource';
 import { useBoardStore } from "@/store/modules/board";
 import SummaryData from "./components/summary/summaryData.vue";

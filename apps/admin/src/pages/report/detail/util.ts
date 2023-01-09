@@ -8,7 +8,7 @@
  */
 export function splitMarkdownLink(text) {
   /** @type {Array<{isLink: true, text: string, linkHref: string}|{isLink: false, text: string}>} */
-  const segments = [];
+  const segments:any = [];
 
   const parts = text.split(/\[([^\]]+?)\]\((https?:\/\/.*?)\)/g);
   while (parts.length) {
@@ -52,19 +52,18 @@ export function prepareReportResult(result) {
   // If any mutations happen to the report within the renderers, we want the original object untouched
   const clone = /** @type {LH.ReportResult} */ (JSON.parse(JSON.stringify(result)));
 
+
   // If LHR is older (≤3.0.3), it has no locale setting. Set default.
   if (!clone.configSettings.locale) {
     clone.configSettings.locale = 'en';
   }
   if (!clone.configSettings.formFactor) {
-    // @ts-expect-error fallback handling for emulatedFormFactor
     clone.configSettings.formFactor = clone.configSettings.emulatedFormFactor;
   }
 
-  for (const audit of Object.values(clone.audits)) {
+  for (const audit of Object.values(clone.audits) as any) {
     // Turn 'not-applicable' (LHR <4.0) and 'not_applicable' (older proto versions)
     // into 'notApplicable' (LHR ≥4.0).
-    // @ts-expect-error tsc rightly flags that these values shouldn't occur.
     // eslint-disable-next-line max-len
     if (
       audit.scoreDisplayMode === 'not_applicable' ||
@@ -76,9 +75,8 @@ export function prepareReportResult(result) {
     if (audit.details) {
       // Turn `auditDetails.type` of undefined (LHR <4.2) and 'diagnostic' (LHR <5.0)
       // into 'debugdata' (LHR ≥5.0).
-      // @ts-expect-error tsc rightly flags that these values shouldn't occur.
+
       if (audit.details.type === undefined || audit.details.type === 'diagnostic') {
-        // @ts-expect-error details is of type never.
         audit.details.type = 'debugdata';
       }
 
@@ -95,7 +93,7 @@ export function prepareReportResult(result) {
 
   // For convenience, smoosh all AuditResults into their auditRef (which has just weight & group)
   if (typeof clone.categories !== 'object') throw new Error('No categories provided.');
-  for (const category of Object.values(clone.categories)) {
+  for (const category of Object.values(clone.categories) as any) {
     category.auditRefs.forEach(auditRef => {
       const result = clone.audits[auditRef.id];
       auditRef.result = result;
@@ -235,13 +233,13 @@ const ELLIPSIS = '\u2026';
  * @param {{numPathParts?: number, preserveQuery?: boolean, preserveHost?: boolean}=} options
  * @return {string}
  */
-function getURLDisplayName(parsedUrl, options) {
+function getURLDisplayName(parsedUrl, options={
+  numPathParts: undefined,
+  preserveQuery: undefined,
+  preserveHost: undefined,
+}) {
   // 闭包可选属性在 tsc 中不是可选的，因此回退需要未定义的值。
-  options = options || {
-    numPathParts: undefined,
-    preserveQuery: undefined,
-    preserveHost: undefined,
-  };
+
   const numPathParts = options.numPathParts !== undefined ? options.numPathParts : 2;
   const preserveQuery = options.preserveQuery !== undefined ? options.preserveQuery : true;
   const preserveHost = options.preserveHost || false;
@@ -332,7 +330,7 @@ export function isURL(value) {
 export function bytesToSize(bytes) {
   bytes = Number(bytes);
   if (bytes === 0) return 'None';
-  var k = 1024, // or 1000
+  const k = 1024, // or 1000
     sizes = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'],
     i = Math.floor(Math.log(bytes) / Math.log(k));
   const result = (bytes / Math.pow(k, i)).toFixed(1) + ' ' + sizes[i];
@@ -361,7 +359,7 @@ export function formatDuration(timeInMilliseconds) {
   }
 
   /** @type {Array<string>} */
-  const parts = [];
+  const parts:string[]= [];
   /** @type {Record<string, number>} */
   const unitLabels = {
     d: 60 * 60 * 24,

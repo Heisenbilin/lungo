@@ -67,22 +67,28 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { CircleProgress } from '/@/components/circle';
-import { formatToDate } from '/@/utils/dateUtil';
+import  CircleProgress  from '@vben/components/src/chart/circleProgress.vue';
+// import { formatToDate } from '@vben/utils';
 import moment from 'moment';
 
 //页面质量周报总评组件
-export default {
-  name: 'UrlBase',
-  components: {
-    CircleProgress,
-  },
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['score'],
-  setup(props) {
+const props = defineProps({
+  score:{
+    type: Object,
+    default: () => {
+      return {
+        performanceScore: 0,
+        stabilityScore: 0,
+      };
+    },
+  }
+})
+
+  // props: ['score'],
+
     const route = useRoute();
     const urlInfo = ref({
       //基本信息
@@ -98,18 +104,12 @@ export default {
     onMounted(() => {
       const { start_time, end_time, url: board_url, project_name } = route.query;
       urlInfo.value = {
-        projectName: decodeURIComponent(project_name),
-        boardURL: decodeURIComponent(board_url),
-        reportTime: `${start_time}至${formatToDate(moment(end_time).subtract(1, 'd'))}`,
+        projectName: decodeURIComponent(project_name as string), 
+        boardURL: decodeURIComponent(board_url  as string),
+        reportTime: `${start_time}至${moment(end_time as string).subtract(1, 'd').format('YYYY-MM-DD')}`,
       };
     });
 
-    return {
-      urlInfo,
-      avgScore,
-    };
-  },
-};
 </script>
 
 <style scoped lang="scss">

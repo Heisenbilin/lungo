@@ -80,29 +80,36 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { getProDayPerformance, getAveragePerformance } from '../apis';
+import { getProDayPerformance, getAveragePerformance } from '@/apis/report/apis';
 import { showAsPassed, _getWastedMs } from './util';
 import { INDEX_LIST, getAvgOptions, getProOptions } from './config';
 import { useRoute } from 'vue-router';
-import { CircleProgress } from '/@/components/circle';
+import  CircleProgress  from '@vben/components/src/chart/circleProgress.vue';
 import { Empty } from 'ant-design-vue';
 import auditLayout from './audit/auditLayout.vue';
-import chart from './chart.vue';
+// @ts-ignore
+import chart from './chart.vue'
 
 //页面质量周报性能组件
-export default {
-  name: 'UrlPerformance',
-  components: {
-    CircleProgress,
-    chart,
-    auditLayout,
-  },
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['preparedLighthouse', 'groups', 'lighthouseLoading'],
-  emits: ['performanceScoreChange'],
-  setup(props, context) {
+  // props: ['preparedLighthouse', 'groups', 'lighthouseLoading'],
+  // emits: ['performanceScoreChange'],
+  const emit = defineEmits(["performanceScoreChange"]);
+  const props = defineProps({
+    preparedLighthouse: {
+      type: Object,
+      default: () => {},
+    },
+    groups: {
+      type: Object,
+      default: () => {},
+    },
+    lighthouseLoading: {
+      type: Number,
+      default: 0,
+    },
+  });
     const route = useRoute();
-    const performanceScore = ref(0);
+    const performanceScore :any = ref(0);
     const averagePerformanceOption = ref({});
     const proDayPerformanceOption = ref({});
     const indexList = ref(INDEX_LIST);
@@ -138,7 +145,7 @@ export default {
         start_time,
         end_time,
         project_id,
-        board_url: decodeURIComponent(board_url),
+        board_url: decodeURIComponent(board_url as string ) ,
         board_type: 'tti,fcp,fp,dns,tcp,ttfb',
       };
 
@@ -146,8 +153,8 @@ export default {
       const avgData = await getAveragePerformance(params);
       if (avgData.data) {
         averagePerformanceOption.value = getAvgOptions(avgData.data.list);
-        performanceScore.value = avgData.data.score;
-        context.emit('performanceScoreChange', parseFloat(performanceScore.value));
+        performanceScore.value  = avgData.data.score;
+        emit('performanceScoreChange', parseFloat(performanceScore.value ));
         loading.value.avgLoading = 2;
       } else {
         loading.value.avgLoading = 1;
@@ -186,18 +193,6 @@ export default {
       loading.value.auditsLoading = 2;
     }
 
-    return {
-      performanceScore,
-      averagePerformanceOption,
-      proDayPerformanceOption,
-      indexList,
-      loading,
-      opportunityAudits,
-      diagnosticAudits,
-      simpleImage,
-    };
-  },
-};
 </script>
 
 <style scoped lang="scss">

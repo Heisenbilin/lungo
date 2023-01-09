@@ -25,40 +25,34 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import linkText from '../linkText.vue';
 import auditTitle from './auditTitle.vue';
 import { caculateScale } from '../util';
 
 //建议框架组件
-export default {
-  name: 'AuditLayout',
-  components: {
-    linkText,
-    auditTitle,
-  },
   // eslint-disable-next-line vue/require-prop-types
-  props: ['audits', 'group'],
-  setup(props) {
-    // console.log(props.audits)
-    // props.audits.forEach(element => {
-    //   if(!element.result.details){
-    //     console.log(element)
-    //   }
-    // });
-    // if((props.group.title === '优化建议' || props.group.title === 'Opportunities')){
-    //   console.log(props.audits)
-    // }
+  // props: ['audits', 'group'],
+  // interface propsType {
+  //   audits:Object,
+  //   group:Object
+  // }
+  const props = defineProps({
+    audits: {
+      type: Object,
+      default: () => {}
+    },
+    group: {
+      type: Object,
+      default: () => {}
+    }
+  });
+
     const scale =
       props.group.title === '优化建议' || props.group.title === 'Opportunities'
         ? caculateScale(props.audits)
         : null;
 
-    return {
-      scale,
-    };
-  },
-};
 </script>
 
 <style scoped lang="scss">

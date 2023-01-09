@@ -48,12 +48,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons-vue';
-import { reportApis } from '@/apis/littleSquirrel';
+import { reportApis } from '@/apis/report';
 import { useBoardStore } from '@/store/modules/board';
 const boardStore = useBoardStore()
 //根据项目列表中sourcemap_analysis字段的值判定是否接入sourcemap
 const sourceMapAccessStatus = computed(() => {
-  switch (boardStore.getBoardInfoState.sourcemap_analysis) {
+  switch (boardStore.boardInfoState.sourcemap_analysis) {
     case 0:
       return 'notAccess';
     case 1:
@@ -84,9 +84,9 @@ async function checkCDN() {
 }
 
 const params = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`,
-  start_time: boardStore.getFilterState.start_time,
-  end_time: boardStore.getFilterState.end_time,
+  project_id: `${boardStore.boardInfoState.id}`,
+  start_time: boardStore.filterState.start_time,
+  end_time: boardStore.filterState.end_time,
 }));
 
 function initData() {

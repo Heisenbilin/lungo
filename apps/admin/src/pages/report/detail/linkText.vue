@@ -6,21 +6,16 @@
   </template>
 </template>
 
-<script>
+<script setup lang = 'ts'>
 import { splitMarkdownLink } from './util';
 import { ref } from 'vue';
 
 //链接文字渲染组件
-export default {
-  name: 'LinkText',
-  props: ['text'],
-  setup(props) {
+  // props: ['text'],
+const props = defineProps({
+  text: String,
+})
     const linkTextArr = ref(splitMarkdownLink(props.text));
-    return {
-      linkTextArr,
-    };
-  },
-};
 </script>
 
 <style scoped lang="scss">

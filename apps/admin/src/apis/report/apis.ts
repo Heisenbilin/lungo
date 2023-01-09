@@ -1,4 +1,5 @@
-import { litSquirrelApi, reportApis } from '@/apis/littleSquirrel';
+import { litSquirrelApi } from '@/apis/litSquirrel';
+import { reportApis } from '@/apis/report';
 import { cloneDeep } from '@vben/utils';
 
 export async function getUAData(params, type) {

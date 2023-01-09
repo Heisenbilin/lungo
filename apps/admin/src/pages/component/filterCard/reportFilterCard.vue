@@ -17,7 +17,7 @@
   </a-card>
 </template>
 
-<script setup>
+<script setup lang = 'ts'>
 // 质量监控页 筛选卡片组件
 import { ref, watch, computed } from 'vue';
 import { formatToDate } from '/@/utils/dateUtil';

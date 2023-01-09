@@ -41,7 +41,7 @@
         <BaseChart
           :requestParams="errorChartDataRequestParams"
           :bindFuncs="{
-            click: title => openRuntimeLogDrawer(title.data.name, 'content', 'runtime'),
+            click: title => openRuntimeLogDrawer(title.data.name, 'content'),
           }"
           :requestFunc="
             params => {
@@ -58,7 +58,7 @@
         <BaseChart
           :requestParams="chartDataRequestParams"
           :bindFuncs="{
-            click: title => openRuntimeLogDrawer(title.data.name, 'domain', 'runtime'),
+            click: title => openRuntimeLogDrawer(title.data.name, 'domain'),
           }"
           :requestFunc="params => reportApis.getErrorSummary({ ...params, board_type: 'runtime' })"
           :getOptionFunc="data => getTop10UrlOption(data, 'runtime')"
@@ -70,7 +70,7 @@
         <BaseChart
           :requestParams="errorChartDataRequestParams"
           :bindFuncs="{
-            click: title => openResourceLogDrawer(title.data.name, 'href', 'resource'),
+            click: title => openResourceLogDrawer(title.data.name, 'href')
           }"
           :requestFunc="
             params => {
@@ -87,7 +87,7 @@
         <BaseChart
           :requestParams="chartDataRequestParams"
           :bindFuncs="{
-            click: title => openResourceLogDrawer(title.data.name, 'domain', 'resource'),
+            click: title => openResourceLogDrawer(title.data.name, 'domain'),
           }"
           :requestFunc="params => reportApis.getErrorSummary({ ...params, board_type: 'resource' })"
           :getOptionFunc="data => getTop10UrlOption(data, 'resource')"
@@ -121,43 +121,43 @@
 import { ref, watch, computed } from 'vue';
 import * as ApiErrorApis from '@/apis/board/apiError';
 
-import { reportApis } from '@/apis/littleSquirrel';
-import { litSquirrelApi } from '@/apis/littleSquirrel';
+import { reportApis } from '@/apis/report';
+import { litSquirrelApi } from '@/apis/litSquirrel';
 import { getTwoWeeksOption } from '../utils/configs';
 import {
   getCostTimeChartOption,
   getTop10Option,
   getTop10UrlOption,
-} from '/@/components/boardNew/util/pieChartConfig';
-import { commafy } from '/@/utils/math/formatMumber';
-import { logTypeEnum } from '/@/enums/boardEnum';
+} from '@/pages/board/component/util/pieChartConfig';
+import { commafy } from '@vben/utils';
+import { logTypeEnum } from '@vben/constants';
 
 import projectAccessStatus from './projectAccessStatus.vue';
 // import LogDrawer from '/@/components/boardNew/component/logDetail/logDrawer.vue';
-import BaseChart from '/@/components/coreBoard/baseChart.vue';
+import {BaseChart} from '@vben/components';
 import { useBoardStore } from '@/store/modules/board';
-import { useUserStore } from '@/store/user';
 const boardStore = useBoardStore()
 // @ts-ignore
 // TODO: 临时解决方案
-const { userInfo } = useUserStore();
+// const { account: userid = '' } = store.state.userInfo;
+const userid = "xiongbilin";
 const resourceTotal = ref('');
 const runtimeTotal = ref('');
 
 const chartDataRequestParams = computed(() => ({
-  project_id: `${boardStore.getBoardInfoState.id}`,
-  start_time: boardStore.getFilterState.start_time,
-  end_time: boardStore.getFilterState.end_time,
+  project_id: `${boardStore.boardInfoState.id}`,
+  start_time: boardStore.filterState.start_time,
+  end_time: boardStore.filterState.end_time,
 }));
 
 const errorChartDataRequestParams = computed(() => ({
   boardid: '0x000',
   filter: {
-    gteTime: boardStore.getFilterState.start_time,
-    lteTime: boardStore.getFilterState.end_time,
+    gteTime: boardStore.filterState.start_time,
+    lteTime: boardStore.filterState.end_time,
   },
-  projectid: `${boardStore.getBoardInfoState.id}`,
-  userid: userInfo.userid,
+  projectid: `${boardStore.boardInfoState.id}`,
+  userid: userid,
 }));
 //后台数据获取与处理
 async function initData() {

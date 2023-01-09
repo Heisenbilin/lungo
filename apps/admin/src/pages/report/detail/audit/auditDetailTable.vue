@@ -48,10 +48,10 @@
             <span class="lh-text__bytes">{{ formatDuration(Number(text)) }}</span>
           </template>
           <template #thumbnail="{ text }">
-            <img class="lh-thumbnail" :src="text" alt />
+            <img class="lh-thumbnail" :src="text" alt="" />
           </template>
-          <template #code="{ text }" :value="typeof text === 'object' ? text.value : text">
-            <div class="lh-code">{{ value }}</div>
+          <template #code="{ text }">
+            <div class="lh-code"  :value="typeof text === 'object' ? text.value : text">{{ (typeof text === 'object') ? text.value : text }}</div>
           </template>
           <template #link="{ text }">
             <link-text :text="text" />
@@ -93,7 +93,7 @@
         <span class="lh-text__bytes">{{ formatDuration(Number(text)) }}</span>
       </template>
       <template #thumbnail="{ text }">
-        <img class="lh-thumbnail" :src="text" alt />
+        <img class="lh-thumbnail" :src="text" alt="" />
       </template>
       <template #code="{ text }">
         <div class="lh-code">{{ text }}</div>
@@ -114,20 +114,18 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { nextTick, ref } from 'vue';
 import linkText from '../linkText.vue';
 import { parseURL, bytesToSize, formatDuration, isURL, handleObjectType } from '../util';
-
-//建议框架组件
-export default {
-  name: 'AuditDetailTable',
-  components: {
-    linkText,
+const props: any = defineProps({
+  details: {
+    type: Object,
+    require: true,
   },
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['details', 'index'],
-  setup(props) {
+  index:Number
+});
+//建议框架组件
     // console.log(props.details)
     const hasSubItems = ref(false);
 
@@ -218,21 +216,8 @@ export default {
       if (item.path) element.setAttribute('data-path', item.path);
       if (item.selector) element.setAttribute('data-selector', item.selector);
       if (item.snippet) element.setAttribute('data-snippet', item.snippet);
-      node.appendChild(element);
+      node && node.appendChild(element);
     }
-
-    return {
-      columns,
-      dataSource,
-      parseURL,
-      isURL,
-      bytesToSize,
-      formatDuration,
-      renderNode,
-      hasSubItems,
-    };
-  },
-};
 </script>
 
 <style scoped lang="scss">

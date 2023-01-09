@@ -1,4 +1,4 @@
-import { accSub, accMul, accDiv } from '/@/utils/math/compute'; //accAdd,
+import { accSub, accMul, accDiv } from '@vben/utils'; //accAdd,
 export const INDEX_LIST = [
   {
     name: 'DNS 域名解析时间',
@@ -117,7 +117,7 @@ export const INDEX_LIST = [
 ];
 
 export function getAvgOptions(data) {
-  let dataArr = [
+  const dataArr = [
     getValByName(data, 'dns'),
     getValByName(data, 'tcp'),
     getValByName(data, 'ttfb'),
@@ -125,7 +125,7 @@ export function getAvgOptions(data) {
     getValByName(data, 'tti'),
     getValByName(data, 'fcp'),
   ];
-  let option = {
+  const option = {
     title: {
       text: '1.1 常见性能指标平均值',
       textStyle: {
@@ -170,8 +170,8 @@ export function getAvgOptions(data) {
 }
 
 export function getProOptions(data) {
-  let option;
-  let series = [
+  // const option;
+  const series = [
     {
       name: 'DNS',
       type: 'line',
@@ -203,7 +203,7 @@ export function getProOptions(data) {
       data: getArrByName(data.data, 'ttfb'),
     },
   ];
-  option = {
+ const option = {
     title: {
       text: '1.3 常见性能日趋势图',
       textStyle: {
