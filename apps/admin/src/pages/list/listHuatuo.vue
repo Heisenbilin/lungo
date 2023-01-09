@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="box">
-        <ProjectList type="huatuo" />
+        <ProjectList />
       </div>
     </div>
   </div>
@@ -31,6 +31,7 @@ import ProjectList from './components/projectList.vue';
 import { useListStore } from '@/store/modules/list';
 // import { useStore } from 'vuex';
 const listStore = useListStore();
+listStore.platform = 'huatuo';
 
 // const store = useStore();
 const handleGroupVisible = () => {
@@ -42,6 +43,7 @@ const handleGroupVisible = () => {
 <style lang="scss" scoped>
 .huatuo {
   width: 100%;
+
   .huatuo-content {
     .content-menu {
       width: 100%;
@@ -52,15 +54,19 @@ const handleGroupVisible = () => {
       /*实现垂直居中*/
       align-items: center;
       margin-bottom: 12px;
+
       .ant-breadcrumb {
         line-height: 14px;
       }
+
       .breadcrumb {
         padding: 1%;
       }
+
       .fedata-menu {
         flex: 1;
         background-color: #f0f0f0;
+
         .menu-block {
           background-color: #fff;
           border-radius: 0 25px 25px 0;
@@ -68,6 +74,7 @@ const handleGroupVisible = () => {
           width: calc(100% - 140px);
           float: left;
         }
+
         .menu-item {
           color: white;
           background-image: linear-gradient(#3397ff, #9cc9ff);
@@ -81,6 +88,7 @@ const handleGroupVisible = () => {
         }
       }
     }
+
     .box {
       padding: 18px;
       margin-bottom: 12px;

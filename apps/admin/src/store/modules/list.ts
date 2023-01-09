@@ -1,7 +1,8 @@
-import { defineStore } from 'pinia';
-import { getUserGroups } from '@/apis/list';
+import { defineStore } from "pinia";
+import { getUserGroups } from "@/apis/list";
 
 interface ListState {
+  platform: "" | "huatuo";
   ucGroups: any[];
   ucGroupVisible: boolean;
   forceFlashFlag: {
@@ -11,8 +12,9 @@ interface ListState {
 }
 
 export const useListStore = defineStore({
-  id: 'app-list',
+  id: "app-list",
   state: (): ListState => ({
+    platform: "",
     ucGroups: [],
     ucGroupVisible: false,
     forceFlashFlag: {

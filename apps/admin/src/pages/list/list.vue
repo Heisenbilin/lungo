@@ -1,13 +1,18 @@
 <template>
   <div class="board">
     <div class="content-list mb-10">
-      <ProjectList type="board" />
+      <ProjectList />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import ProjectList from "./components/projectList.vue";
+import { useListStore } from "@/store/modules/list";
+
+const listStore = useListStore();
+listStore.platform = ""
+
 // import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 
 // const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -16,6 +21,7 @@ import ProjectList from "./components/projectList.vue";
 // if (w < 1536 && !getCollapsed.value) {
 //   toggleCollapsed();
 // }
+
 </script>
 
 <style scoped>

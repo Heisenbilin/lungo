@@ -6,13 +6,7 @@
     <a-empty :image="simpleImage" />
   </div>
   <div v-else class="flex flex-wrap h-52">
-    <ContentItem
-      :data="itemsData.pvData"
-      title="PV量"
-      unit=""
-      :needCommafy="true"
-      :jumpUrl="getJumpUrl('basic')"
-    />
+    <ContentItem :data="itemsData.pvData" title="PV量" unit="" :needCommafy="true" :jumpUrl="getJumpUrl('basic')" />
     <div class="w-2/4 mt-1 px-2">
       <div class="text-gray-500 pl-2">
         {{ filterState.dimension === "hour" ? "今日" : "本周" }}活跃趋势
@@ -21,13 +15,7 @@
         <BasicChart :chartOption="chartOption" height="3.25rem" />
       </div>
     </div>
-    <ContentItem
-      :data="itemsData.uvData"
-      title="UV量"
-      unit=""
-      :needCommafy="true"
-      :jumpUrl="getJumpUrl('basic')"
-    />
+    <ContentItem :data="itemsData.uvData" title="UV量" unit="" :needCommafy="true" :jumpUrl="getJumpUrl('basic')" />
     <div class="flex w-full mt-4">
       <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
         <template #title>
@@ -44,41 +32,14 @@
           <div class="text-gray-600 my-1">实时评分</div>
         </div>
       </a-tooltip>
-      <ContentItem
-        :data="itemsData.pageloadData"
-        title="页面加载"
-        unit="ms"
-        :needCommafy="true"
-        :reverseColor="true"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('performance')"
-      />
-      <ContentItem
-        :data="itemsData.runtimeData"
-        title="运行时异常率"
-        unit="%"
-        numName="运行时异常量"
-        :reverseColor="true"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('runtime')"
-      />
-      <ContentItem
-        :data="itemsData.resourceData"
-        title="资源异常率"
-        unit="%"
-        numName="资源异常量"
-        :reverseColor="true"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('resource')"
-      />
-      <ContentItem
-        :data="itemsData.ajaxData"
-        title="请求成功率"
-        unit="%"
-        numName="成功请求量"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('api')"
-      />
+      <ContentItem :data="itemsData.pageloadData" title="页面加载" unit="ms" :needCommafy="true" :reverseColor="true"
+        :needGray="true" :jumpUrl="getJumpUrl('performance')" />
+      <ContentItem :data="itemsData.runtimeData" title="运行时异常率" unit="%" numName="运行时异常量" :reverseColor="true"
+        :needGray="true" :jumpUrl="getJumpUrl('runtime')" />
+      <ContentItem :data="itemsData.resourceData" title="资源异常率" unit="%" numName="资源异常量" :reverseColor="true"
+        :needGray="true" :jumpUrl="getJumpUrl('resource')" />
+      <ContentItem :data="itemsData.ajaxData" title="请求成功率" unit="%" numName="成功请求量" :needGray="true"
+        :jumpUrl="getJumpUrl('api')" />
     </div>
   </div>
 </template>
@@ -100,7 +61,7 @@ const props = defineProps({
   endTime: String,
   linkToUrl: {
     type: String,
-    default: "",
+    required: true,
   },
   projectId: {
     type: Number,
@@ -146,9 +107,6 @@ watch(props, initCardContentData, { immediate: true });
 
 //跳转Url
 const getJumpUrl = (tabKey) => {
-  if (props.linkToUrl === "" || props.linkToUrl.includes("/projectboard/qcEntry")) {
-    return props.linkToUrl;
-  }
   return `${props.linkToUrl}?tabkey=${tabKey}`;
 };
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;

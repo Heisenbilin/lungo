@@ -10,32 +10,24 @@
   </template>
 </template>
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import { Empty } from 'ant-design-vue';
-  import tableContentMiddle from './tableContentMiddle.vue';
-  const props = defineProps({
-    projectId: {
-      type: Number,
-      required: true,
-    },
-    title: String,
-    type: {
-      type: String,
-      required: true,
-    },
-    data: {
-      type: Object,
-      required: true,
-    },
-    loading: Boolean,
-  });
-  const linkToUrl = computed(() => {
-    if (props.type === 'board') {
-      return `/projectboard/boardInfo/${props.projectId}`;
-    }
-    return `/huatuo/board/${props.projectId}`;
-  });
+import { useLinkToUrl } from '@/hooks/board/useLink';
+import { Empty } from 'ant-design-vue';
+import tableContentMiddle from './tableContentMiddle.vue';
+const props = defineProps({
+  projectId: {
+    type: Number,
+    required: true,
+  },
+  title: String,
+  data: {
+    type: Object,
+    required: true,
+  },
+  loading: Boolean,
+});
 
-  const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
+const linkToUrl = useLinkToUrl(props.projectId, 'board');
+
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 
 </script>

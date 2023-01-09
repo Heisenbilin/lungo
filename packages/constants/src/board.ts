@@ -1,3 +1,5 @@
+export type Page = "board" | "data" | "report";
+
 // 客户端数字key对应的客户端类型
 export const clientUserAgent = {
   7: "pc",

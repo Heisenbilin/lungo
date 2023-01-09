@@ -1,75 +1,32 @@
 <template>
   <div>
     <div v-if="title == 'pv'">
-      <TableTtem
-        :data="itemsData.pvData"
-        title="PV量"
-        unit=""
-        :needCommafy="true"
-        :jumpUrl="getJumpUrl('basic')"
-      />
+      <TableTtem :data="itemsData.pvData" title="PV量" unit="" :needCommafy="true" :jumpUrl="getJumpUrl('basic')" />
     </div>
     <div v-else-if="title == 'uv'">
-      <TableTtem
-        :data="itemsData.uvData"
-        title="UV量"
-        unit=""
-        :needCommafy="true"
-        :jumpUrl="getJumpUrl('basic')"
-      />
+      <TableTtem :data="itemsData.uvData" title="UV量" unit="" :needCommafy="true" :jumpUrl="getJumpUrl('basic')" />
     </div>
     <div v-else-if="title == '页面加载'">
-      <TableTtem
-        :data="itemsData.pageloadData"
-        title="页面加载"
-        unit="ms"
-        :needCommafy="true"
-        :reverseColor="true"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('performance')"
-      />
+      <TableTtem :data="itemsData.pageloadData" title="页面加载" unit="ms" :needCommafy="true" :reverseColor="true"
+        :needGray="true" :jumpUrl="getJumpUrl('performance')" />
     </div>
     <div v-else-if="title == '运行时异常率'">
-      <TableTtem
-        :data="itemsData.runtimeData"
-        title="运行时异常率"
-        unit="%"
-        numName="运行时异常量"
-        :reverseColor="true"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('runtime')"
-      />
+      <TableTtem :data="itemsData.runtimeData" title="运行时异常率" unit="%" numName="运行时异常量" :reverseColor="true"
+        :needGray="true" :jumpUrl="getJumpUrl('runtime')" />
     </div>
     <div v-else-if="title == '资源异常率'">
-      <TableTtem
-        :data="itemsData.resourceData"
-        title="资源异常率"
-        unit="%"
-        numName="资源异常量"
-        :reverseColor="true"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('resource')"
-      />
+      <TableTtem :data="itemsData.resourceData" title="资源异常率" unit="%" numName="资源异常量" :reverseColor="true"
+        :needGray="true" :jumpUrl="getJumpUrl('resource')" />
     </div>
     <div v-else-if="title == '请求成功率'">
-      <TableTtem
-        :data="itemsData.ajaxData"
-        title="请求成功率"
-        unit="%"
-        numName="成功请求量"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('api')"
-      />
+      <TableTtem :data="itemsData.ajaxData" title="请求成功率" unit="%" numName="成功请求量" :needGray="true"
+        :jumpUrl="getJumpUrl('api')" />
     </div>
-    <div
-      v-else-if="title == '分数'"
-      class="text-gray-600 my-1 center text-1xl"
-      :style="{
-        color: barFinColor(itemsData.score),
-        fontSize: '1.5rem',
-        fontWeight: 'bold',
-      }"
-    >
+    <div v-else-if="title == '分数'" class="text-gray-600 my-1 center text-1xl" :style="{
+      color: barFinColor(itemsData.score),
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    }">
       {{ itemsData.score }}
     </div>
     <!-- <div v-else-if="title == '页面加载'">
@@ -108,9 +65,6 @@ const props = defineProps({
 
 //跳转Url
 const getJumpUrl = (tabKey) => {
-  if (props.linkToUrl === "" || props.linkToUrl.includes("/projectboard/qcEntry")) {
-    return props.linkToUrl;
-  }
   return `${props.linkToUrl}?tabkey=${tabKey}`;
 };
 // const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;

@@ -18,33 +18,19 @@
             <template v-if="currentGroup" #title>
               {{ currentGroup.group_name.length > 10 ? currentGroup.group_name : "" }}
             </template>
-            <a-select
-              v-model:value="groupId"
-              allowClear
-              showSearch
-              :filterOption="filterOption"
-              style="width: 200px"
-            >
+            <a-select v-model:value="groupId" allowClear showSearch :filterOption="filterOption" style="width: 200px">
               <a-select-option value="" key="全部用户组" title="全部用户组">
                 全部用户组
               </a-select-option>
 
-              <a-select-option
-                v-for="item in groups"
-                :value="item.group_id"
-                :key="item.group_id"
-                :title="item.group_name"
-              >
+              <a-select-option v-for="item in groups" :value="item.group_id" :key="item.group_id"
+                :title="item.group_name">
                 {{ item.group_name }}
               </a-select-option>
             </a-select>
           </a-tooltip>
-          <a-input-search
-            v-model:value="searchValue"
-            style="width: 200px"
-            placeholder="输入名称/appid/eventid"
-            @keydown="onInputKeyDown"
-          />
+          <a-input-search v-model:value="searchValue" style="width: 200px" placeholder="输入名称/appid/eventid"
+            @keydown="onInputKeyDown" />
         </div>
         <div>
           <span class="pr-1">数据维度:</span>
@@ -59,106 +45,68 @@
         <a-button type="primary" @click="addProject">创建应用</a-button>
         <div>
           <a-tooltip title="列表展示">
-            <UnorderedListOutlined
-              :style="{
-                color: state === 'table' ? 'rgba(43, 96, 179)' : 'gray',
-                fontSize: '20px',
-              }"
-              @click="handleToggleShow('table')"
-            />
+            <UnorderedListOutlined :style="{
+              color: state === 'table' ? 'rgba(43, 96, 179)' : 'gray',
+              fontSize: '20px',
+            }" @click="handleToggleShow('table')" />
           </a-tooltip>
           <a-tooltip title="卡片展示">
-            <AppstoreOutlined
-              :style="{
-                color: state === 'card' ? 'rgba(43, 96, 179)' : 'gray',
-                fontSize: '20px',
-                padding: '10px',
-              }"
-              @click="handleToggleShow('card')"
-            />
+            <AppstoreOutlined :style="{
+              color: state === 'card' ? 'rgba(43, 96, 179)' : 'gray',
+              fontSize: '20px',
+              padding: '10px',
+            }" @click="handleToggleShow('card')" />
           </a-tooltip>
         </div>
       </div>
     </template>
-    <a-tab-pane key="all" :tab="title">
+    <a-tab-pane key="all" tab="应用列表">
       <div v-if="state === 'card'">
-        <cardList
-          :requestParams="{
-            name: searchValue.trim(),
-            projectType: projectType,
-            saasType: saasType,
-            groupid: groupId,
-            show: state,
-          }"
-          :cardType="props.type"
-          :forceFlash="forceFlashFlag.all"
-          :isStar="false"
-          :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime"
-          @edit="editProjectInfo"
-        />
+        <cardList :requestParams="{
+          name: searchValue.trim(),
+          projectType: projectType,
+          saasType: saasType,
+          groupid: groupId,
+          show: state,
+        }" :forceFlash="forceFlashFlag.all" :isStar="false" :startTime="dimension === 'week' ? startWeek : startTime"
+          :endTime="endTime" @edit="editProjectInfo" />
       </div>
       <div v-else>
-        <tableList
-          :requestParams="{
-            name: searchValue.trim(),
-            projectType: projectType,
-            saasType: saasType,
-            groupid: groupId,
-            show: state,
-          }"
-          :cardType="props.type"
-          :forceFlash="forceFlashFlag.all"
-          :isStar="false"
-          :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime"
-          @edit="editProjectInfo"
-        />
+        <tableList :requestParams="{
+          name: searchValue.trim(),
+          projectType: projectType,
+          saasType: saasType,
+          groupid: groupId,
+          show: state,
+        }" :forceFlash="forceFlashFlag.all" :isStar="false" :startTime="dimension === 'week' ? startWeek : startTime"
+          :endTime="endTime" @edit="editProjectInfo" />
       </div>
     </a-tab-pane>
     <a-tab-pane key="star" tab="我的收藏">
       <div v-if="state === 'card'">
-        <cardList
-          :requestParams="{
-            name: searchValue.trim(),
-            projectType: projectType,
-            saasType: saasType,
-            groupid: groupId,
-            show: state,
-          }"
-          :cardType="props.type"
-          :forceFlash="forceFlashFlag.star"
-          :isStar="true"
-          :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime"
-          @edit="editProjectInfo"
-        />
+        <cardList :requestParams="{
+          name: searchValue.trim(),
+          projectType: projectType,
+          saasType: saasType,
+          groupid: groupId,
+          show: state,
+        }" :forceFlash="forceFlashFlag.star" :isStar="true" :startTime="dimension === 'week' ? startWeek : startTime"
+          :endTime="endTime" @edit="editProjectInfo" />
       </div>
       <div v-else>
-        <tableList
-          :requestParams="{
-            name: searchValue.trim(),
-            projectType: projectType,
-            saasType: saasType,
-            groupid: groupId,
-            show: state,
-          }"
-          :cardType="props.type"
-          :forceFlash="forceFlashFlag.star"
-          :isStar="true"
-          :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime"
-          @edit="editProjectInfo"
-        />
+        <tableList :requestParams="{
+          name: searchValue.trim(),
+          projectType: projectType,
+          saasType: saasType,
+          groupid: groupId,
+          show: state,
+        }" :forceFlash="forceFlashFlag.star" :isStar="true" :startTime="dimension === 'week' ? startWeek : startTime"
+          :endTime="endTime" @edit="editProjectInfo" />
       </div>
     </a-tab-pane>
   </a-tabs>
-  <addProjectModal
-    v-if="addProjectVisible"
-    v-model:visible="addProjectVisible"
-    :editProjectId="editProjectId"
-    @flash="forceFlashList"
-  />
+  <addProjectModal v-if="addProjectVisible" v-model:visible="addProjectVisible" :editProjectId="editProjectId"
+    @flash="forceFlashList" />
   <uc-group-modal />
 </template>
 <script setup lang="ts">
@@ -176,13 +124,6 @@ import tableList from "./tableList/index.vue";
 import addProjectModal from "./addProject/addProjectDrawer.vue";
 import UcGroupModal from "./ucGroupModal.vue";
 import moment from "moment";
-
-const props = defineProps({
-  type: {
-    type: String,
-    required: true,
-  },
-});
 
 const {
   tabKey = "all",
@@ -248,16 +189,6 @@ function filterOption(inputValue, options) {
 const activeKey = ref(tabKey);
 //监听tabKey变化，更新url Parameter
 watch(activeKey, (val) => addOrUpdateUrlParams({ tabKey: val }));
-
-//title
-const title = computed(() => {
-  switch (props.type) {
-    case "board":
-      return "质量监控应用列表";
-    default:
-      return "应用列表";
-  }
-});
 
 //时间范围
 const startTime = moment().startOf("day").format("YYYY-MM-DD HH:mm:ss");

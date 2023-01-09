@@ -16,24 +16,17 @@
     </div>
   </div>
   <div v-if="loaded">
-    <a-table
-      :columns="urlColumns"
-      :data-source="urlList"
-      :row-key="record => record.borad_url"
-      size="middle"
-      :pagination="pagination"
-      @change="handleTableChange"
-      tableLayout="fixed"
-    >
+    <a-table :columns="urlColumns" :data-source="urlList" :row-key="record => record.board_url" size="middle"
+      :pagination="pagination" @change="handleTableChange" tableLayout="fixed">
       <template #URL="{ record }">
         <a-tooltip title="点击进入原始页面">
           <span>
-            <a :href="record.borad_url" target="_blank">{{ record.borad_url }}</a>
+            <a :href="record.board_url" target="_blank">{{ record.board_url }}</a>
           </span>
         </a-tooltip>
       </template>
       <template #operation="{ record }">
-        <span> <a @click="toReport(record.borad_url)">查看页面质量周报</a><br /> </span>
+        <span> <a @click="toReport(record.board_url)">查看页面质量周报</a><br /> </span>
       </template>
     </a-table>
   </div>
@@ -185,14 +178,14 @@ const getUrlByPro = async (page = 1, order = null, field = null, limit = 10) => 
         item.lighthouse_status === 'success'
           ? '成功'
           : item.lighthouse_status === 'error'
-          ? '失败'
-          : '未开始';
+            ? '失败'
+            : '未开始';
       let reason = (item.lighthouse_reason + '').toLowerCase();
       if (reason && reason.includes('error')) {
         reason = '检测异常';
       }
       return {
-        borad_url: item.board_url,
+        board_url: item.board_url,
         pv: commafy(item.pv_count),
         avg_score: item.total_score,
         performance_score: item.performance_score,
@@ -238,13 +231,16 @@ const toReport = url => {
 
 <style lang="scss" scoped>
 @import './board.scss';
+
 .wrapper {
   position: relative;
+
   .lighthouse-wrapper {
     position: absolute;
     right: 0;
     top: 0;
-    > span {
+
+    >span {
       margin-right: 20px;
     }
   }

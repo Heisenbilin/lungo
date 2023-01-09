@@ -106,6 +106,7 @@ const boardDataStore = useBoardDataStore();
 const props = defineProps({
   projectId: {
     type: Number,
+    required: true,
   },
   projectList: {
     type: Array as PropType<any[]>,
@@ -154,7 +155,7 @@ onMounted(() => {
 //点击数据大盘按钮跳转的路由
 const boardDataUrl = computed(() => {
   if (!props.platformType) {
-    return `/projectboard/dataBoard/${projectId.value}`;
+    return `/monitor/board?projectId=${projectId.value}`;
   }
   return `/huatuo/data/${projectId.value}`;
 });
@@ -162,7 +163,7 @@ const boardDataUrl = computed(() => {
 //点击质量监控按钮跳转的路由
 const boardUrl = computed(() => {
   if (!props.platformType) {
-    return `/projectboard/boardInfo/${projectId.value}`;
+    return `/monitor/board?projectId=${projectId.value}`;
   }
   return `/huatuo/board/${projectId.value}`;
 });
@@ -212,16 +213,6 @@ async function getTopicId(appId, isSaas) {
   }
 }
 
-// 展现日志手动上报
-const uploadLoadMsg = project => {
-  window.__XES_LOG__.loadMsg({
-    projectName: project.project_name,
-    appid: project.appid,
-    eventid: project.eventid,
-    addUser: project.add_user,
-  });
-};
-
 // 切换项目
 watch(
   projectId,
@@ -239,8 +230,6 @@ watch(
         // 项目信息存入store供其他组件调用
         store.initStateValue({ ...project, noInitFilter: true });
         store.commitLoadingState(false);
-        // 展现日志手动上报
-        uploadLoadMsg(project);
       }
     }
   },

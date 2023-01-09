@@ -1,23 +1,9 @@
 <template>
-  <a-table
-    rowKey="id"
-    :loading="loading === 'loading'"
-    :columns="columns"
-    :data-source="huatuoProjectList"
-    :pagination="false"
-    :scroll="{ x: 1600 }"
-    :customRow="customRowWithScore"
-  >
+  <a-table rowKey="id" :loading="loading === 'loading'" :columns="columns" :data-source="huatuoProjectList"
+    :pagination="false" :scroll="{ x: 1600 }" :customRow="customRowWithScore">
     <template #rendername="{ record }">
-      <tableHeader
-        :project="record"
-        :type="cardType"
-        @star="starProject"
-        :closeDays="closeDays"
-        :startTime="startTime"
-        :endTime="endTime"
-        :isStar="isStar"
-      />
+      <tableHeader :project="record" @star="starProject" :closeDays="closeDays" :startTime="startTime"
+        :endTime="endTime" :isStar="isStar" />
     </template>
     <template #sdk="{ record }">
       <div :style="{ display: show(record.close_project) }">
@@ -25,136 +11,69 @@
       </div>
     </template>
     <template #score="{ record }">
-      <div
-        class="text-center items-center opacity-80"
-        :style="{ display: show(record.close_project) }"
-      >
-        <tableContent
-          :projectId="record.id"
-          title="分数"
-          :type="cardType"
-          :data="record"
-          :loading="loadingT"
-        />
+      <div class="text-center items-center opacity-80" :style="{ display: show(record.close_project) }">
+        <tableContent :projectId="record.id" title="分数" :data="record" :loading="loadingT" />
       </div>
     </template>
 
     <template #pv="{ record }">
       <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="pv"
-          :type="cardType"
-          :data="record"
-          :loading="loadingT"
-        />
+        <tableContent :projectId="record.id" title="pv" :data="record" :loading="loadingT" />
       </div>
     </template>
     <template #uv="{ record }">
       <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="uv"
-          :type="cardType"
-          :data="record"
-          :loading="loadingT"
-        />
+        <tableContent :projectId="record.id" title="uv" :data="record" :loading="loadingT" />
       </div>
     </template>
     <template #runtimeError="{ record }">
       <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="运行时异常率"
-          :type="cardType"
-          :data="record"
-          :loading="loadingT"
-        />
+        <tableContent :projectId="record.id" title="运行时异常率" :data="record" :loading="loadingT" />
       </div>
     </template>
     <template #resourceError="{ record }">
       <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="资源异常率"
-          :type="cardType"
-          :data="record"
-          :loading="loadingT"
-        />
+        <tableContent :projectId="record.id" title="资源异常率" :data="record" :loading="loadingT" />
       </div>
     </template>
     <template #success="{ record }">
       <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="请求成功率"
-          :type="cardType"
-          :data="record"
-          :loading="loadingT"
-        />
+        <tableContent :projectId="record.id" title="请求成功率" :data="record" :loading="loadingT" />
       </div>
     </template>
     <template #chartOption="{ record }">
       <div class="content" :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="活跃趋势"
-          :type="cardType"
-          :data="record"
-          :loading="loadingT"
-        />
+        <tableContent :projectId="record.id" title="活跃趋势" :data="record" :loading="loadingT" />
       </div>
     </template>
     <template #pageloadData="{ record }">
       <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="页面加载"
-          :type="cardType"
-          :data="record"
-          :loading="loadingT"
-        />
+        <tableContent :projectId="record.id" title="页面加载" :data="record" :loading="loadingT" />
       </div>
     </template>
     <template #screen="{ record, index }">
       <div v-if="record.close_project === 1">
-        <a-popconfirm
-          :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
-          ok-text="是"
-          cancel-text="否"
-          @confirm="openProject(record.id, index)"
-        >
-          <a-button type="primary"><InfoCircleOutlined /> 开启项目</a-button>
+        <a-popconfirm :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`" ok-text="是" cancel-text="否"
+          @confirm="openProject(record.id, index)">
+          <a-button type="primary">
+            <InfoCircleOutlined /> 开启项目
+          </a-button>
         </a-popconfirm>
       </div>
       <div v-else>
-        <tableScreen :project="record" :type="cardType" />
+        <tableScreen :project="record" />
       </div>
     </template>
     <template #action="{ record }">
-      <tableActions
-        :projectId="record.id"
-        :collectFlag="record.collectFlag"
-        :type="cardType"
-        @edit="(id) => emit('edit', id)"
-        @star="starProject"
-        :isStar="isStar"
-      />
+      <tableActions :projectId="record.id" :collectFlag="record.collectFlag" @edit="(id) => emit('edit', id)"
+        @star="starProject" :isStar="isStar" />
     </template>
   </a-table>
   <div class="text-right mt-4">
-    <a-pagination
-      @change="getHuatuoProjectList"
-      v-model:current="currentPage"
-      v-model:pageSize="pageSize"
-      :total="total"
-      show-size-changer
-      :pageSizeOptions="
+    <a-pagination @change="getHuatuoProjectList" v-model:current="currentPage" v-model:pageSize="pageSize"
+      :total="total" show-size-changer :pageSizeOptions="
         [screenPageSize, screenPageSize * 2, screenPageSize * 3, screenPageSize * 4].map(String)
-      "
-      :show-total="(total) => `共${total}个应用`"
-      :show-quick-jumper="total / pageSize > 10 ? true : false"
-    />
+      " :show-total="(total) => `共${total}个应用`" :show-quick-jumper="total / pageSize > 10 ? true : false" />
   </div>
 </template>
 
@@ -185,10 +104,6 @@ const props = defineProps({
   requestParams: {
     required: true,
     type: Object,
-  },
-  cardType: {
-    type: String,
-    required: true,
   },
   isStar: {
     type: Boolean,
@@ -236,7 +151,7 @@ const loading = ref("loading");
 //空数据图片
 // const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 //华佗用户组应用列表
-const huatuoProjectList = ref<any>([]);
+const huatuoProjectList = ref<any[]>([]);
 //当前最新sdk版本号
 const latestSDKVersion = ref("2.4.0");
 //关闭项目的天数阈值
@@ -393,10 +308,12 @@ watch(() => props.startTime, initTableContentData);
 
 :deep(.table-row-red) {
   background: rgba(253, 247, 247);
+
   td {
     background: rgba(253, 247, 247);
   }
 }
+
 :deep(.table-row-gray) {
   background: #d9d9d9;
 }

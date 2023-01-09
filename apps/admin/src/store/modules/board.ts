@@ -133,6 +133,7 @@ export const useBoardStore = defineStore({
     },
 
     addFilterValue(values: object): void {
+      console.log(JSON.stringify(values));
       const oldFilter = JSON.stringify(this.filterState);
       Object.assign(this.filterState, values);
       const newFilter = JSON.stringify(this.filterState);
@@ -158,7 +159,7 @@ export const useBoardStore = defineStore({
     initStateValue(info: BoardInfo): void {
       this.commitBoardInfoState(info);
       const {
-        dimension = this.getFilterState.dimension,
+        dimension = this.filterState.dimension,
         start_time = "",
         end_time = "",
       } = getUrlParams();

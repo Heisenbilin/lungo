@@ -1,5 +1,5 @@
-import { cloneDeep, commafy, formatDate } from "@vben/utils";
-// import { getDateWeekday } from '/@/utils/date';
+import { cloneDeep, commafy } from "@vben/utils";
+import { formatDate } from "@/hooks/board/date";
 
 //“PV”与“UV”图表基础配置
 const PVUVChartConfig: any = {

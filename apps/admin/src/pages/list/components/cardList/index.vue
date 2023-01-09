@@ -4,33 +4,17 @@
   <div v-else class="flex flex-wrap">
     <template v-for="project of huatuoProjectList" :key="project.id">
       <div class="p-1 w-full xl:p-2 xl:w-1/2 2xl:w-1/3 3xl:p-3 3xl:w-1/4">
-        <ProjectCard
-          :project="project"
-          :type="cardType"
-          @edit="(id) => emit('edit', id)"
-          @star="starProject"
-          :latestSDKVersion="latestSDKVersion"
-          :closeDays="closeDays"
-          :startTime="startTime"
-          :endTime="endTime"
-          :isStar="isStar"
-        />
+        <ProjectCard :project="project" @edit="(id) => emit('edit', id)" @star="starProject"
+          :latestSDKVersion="latestSDKVersion" :closeDays="closeDays" :startTime="startTime" :endTime="endTime"
+          :isStar="isStar" />
       </div>
     </template>
   </div>
   <div class="text-right">
-    <a-pagination
-      @change="getHuatuoProjectList"
-      v-model:current="currentPage"
-      v-model:pageSize="pageSize"
-      :total="total"
-      show-size-changer
-      :pageSizeOptions="
+    <a-pagination @change="getHuatuoProjectList" v-model:current="currentPage" v-model:pageSize="pageSize"
+      :total="total" show-size-changer :pageSizeOptions="
         [screenPageSize, screenPageSize * 2, screenPageSize * 3, screenPageSize * 4].map(String)
-      "
-      :show-total="(total) => `共${total}个应用`"
-      :show-quick-jumper="total / pageSize > 10 ? true : false"
-    />
+      " :show-total="(total) => `共${total}个应用`" :show-quick-jumper="total / pageSize > 10 ? true : false" />
   </div>
 </template>
 
@@ -50,10 +34,6 @@ const props = defineProps({
   requestParams: {
     required: true,
     type: Object,
-  },
-  cardType: {
-    required: true,
-    type: String,
   },
   isStar: {
     type: Boolean,

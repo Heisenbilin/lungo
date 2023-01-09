@@ -1,6 +1,6 @@
 import { request } from "@vben/request";
 
-const BigfishApiPre = "//app.xesv5.com/bigfish/v1";
+const BigfishApiPre = "https://app.xesv5.com/bigfish/v1";
 const domain = location.hostname;
 
 enum Api {
@@ -81,7 +81,7 @@ export const checkReportAuth = (uc_group_id: any, user_account: any) =>
   request.post<any>({
     url: Api.PROXY_GET,
     data: {
-      url: `//app.xesv5.com/bigfish/v1/interface/weeklyReportAuth`,
+      url: `https://app.xesv5.com/bigfish/v1/interface/weeklyReportAuth`,
       data: {
         uc_group_id,
         user_account,
@@ -97,7 +97,7 @@ export const removeReportAuth = (uc_group_id: any, user_account: any) =>
   request.post<any>({
     url: Api.PROXY,
     data: {
-      url: `//app.xesv5.com/bigfish/v1/interface/weeklyReportAuth`,
+      url: `https://app.xesv5.com/bigfish/v1/interface/weeklyReportAuth`,
       data: {
         uc_group_id,
         user_account,
@@ -113,7 +113,7 @@ export const getGroupRoleUsers = (group_id: any, role: any, limit: any) =>
   request.post<any>({
     url: Api.PROXY_GET,
     data: {
-      url: `//uc.xesv5.com/api/auth/groups/${group_id}/role_users`,
+      url: `https://uc.xesv5.com/api/auth/groups/${group_id}/role_users`,
       data: {
         role,
         limit,

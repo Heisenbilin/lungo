@@ -18,7 +18,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 // import { useStore } from 'vuex';
-
 import { SettingOutlined, LoadingOutlined, StarTwoTone, StarFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import { starProject } from "@/apis/list";
@@ -34,10 +33,6 @@ const props = defineProps({
   },
   isStar: {
     type: Boolean,
-    required: true,
-  },
-  type: {
-    type: String,
     required: true,
   },
 });

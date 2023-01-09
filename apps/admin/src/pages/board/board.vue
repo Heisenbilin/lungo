@@ -3,29 +3,27 @@
     <a-spin size="large" />
   </div>
   <div v-else>
-    <div class="grid grid-cols-2 gap-3">
-      <div class="chart-container">
-        <InfoCard :projectId="projectId" :projectList="projectList" :platformType="props.platformType" />
+    <template v-if="projectId">
+      <div class="grid grid-cols-2 gap-3">
+        <div class="chart-container">
+          <InfoCard :projectId="projectId" :projectList="projectList" :platformType="props.platformType" />
+        </div>
+        <div class="chart-container">
+          <FilterCard />
+        </div>
       </div>
-      <div class="chart-container">
-        <FilterCard />
+      <div v-if="boardLoading" class="flex min-h-150 justify-center items-center">
+        <a-spin size="large" />
       </div>
-    </div>
-
-    <a-empty class="my-28" v-if="!projectId">
+      <Content v-else :platformType="props.platformType" />
+    </template>
+    <a-empty class="my-28" v-else>
       <template #description>
         <div>
           <a target="blink" href="http://app.xesv5.com/doc/pages/fedata/">质量监控项目接入指南</a>
         </div>
       </template>
     </a-empty>
-
-    <template v-else>
-      <div v-if="boardLoading" class="flex min-h-150 justify-center items-center">
-        <a-spin size="large" />
-      </div>
-      <Content v-else :platformType="props.platformType" />
-    </template>
   </div>
 </template>
 
@@ -41,6 +39,7 @@ import { useBoardStore } from "@/store/modules/board";
 import InfoCard from "../component/infoCard/index.vue";
 import FilterCard from "../component/filterCard/index.vue";
 import Content from "./component/content.vue";
+import { getUrlParams } from "@vben/utils";
 
 const boardStore = useBoardStore();
 
@@ -50,7 +49,9 @@ const props = defineProps({
 
 const { currentRoute } = useRouter();
 //当前选中的项目id
-const projectId = ref<undefined | number>(undefined);
+const projectId = ref<undefined | number>(+getUrlParams().projectId || undefined);
+
+console.log(projectId.value)
 //loading
 const loading = ref(true);
 const boardLoading = computed(() => boardStore.loadingState);
@@ -89,24 +90,21 @@ async function getProjectListByGroup(page = 1, page_size = 100000, type = "") {
 
 //处理路由中的项目id
 function initProjectId() {
-  const pid = unref(currentRoute).params.projectid;
   let permissionFlag = false;
   //空id，暂无操作
-  if (pid === ":projectid") {
+  if (!projectId.value) {
     loading.value = false;
   }
   //url中有项目id
   else {
     //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
     for (const project of projectList.value) {
-      if (+pid === project.id) {
+      if (projectId.value === project.id) {
         permissionFlag = true;
         //判断项目是否关闭
         if (project.close_project === 1) {
           projectClosed(project);
           projectId.value = undefined;
-        } else {
-          projectId.value = +pid;
         }
         break;
       }
@@ -114,8 +112,8 @@ function initProjectId() {
     loading.value = false;
     //若在项目列表中没找到此id，则没有该项目的权限，或为不存在的项目
     if (!permissionFlag) {
+      noPermission(projectId.value);
       projectId.value = undefined;
-      noPermission(+pid);
     }
   }
 }

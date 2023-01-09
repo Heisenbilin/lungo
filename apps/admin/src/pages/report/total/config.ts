@@ -4,38 +4,38 @@ import { commafy } from "@vben/utils";
 
 export const chartsConfig = {
   pv: {
-    type: 'pvuv',
-    info: '',
+    type: "pvuv",
+    info: "",
     option: {
       tooltip: {
-        trigger: 'axis',
+        trigger: "axis",
       },
       legend: {
-        data: ['上周PV', '本周PV'],
+        data: ["上周PV", "本周PV"],
       },
       toolbox: {
         show: true,
         feature: {
-          magicType: { type: ['line', 'bar'] },
+          magicType: { type: ["line", "bar"] },
           restore: {},
         },
       },
       xAxis: {
-        type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        type: "category",
+        data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
       },
       yAxis: {
-        type: 'value',
+        type: "value",
       },
       series: [
         {
-          name: '上周PV',
-          type: 'line',
+          name: "上周PV",
+          type: "line",
           data: [],
         },
         {
-          name: '本周PV',
-          type: 'line',
+          name: "本周PV",
+          type: "line",
           data: [],
         },
       ],
@@ -43,38 +43,38 @@ export const chartsConfig = {
   },
 
   uv: {
-    type: 'pvuv',
-    info: '',
+    type: "pvuv",
+    info: "",
     option: {
       tooltip: {
-        trigger: 'axis',
+        trigger: "axis",
       },
       legend: {
-        data: ['上周UV', '本周UV'],
+        data: ["上周UV", "本周UV"],
       },
       toolbox: {
         show: true,
         feature: {
-          magicType: { type: ['line', 'bar'] },
+          magicType: { type: ["line", "bar"] },
           restore: {},
         },
       },
       xAxis: {
-        type: 'category',
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        type: "category",
+        data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
       },
       yAxis: {
-        type: 'value',
+        type: "value",
       },
       series: [
         {
-          name: '上周UV',
-          type: 'line',
+          name: "上周UV",
+          type: "line",
           data: [],
         },
         {
-          name: '本周UV',
-          type: 'line',
+          name: "本周UV",
+          type: "line",
           data: [],
         },
       ],
@@ -82,35 +82,36 @@ export const chartsConfig = {
   },
 
   version: {
-    type: 'ua-version',
-    info: '',
+    type: "ua-version",
+    info: "",
     option: {
       tooltip: {
-        trigger: 'item',
-        formatter:
-          item => `<div style='text-align:left'><div style='display:block;word-break:break-all;white-space:pre-wrap;'>版本：${
-            item.data.name
-          }</div>
+        trigger: "item",
+        formatter: (
+          item
+        ) => `<div style='text-align:left'><div style='display:block;word-break:break-all;white-space:pre-wrap;'>版本：${
+          item.data.name
+        }</div>
                                         数量：${commafy(item.data.value)}</div>`,
       },
       legend: {
-        type: 'scroll',
+        type: "scroll",
         data: [],
-        orient: 'vertical',
-        left: 'right',
-        top: '30',
+        orient: "vertical",
+        left: "right",
+        top: "30",
       },
       grid: {
-        left: '3%',
-        right: '120',
-        bottom: '3%',
+        left: "3%",
+        right: "120",
+        bottom: "3%",
         containLabel: true,
       },
       xAxis: {
-        type: 'value',
+        type: "value",
       },
       yAxis: {
-        type: 'category',
+        type: "category",
         data: [],
         inverse: true,
       },
@@ -119,46 +120,46 @@ export const chartsConfig = {
   },
 
   ua: {
-    type: 'ua',
-    info: '',
+    type: "ua",
+    info: "",
     option: {
       title: {
-        subtext: '点击饼图查看或收起版本详情',
+        subtext: "点击饼图查看或收起版本详情",
         subtextStyle: {
           fontSize: 16,
         },
       },
       tooltip: {
-        trigger: 'item',
-        formatter: item =>
+        trigger: "item",
+        formatter: (item) =>
           `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>UA：${
             item.data.name
           }</div>数量：${commafy(item.data.value)}`,
       },
       legend: {
-        type: 'scroll',
-        orient: 'vertical',
-        left: 'right',
+        type: "scroll",
+        orient: "vertical",
+        left: "right",
         formatter: function (name) {
-          return name.length > 10 ? name.substr(0, 30) + '...' : name;
+          return name.length > 10 ? name.substr(0, 30) + "..." : name;
         },
       },
       series: [
         {
-          type: 'pie',
-          radius: ['30%', '60%'],
-          center: ['40%', '50%'],
+          type: "pie",
+          radius: ["30%", "60%"],
+          center: ["40%", "50%"],
           data: [],
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)',
+              shadowColor: "rgba(0, 0, 0, 0.5)",
             },
           },
           label: {
             show: true,
-            formatter: '{d}%',
+            formatter: "{d}%",
           },
           legendHoverLink: false,
         },
@@ -167,50 +168,49 @@ export const chartsConfig = {
   },
 
   performance_count: {
-    type: 'count',
-    info: '',
+    type: "count",
+    info: "",
     option: {
       tooltip: {
-        trigger: 'axis',
+        trigger: "axis",
         axisPointer: {
-          type: 'shadow',
+          type: "shadow",
         },
       },
       legend: {
-        data: ['上周', '本周'],
+        data: ["上周", "本周"],
       },
       xAxis: {
-        type: 'value',
+        type: "value",
         boundaryGap: [0, 0.01],
       },
       yAxis: {
-        type: 'category',
-        data: ['dns', 'tcp', 'ttfb', 'fp', 'tti', 'onload'],
+        type: "category",
+        data: ["dns", "tcp", "ttfb", "fp", "tti", "onload"],
       },
       series: [
         {
-          name: '上周',
-          type: 'bar',
+          name: "上周",
+          type: "bar",
           data: [],
           label: {
             show: true,
-            position: 'right',
+            position: "right",
           },
         },
         {
-          name: '本周',
-          type: 'bar',
+          name: "本周",
+          type: "bar",
           data: [],
           label: {
             show: true,
-            position: 'right',
+            position: "right",
           },
         },
       ],
     },
   },
 };
-
 
 interface DefaultColumns {
   title: string;
@@ -223,42 +223,41 @@ interface DefaultColumns {
   customRender?: Function | string;
 }
 
-
 export const defaultColumns: DefaultColumns[] = [
   {
-    title: '序号',
-    align: 'center',
-    width: '5%',
-    key: 'serial',
+    title: "序号",
+    align: "center",
+    width: "5%",
+    key: "serial",
   },
   {
-    title: 'URL',
-    dataIndex: 'borad_url',
-    width: '30%',
-    key: 'url',
-    slots: { customRender: 'URL' },
+    title: "URL",
+    dataIndex: "board_url",
+    width: "30%",
+    key: "url",
+    slots: { customRender: "URL" },
   },
-  { title: 'PV', dataIndex: 'pv', key: 'pv', align: 'center', sorter: true },
+  { title: "PV", dataIndex: "pv", key: "pv", align: "center", sorter: true },
   {
-    title: '性能评分',
-    dataIndex: 'performance_score',
-    key: 'performance_score',
-    align: 'center',
+    title: "性能评分",
+    dataIndex: "performance_score",
+    key: "performance_score",
+    align: "center",
     sorter: true,
   },
   {
-    title: '稳定性评分',
-    dataIndex: 'stability_score',
-    key: 'stability_score',
-    align: 'center',
+    title: "稳定性评分",
+    dataIndex: "stability_score",
+    key: "stability_score",
+    align: "center",
     sorter: true,
   },
-  { title: '总体评分', dataIndex: 'avg_score', key: 'avg_score', align: 'center', sorter: true },
+  { title: "总体评分", dataIndex: "avg_score", key: "avg_score", align: "center", sorter: true },
   {
-    title: '操作',
-    align: 'center',
-    key: 'operation',
-    slots: { customRender: 'operation' },
-    width: '9%',
+    title: "操作",
+    align: "center",
+    key: "operation",
+    slots: { customRender: "operation" },
+    width: "9%",
   },
 ];

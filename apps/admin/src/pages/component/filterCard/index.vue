@@ -24,7 +24,7 @@
         </span>
         <a-range-picker format="YYYY-MM-DD HH:mm" :show-time="{ format: 'HH:mm', minuteStep: 10 }"
           :disabledDate="props.boardType === 'general' ? disabledDate : null" v-model:value="filterDate"
-          style="width: 340px" :ranges="datePickerRanges" :inputReadOnly="false" @ok="handleRangePickerOK" />
+          style="width: 340px" :ranges="datePickerRanges" />
       </div>
       <div>
         <span class="mr-3">展示维度:</span>
@@ -56,19 +56,19 @@
 
 <script setup lang="ts">
 // 质量监控页 筛选卡片组件
-import { ref, watch, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { getUrlParams } from '@vben/utils';
 import { formatDate } from "@/hooks/board/date";
 import { useBoardStore } from '@/store/modules/board';
 import { useBoardDataStore } from '@/store/modules/panel';
 import { InfoCircleOutlined, ClearOutlined } from '@ant-design/icons-vue';
 import { clientUserAgent } from '@vben/constants';
-import { message } from 'ant-design-vue';
 import { datePickerRanges } from '../../board/component/util/datePickerConfig';
 import { filterTitleConfig, tabActiveFilters, excludeFilters } from '@vben/constants';
 import { storeToRefs } from 'pinia';
-import moment from 'moment';
 import FilterTag from './filterTag.vue';
+import dayjs from 'dayjs';
+type RangeValue = [dayjs.Dayjs, dayjs.Dayjs];
 
 const boardStore = useBoardStore();
 const boardDataStore = useBoardDataStore();
@@ -101,27 +101,29 @@ watch(filterDimension, val => store.addFilterValue({ dimension: val }), { immedi
 //初始化时间范围
 const initFilterDate = () => {
   //如果路由中存在filter_date参数，直接拿出来赋值
-  if (filters.value.start_time && filters.value.end_time)
-    return [moment(filters.value.start_time), moment(filters.value.end_time)];
-  return [
-    //起始时间：整周0:00或者当天0:00
-    filterDimension.value === 'day'
-      ? moment().startOf('day').subtract(6, 'd')
-      : moment().startOf('day'),
-    //终止时间：当前时间的整十分
-    moment()
-      .minute(10 * Math.floor(moment().minutes() / 10))
-      .second(0),
-  ];
+  if (filters.value.start_time && filters.value.end_time) {
+    const startTime = dayjs(filters.value.start_time, type)
+    const endTime = dayjs(filters.value.end_time, type)
+    if (startTime.isValid() && endTime.isValid()) {
+      const range: RangeValue = [startTime, endTime]
+      return range;
+    }
+  }
+  const startTime = filterDimension.value === 'day'
+    ? dayjs().startOf('day').subtract(6, 'd')
+    : dayjs().startOf('day')
+  const endTime = dayjs().minute(10 * Math.floor(dayjs().minute() / 10)).second(0)
+  const range: RangeValue = [startTime, endTime]
+  return range;
 };
 
 //日期范围
-const filterDate = ref(initFilterDate());
+const filterDate = ref<RangeValue>(initFilterDate());
 
 watch(
   () => [store.filterState.start_time, store.filterState.end_time],
   val => {
-    if (val[0] && val[1]) filterDate.value = [moment(val[0]), moment(val[1])];
+    if (val[0] && val[1]) filterDate.value = [dayjs(val[0]), dayjs(val[1])];
   }
 );
 
@@ -129,46 +131,34 @@ watch(
 watch(
   filterDate,
   val => {
-    // let [gteTime, lteTime] = val;
+    console.log(JSON.stringify(val))
+    const [gteTime, lteTime] = val;
     //把当前选择的时间转换为API规范的时间
-    console.log(val)
-    const gteTime = formatDate(val[0].valueOf(), type);
-    const lteTime = formatDate(val[1].valueOf(), type);
-    if (gteTime !== store.filterState.start_time || lteTime !== store.filterState.end_time) {
+    const startTime = formatDate(gteTime.valueOf(), type);
+    const endTime = formatDate(lteTime.valueOf(), type);
+    if (startTime !== store.filterState.start_time || endTime !== store.filterState.end_time) {
       store.addFilterValue({ start_time: gteTime, end_time: lteTime });
     }
   },
   { immediate: true }
 );
 
-// 处理查询按钮点击
-function handleRangePickerOK() {
-  if (filterDate.value.length === 0) {
-    message.warn('请选择日期');
-    return;
-  }
-  //将日期范围传递给接口请求参数
-  //上传交互日志
-  // uploadLog();
-  //获取新的看板数据
-}
-
 // disalbe包括当前周以后的周次
 const disabledDate = current => {
   // 无法选中的起始日期（21天前）
-  const disabledStartTime = moment().startOf('day').subtract(21, 'day');
+  const disabledStartTime = dayjs().startOf('day').subtract(21, 'day');
   // 无法选中的终止日期（当前时间整十分）
-  const disabledEndTime = moment();
+  const disabledEndTime = dayjs();
   return current < disabledStartTime || current > disabledEndTime;
 };
 
 // 清除所有筛选条件
 const clearFilter = () => {
   //把当前选择的时间转换为API规范的时间
-  const start_time = formatDate(moment().startOf('day').subtract(6, 'd').valueOf(), type);
+  const start_time = formatDate(dayjs().startOf('day').subtract(6, 'd').valueOf(), type);
   const end_time = formatDate(
-    moment()
-      .minute(10 * Math.floor(moment().minutes() / 10))
+    dayjs()
+      .minute(10 * Math.floor(dayjs().minute() / 10))
       .second(0)
       .valueOf(),
     type
@@ -177,16 +167,4 @@ const clearFilter = () => {
   filterDimension.value = 'day';
 };
 
-// 上传交互日志
-// function uploadLog() {
-//   let logData = {
-//     params: {
-//       projectName: props.projectInfo.project_name,
-//       appid: props.projectInfo.appid,
-//       eventid: props.projectInfo.eventid,
-//       pageuid: unref(currentRoute).path,
-//     },
-//   };
-//   window.__XES_LOG__.clickMsg(logData);
-// }
 </script>

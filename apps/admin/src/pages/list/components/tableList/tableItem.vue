@@ -10,21 +10,17 @@
       <!-- 正常 -->
       <div class="flex my-1 items-center whitespace-nowrap center">
         <div class="text-1xl text-gray-700 font-medium center">
-          {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
+          {{ needCommafy? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
         <div class="text-gray-500 center" v-if="unit.length">{{ unit }}</div>
       </div>
     </router-link>
-    <router-link
-      v-else
-      class="grid justify-items-center content-center w-full opacity-80"
-      :to="jumpUrl"
-    >
+    <router-link v-else class="grid justify-items-center content-center w-full opacity-80" :to="jumpUrl">
       <!-- 具有一定灰度、字体更小 -->
 
       <div class="flex my-1 items-center center">
         <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center">
-          {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
+          {{ needCommafy? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
         <div class="text-gray-500 center" v-if="unit.length">{{ unit }}</div>
       </div>
@@ -36,7 +32,7 @@
 import { commafy } from "@vben/utils";
 // import { boardStore } from '/@/store/modules/board';
 
-const props = defineProps({
+defineProps({
   data: {
     type: Object,
     required: false,
@@ -58,14 +54,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  reverseColor: {
-    type: Boolean,
-    default: false,
-  },
-  numName: {
-    type: String,
-    default: "",
-  },
   jumpUrl: {
     type: String,
     default: "",
@@ -80,6 +68,7 @@ const props = defineProps({
 .font-sm {
   font-size: 0.5rem;
 }
+
 :deep(.ant-table-row-cell-break-word) {
   text-align: center;
 }

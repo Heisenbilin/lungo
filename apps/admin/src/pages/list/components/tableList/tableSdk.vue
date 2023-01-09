@@ -1,16 +1,8 @@
 <template>
-  <a-tooltip
-    v-if="latestSDKVersion.length && project.sdk_version !== latestSDKVersion"
-    :overlayStyle="{ maxWidth: '300px' }"
-    :title="`日志上报SDK可更新至${latestSDKVersion}版本，点击查看`"
-    color="orange"
-  >
-    <a-button
-      type="link"
-      href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log"
-      target="_blank"
-      style="padding: 0"
-    >
+  <a-tooltip v-if="latestSDKVersion.length && project.sdk_version !== latestSDKVersion"
+    :overlayStyle="{ maxWidth: '300px' }" :title="`日志上报SDK可更新至${latestSDKVersion}版本，点击查看`" color="orange">
+    <a-button type="link" href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log" target="_blank"
+      style="padding: 0">
       <a-tag color="warning" class="h-5">
         {{ project.sdk_version === "" ? "&lt;2.1.0" : project.sdk_version }}
       </a-tag>
@@ -42,6 +34,7 @@ const props = defineProps({
   display: flex;
   align-items: center;
 }
+
 :deep(.ant-tag) {
   height: 1.5rem;
 }

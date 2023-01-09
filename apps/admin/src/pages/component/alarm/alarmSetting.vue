@@ -113,7 +113,7 @@ const props = defineProps({
     type: Number,
   },
   ucGroupId: {
-    type: String,
+    type: Number,
     default: '',
   },
 })
