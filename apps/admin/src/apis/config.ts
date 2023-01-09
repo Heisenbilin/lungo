@@ -1,4 +1,4 @@
-const dpEnv = process.env.VITE_DP_ENV;
+const dpEnv = "dev"; //process.env.VITE_DP_ENV;
 
 const hostname = location.hostname;
 

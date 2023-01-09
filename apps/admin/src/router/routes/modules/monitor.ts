@@ -14,10 +14,20 @@ const dashboard: RouteRecordItem = {
     {
       path: "list",
       name: "List",
-      component: () => import("@/pages/projectList/list.vue"),
+      component: () => import("@/pages/list/list.vue"),
       meta: {
-        title: "routes.dashboard.analysis",
+        title: "routes.monitor.list",
         icon: "ion:grid-outline",
+      },
+    },
+    {
+      path: "board",
+      name: "Board",
+      component: () => import("@/pages/board/board.vue"),
+      meta: {
+        title: "routes.monitor.board",
+        icon: "ion:grid-outline",
+        hideBreadcrumb: true,
       },
     },
     // {

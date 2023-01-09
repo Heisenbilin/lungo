@@ -82,10 +82,10 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, inject, watch} from 'vue';
+import { reactive, ref, inject, watch } from 'vue';
 import { GroupUsersCheckbox } from '@xes/uc';
 import { requestErrorTypeList, requestAddAlarmRule, requestUpdateAlarmRule } from '@/apis/alarm';
-import { useGetHuatuoGroups } from '@/hooks/board/useGetHuatuoGroups';
+// import { useGetHuatuoGroups } from '@/hooks/board/useGetHuatuoGroups';
 import { useWeeklyReportUserSelect } from '@/hooks/board/useWeeklyReportUserSelect';
 import { message } from 'ant-design-vue';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons-vue';
@@ -195,7 +195,7 @@ const rules = {
   ],
   upgradeNum: [{ required: true, type: 'number', message: '升级阀值必填', trigger: 'blur' }],
 };
-const { groups } = useGetHuatuoGroups();
+// const { groups } = useGetHuatuoGroups();
 const formItemLayout = {
   labelCol: {
     span: 3,

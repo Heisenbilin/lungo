@@ -4,11 +4,7 @@
       <div>
         <span class="chart-title !mt-2 mr-2"> 性能优化建议 </span>
         <a-select v-model:value="currentUrl" class="min-w-min">
-          <a-select-option
-            v-for="item in successList"
-            :key="item.board_url"
-            :value="item.board_url"
-          >
+          <a-select-option v-for="item in successList" :key="item.board_url" :value="item.board_url">
             {{ item.board_url }}
           </a-select-option>
         </a-select>
@@ -17,38 +13,31 @@
     </div>
     <div class="flex items-center justify-center min-h-80 pt-5 px-2">
       <a-spin size="large" v-if="lighthouseLoading === 0" />
-      <a-empty v-else-if="loadlighthouseLoadinging === 1" :image="simpleImage" />
+      <a-empty v-else-if="lighthouseLoading === 1" :image="simpleImage" />
       <div class="w-full" v-else>
-        <audit-layout
-          v-if="opportunityAudits.length"
-          :audits="opportunityAudits"
-          :group="groups['load-opportunities']"
-        />
-        <audit-layout
-          v-if="diagnosticAudits.length"
-          :audits="diagnosticAudits"
-          :group="groups.diagnostics"
-        />
+        <audit-layout v-if="opportunityAudits.length" :audits="opportunityAudits"
+          :group="groups['load-opportunities']" />
+        <audit-layout v-if="diagnosticAudits.length" :audits="diagnosticAudits" :group="groups.diagnostics" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed, watch } from "vue";
-import { prepareReportResult } from "/@/components/boardReport/detail/util";
-import { getLighthouseAudits } from "/@/components/boardReport/apis";
-import auditLayout from "/@/components/boardReport/detail/audit/auditLayout.vue";
-import { showAsPassed, _getWastedMs } from "/@/components/boardReport/detail/util";
+import { defineProps, ref, computed, watch, PropType } from "vue";
+import { prepareReportResult, showAsPassed, _getWastedMs } from "@/pages/report/detail/util";
+import { getLighthouseAudits } from "@/apis/report/apis";
+import auditLayout from "@/pages/report//detail/audit/auditLayout.vue";
 import { useRouter } from "vue-router";
 import { useReportStore } from "@/store/modules/report";
+import { Empty } from "ant-design-vue";
 
 const reportStore = useReportStore();
 
 const props = defineProps({
   successList: {
-    type: Array,
-    requerd: true,
+    type: Array as PropType<any[]>,
+    required: true,
   },
   projectId: String,
   startTime: String,
@@ -59,6 +48,10 @@ const router = useRouter();
 const reportUrl = computed(() => props.successList[0].board_url);
 const currentUrl = ref(props.successList[0].board_url);
 // console.log(props.successList[0].board_url);
+
+//空数据图片
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
+
 watch(
   () => reportUrl.value,
   () => {
@@ -68,7 +61,7 @@ watch(
 );
 
 const lighthouseLoading = ref(0);
-const lighthouseData = ref([]);
+const lighthouseData = ref<any>([]);
 const preparedLighthouse = computed(() =>
   lighthouseLoading.value === 2 ? lighthouseData.value.categories.performance : {}
 );

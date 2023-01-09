@@ -1,18 +1,26 @@
 export default {
   basic: {
-    login: 'Login',
-    lock: 'LockScreen'
+    login: "Login",
+    lock: "LockScreen",
   },
   dashboard: {
-    dashboard: 'Dashboard',
-    about: 'About',
-    workbench: 'Workbench',
-    analysis: 'Analysis',
+    dashboard: "Dashboard",
+    about: "About",
+    workbench: "Workbench",
+    analysis: "Analysis",
+  },
+  monitor: {
+    list: "Project List",
+    board: "Board",
+    panel: "Panel",
+    report: "Weekly Report",
+    group: "User Group",
+    log: "Operation Log",
   },
   demo: {
-    demo: 'Demo',
-    card: 'Card',
-    form: 'Form',
-    table: 'Table',
+    demo: "Demo",
+    card: "Card",
+    form: "Form",
+    table: "Table",
   },
-}
+};

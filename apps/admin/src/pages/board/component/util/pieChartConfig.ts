@@ -1,13 +1,5 @@
 import { cloneDeep, commafy, compare, getMainInfo } from "@vben/utils";
-import { pieChartOption, logInfoTitle } from "@vben/constants";
-
-// 客户端数字key对应的客户端类型
-export const clientUserAgent = {
-  7: "pc",
-  8: "web",
-  9: "android",
-  10: "ios",
-};
+import { pieChartOption, logInfoTitle, clientUserAgent } from "@vben/constants";
 
 //将接口返回值处理成“异常Top10”图表数据
 export function getTop10Option(data, infoLength = 40) {

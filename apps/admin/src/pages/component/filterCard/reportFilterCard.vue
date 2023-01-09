@@ -3,14 +3,9 @@
     <div class="flex gap-3 flex-wrap">
       <div>
         <span class="mr-3">周次选择:</span>
-        <a-week-picker
-          v-model:value="week"
-          :disabledDate="disabledDate"
-          style="width: 120px"
-          :allowClear="false"
-        />
+        <a-week-picker v-model:value="week" :disabledDate="disabledDate" style="width: 120px" :allowClear="false" />
         <span class="week-picker">
-          ({{ `${formatToDate(moment(week).day(1))}至${formatToDate(moment(week).day(7))}` }})
+          ({{ `${formatToDate(moment(week).day(1).format())}至${formatToDate(moment(week).day(7).format())}` }})
         </span>
       </div>
     </div>
@@ -20,10 +15,11 @@
 <script setup lang = 'ts'>
 // 质量监控页 筛选卡片组件
 import { ref, watch, computed } from 'vue';
-import { formatToDate } from '/@/utils/dateUtil';
-import { reportStore } from '/@/store/modules/board';
-
+import { formatToDate } from '@vben/utils';
+import { useReportStore } from '@/store/modules/report';
 import moment from 'moment';
+
+const reportStore = useReportStore()
 
 const startTime = computed(() => reportStore.getFilterState.start_time);
 //周次相关信息
@@ -32,8 +28,8 @@ const week = ref(firstDate ? moment(firstDate, 'YYYY-MM-DD') : moment().weekday(
 watch(
   week,
   val => {
-    const start_time = formatToDate(moment(val).day(1));
-    const end_time = formatToDate(moment(val).day(7).add(1, 'd'));
+    const start_time = formatToDate(moment(val).day(1).format());
+    const end_time = formatToDate(moment(val).day(7).add(1, 'd').format());
     reportStore.addFilterValue({ start_time, end_time });
   },
   { immediate: true }

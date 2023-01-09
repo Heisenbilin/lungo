@@ -3,13 +3,8 @@
     <Summary />
     <UrlTable />
     <template v-if="successList.length">
-      <performanceList
-        :successList="successList"
-        :projectId="projectId"
-        :startTime="startTime"
-        :endTime="endTime"
-        :type="props.platformType"
-      />
+      <performanceList :successList="successList" :projectId="projectId" :startTime="startTime" :endTime="endTime"
+        :type="props.platformType" />
     </template>
     <PerformanceChartsSelect />
   </div>
@@ -25,7 +20,7 @@ import PerformanceChartsSelect from "./component/performanceCharts/peformanceCha
 import performanceList from "./component/performanceAdvise/performanceList.vue";
 import { useBoardStore } from "@/store/modules/board";
 import { useReportStore } from "@/store/modules/report";
-import { getListById } from "@/components/boardReport/apis";
+import { getListById } from "@/apis/report/apis";
 
 const boardStore = useBoardStore();
 const reportStore = useReportStore();

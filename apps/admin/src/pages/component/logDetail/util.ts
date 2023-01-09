@@ -18,10 +18,10 @@ import { getErrList } from "@/apis/board/sourceMap";
 import { getErrorDetails, getFErrorDetails } from "@/apis/board/resource";
 import { getLogDetails } from "@/apis/board/performance";
 import { commafy } from "@vben/utils";
-import { clientUserAgent } from "../../board/component/util/pieChartConfig";
+import { clientUserAgent } from "@vben/constants";
 
 // 环境判断
-const dpEnv = process.env.VITE_DP_ENV;
+const dpEnv = "dev"; //process.env.VITE_DP_ENV;
 console.log(dpEnv, "dpEnv");
 const isTest = dpEnv === "dev" || dpEnv === "test";
 export const kibanaHref = isTest ? "https://basiclog-test.xev5.com" : "http://basiclog.xesv5.com";

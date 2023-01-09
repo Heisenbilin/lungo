@@ -4,34 +4,22 @@
       网络类型
       <a-tag color="blue" class="filter-tag"> 单击筛选：网络 </a-tag>
     </div>
-    <BaseChart
-      :requestParams="requestParams"
-      :requestFunc="getNetworkData"
-      :getOptionFunc="getNetworkTypeOption"
-      :bindFuncs="{ click: (title) => addFilter(title, 'network') }"
-    />
+    <BaseChart :requestParams="requestParams" :requestFunc="getNetworkData" :getOptionFunc="getNetworkTypeOption"
+      :bindFuncs="{ click: (title) => addFilter(title, 'network') }" />
   </div>
   <div class="chart-container">
     <div class="chart-title">
       客户端类型 <a-tag color="blue" class="filter-tag"> 单击筛选：客户端 </a-tag>
     </div>
-    <BaseChart
-      :requestParams="requestParams"
-      :requestFunc="getClientData"
-      :getOptionFunc="getClientTypeOption"
-      :bindFuncs="{ click: (title) => addFilter(title, 'client') }"
-    />
+    <BaseChart :requestParams="requestParams" :requestFunc="getClientData" :getOptionFunc="getClientTypeOption"
+      :bindFuncs="{ click: (title) => addFilter(title, 'client') }" />
   </div>
   <div class="chart-container">
     <div class="chart-title">
       设备类型 <a-tag color="blue" class="filter-tag"> 单击筛选：设备 </a-tag>
     </div>
-    <BaseChart
-      :requestParams="requestParams"
-      :requestFunc="getDeviceData"
-      :getOptionFunc="getDeviceTypeOption"
-      :bindFuncs="{ click: (title) => addFilter(title, 'device') }"
-    />
+    <BaseChart :requestParams="requestParams" :requestFunc="getDeviceData" :getOptionFunc="getDeviceTypeOption"
+      :bindFuncs="{ click: (title) => addFilter(title, 'device') }" />
   </div>
 </template>
 
@@ -42,8 +30,8 @@ import {
   getNetworkTypeOption,
   getClientTypeOption,
   getDeviceTypeOption,
-  clientUserAgent,
 } from "../../util/pieChartConfig";
+import { clientUserAgent } from "@vben/constants";
 import { useBoardStore } from "@/store/modules/board";
 import { BaseChart } from "@vben/components";
 
@@ -68,10 +56,9 @@ const requestParams = computed(() => ({
 const addFilter = (title, key) => {
   const name =
     key === "client"
-      ? `${
-          Object.keys(clientUserAgent).find((key) => clientUserAgent[key] === title.data.name) ??
-          "未知"
-        }`
+      ? `${Object.keys(clientUserAgent).find((key) => clientUserAgent[key] === title.data.name) ??
+      "未知"
+      }`
       : title.data.name;
   boardStore.addFilterValue({ [key]: name });
 };

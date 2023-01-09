@@ -12,29 +12,19 @@
       <div>
         <span class="mr-3">
           时间范围
-          <a-tooltip
-            :overlayStyle="{ maxWidth: '400px' }"
-            :title="
-              props.boardType === 'general'
-                ? '可选范围：近三周内数据'
-                : '本看板数据范围：接入本平台后数据永久保存'
-            "
-          >
+          <a-tooltip :overlayStyle="{ maxWidth: '400px' }" :title="
+            props.boardType === 'general'
+              ? '可选范围：近三周内数据'
+              : '本看板数据范围：接入本平台后数据永久保存'
+          ">
             <a href="https://cloud.tal.com/gateway-fe#/config/upstreamList" target="_blank">
               <InfoCircleOutlined />
             </a>
           </a-tooltip>
         </span>
-        <a-range-picker
-          format="YYYY-MM-DD HH:mm"
-          :show-time="{ format: 'HH:mm', minuteStep: 10 }"
-          :disabledDate="props.boardType === 'general' ? disabledDate : null"
-          v-model:value="filterDate"
-          style="width: 340px"
-          :ranges="datePickerRanges"
-          :inputReadOnly="false"
-          @ok="handleRangePickerOK"
-        />
+        <a-range-picker format="YYYY-MM-DD HH:mm" :show-time="{ format: 'HH:mm', minuteStep: 10 }"
+          :disabledDate="props.boardType === 'general' ? disabledDate : null" v-model:value="filterDate"
+          style="width: 340px" :ranges="datePickerRanges" :inputReadOnly="false" @ok="handleRangePickerOK" />
       </div>
       <div>
         <span class="mr-3">展示维度:</span>
@@ -48,43 +38,40 @@
     <div class="flex gap-3 flex-wrap mt-3">
       <template v-for="(value, key) in filters" :key="key">
         <template v-if="!excludeFilters.includes(key)">
-          <FilterTag
-            :active="(tabActiveFilters[tab] || []).includes(key)"
-            :name="key"
-            :title="
-              key === 'performance_key' ? filters.performance_key + '耗时' : filterTitleConfig[key]
-            "
-            :content="
-              key === 'api_range'
-                ? value.join(' - ') + ' ms'
-                : key === 'performance_key'
-                ? filters.performance_range.join(' - ') + ' ms'
-                : key === 'client'
-                ? clientUserAgent[value] || '未知'
-                : value
-            "
-          />
+          <FilterTag :active="(tabActiveFilters[tabState] || []).includes(key)" :name="key"
+            :title="key === 'performance_key' ? filters.performance_key + '耗时' : filterTitleConfig[key]" :content="
+  key === 'api_range'
+    ? filters.api_range!.join(' - ') + ' ms'
+    : key === 'performance_key'
+      ? filters.performance_range!.join(' - ') + ' ms'
+      : key === 'client'
+        ? clientUserAgent[filters.client!] || '未知'
+        : value
+            " />
         </template>
       </template>
     </div>
   </a-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // 质量监控页 筛选卡片组件
-import { ref, watch } from 'vue';
-import { formatDate } from '/@/utils/date';
-import { boardStore, boardDataStore } from '/@/store/modules/board';
+import { ref, watch, computed } from 'vue';
+import { getUrlParams } from '@vben/utils';
+import { formatDate } from "@/hooks/board/date";
+import { useBoardStore } from '@/store/modules/board';
+import { useBoardDataStore } from '@/store/modules/panel';
 import { InfoCircleOutlined, ClearOutlined } from '@ant-design/icons-vue';
-import { clientUserAgent } from '../../util/pieChartConfig';
+import { clientUserAgent } from '@vben/constants';
 import { message } from 'ant-design-vue';
-import { datePickerRanges } from '/@/components/boardNew/util/datePickerConfig';
-import { filterTitleConfig, tabActiveFilters, excludeFilters } from './filterConfig';
-
+import { datePickerRanges } from '../../board/component/util/datePickerConfig';
+import { filterTitleConfig, tabActiveFilters, excludeFilters } from '@vben/constants';
+import { storeToRefs } from 'pinia';
 import moment from 'moment';
 import FilterTag from './filterTag.vue';
-import { computed } from '@vue/reactivity';
-import { getUrlParams } from '/@/utils/url/urlParams';
+
+const boardStore = useBoardStore();
+const boardDataStore = useBoardDataStore();
 
 const type = 'YY-MM-DD HH-mm-ss';
 const props = defineProps({
@@ -104,8 +91,8 @@ Object.keys(urlParams).forEach(key => {
 });
 store.addFilterValue(urlParams);
 
-const filters = computed(() => store.getFilterState);
-const tab = computed(() => store.getTabState || 'default');
+const { filterState: filters } = storeToRefs(store);
+const { tabState = 'default' } = storeToRefs(store);
 
 //日期纬度: 1 -> 1天; 2 -> 1小时; 3 -> 30分钟
 const filterDimension = ref(filters.value.dimension);
@@ -132,7 +119,7 @@ const initFilterDate = () => {
 const filterDate = ref(initFilterDate());
 
 watch(
-  () => [store.getFilterState.start_time, store.getFilterState.end_time],
+  () => [store.filterState.start_time, store.filterState.end_time],
   val => {
     if (val[0] && val[1]) filterDate.value = [moment(val[0]), moment(val[1])];
   }
@@ -142,11 +129,12 @@ watch(
 watch(
   filterDate,
   val => {
-    let [gteTime, lteTime] = val;
+    // let [gteTime, lteTime] = val;
     //把当前选择的时间转换为API规范的时间
-    gteTime = formatDate(gteTime.valueOf(), type);
-    lteTime = formatDate(lteTime.valueOf(), type);
-    if (gteTime !== store.getFilterState.start_time || lteTime !== store.getFilterState.end_time) {
+    console.log(val)
+    const gteTime = formatDate(val[0].valueOf(), type);
+    const lteTime = formatDate(val[1].valueOf(), type);
+    if (gteTime !== store.filterState.start_time || lteTime !== store.filterState.end_time) {
       store.addFilterValue({ start_time: gteTime, end_time: lteTime });
     }
   },

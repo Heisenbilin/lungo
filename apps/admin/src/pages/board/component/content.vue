@@ -36,10 +36,10 @@ import "intro.js/introjs.css";
 
 import { useWatermark } from "@vben/hooks";
 
-import BasicBoard from "./pvBoard/index.vue";
-import PerformanceBoard from "./performanceBoard/index.vue";
-import RuntimeErrorBoard from "./runtimeError/index.vue";
-import ResourceErrorBoard from "./resourceError/index.vue";
+import BasicBoard from "./pv/index.vue";
+import PerformanceBoard from "./performance/index.vue";
+import RuntimeErrorBoard from "./runtime/index.vue";
+import ResourceErrorBoard from "./resource/index.vue";
 import ApiErrorBoard from "./apiError/index.vue";
 import GatewayBoard from "./gateway/index.vue";
 import LogDrawer from "../../component/logDetail/logDrawer.vue";
