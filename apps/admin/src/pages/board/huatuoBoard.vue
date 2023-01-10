@@ -18,12 +18,12 @@
 </template>
 
 <script setup lang="ts">
-import { useBoardStore } from "@/store/modules/board";
-import { storeToRefs } from "pinia";
-import boardInfo from "./board.vue";
-const boardStore = useBoardStore();
+import { useBoardStore } from '@/store/modules/board'
+import { storeToRefs } from 'pinia'
+import boardInfo from './board.vue'
+const boardStore = useBoardStore()
 
-const { boardInfoState } = storeToRefs(boardStore);
+const { boardInfoState } = storeToRefs(boardStore)
 </script>
 
 <style lang="scss" scoped>
