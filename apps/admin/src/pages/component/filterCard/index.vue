@@ -71,7 +71,7 @@
 <script setup lang="ts">
 // 质量监控页 筛选卡片组件
 import { ref, watch } from 'vue'
-import { getUrlParams, formatDate } from '@vben/utils'
+import { getUrlParams, formatDateString } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useBoardDataStore } from '@/store/modules/panel'
 import { InfoCircleOutlined, ClearOutlined } from '@ant-design/icons-vue'
@@ -150,8 +150,8 @@ watch(
     console.log(JSON.stringify(val))
     const [gteTime, lteTime] = val
     //把当前选择的时间转换为API规范的时间
-    const startTime = formatDate(gteTime.valueOf(), type)
-    const endTime = formatDate(lteTime.valueOf(), type)
+    const startTime = formatDateString(gteTime.valueOf(), type)
+    const endTime = formatDateString(lteTime.valueOf(), type)
     if (startTime !== store.filterState.start_time || endTime !== store.filterState.end_time) {
       store.addFilterValue({ start_time: gteTime, end_time: lteTime })
     }
@@ -171,8 +171,8 @@ const disabledDate = current => {
 // 清除所有筛选条件
 const clearFilter = () => {
   //把当前选择的时间转换为API规范的时间
-  const start_time = formatDate(dayjs().startOf('day').subtract(6, 'd').valueOf(), type)
-  const end_time = formatDate(
+  const start_time = formatDateString(dayjs().startOf('day').subtract(6, 'd').valueOf(), type)
+  const end_time = formatDateString(
     dayjs()
       .minute(10 * Math.floor(dayjs().minute() / 10))
       .second(0)

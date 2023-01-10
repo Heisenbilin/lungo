@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { computed, watch, ref } from 'vue'
-import { formatDate } from '@vben/utils'
+import { formatDateString } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
 import { getListById } from '@/apis/report/apis'
@@ -42,13 +42,13 @@ const props = defineProps({
 
 const projectId = computed(() => `${boardStore.boardInfoState.id}`)
 // 初始化周报请求时间
-const start_time = formatDate(
+const start_time = formatDateString(
   moment()
     .subtract(new Date().getDay() + 6, 'days')
     .valueOf(),
   'YY-MM-DD',
 )
-const end_time = formatDate(
+const end_time = formatDateString(
   moment()
     .subtract(new Date().getDay() - 1, 'days')
     .valueOf(),

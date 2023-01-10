@@ -1,4 +1,4 @@
-import { cloneDeep, formatDate } from '@vben/utils'
+import { cloneDeep, formatDateString } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 
 const boardStore = useBoardStore()
@@ -112,7 +112,7 @@ export function getSummaryChartOption(data, selectedLegend) {
   //3.2 将valueArrs中的数据存入chartOption中
   //3.2.1 横坐标：时间数据
   chartOption.xAxis.data = valueArrs.time.value.map(time => ({
-    value: formatDate(time, timeFormatStr),
+    value: formatDateString(time, timeFormatStr),
     name: time,
   }))
   //时间数据过多时，添加底部滑块

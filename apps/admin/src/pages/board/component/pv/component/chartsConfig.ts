@@ -1,4 +1,4 @@
-import { cloneDeep, commafy, formatDate } from '@vben/utils'
+import { cloneDeep, commafy, formatDateString } from '@vben/utils'
 
 //“PV”与“UV”图表基础配置
 const PVUVChartConfig: any = {
@@ -59,10 +59,10 @@ export function getPVUVChartOption(data, timeFormatStr) {
   let timeList: any[] = [] //时间数据
   let countList: any[] = [] //异常数
   data.forEach(item => {
-    timeList.push({ value: formatDate(item.time, timeFormatStr), name: item.time })
+    timeList.push({ value: formatDateString(item.time, timeFormatStr), name: item.time })
     countList.push({
       value: item.count,
-      name: formatDate(item.time, timeFormatStr),
+      name: formatDateString(item.time, timeFormatStr),
     })
   })
   chartOption.xAxis.data = timeList

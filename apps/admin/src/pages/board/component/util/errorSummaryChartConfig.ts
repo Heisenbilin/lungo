@@ -1,4 +1,4 @@
-import { cloneDeep, commafy, formatDate, getDateWeekday } from '@vben/utils'
+import { cloneDeep, commafy, formatDateString, getDateWeekday } from '@vben/utils'
 
 //图表基础配置
 //柱状图与曲线图结合，支持时间范围选择
@@ -95,7 +95,7 @@ export function getSummaryChartOption(data, timeFormatStr, isApi = '') {
     const count = isApi ? item.failCount : item.count
     const totalCount = isApi ? item.count : item.pvCount
     const rate = totalCount ? ((count * 100) / totalCount).toFixed(2) : null //防止totalCount为0
-    timeList.push({ value: formatDate(item.time, timeFormatStr), name: item.time })
+    timeList.push({ value: formatDateString(item.time, timeFormatStr), name: item.time })
     //使用{name:...,value:...}的格式可以往里面塞更多数据
     countList.push({
       name: {
