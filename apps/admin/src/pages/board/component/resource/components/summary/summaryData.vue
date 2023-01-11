@@ -90,7 +90,7 @@ import { getSummaryData } from "@/apis/board/resource";
 import { getSummaryChartOption } from "../../../util/errorSummaryChartConfig";
 import { commafy } from "@vben/utils";
 import { useBoardStore } from "@/store/modules/board";
-import { addTimeFilter } from "../../../util/datePickerConfig";
+import { addTimeFilter } from "@/hooks/board/useDate";
 import { QuestionCircleOutlined } from "@ant-design/icons-vue";
 import { BaseChart } from "@vben/components";
 import FaultTolerantTab from "./faultTolerantTab.vue";

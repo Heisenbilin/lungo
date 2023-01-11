@@ -50,19 +50,19 @@
 
 <script setup lang="ts">
 //runtime异常数据汇总组件
-import { ref, computed } from "vue";
-import { useBoardStore } from "@/store/modules/board";
-import { getSummaryChartOption } from "../../../util/errorSummaryChartConfig";
-import { commafy } from "@vben/utils";
-import { QuestionCircleOutlined } from "@ant-design/icons-vue";
-import { getSummaryData } from "@/apis/board/runtime";
-import { addTimeFilter } from "../../../util/datePickerConfig";
-import { BaseChart } from "@vben/components";
+import { ref, computed } from 'vue'
+import { useBoardStore } from '@/store/modules/board'
+import { getSummaryChartOption } from '../../../util/errorSummaryChartConfig'
+import { commafy } from '@vben/utils'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { getSummaryData } from '@/apis/board/runtime'
+import { addTimeFilter } from '@/hooks/board/useDate'
+import { BaseChart } from '@vben/components'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
-const loading = ref(true);
-const activeKey = ref("1");
+const loading = ref(true)
+const activeKey = ref('1')
 
 //请求参数
 const requestParams = computed(() => ({
@@ -77,34 +77,34 @@ const requestParams = computed(() => ({
   network: boardStore.filterState.network, //网络类型筛选
   client: boardStore.filterState.client, //客户端筛选
   os: boardStore.filterState.os, //操作系统筛选
-}));
+}))
 
 const summaryData = ref({
-  summaryCount: "",
-  errorType: "",
-  errorRate: "",
-  pvTotal: "",
-});
+  summaryCount: '',
+  errorType: '',
+  errorRate: '',
+  pvTotal: '',
+})
 
-const getSummaryOption = (data) => getSummaryChartOption(data, boardStore.getTimeFormatStr);
+const getSummaryOption = data => getSummaryChartOption(data, boardStore.getTimeFormatStr)
 
 //从后端获取均值瀑布图数据方法
-const requestSummaryData = async (params) => {
-  loading.value = true;
+const requestSummaryData = async params => {
+  loading.value = true
   //拦截请求结果，存入summaryData中
-  const result = await getSummaryData(params);
-  const data = result.data;
-  const percent = ((data.errorTotal / data.pvTotal) * 100).toFixed(2);
+  const result = await getSummaryData(params)
+  const data = result.data
+  const percent = ((data.errorTotal / data.pvTotal) * 100).toFixed(2)
   summaryData.value = Object.keys(data).length
     ? {
         summaryCount: data.errorTotal,
         errorType: data.errorType,
         pvTotal: data.pvTotal,
-        errorRate: isNaN(+percent) || percent === "Infinity" ? "0" : percent,
+        errorRate: isNaN(+percent) || percent === 'Infinity' ? '0' : percent,
       }
-    : { summaryCount: "", errorType: "", errorRate: "", pvTotal: "" };
-  loading.value = false;
-  result.data = data?.list ?? [];
-  return result;
-};
+    : { summaryCount: '', errorType: '', errorRate: '', pvTotal: '' }
+  loading.value = false
+  result.data = data?.list ?? []
+  return result
+}
 </script>

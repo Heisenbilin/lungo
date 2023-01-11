@@ -1,5 +1,5 @@
 <template>
-  <div id="general-board-container" class="p-2 border border-gray-200 mt-3">
+  <div id="general-board-container" class="p-2 mt-3">
     <a-tabs v-model:activeKey="activeKey" size="large">
       <a-tab-pane key="pageview" tab="页面访问">
         <BasicBoard v-if="activeKey === 'pageview'" />
@@ -26,37 +26,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch } from 'vue'
 // import { useStore } from 'vuex';
-import { getUrlParams } from "@vben/utils";
-import { useBoardStore } from "@/store/modules/board";
+import { getUrlParams } from '@vben/utils'
+import { useBoardStore } from '@/store/modules/board'
+import { useWatermark } from '@vben/hooks'
+import { tabListEnum } from '@vben/constants'
 
-import intro from "intro.js";
-import "intro.js/introjs.css";
+import BasicBoard from './pv/index.vue'
+import PerformanceBoard from './performance/index.vue'
+import RuntimeErrorBoard from './runtime/index.vue'
+import ResourceErrorBoard from './resource/index.vue'
+import ApiErrorBoard from './apiError/index.vue'
+import GatewayBoard from './gateway/index.vue'
+import LogDrawer from '../../component/logDetail/logDrawer.vue'
+import FAQ from '../../component/FAQ.vue'
+import intro from 'intro.js'
+import 'intro.js/introjs.css'
 
-import { useWatermark } from "@vben/hooks";
-
-import BasicBoard from "./pv/index.vue";
-import PerformanceBoard from "./performance/index.vue";
-import RuntimeErrorBoard from "./runtime/index.vue";
-import ResourceErrorBoard from "./resource/index.vue";
-import ApiErrorBoard from "./apiError/index.vue";
-import GatewayBoard from "./gateway/index.vue";
-import LogDrawer from "../../component/logDetail/logDrawer.vue";
-import FAQ from "../../component/FAQ.vue";
-import { tabListEnum } from "@vben/constants"
 
 //数据看板：管理时间、维度与展示tab
 const props = defineProps({
   platformType: {
     type: String,
   },
-});
+})
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 // const store = useStore();
 
-const username = "xiongbilin";
+const username = 'xiongbilin'
 
 // //页面筛选
 // const urlSelectValue = ref('所有页面');
@@ -64,14 +63,14 @@ const username = "xiongbilin";
 
 //tab页key值
 //将路由中的tabkey与activeKey同步
-const { tabkey = "" } = getUrlParams();
-const activeKey = ref(tabListEnum[tabkey] ? tabkey : "pageview");
+const { tabkey = '' } = getUrlParams()
+const activeKey = ref(tabListEnum[tabkey] ? tabkey : 'pageview')
 //tab页的key值与路由绑定
-watch(activeKey, (val) => boardStore.commitTabState(val.value), { immediate: true });
+watch(activeKey, val => boardStore.commitTabState(val.value), { immediate: true })
 
 onMounted(() => {
-  createWatermark();
-});
+  createWatermark()
+})
 
 //获取项目下的所有URL
 // const getUrls = async () => {
@@ -101,15 +100,15 @@ onMounted(() => {
 
 // 生成水印
 function createWatermark() {
-  const projectName = boardStore.boardInfoState.project_name || "";
+  const projectName = boardStore.boardInfoState.project_name || ''
   useWatermark({
-    container: document.getElementById("general-board-container") || undefined,
-    content: `${props.platformType ? "华佗" : "小松鼠"}-${projectName}-${username}`,
+    container: document.getElementById('general-board-container') || undefined,
+    content: `${props.platformType ? '华佗' : '小松鼠'}-${projectName}-${username}`,
     // rotate默认30度，因此长宽比为1.732:1能最大程度利用空间（容纳最多字符）
-    width: "400px",
-    height: "300px",
-    font: "7.5px Microsoft Yahei Light",
-  });
+    width: '400px',
+    height: '300px',
+    font: '7.5px Microsoft Yahei Light',
+  })
 }
 
 const handleStart = () => {
@@ -117,18 +116,18 @@ const handleStart = () => {
     .setOptions({
       steps: [
         {
-          title: "提示",
-          intro: "您的项目没有任何数据！",
+          title: '提示',
+          intro: '您的项目没有任何数据！',
         },
         {
-          title: "问题排查",
-          element: document.getElementById("faq-icon"),
-          intro: "点击此处可以帮助您排查常见问题、查看操作手册.",
+          title: '问题排查',
+          element: document.getElementById('faq-icon'),
+          intro: '点击此处可以帮助您排查常见问题、查看操作手册.',
         },
       ],
     })
-    .start();
-};
+    .start()
+}
 
 // const editUrl = () => {
 //   console.log('编辑筛选页面');

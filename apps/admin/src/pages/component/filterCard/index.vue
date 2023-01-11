@@ -76,7 +76,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { useBoardDataStore } from '@/store/modules/panel'
 import { InfoCircleOutlined, ClearOutlined } from '@ant-design/icons-vue'
 import { clientUserAgent } from '@vben/constants'
-import { datePickerRanges } from '../../board/component/util/datePickerConfig'
+import { datePickerRanges } from '@/hooks/board/useDate'
 import { filterTitleConfig, tabActiveFilters, excludeFilters } from '@vben/constants'
 import { storeToRefs } from 'pinia'
 import FilterTag from './filterTag.vue'
@@ -96,12 +96,14 @@ const props = defineProps({
 
 const store = props.boardType === 'general' ? boardStore : boardDataStore
 
+// 初始筛选条件
 const urlParams = getUrlParams()
 Object.keys(urlParams).forEach(key => {
   if (!tabActiveFilters.pageview.includes(key)) {
     delete urlParams[key]
   }
 })
+
 store.addFilterValue(urlParams)
 
 const { filterState: filters } = storeToRefs(store)
@@ -115,6 +117,7 @@ watch(filterDimension, val => store.addFilterValue({ dimension: val }), { immedi
 const initFilterDate = () => {
   //如果路由中存在filter_date参数，直接拿出来赋值
   if (filters.value.start_time && filters.value.end_time) {
+    console.log('filters.value.start_time', filters.value.start_time)
     const startTime = dayjs(filters.value.start_time, type)
     const endTime = dayjs(filters.value.end_time, type)
     if (startTime.isValid() && endTime.isValid()) {
@@ -130,6 +133,7 @@ const initFilterDate = () => {
     .minute(10 * Math.floor(dayjs().minute() / 10))
     .second(0)
   const range: RangeValue = [startTime, endTime]
+  console.log(range)
   return range
 }
 
@@ -150,10 +154,11 @@ watch(
     console.log(JSON.stringify(val))
     const [gteTime, lteTime] = val
     //把当前选择的时间转换为API规范的时间
-    const startTime = formatDateString(gteTime.valueOf(), type)
-    const endTime = formatDateString(lteTime.valueOf(), type)
-    if (startTime !== store.filterState.start_time || endTime !== store.filterState.end_time) {
-      store.addFilterValue({ start_time: gteTime, end_time: lteTime })
+    const start_time = formatDateString(gteTime.valueOf(), type)
+    const end_time = formatDateString(lteTime.valueOf(), type)
+    console.log(start_time, end_time)
+    if (start_time !== store.filterState.start_time || end_time !== store.filterState.end_time) {
+      store.addFilterValue({ start_time, end_time })
     }
   },
   { immediate: true },

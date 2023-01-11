@@ -25,7 +25,7 @@
         </a-select>
       </div>
     </template>
-    <div v-if="projectId" class="flex gap-3 flex-wrap">
+    <div v-if="projectInfo.id" class="flex gap-3 flex-wrap">
       <InfoTag title="appid">
         <template #content>
           <a-tooltip title="点击跳转本项目的kibana数据看板">
@@ -88,7 +88,7 @@
       </InfoTag>
     </div>
   </a-card>
-  <AlarmSetting ref="alarmSetting" :projectId="projectId" :ucGroupId="admin_uc_group_id" />
+  <AlarmSetting ref="alarmSetting" :projectId="projectInfo.id" :ucGroupId="admin_uc_group_id" />
 </template>
 
 <script setup lang="ts">
@@ -113,16 +113,14 @@ import SDKVersion from '../sdkVersion.vue'
 import AlarmSetting from '../alarm/alarmSetting.vue'
 import InfoTag from './infoTag.vue'
 import { useLinkToUrl } from '@/hooks/board/useLink'
+import { storeToRefs } from 'pinia'
+import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
 const boardDataStore = useBoardDataStore()
 
 const props = defineProps({
-  projectId: {
-    type: Number,
-    default: 0,
-  },
   projectList: {
     type: Array as PropType<any[]>,
     required: true,
@@ -143,10 +141,10 @@ const store =
     ? boardDataStore
     : reportStore
 
-const projectId = ref<number>(props.projectId)
-
 // 当前选中项目信息
-const projectInfo = ref<any>({})
+const { boardInfoState: projectInfo } = storeToRefs(store)
+const { projectId: urlProjectId } = getUrlParams()
+const projectId = ref<number | string>(projectInfo.value.id || +urlProjectId || '请选择应用')
 
 // 用于sourcemap详情的topicid信息
 const topicId = ref('')
@@ -163,11 +161,11 @@ onMounted(() => {
 })
 
 //点击卡片跳转的路由
-const boardUrl = useLinkToUrl(projectId.value, 'board')
+const boardUrl = useLinkToUrl(projectInfo.value.id, 'board')
 //点击质量周报按钮跳转的路由
-const reportUrl = useLinkToUrl(projectId.value, 'report')
+const reportUrl = useLinkToUrl(projectInfo.value.id, 'report')
 //点击数据大盘按钮跳转的路由
-const boardDataUrl = useLinkToUrl(projectId.value, 'data')
+const boardDataUrl = useLinkToUrl(projectInfo.value.id, 'data')
 
 //项目管理员信息<
 const admin_uc_group_id = ref<number | undefined>(undefined) // 管理该项目的uc_group_id
@@ -213,28 +211,15 @@ watch(
     if (!newId || newId === oldId) return
     for (const project of props.projectList) {
       if (project.id === newId) {
-        if (oldId)
-          window.history.pushState({}, '', window.location.href.replace(`${oldId}`, `${newId}`))
+        addOrUpdateUrlParams({ projectId: newId })
+        // 项目信息存入store供其他组件调用
+        store.initStateValue({ ...project, noInitFilter: true })
         getTopicId(project.appid, project.saas)
         // 重新获取创建者知音楼用户信息
         freshYachId(undefined, project.uc_group_id)
-        // 项目信息存入state
-        projectInfo.value = project
-        // 项目信息存入store供其他组件调用
-        store.initStateValue({ ...project, noInitFilter: true })
       }
     }
   },
   { immediate: true },
 )
-
-//项目Select框变更处理，路由跳转
-// const go = useGo();
-// function changeProject(value) {
-//   go({
-//     params: {
-//       projectid: +value,
-//     },
-//   });
-// }
 </script>

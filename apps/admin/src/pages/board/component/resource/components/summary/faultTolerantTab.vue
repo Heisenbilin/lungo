@@ -13,7 +13,7 @@
 import { computed, ref } from "vue";
 // import { useStore } from "vuex";
 import { getFaultTolerantChartOption } from "./faultTolerantChartConfig";
-import { addTimeFilter } from "../../../util/datePickerConfig";
+import { addTimeFilter } from "@/hooks/board/useDate";
 // import { ResourceApis } from "@/apis/board/resource";
 import { getChartData } from "@/apis/board/sourceMap";
 import { useBoardStore } from "@/store/modules/board";

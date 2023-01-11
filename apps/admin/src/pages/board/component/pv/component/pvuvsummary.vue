@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container-full flex h-20 flex-row justify-center">
-    <a-spin size="large" class="flex self-center" v-if="loading.pv && loading.uv" />
+    <a-spin size="large" class="flex self-center" v-if="loading.pv || loading.uv" />
     <template v-else>
       <div class="w-1/4 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">总PV数</div>
@@ -50,37 +50,37 @@
 
 <script setup lang="ts">
 // pv与uv图表
-import { computed, reactive } from "vue";
-import { getPVUVChartOption } from "./chartsConfig";
-import { QuestionCircleOutlined } from "@ant-design/icons-vue";
-import { getPageViewData, getUserViewData } from "@/apis/board/pv";
-import { useBoardStore } from "@/store/modules/board";
-import { commafy } from "@vben/utils";
-import { addTimeFilter } from "../../util/datePickerConfig";
-import { BaseChart } from "@vben/components";
+import { computed, reactive } from 'vue'
+import { getPVUVChartOption } from './chartsConfig'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { getPageViewData, getUserViewData } from '@/apis/board/pv'
+import { useBoardStore } from '@/store/modules/board'
+import { commafy } from '@vben/utils'
+import { addTimeFilter } from '@/hooks/board/useDate'
+import { BaseChart } from '@vben/components'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
-const loading = reactive({ pv: true, uv: true });
-const totalCount = reactive({ PVCount: "", UVCount: "" });
+const loading = reactive({ pv: true, uv: true })
+const totalCount = reactive({ PVCount: '', UVCount: '' })
 
-const requestPageViewData = async (params) => {
-  loading.pv = true;
-  const result = await getPageViewData(params);
+const requestPageViewData = async params => {
+  loading.pv = true
+  const result = await getPageViewData(params)
   totalCount.PVCount =
-    result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : "";
-  loading.pv = false;
-  return result;
-};
+    result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : ''
+  loading.pv = false
+  return result
+}
 
-const requestUserViewData = async (params) => {
-  loading.uv = true;
-  const result = await getUserViewData(params);
+const requestUserViewData = async params => {
+  loading.uv = true
+  const result = await getUserViewData(params)
   totalCount.UVCount =
-    result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : "";
-  loading.uv = false;
-  return result;
-};
+    result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : ''
+  loading.uv = false
+  return result
+}
 
 // 请求参数
 const requestParams = computed(() => ({
@@ -97,8 +97,8 @@ const requestParams = computed(() => ({
   os: boardStore.filterState.os, //操作系统筛选
   performance_key: boardStore.filterState.performance_key, //性能筛选
   performance_range: boardStore.filterState.performance_range, //性能筛选
-}));
+}))
 
 // 获取图表option(PV、UV图表共用)
-const getChartOption = (data) => getPVUVChartOption(data, boardStore.getTimeFormatStr);
+const getChartOption = data => getPVUVChartOption(data, boardStore.getTimeFormatStr)
 </script>

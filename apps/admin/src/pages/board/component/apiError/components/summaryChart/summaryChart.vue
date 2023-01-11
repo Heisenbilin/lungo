@@ -5,12 +5,20 @@
         <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
       </template>
       <a-tab-pane key="1" tab="异常量与异常率">
-        <BaseChart :requestParams="requestParams1" :requestFunc="getChartSummaryData"
-          :getOptionFunc="getAmountChartOption" :zrFuncs="{ click: addTimeFilter }" />
+        <BaseChart
+          :requestParams="requestParams1"
+          :requestFunc="getChartSummaryData"
+          :getOptionFunc="getAmountChartOption"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
       </a-tab-pane>
       <a-tab-pane key="2" tab="请求耗时统计">
-        <BaseChart :requestParams="requestParams2" :requestFunc="getChartSummaryData"
-          :getOptionFunc="getTimeConsumingChartOption" :zrFuncs="{ click: addTimeFilter }" />
+        <BaseChart
+          :requestParams="requestParams2"
+          :requestFunc="getChartSummaryData"
+          :getOptionFunc="getTimeConsumingChartOption"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -18,14 +26,14 @@
 
 <script setup lang="ts">
 //api异常数据汇总图表Tab框
-import { ref, computed } from 'vue';
-import { getChartSummaryData } from '@/apis/board/apiError';
-import { useBoardStore } from '@/store/modules/board';
-import { addTimeFilter } from '../../../util/datePickerConfig';
-import { getApiAmountChartOption, getTimeConsumingChartOption } from './summaryChartConfig';
+import { ref, computed } from 'vue'
+import { getChartSummaryData } from '@/apis/board/apiError'
+import { useBoardStore } from '@/store/modules/board'
+import { addTimeFilter } from '@/hooks/board/useDate'
+import { getApiAmountChartOption, getTimeConsumingChartOption } from './summaryChartConfig'
 import { BaseChart } from '@vben/components'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 //请求参数
 const params = computed(() => ({
@@ -42,16 +50,15 @@ const params = computed(() => ({
   os: boardStore.filterState.os, //操作系统筛选
   api_status: boardStore.filterState.api_status, //api状态码筛选
   api_range: boardStore.filterState.api_range, //api耗时筛选
-}));
+}))
 
-const activeKey = ref('1');
+const activeKey = ref('1')
 
 // 成功率请求参数
-const requestParams1 = computed(() => ({ ...params.value, summary_type: 'apiAmount' }));
+const requestParams1 = computed(() => ({ ...params.value, summary_type: 'apiAmount' }))
 
 // 耗时请求参数
-const requestParams2 = computed(() => ({ ...params.value, summary_type: 'timeConsuming' }));
+const requestParams2 = computed(() => ({ ...params.value, summary_type: 'timeConsuming' }))
 
-const getAmountChartOption = data => getApiAmountChartOption(data, boardStore.getTimeFormatStr);
-
+const getAmountChartOption = data => getApiAmountChartOption(data, boardStore.getTimeFormatStr)
 </script>

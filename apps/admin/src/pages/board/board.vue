@@ -1,24 +1,23 @@
 <template>
-  <div class="grid grid-cols-2 gap-3">
-    <div class="chart-container">
-      <InfoCard
-        :projectId="projectId"
-        :projectList="projectList"
-        :platformType="props.platformType"
-      />
-    </div>
-    <div class="chart-container">
-      <FilterCard />
-    </div>
-  </div>
-  <Content v-if="projectId" :platformType="props.platformType" />
-  <a-empty class="my-28" v-else>
-    <template #description>
-      <div>
-        <a target="blink" href="http://app.xesv5.com/doc/pages/fedata/">质量监控项目接入指南</a>
+  <div class="p-4 bg-gray-100">
+    <div class="grid grid-cols-2 gap-3">
+      <div class="chart-container">
+        <InfoCard :projectList="projectList" :platformType="props.platformType" />
       </div>
-    </template>
-  </a-empty>
+      <div v-if="boardInfoState.id" class="chart-container">
+        <FilterCard />
+      </div>
+    </div>
+    <Content v-if="boardInfoState.id" :platformType="props.platformType" />
+    <a-empty class="py-28" v-if="!(boardInfoState.id || urlProjectId)">
+      <template #description>
+        无ID为{{ urlProjectId }}的项目，请重新选择
+        <div>
+          <a target="blink" href="http://app.xesv5.com/doc/pages/fedata/"> 质量监控项目接入指南 </a>
+        </div>
+      </template>
+    </a-empty>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -34,7 +33,7 @@ import InfoCard from '../component/infoCard/index.vue'
 import FilterCard from '../component/filterCard/index.vue'
 import Content from './component/content.vue'
 import { getUrlParams } from '@vben/utils'
-// import { storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia'
 
 const boardStore = useBoardStore()
 
@@ -43,9 +42,9 @@ const props = defineProps({
 })
 
 // 项目id
-const storeProjectId = boardStore.boardInfoState.id
+const { boardInfoState } = storeToRefs(boardStore)
 const { projectId: urlProjectId } = getUrlParams()
-const projectId = ref<undefined | number>(storeProjectId || +urlProjectId || undefined)
+const projectId = ref<undefined | number>(boardInfoState.value.id || +urlProjectId || undefined)
 console.log(projectId.value)
 
 //项目列表
@@ -54,51 +53,6 @@ const projectList = ref<any[]>([])
 const adminUsers = ref<any[]>([])
 const totalAdmins = ref(0)
 const admin_uc_group_id = ref(null) //管理该项目的uc_group_id
-
-//获取华佗用户组对应应用列表
-async function getProjectListByGroup(
-  needHandledId = false,
-  page = 1,
-  page_size = 100000,
-  type = '',
-) {
-  //请求参数
-  const params = { page, page_size, type }
-  //请求后端数据
-  const result = await getProjectList(params)
-  if (result.stat === 1 && result.data.projects?.length) {
-    projectList.value = result.data.projects
-    //若后台传入最新sdk版本号，则更新当前最新sdk版本号value
-    if (result.data.latestSDKVersion) {
-      boardStore.commitLatestSDKVersionState(result.data.latestSDKVersion)
-    }
-    if (needHandledId) {
-      handleUrlProjectId()
-    }
-  }
-}
-
-// 处理路由中的项目id
-function handleUrlProjectId() {
-  let permissionFlag = false
-  //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
-  for (const project of projectList.value) {
-    if (projectId.value === project.id) {
-      permissionFlag = true
-      //判断项目是否关闭
-      if (project.close_project === 1) {
-        projectClosed(project)
-        projectId.value = undefined
-      }
-      break
-    }
-  }
-  //若在项目列表中没找到此id，则没有该项目的权限，或为不存在的项目
-  if (!permissionFlag) {
-    noPermission(projectId.value)
-    projectId.value = undefined
-  }
-}
 
 //当项目状态未关闭时，添加提示
 const projectClosed = async project => {
@@ -168,14 +122,53 @@ const freshYachId = async limit => {
   }
 }
 
-if (storeProjectId) {
-  // 若store中存在projectId，代表用户已经有项目权限，project信息已经获得
-  // 只需要请求项目列表发送给InfoCard组件
-  getProjectListByGroup()
-} else if (urlProjectId) {
-  // 若路由中存在projectId，代表用户直接进入该页面，project信息未获得，未鉴权
-  getProjectListByGroup(true)
+//获取华佗用户组对应应用列表
+async function getProjectListByGroup(
+  needHandledId = false,
+  page = 1,
+  page_size = 100000,
+  type = '',
+) {
+  // 该请求只在projectList为空的情况下执行
+  if (projectList.value.length) return
+  //请求后端数据
+  const result = await getProjectList({ page, page_size, type })
+  if (result.stat === 1 && result.data.projects?.length) {
+    projectList.value = result.data.projects
+    //若后台传入最新sdk版本号，则更新当前最新sdk版本号value
+    if (result.data.latestSDKVersion) {
+      boardStore.commitLatestSDKVersionState(result.data.latestSDKVersion)
+    }
+    if (needHandledId) {
+      handleUrlProjectId()
+    }
+  }
 }
+
+// 处理路由中的项目id
+function handleUrlProjectId() {
+  let permissionFlag = false
+  //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
+  for (const project of projectList.value) {
+    if (projectId.value === project.id) {
+      boardInfoState.value = project
+      permissionFlag = true
+      //判断项目是否关闭
+      if (project.close_project === 1) {
+        projectClosed(project)
+        projectId.value = undefined
+      }
+      break
+    }
+  }
+  //若在项目列表中没找到此id，则没有该项目的权限，或为不存在的项目
+  if (!permissionFlag) {
+    noPermission(projectId.value)
+    projectId.value = undefined
+  }
+}
+
+getProjectListByGroup(Boolean(urlProjectId))
 </script>
 
 <style lang="scss" scoped>

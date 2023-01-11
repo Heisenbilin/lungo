@@ -67,7 +67,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons-vue";
 import { commafy } from "@vben/utils";
 import { useBoardStore } from "@/store/modules/board";
 import { BaseChart } from "@vben/components";
-import { addTimeFilter } from "../../../util/datePickerConfig";
+import { addTimeFilter } from "@/hooks/board/useDate";
 
 const boardStore = useBoardStore();
 
