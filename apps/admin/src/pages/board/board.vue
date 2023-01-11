@@ -9,14 +9,6 @@
       </div>
     </div>
     <Content v-if="boardInfoState.id" :platformType="props.platformType" />
-    <a-empty class="py-28" v-if="!(boardInfoState.id || urlProjectId)">
-      <template #description>
-        无ID为{{ urlProjectId }}的项目，请重新选择
-        <div>
-          <a target="blink" href="http://app.xesv5.com/doc/pages/fedata/"> 质量监控项目接入指南 </a>
-        </div>
-      </template>
-    </a-empty>
   </div>
 </template>
 
