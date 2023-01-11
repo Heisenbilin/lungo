@@ -1,7 +1,6 @@
 <script lang="ts">
 /* eslint-disable vue/no-mutating-props */
 import { defineComponent } from 'vue';
-import type { PropType } from 'vue';
 import type { LogQuery } from '../api';
 import { Action } from '../api';
 

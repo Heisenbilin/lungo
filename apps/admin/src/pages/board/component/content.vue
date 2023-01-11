@@ -2,7 +2,7 @@
   <div id="general-board-container" class="p-2 mt-3">
     <a-tabs v-model:activeKey="activeKey" size="large">
       <a-tab-pane key="pageview" tab="页面访问">
-        <BasicBoard v-if="activeKey === 'pageview'" />
+        <PVBoard v-if="activeKey === 'pageview'" />
       </a-tab-pane>
       <a-tab-pane key="performance" tab="性能指标">
         <PerformanceBoard v-if="activeKey === 'performance'" :platformType="props.platformType" />
@@ -26,14 +26,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { onMounted } from 'vue'
 // import { useStore } from 'vuex';
 import { getUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useWatermark } from '@vben/hooks'
 import { tabListEnum } from '@vben/constants'
+import { storeToRefs } from 'pinia'
 
-import BasicBoard from './pv/index.vue'
+import PVBoard from './pv/index.vue'
 import PerformanceBoard from './performance/index.vue'
 import RuntimeErrorBoard from './runtime/index.vue'
 import ResourceErrorBoard from './resource/index.vue'
@@ -43,7 +44,6 @@ import LogDrawer from '../../component/logDetail/logDrawer.vue'
 import FAQ from '../../component/FAQ.vue'
 import intro from 'intro.js'
 import 'intro.js/introjs.css'
-
 
 //数据看板：管理时间、维度与展示tab
 const props = defineProps({
@@ -62,11 +62,14 @@ const username = 'xiongbilin'
 // const urlSelectList = ref({ board_url: '所有页面' });
 
 //tab页key值
+const { tabState: activeKey } = storeToRefs(boardStore)
 //将路由中的tabkey与activeKey同步
-const { tabkey = '' } = getUrlParams()
-const activeKey = ref(tabListEnum[tabkey] ? tabkey : 'pageview')
+const { tabkey = 'pageview' } = getUrlParams()
+if (tabListEnum[tabkey] ? tabkey : 'pageview') {
+  activeKey.value = tabkey
+}
+
 //tab页的key值与路由绑定
-watch(activeKey, val => boardStore.commitTabState(val.value), { immediate: true })
 
 onMounted(() => {
   createWatermark()

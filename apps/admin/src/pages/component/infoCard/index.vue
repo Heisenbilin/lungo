@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
 // 质量监控页 项目卡片组件
-import { ref, computed, watch, PropType, getCurrentInstance, onMounted } from 'vue'
+import { ref, computed, watch, getCurrentInstance, onMounted } from 'vue'
 import { message } from 'ant-design-vue'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'

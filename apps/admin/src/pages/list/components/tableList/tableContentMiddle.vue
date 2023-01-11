@@ -2,24 +2,27 @@
   <div>
     <div v-if="title == 'pv'">
       <TableTtem
+        :project="project"
         :data="itemsData.pvData"
         title="PV量"
         unit=""
         :needCommafy="true"
-        :jumpUrl="getJumpUrl('basic')"
+        :jumpUrl="getJumpUrl('pageview')"
       />
     </div>
     <div v-else-if="title == 'uv'">
       <TableTtem
+        :project="project"
         :data="itemsData.uvData"
         title="UV量"
         unit=""
         :needCommafy="true"
-        :jumpUrl="getJumpUrl('basic')"
+        :jumpUrl="getJumpUrl('pageview')"
       />
     </div>
     <div v-else-if="title == '页面加载'">
       <TableTtem
+        :project="project"
         :data="itemsData.pageloadData"
         title="页面加载"
         unit="ms"
@@ -31,6 +34,7 @@
     </div>
     <div v-else-if="title == '运行时异常率'">
       <TableTtem
+        :project="project"
         :data="itemsData.runtimeData"
         title="运行时异常率"
         unit="%"
@@ -42,6 +46,7 @@
     </div>
     <div v-else-if="title == '资源异常率'">
       <TableTtem
+        :project="project"
         :data="itemsData.resourceData"
         title="资源异常率"
         unit="%"
@@ -53,6 +58,7 @@
     </div>
     <div v-else-if="title == '请求成功率'">
       <TableTtem
+        :project="project"
         :data="itemsData.ajaxData"
         title="请求成功率"
         unit="%"
@@ -93,6 +99,7 @@ import { computed } from 'vue'
 import { getTendencyChartOption } from '../utils'
 import { BasicChart } from '@vben/components'
 import TableTtem from './tableItem.vue'
+import { BoardInfo } from '@vben/types'
 
 const props = defineProps({
   linkToUrl: {
@@ -102,6 +109,10 @@ const props = defineProps({
   title: String,
   itemsData: {
     type: Object,
+    required: true,
+  },
+  project: {
+    type: Object as PropType<BoardInfo>,
     required: true,
   },
 })

@@ -41,6 +41,7 @@ export interface BoardInfo {
   sourcemap_analysis?: number
   ua_flag?: string
   uc_group_id?: number
+  itemsData?: any
 }
 
 export interface filter {

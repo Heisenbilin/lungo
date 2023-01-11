@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { Empty, Spin } from "ant-design-vue";
-import { computed, watch, ref } from "vue";
-import BasicChart from "./BasicChart.vue";
+import { Empty, Spin } from 'ant-design-vue'
+import { computed, watch, ref } from 'vue'
+import BasicChart from './BasicChart.vue'
 const props = defineProps({
   //请求参数
   requestParams: Object,
@@ -35,28 +35,28 @@ const props = defineProps({
   //图表高度
   height: {
     type: String,
-    default: "320px",
+    default: '320px',
   },
-});
+})
 
-const loading = ref(true);
-const chartData = ref(null);
-const chartOption = computed(() => props.getOptionFunc(chartData.value));
+const loading = ref<boolean>(true)
+const chartData = ref(null)
+const chartOption = computed(() => props.getOptionFunc(chartData.value))
 watch(
   () => props.requestParams,
-  async (val) => {
-    loading.value = true;
+  async val => {
+    loading.value = true
     try {
-      const result = await props.requestFunc(val);
-      if (result.stat === 1) chartData.value = result.data;
-      else chartData.value = null;
+      const result = await props.requestFunc(val)
+      if (result.stat === 1) chartData.value = result.data
+      else chartData.value = null
     } catch {
-      chartData.value = null;
+      chartData.value = null
     } finally {
-      loading.value = false;
+      loading.value = false
     }
   },
-  { immediate: true, deep: true }
-);
-const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
+  { immediate: true, deep: true },
+)
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>

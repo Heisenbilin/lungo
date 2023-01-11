@@ -44,9 +44,9 @@ export const useLinkToUrl = (projectId: string | number, page: Page) => {
 export const useStoreProject = (project: BoardInfo, page: Page) => {
   switch (page) {
     case 'board':
-      boardStore.boardInfoState = project
       boardStore.filterState.start_time = listStore.startTime
       boardStore.filterState.end_time = listStore.endTime
+      boardStore.boardInfoState = project
       break
     case 'data':
       boardDataStore.boardInfoState = project

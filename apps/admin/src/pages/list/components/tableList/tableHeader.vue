@@ -4,7 +4,10 @@
       <router-link class="flex items-center px-0 py-3" :to="linkToUrl" style="width: 100%">
         <a-tag v-if="project.saas === 'yes'" color="red">学科</a-tag>
         <a-tag v-else color="blue">素质</a-tag>
-        <span class="ml-2 text-gray-800 text-lg truncate trun-cate w-64">
+        <span
+          class="ml-2 text-gray-800 text-lg truncate trun-cate w-64"
+          @click="() => useStoreProject(project, 'board')"
+        >
           {{ project.project_name }}
         </span>
         <a-tag v-if="project.appid === '1001970'" color="cyan">编辑器应用</a-tag>
@@ -14,11 +17,12 @@
 </template>
 
 <script setup lang="ts">
-import { useLinkToUrl } from '@/hooks/board/useLink'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
+import { BoardInfo } from '@vben/types'
 
 const props = defineProps({
   project: {
-    type: Object,
+    type: Object as PropType<BoardInfo>,
     required: true,
   },
 })

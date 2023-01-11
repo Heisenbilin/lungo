@@ -128,11 +128,12 @@ export const useBoardStore = defineStore({
     },
 
     initStateValue(info: BoardInfo): void {
+      console.log(info, this.filterState)
       this.commitBoardInfoState(info)
       const {
         dimension = this.filterState.dimension,
-        start_time = '',
-        end_time = '',
+        start_time = this.filterState.start_time,
+        end_time = this.filterState.end_time,
       } = getUrlParams()
       this.commitFilterState({ start_time, end_time, dimension })
       this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })

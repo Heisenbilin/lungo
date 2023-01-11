@@ -1,5 +1,4 @@
 <script lang="tsx">
-import type { PropType } from 'vue'
 import { defineComponent, ref, computed, unref } from 'vue'
 import { BASIC_LOGIN_PATH } from '@vben/constants'
 import { useRoute } from 'vue-router'
@@ -124,8 +123,7 @@ export default defineComponent({
     })
 
     return () => {
-      const { title, subTitle, btnText, icon, handler, status } =
-        unref(getMapValue) || {}
+      const { title, subTitle, btnText, icon, handler, status } = unref(getMapValue) || {}
 
       // const img = () => (icon ? <img src={icon} /> : null)
 

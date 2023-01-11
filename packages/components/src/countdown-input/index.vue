@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { PropType } from 'vue'
 import type { ButtonSize } from '@vben/types'
 import { useAttrs, computed } from 'vue'
 import { createNamespace } from '@vben/utils'

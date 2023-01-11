@@ -115,11 +115,10 @@ watch(filterDimension, val => store.addFilterValue({ dimension: val }), { immedi
 
 //初始化时间范围
 const initFilterDate = () => {
-  //如果路由中存在filter_date参数，直接拿出来赋值
+  // 如果store中存在filter_date参数，直接拿出来赋值
   if (filters.value.start_time && filters.value.end_time) {
-    console.log('filters.value.start_time', filters.value.start_time)
-    const startTime = dayjs(filters.value.start_time, type)
-    const endTime = dayjs(filters.value.end_time, type)
+    const startTime = dayjs(filters.value.start_time)
+    const endTime = dayjs(filters.value.end_time)
     if (startTime.isValid() && endTime.isValid()) {
       const range: RangeValue = [startTime, endTime]
       return range
@@ -138,7 +137,8 @@ const initFilterDate = () => {
 }
 
 //日期范围
-const filterDate = ref<RangeValue>(initFilterDate())
+const initDate = initFilterDate()
+const filterDate = ref<RangeValue>(initDate)
 
 watch(
   () => [store.filterState.start_time, store.filterState.end_time],
@@ -157,7 +157,7 @@ watch(
     const start_time = formatDateString(gteTime.valueOf(), type)
     const end_time = formatDateString(lteTime.valueOf(), type)
     console.log(start_time, end_time)
-    if (start_time !== store.filterState.start_time || end_time !== store.filterState.end_time) {
+    if (start_time !== filters.value.start_time || end_time !== filters.value.end_time) {
       store.addFilterValue({ start_time, end_time })
     }
   },

@@ -9,12 +9,7 @@
     :customRow="customRowWithScore"
   >
     <template #rendername="{ record }">
-      <tableHeader
-        :project="record"
-        @star="starProject"
-        :closeDays="closeDays"
-        :isStar="isStar"
-      />
+      <tableHeader :project="record" @star="starProject" :closeDays="closeDays" :isStar="isStar" />
     </template>
     <template #sdk="{ record }">
       <div :style="{ display: show(record.close_project) }">

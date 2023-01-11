@@ -1,10 +1,9 @@
 <script lang="ts" setup name="SwitchItem">
-import { PropType } from 'vue'
-import { HandlerSettingEnum } from "@vben/constants";
-import {baseHandler} from "../handler";
+import { HandlerSettingEnum } from '@vben/constants'
+import { baseHandler } from '../handler'
 
 const props = defineProps({
-  title: {type: String, default: ''},
+  title: { type: String, default: '' },
   def: {
     type: Boolean as PropType<boolean>,
   },
@@ -15,7 +14,7 @@ const props = defineProps({
     type: Boolean,
   },
 })
-const onChange = (value)=>{
+const onChange = value => {
   baseHandler(props.event, value)
 }
 </script>

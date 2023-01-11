@@ -11,7 +11,7 @@
       title="PV量"
       unit=""
       :needCommafy="true"
-      :jumpUrl="getJumpUrl('basic')"
+      :jumpUrl="getJumpUrl('pageview')"
     />
     <div class="w-2/4 mt-1 px-2">
       <div class="text-gray-500 pl-2">
@@ -26,7 +26,7 @@
       title="UV量"
       unit=""
       :needCommafy="true"
-      :jumpUrl="getJumpUrl('basic')"
+      :jumpUrl="getJumpUrl('pageview')"
     />
     <div class="flex w-full mt-4">
       <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">

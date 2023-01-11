@@ -14,18 +14,18 @@
 
 <script setup lang="ts">
 //新版性能监测详情页Index
-import { ref, h } from 'vue'
+import { ref, h, watch } from 'vue'
 import { message, Modal } from 'ant-design-vue'
 // import { useRouter } from "vue-router";
 import { getProjectById, getGroupRoleUsers } from '@/apis/bigfish'
 import { getProjectList } from '@/apis/list'
 import { useBoardStore } from '@/store/modules/board'
+import { getUrlParams } from '@vben/utils'
+import { storeToRefs } from 'pinia'
 
 import InfoCard from '../component/infoCard/index.vue'
 import FilterCard from '../component/filterCard/index.vue'
 import Content from './component/content.vue'
-import { getUrlParams } from '@vben/utils'
-import { storeToRefs } from 'pinia'
 
 const boardStore = useBoardStore()
 
@@ -37,7 +37,6 @@ const props = defineProps({
 const { boardInfoState } = storeToRefs(boardStore)
 const { projectId: urlProjectId } = getUrlParams()
 const projectId = ref<undefined | number>(boardInfoState.value.id || +urlProjectId || undefined)
-console.log(projectId.value)
 
 //项目列表
 const projectList = ref<any[]>([])

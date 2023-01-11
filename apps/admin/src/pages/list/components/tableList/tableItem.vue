@@ -8,7 +8,10 @@
     </template>
     <router-link v-if="!needGray" class="grid justify-items-center center w-full" :to="jumpUrl">
       <!-- 正常 -->
-      <div class="flex my-1 items-center whitespace-nowrap center">
+      <div
+        class="flex my-1 items-center whitespace-nowrap center"
+        @click="() => useStoreProject(project, 'board')"
+      >
         <div class="text-1xl text-gray-700 font-medium center">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
@@ -22,7 +25,7 @@
     >
       <!-- 具有一定灰度、字体更小 -->
 
-      <div class="flex my-1 items-center center">
+      <div class="flex my-1 items-center center" @click="() => useStoreProject(project, 'board')">
         <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
@@ -34,6 +37,8 @@
 <script setup lang="ts">
 // import { computed } from 'vue';
 import { commafy } from '@vben/utils'
+import { useStoreProject } from '@/hooks/board/useLink'
+import { BoardInfo } from '@vben/types'
 // import { boardStore } from '/@/store/modules/board';
 
 defineProps({
@@ -62,10 +67,11 @@ defineProps({
     type: String,
     default: '',
   },
+  project: {
+    type: Object as PropType<BoardInfo>,
+    required: true,
+  },
 })
-// const dimension = computed(() => boardStore.getFilterState.dimension);
-// const last = computed(() => (dimension.value === 'hour' ? '昨日' : '上周'));
-// const current = computed(() => (dimension.value === 'hour' ? '今日' : '本周'));
 </script>
 
 <style lang="less" scoped>

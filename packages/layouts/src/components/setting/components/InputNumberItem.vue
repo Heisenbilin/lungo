@@ -1,5 +1,4 @@
 <script lang="ts" setup name="InputNumberItem">
-import { PropType, } from 'vue'
 import { HandlerSettingEnum } from "@vben/constants";
 import {baseHandler} from "../handler";
 

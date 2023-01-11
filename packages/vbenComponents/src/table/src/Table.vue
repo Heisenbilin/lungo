@@ -7,7 +7,7 @@ export default {
 import 'xe-utils'
 import 'vxe-table/styles/index.scss'
 import type { VbenTableProps } from './type'
-import { computed, PropType, ref, unref, useAttrs, watch } from 'vue'
+import { computed, ref, unref, useAttrs, watch } from 'vue'
 import { isBoolean, isFunction } from '@vben/utils'
 import { VxeTableInstance } from 'vxe-table'
 import { ThemeEnum } from '@vben/constants'
@@ -36,8 +36,7 @@ const attrs = useAttrs()
 const emit = defineEmits(['register'])
 const titleClass = computed(() => {
   return {
-    backgroundColor:
-      appStore.getDarkMode === ThemeEnum.DARK ? '#262626' : '#FFF',
+    backgroundColor: appStore.getDarkMode === ThemeEnum.DARK ? '#262626' : '#FFF',
   }
 })
 const props = defineProps({

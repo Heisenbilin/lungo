@@ -4,7 +4,7 @@ export default {
 }
 </script>
 <script setup lang="ts" name="VbenIconify">
-import type { PropType, CSSProperties } from 'vue'
+import type { CSSProperties } from 'vue'
 import { unref, computed, useAttrs, ref, nextTick, watch, onMounted } from 'vue'
 import { createNamespace, isString } from '@vben/utils'
 import Iconify from '@purge-icons/generated'
@@ -24,9 +24,7 @@ const props = defineProps({
 
 const iconRefEl = ref<HTMLElement | null>(null)
 
-const getIconRef = computed(
-  () => `${props.prefix ? props.prefix + ':' : ''}${props.icon}`,
-)
+const getIconRef = computed(() => `${props.prefix ? props.prefix + ':' : ''}${props.icon}`)
 
 const { bem } = createNamespace('iconify')
 
@@ -81,14 +79,18 @@ onMounted(update)
 </script>
 
 <template>
-  <span :class="[classes,{'hover:cursor-pointer': hoverPointer}]" :style="styles" ref="iconRefEl"></span>
+  <span
+    :class="[classes, { 'hover:cursor-pointer': hoverPointer }]"
+    :style="styles"
+    ref="iconRefEl"
+  ></span>
 </template>
 
 <style lang="less" scoped>
 .iconify {
   display: inline-block;
   transition: color 0.5s;
-  &:hover{
+  &:hover {
     color: v-bind(hoverColor) !important;
   }
 }
@@ -96,5 +98,4 @@ onMounted(update)
 .iconify__infinite {
   animation: loadingCircle 1s infinite linear;
 }
-
 </style>
