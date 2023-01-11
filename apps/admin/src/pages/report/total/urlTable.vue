@@ -50,11 +50,11 @@ const props = defineProps({
   type: String,
 });
 
-const projectId = computed(() => reportStore.getBoardInfoState.id);
+const projectId = computed(() => reportStore.boardInfoState.id);
 
-const startTime = computed(() => reportStore.getFilterState.start_time);
+const startTime = computed(() => reportStore.filterState.start_time);
 
-const endTime = computed(() => reportStore.getFilterState.end_time);
+const endTime = computed(() => reportStore.filterState.end_time);
 
 const router = useRouter();
 
@@ -215,7 +215,7 @@ const toReport = url => {
   const path = props.type === 'huatuo' ? '/huatuo/reportUrl' : '/projectboard/qcReport';
   const query = {
     project_id: projectId.value,
-    project_name: encodeURIComponent(reportStore.getBoardInfoState.project_name),
+    project_name: encodeURIComponent(reportStore.boardInfoState.project_name),
     url: encodeURIComponent(url),
     start_time: startTime.value,
     end_time: endTime.value,

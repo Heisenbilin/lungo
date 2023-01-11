@@ -23,15 +23,15 @@ import moment from 'moment'
 import { useReportStore } from '@/store/modules/report';
 const reportStore = useReportStore()
 const requestParams = computed(() => ({
-  project_id: `${reportStore.getBoardInfoState.id}`,
-  start_time: reportStore.getFilterState.start_time,
-  end_time: reportStore.getFilterState.end_time,
+  project_id: `${reportStore.boardInfoState.id}`,
+  start_time: reportStore.filterState.start_time,
+  end_time: reportStore.filterState.end_time,
 }));
 
 const lastWeekRequestParams = computed(() => ({
-  project_id: `${reportStore.getBoardInfoState.id}`,
-  start_time: moment(reportStore.getFilterState.start_time).subtract(1, 'w').format('YYYY-MM-DD'),
-  end_time: reportStore.getFilterState.start_time,
+  project_id: `${reportStore.boardInfoState.id}`,
+  start_time: moment(reportStore.filterState.start_time).subtract(1, 'w').format('YYYY-MM-DD'),
+  end_time: reportStore.filterState.start_time,
 }));
 </script>
 

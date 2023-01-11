@@ -40,32 +40,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { reportApis } from '@/apis/report';
-import { getTwoWeeksOption } from './utils/configs';
-import * as PVApis  from '@/apis/board/pv';
-import { useReportStore } from '@/store/modules/report';
+import { computed } from 'vue'
+import { reportApis } from '@/apis/report'
+import { getTwoWeeksOption } from './utils/configs'
+import * as PVApis from '@/apis/board/pv'
+import { useReportStore } from '@/store/modules/report'
 // import { getUAMapOption } from '';
 // import { reportStore } from '/@/store/modules/board';
-import uaInfo from './components/uaInfo.vue';
+import uaInfo from './components/uaInfo.vue'
 // import BaseChart from '@/components/coreBoard/baseChart.vue';
-import BaseChart from '@vben/components/src/chart/baseChart.vue';
-import { getUAMapOption } from '@/pages/board/component/pvBoard/component/uaMap/uaMapConfig';
+import BaseChart from '@vben/components/src/chart/baseChart.vue'
+import { getUAMapOption } from '@/pages/board/component/pv/component/uaMap/uaMapConfig'
 
-const reportStore = useReportStore();
+const reportStore = useReportStore()
 
 const requestParams = computed(() => ({
-  project_id: `${reportStore.getBoardInfoState.id}`,
-  start_time: reportStore.getFilterState.start_time,
-  end_time: reportStore.getFilterState.end_time,
-}));
+  project_id: `${reportStore.boardInfoState.id}`,
+  start_time: reportStore.filterState.start_time,
+  end_time: reportStore.filterState.end_time,
+}))
 //PV
-const getPVTwoWeeksData = params => reportApis.getTwoWeeksSummary({ ...params, board_type: 'pv' });
-const getPVTwoWeeksOption = data => getTwoWeeksOption(data, 'pv');
+const getPVTwoWeeksData = params => reportApis.getTwoWeeksSummary({ ...params, board_type: 'pv' })
+const getPVTwoWeeksOption = data => getTwoWeeksOption(data, 'pv')
 
 //UV
-const getUVTwoWeeksData = params => reportApis.getTwoWeeksSummary({ ...params, board_type: 'uv' });
-const getUVTwoWeeksOption = data => getTwoWeeksOption(data, 'uv');
+const getUVTwoWeeksData = params => reportApis.getTwoWeeksSummary({ ...params, board_type: 'uv' })
+const getUVTwoWeeksOption = data => getTwoWeeksOption(data, 'uv')
 </script>
 
 <style lang="scss" scoped>
