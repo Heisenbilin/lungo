@@ -21,7 +21,7 @@ import { formatDateString } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
 import { getListById } from '@/apis/report/apis'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import Summary from './component/summary/index.vue'
 import UrlTable from './component/urlTable/urlTable.vue'
 import PerformanceChartsSelect from './component/performanceCharts/peformanceChartsSelect.vue'
@@ -43,13 +43,13 @@ const props = defineProps({
 const projectId = computed(() => `${boardStore.boardInfoState.id}`)
 // 初始化周报请求时间
 const start_time = formatDateString(
-  moment()
+  dayjs()
     .subtract(new Date().getDay() + 6, 'days')
     .valueOf(),
   'YY-MM-DD',
 )
 const end_time = formatDateString(
-  moment()
+  dayjs()
     .subtract(new Date().getDay() - 1, 'days')
     .valueOf(),
   'YY-MM-DD',

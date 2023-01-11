@@ -1,21 +1,31 @@
 <template>
   <div>
     <a-modal v-model:visible="visible" title="告警设置" :footer="null" width="80%">
-      <a-button type="primary" @click="currentInstance.ctx.$refs.alarmForm.showModal()"> 新增规则</a-button>
+      <a-button type="primary" @click="currentInstance.ctx.$refs.alarmForm.showModal()">
+        新增规则</a-button
+      >
       <div></div>
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="1" tab="告警规则">
-          <a-table :dataSource="alarmRuleList" :columns="alarmRuleColumns" rowKey="id" :pagination="false">
+          <a-table
+            :dataSource="alarmRuleList"
+            :columns="alarmRuleColumns"
+            rowKey="id"
+            :pagination="false"
+          >
             <template #AlarmErrorType="{ record }">
               <div v-for="item in record.AlarmSetting.AlarmErrorType" :key="item.id">
                 {{ item.errorType }}
               </div>
             </template>
             <template #ignoreErrorType="{ record }">
-              <div v-for="item in formatIgnoreError(
-                record.AlarmSetting.AlarmErrorType,
-                record.ignoreErrorIds
-              )" :key="item">
+              <div
+                v-for="item in formatIgnoreError(
+                  record.AlarmSetting.AlarmErrorType,
+                  record.ignoreErrorIds,
+                )"
+                :key="item"
+              >
                 {{ item }}
               </div>
             </template>
@@ -23,31 +33,53 @@
               <div>{{ record.AlarmSetting.robot.length }}个告警群</div>
             </template>
             <template #isActive="{ record }">
-              <a-switch checked-children="开" un-checked-children="关" v-model:checked="record.isActive"
-                @change="val => updateRuleStatus(val, record)" />
+              <a-switch
+                checked-children="开"
+                un-checked-children="关"
+                v-model:checked="record.isActive"
+                @change="val => updateRuleStatus(val, record)"
+              />
             </template>
             <template #handle="{ record }">
               <a-button type="link" @click="openUpdateForm(record)">修改</a-button>
-              <a-button type="link" v-for="item in formatCanIgnoreErrorList(
-                record.ignoreErrorIds,
-                record.AlarmSetting.AlarmErrorType
-              )" :key="item.id" @click="ignoreErrorType(record.id, record.ignoreErrorIds, item.id)">忽略{{
-  item.errorType
-}}</a-button>
-              <a-button type="link" v-for="item in formatCanRemoveIgnoreErrorList(
-                record.ignoreErrorIds,
-                record.AlarmSetting.AlarmErrorType
-              )" :key="item.id" @click="removeIgnoreErrorType(record.id, record.ignoreErrorIds, item.id)">取消忽略{{
-  item.errorType
-}}</a-button>
-              <a-popconfirm title="确认删除该规则？" ok-text="Yes" cancel-text="No" @confirm="removeAlarmRule(record.id)">
+              <a-button
+                type="link"
+                v-for="item in formatCanIgnoreErrorList(
+                  record.ignoreErrorIds,
+                  record.AlarmSetting.AlarmErrorType,
+                )"
+                :key="item.id"
+                @click="ignoreErrorType(record.id, record.ignoreErrorIds, item.id)"
+                >忽略{{ item.errorType }}</a-button
+              >
+              <a-button
+                type="link"
+                v-for="item in formatCanRemoveIgnoreErrorList(
+                  record.ignoreErrorIds,
+                  record.AlarmSetting.AlarmErrorType,
+                )"
+                :key="item.id"
+                @click="removeIgnoreErrorType(record.id, record.ignoreErrorIds, item.id)"
+                >取消忽略{{ item.errorType }}</a-button
+              >
+              <a-popconfirm
+                title="确认删除该规则？"
+                ok-text="Yes"
+                cancel-text="No"
+                @confirm="removeAlarmRule(record.id)"
+              >
                 <a-button type="link">删除</a-button>
               </a-popconfirm>
             </template>
           </a-table>
         </a-tab-pane>
         <a-tab-pane key="2" tab="告警记录">
-          <a-table :dataSource="alarmLogList" :columns="alarmLogColumns" rowKey="id" :pagination="alarmLogPagination">
+          <a-table
+            :dataSource="alarmLogList"
+            :columns="alarmLogColumns"
+            rowKey="id"
+            :pagination="alarmLogPagination"
+          >
             <template #alarmRule="{ record }">
               {{ record.AlarmRule.alarmName }}
             </template>
@@ -66,8 +98,12 @@
           </a-table>
         </a-tab-pane>
         <a-tab-pane key="3" tab="行为记录">
-          <a-table :dataSource="alarmActionLogList" :columns="alarmActionLogColumns" rowKey="id"
-            :pagination="alarmActionLogPagination">
+          <a-table
+            :dataSource="alarmActionLogList"
+            :columns="alarmActionLogColumns"
+            rowKey="id"
+            :pagination="alarmActionLogPagination"
+          >
             <template #alarmRule="{ record }">
               {{ record.AlarmRule.alarmName }}
             </template>
@@ -88,13 +124,13 @@
           </a-table>
         </a-tab-pane>
       </a-tabs>
-      <alarm-form ref="alarmForm" @close="onClose" />
+      <alarm-form ref="alarmForm" @close="onClose"/>
     </a-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { provide, reactive, ref, toRefs, watch, getCurrentInstance, onMounted } from 'vue';
+import { provide, reactive, ref, toRefs, watch, getCurrentInstance, onMounted } from 'vue'
 import {
   requestAlarmRuleList,
   requestAlarmLogList,
@@ -102,31 +138,30 @@ import {
   requestUpdateRuleStatus,
   requestRemoveAlarmRule,
   requestIgnoreAlarmType,
-} from '@/apis/alarm';
-import AlarmForm from './alarmForm.vue';
-import { message } from 'ant-design-vue';
-import moment from 'moment';
-import { ToolsLib } from '@xes/fe-utils';
-import { requestYachId } from '@/apis/tool';
+} from '@/apis/alarm'
+import AlarmForm from './alarmForm.vue'
+import { message } from 'ant-design-vue'
+import moment from 'moment'
+import { ToolsLib } from '@xes/fe-utils'
+import { requestYachId } from '@/apis/tool'
 const props = defineProps({
   projectId: {
     type: Number,
   },
   ucGroupId: {
     type: Number,
-    default: '',
+    default: 0,
   },
 })
-const { projectId, ucGroupId } = toRefs(props);
-provide('projectId', projectId);
-provide('ucGroupId', ucGroupId);
-const visible = ref(false);
-const alarmForm = ref();
-const activeKey = ref('1');
-const alarmRuleList = ref([]);
-const alarmLogList = ref([]);
-const alarmActionLogList = ref([]);
-
+const { projectId, ucGroupId } = toRefs(props)
+provide('projectId', projectId)
+provide('ucGroupId', ucGroupId)
+const visible = ref(false)
+const alarmForm = ref()
+const activeKey = ref('1')
+const alarmRuleList = ref([])
+const alarmLogList = ref([])
+const alarmActionLogList = ref([])
 
 let currentInstance: any = ''
 onMounted(() => {
@@ -188,7 +223,7 @@ const alarmRuleColumns = reactive([
     key: 'handle',
     slots: { customRender: 'handle' },
   },
-]);
+])
 const alarmLogColumns = reactive([
   {
     title: '告警规则名称',
@@ -230,7 +265,7 @@ const alarmLogColumns = reactive([
       key: 'handle',
       slots: { customRender: 'handle' },
     },*/
-]);
+])
 const alarmActionLogColumns = reactive([
   {
     title: '告警规则名称',
@@ -267,48 +302,48 @@ const alarmActionLogColumns = reactive([
       key: 'handle',
       slots: { customRender: 'handle' },
     },*/
-]);
+])
 // 分页配置
 const alarmLogPagination = reactive({
   current: 1,
   pageSize: 5,
   total: 0,
   onChange: async current => {
-    alarmLogForm.offset = (current - 1) * alarmLogForm.limit;
-    alarmLogPagination.current = current;
-    await getAlarmLogList();
+    alarmLogForm.offset = (current - 1) * alarmLogForm.limit
+    alarmLogPagination.current = current
+    await getAlarmLogList()
   },
-});
+})
 // 分页配置
 const alarmActionLogPagination = reactive({
   current: 1,
   pageSize: 5,
   total: 0,
   onChange: current => {
-    console.log(current);
-    alarmActionLogForm.offset = (current - 1) * alarmActionLogForm.limit;
-    alarmActionLogPagination.current = current;
-    getAlarmActionLogList();
+    console.log(current)
+    alarmActionLogForm.offset = (current - 1) * alarmActionLogForm.limit
+    alarmActionLogPagination.current = current
+    getAlarmActionLogList()
   },
-});
+})
 watch(activeKey, val => {
   if (val === '1') {
-    getAlarmRuleList();
+    getAlarmRuleList()
   }
   if (val === '2') {
-    getAlarmLogList();
+    getAlarmLogList()
   }
   if (val === '3') {
-    getAlarmActionLogList();
+    getAlarmActionLogList()
   }
-});
+})
 const showModal = () => {
-  visible.value = true;
-  getAlarmRuleList();
-};
+  visible.value = true
+  getAlarmRuleList()
+}
 const closeModal = () => {
-  visible.value = false;
-};
+  visible.value = false
+}
 // const projectId = inject('projectId');
 const getAlarmRuleList = async () => {
   if (!projectId) return
@@ -319,21 +354,21 @@ const getAlarmRuleList = async () => {
   } = await requestAlarmRuleList({
     projectId: projectId.value,
     projectTag: 'xiaosongshu',
-  });
+  })
   if (stat) {
-    alarmRuleList.value = data;
-    return;
+    alarmRuleList.value = data
+    return
   }
-  message.error(msg);
-};
+  message.error(msg)
+}
 const alarmLogForm = reactive({
   offset: 0,
   limit: 5,
-});
+})
 const alarmActionLogForm = reactive({
   offset: 0,
   limit: 5,
-});
+})
 const getAlarmLogList = async () => {
   if (!projectId) return
   const {
@@ -345,15 +380,15 @@ const getAlarmLogList = async () => {
     projectTag: 'xiaosongshu',
     offset: alarmLogForm.offset,
     limit: alarmLogForm.limit,
-  });
+  })
   if (stat) {
-    const { rows, count } = data;
-    alarmLogPagination.total = count;
-    alarmLogList.value = rows;
-    return;
+    const { rows, count } = data
+    alarmLogPagination.total = count
+    alarmLogList.value = rows
+    return
   }
-  message.error(msg);
-};
+  message.error(msg)
+}
 const getAlarmActionLogList = async () => {
   if (!projectId) return
   const {
@@ -365,41 +400,41 @@ const getAlarmActionLogList = async () => {
     projectTag: 'xiaosongshu',
     offset: alarmActionLogForm.offset,
     limit: alarmActionLogForm.limit,
-  });
+  })
   if (stat) {
-    const { rows, count } = data;
-    alarmActionLogPagination.total = count;
-    alarmActionLogList.value = rows;
-    return;
+    const { rows, count } = data
+    alarmActionLogPagination.total = count
+    alarmActionLogList.value = rows
+    return
   }
-  message.error(msg);
-};
+  message.error(msg)
+}
 // 打开修改表单
 const openUpdateForm = record => {
-  alarmForm.value.showModal(record);
-};
+  alarmForm.value.showModal(record)
+}
 // 关闭事件的回调
 const onClose = () => {
-  getAlarmRuleList();
-};
+  getAlarmRuleList()
+}
 // 修改告警规则的状态
 const updateRuleStatus = async (isActive, record) => {
-  const { stat = 0 } = await requestUpdateRuleStatus({ isActive, id: record.id });
+  const { stat = 0 } = await requestUpdateRuleStatus({ isActive, id: record.id })
   if (stat) {
-    message.info('更新成功');
-    return;
+    message.info('更新成功')
+    return
   }
-  message.error('更新失败');
-  record.isActive = !isActive;
-};
+  message.error('更新失败')
+  record.isActive = !isActive
+}
 /**
  * UTC时间转为本地时间
  * @param date UTC日期字符串
  * @return {string}
  */
 const formatUtcTime = date => {
-  return moment(date).utcOffset(-8).format('YYYY-MM-DD HH:mm:ss');
-};
+  return moment(date).utcOffset(-8).format('YYYY-MM-DD HH:mm:ss')
+}
 
 /**
  * 本地时间格式化
@@ -407,8 +442,8 @@ const formatUtcTime = date => {
  * @return {string}
  */
 const formatLocalTime = date => {
-  return moment(date).format('YYYY-MM-DD HH:mm:ss');
-};
+  return moment(date).format('YYYY-MM-DD HH:mm:ss')
+}
 
 /**
  * 转换行为
@@ -424,9 +459,9 @@ const formatAction = action => {
     ['detail', '详情'],
     ['stop', '暂停预警'],
     ['start', '启用预警'],
-  ]);
-  return actionMap.get(action);
-};
+  ])
+  return actionMap.get(action)
+}
 
 /**
  * 转换来源
@@ -437,9 +472,9 @@ const formatSource = source => {
   const sourceMap = new Map([
     ['zhiyinlou', '知音楼'],
     ['Web', '网站'],
-  ]);
-  return sourceMap.get(source);
-};
+  ])
+  return sourceMap.get(source)
+}
 
 /**
  * 转换用户信息
@@ -447,8 +482,8 @@ const formatSource = source => {
  * @returns {Object}
  */
 const formatUser = user => {
-  return ToolsLib.jsonParse(user, {});
-};
+  return ToolsLib.jsonParse(user, {})
+}
 /**
  * 提取出忽略的错误类型。
  * @param {array} errorList 已监控的错误类型
@@ -456,20 +491,20 @@ const formatUser = user => {
  * return {array} 错误类型数组
  */
 const formatIgnoreError = (errorList, ignoreIds) => {
-  const ignoreIdList = ignoreIds.split(',').map(Number);
-  const errorMap = new Map();
+  const ignoreIdList = ignoreIds.split(',').map(Number)
+  const errorMap = new Map()
   errorList.forEach(({ id, errorType }) => {
-    errorMap.set(id, errorType);
-  });
-  const ignoreErrorList: any[] = [];
+    errorMap.set(id, errorType)
+  })
+  const ignoreErrorList: any[] = []
   ignoreIdList.forEach(val => {
-    const errorType = errorMap.get(val);
+    const errorType = errorMap.get(val)
     if (errorType) {
-      ignoreErrorList.push(errorType);
+      ignoreErrorList.push(errorType)
     }
-  });
-  return ignoreErrorList;
-};
+  })
+  return ignoreErrorList
+}
 /**
  * 忽略错误显示格式化
  * @param {string} ignoreErrorIds 忽略错误字符串
@@ -477,9 +512,9 @@ const formatIgnoreError = (errorList, ignoreIds) => {
  * @return {Promise<void>}
  */
 const formatCanIgnoreErrorList = (ignoreErrorIds, errorTypeList) => {
-  const ignoreErrorIdList = ignoreErrorIds.split(',').map(Number);
-  return errorTypeList.filter(item => !ignoreErrorIdList.includes(item.id));
-};
+  const ignoreErrorIdList = ignoreErrorIds.split(',').map(Number)
+  return errorTypeList.filter(item => !ignoreErrorIdList.includes(item.id))
+}
 /**
  * 可取消忽略的错误类型
  * @param {string} ignoreErrorIds 忽略错误字符串
@@ -487,23 +522,23 @@ const formatCanIgnoreErrorList = (ignoreErrorIds, errorTypeList) => {
  * @return {Promise<void>}
  */
 const formatCanRemoveIgnoreErrorList = (ignoreErrorIds, errorTypeList) => {
-  const ignoreErrorIdList = ignoreErrorIds.split(',').map(Number);
-  return errorTypeList.filter(item => ignoreErrorIdList.includes(item.id));
-};
+  const ignoreErrorIdList = ignoreErrorIds.split(',').map(Number)
+  return errorTypeList.filter(item => ignoreErrorIdList.includes(item.id))
+}
 /**
  * 删除规则
  * @param {number} id 规则ID
  * @return {Promise<void>}
  */
 const removeAlarmRule = async id => {
-  const { stat = 0 } = await requestRemoveAlarmRule({ id });
+  const { stat = 0 } = await requestRemoveAlarmRule({ id })
   if (stat) {
-    message.info('删除成功');
-    await getAlarmRuleList();
-    return;
+    message.info('删除成功')
+    await getAlarmRuleList()
+    return
   }
-  message.error('删除失败');
-};
+  message.error('删除失败')
+}
 
 /**
  * 忽略某种类型的错误
@@ -513,15 +548,15 @@ const removeAlarmRule = async id => {
  * @return {Promise<void>}
  */
 const ignoreErrorType = async (id, ignoreErrorIds, ignoreId) => {
-  const conIgnoreIds = [ignoreErrorIds, ignoreId].join(',');
-  const { stat = 0 } = await requestIgnoreAlarmType({ id, ignoreErrorIds: conIgnoreIds });
+  const conIgnoreIds = [ignoreErrorIds, ignoreId].join(',')
+  const { stat = 0 } = await requestIgnoreAlarmType({ id, ignoreErrorIds: conIgnoreIds })
   if (stat) {
-    message.info('忽略成功');
-    await getAlarmRuleList();
-    return;
+    message.info('忽略成功')
+    await getAlarmRuleList()
+    return
   }
-  message.error('忽略失败');
-};
+  message.error('忽略失败')
+}
 /**
  * 取消忽略某种类型的错误
  * @param {number} id 规则ID
@@ -536,15 +571,15 @@ const removeIgnoreErrorType = async (id, ignoreErrorIds, ignoreId) => {
     .split(',')
     .map(Number)
     .filter(item => item !== ignoreId)
-    .join(',');
-  const { stat = 0 } = await requestIgnoreAlarmType({ id, ignoreErrorIds: removeIgnoreIds });
+    .join(',')
+  const { stat = 0 } = await requestIgnoreAlarmType({ id, ignoreErrorIds: removeIgnoreIds })
   if (stat) {
-    message.info('取消忽略成功');
-    await getAlarmRuleList();
-    return;
+    message.info('取消忽略成功')
+    await getAlarmRuleList()
+    return
   }
-  message.error('取消忽略失败');
-};
+  message.error('取消忽略失败')
+}
 
 /**
  * 打开知音楼
@@ -552,14 +587,13 @@ const removeIgnoreErrorType = async (id, ignoreErrorIds, ignoreId) => {
  * @returns {Promise<void>}
  */
 const openYach = async account => {
-  const result = await requestYachId({ account });
-  const { stat = 0, data = [] } = result;
+  const result = await requestYachId({ account })
+  const { stat = 0, data = [] } = result
   if (stat !== 1 || data.length === 0) {
-    message.warning('没有查询到人员相关知音楼信息');
-    return;
+    message.warning('没有查询到人员相关知音楼信息')
+    return
   }
-  const { yachid } = data[0];
-  window.location.href = `yach://yach.zhiyinlou.com/session/sessionp2p?sessionid=${yachid}`;
-};
-
+  const { yachid } = data[0]
+  window.location.href = `yach://yach.zhiyinlou.com/session/sessionp2p?sessionid=${yachid}`
+}
 </script>

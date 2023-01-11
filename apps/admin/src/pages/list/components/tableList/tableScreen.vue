@@ -2,20 +2,25 @@
   <div class="relative">
     <div class="flex flex-row justify-between">
       <router-link :to="boardUrl">
-        <a-button type="link" class="!w-full">
+        <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'board')">
           <AreaChartOutlined style="color: #7ed591" class="text-lg mr-1" />
           <span class="text-gray-700">监控</span>
         </a-button>
       </router-link>
       <router-link :to="dataBoardUrl">
-        <a-button type="link" class="!w-full">
+        <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'data')">
           <PieChartOutlined style="color: #f77f00" class="text-lg mr-1" />
           <span class="text-gray-700">大盘</span>
         </a-button>
       </router-link>
       <div v-if="!isEditProject">
         <router-link :to="reportUrl">
-          <a-button v-if="!isEditProject" type="link" class="!w-full">
+          <a-button
+            v-if="!isEditProject"
+            type="link"
+            class="!w-full"
+            @click="() => useStoreProject(project, 'report')"
+          >
             <FundOutlined style="color: #f07d70" class="text-lg mr-1" />
             <span class="text-gray-700">周报</span>
           </a-button>
@@ -27,11 +32,12 @@
 
 <script setup lang="ts">
 import { AreaChartOutlined, FundOutlined, PieChartOutlined } from '@ant-design/icons-vue'
-import { useLinkToUrl } from '@/hooks/board/useLink'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
+import { BoardInfo } from '@vben/types'
 
 const props = defineProps({
   project: {
-    type: Object,
+    type: Object as PropType<BoardInfo>,
     required: true,
   },
 })

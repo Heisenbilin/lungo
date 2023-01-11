@@ -13,8 +13,6 @@
         :project="record"
         @star="starProject"
         :closeDays="closeDays"
-        :startTime="startTime"
-        :endTime="endTime"
         :isStar="isStar"
       />
     </template>
@@ -160,14 +158,6 @@ const props = defineProps({
     type: String,
     default: 'day',
   },
-  startTime: {
-    type: String,
-    required: true,
-  },
-  endTime: {
-    type: String,
-    required: true,
-  },
 })
 const emit = defineEmits(['edit'])
 // eslint-disable-next-line vue/return-in-computed-property
@@ -252,8 +242,8 @@ const loadingT = ref(false)
 const initTableContentData = async () => {
   loadingT.value = true
   const otherParams = {
-    start_time: props.startTime,
-    end_time: props.endTime,
+    start_time: listStore.startTime,
+    end_time: listStore.endTime,
     time_dimension: props.dimension === 'hour' ? 'day' : 'week',
   }
   try {
@@ -303,8 +293,8 @@ const openProject = async (id, index) => {
     message.success('开启成功！')
     //请求项目数据
     const boardData = await getProjectBoard({
-      start_time: props.startTime,
-      end_time: props.endTime,
+      start_time: listStore.startTime,
+      end_time: listStore.endTime,
       time_dimension: filterState.value.dimension === 'hour' ? 'day' : 'week',
       project_id: id,
     })
@@ -341,7 +331,7 @@ getHuatuoProjectList()
 const { filterState } = storeToRefs(boardStore)
 // const dimension = computed(() => boardStore.getFilterState.dimension);
 // 周/天变化
-watch(() => props.startTime, initTableContentData)
+watch(() => listStore.startTime, initTableContentData)
 </script>
 
 <style lang="scss" scoped>

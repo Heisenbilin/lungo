@@ -10,8 +10,6 @@
           @star="starProject"
           :latestSDKVersion="latestSDKVersion"
           :closeDays="closeDays"
-          :startTime="startTime"
-          :endTime="endTime"
           :isStar="isStar"
         />
       </div>
@@ -55,14 +53,6 @@ const props = defineProps({
     default: false,
   },
   forceFlash: Boolean,
-  startTime: {
-    type: String,
-    required: true,
-  },
-  endTime: {
-    type: String,
-    required: true,
-  },
 })
 const emit = defineEmits(['edit'])
 

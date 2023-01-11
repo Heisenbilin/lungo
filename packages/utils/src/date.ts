@@ -189,3 +189,26 @@ function doHandleMonth(month) {
 
   return m
 }
+
+export const computeTimeFormatStr = (
+  start_time: string,
+  end_time: string,
+  dimension: string | undefined,
+) => {
+  let result = ''
+  if (!(start_time && start_time)) return result
+  const duraDays = dayjs(end_time).diff(dayjs(start_time), 'day')
+  const duraYears = dayjs(end_time).diff(dayjs(start_time), 'day')
+  const dime = dimension
+  if (duraYears > 0) {
+    //当跨度超过1年时，展示年份
+    result = dime === 'day' ? 'YY-MM-DD' : dime === 'hour' ? 'YY-MM-DD HH' : 'YY-MM-DD 2'
+  } else if (duraDays > 0 || dime === 'day') {
+    //当跨度不超过一年或者展示维度为1天时，不展示年份
+    result = dime === 'day' ? 'mm-dd' : dime === 'hour' ? 'mm-dd HH' : 'mm-dd HH2'
+  } else if (dime !== 'day') {
+    //当跨度不超过一天时且展示维度不为1天时，不展示天
+    result = dime === 'hour' ? 'HH' : 'HH2'
+  }
+  return result
+}

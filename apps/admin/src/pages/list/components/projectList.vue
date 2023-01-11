@@ -92,8 +92,6 @@
           }"
           :forceFlash="forceFlashFlag.all"
           :isStar="false"
-          :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime"
           @edit="editProjectInfo"
         />
       </div>
@@ -108,8 +106,6 @@
           }"
           :forceFlash="forceFlashFlag.all"
           :isStar="false"
-          :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime"
           @edit="editProjectInfo"
         />
       </div>
@@ -126,8 +122,6 @@
           }"
           :forceFlash="forceFlashFlag.star"
           :isStar="true"
-          :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime"
           @edit="editProjectInfo"
         />
       </div>
@@ -142,8 +136,6 @@
           }"
           :forceFlash="forceFlashFlag.star"
           :isStar="true"
-          :startTime="dimension === 'week' ? startWeek : startTime"
-          :endTime="endTime"
           @edit="editProjectInfo"
         />
       </div>
@@ -158,7 +150,7 @@
   <uc-group-modal />
 </template>
 <script setup lang="ts">
-import { ref, watch, h, computed } from 'vue'
+import { ref, watch, h, computed, provide } from 'vue'
 import { checkProjectData } from '@/apis/list'
 import { message, Modal } from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
@@ -245,16 +237,23 @@ const endTime = moment()
   .minute(10 * Math.floor(moment().minutes() / 10))
   .second(0)
   .format('YYYY-MM-DD HH:mm:ss')
+// provide('startTime', dimension.value === 'week' ? startWeek : startTime)
+// provide('endTime', endTime)
 
 //对比维度
-const dimension = ref(dimen)
+const dimension = ref<'week' | 'day'>(dimen)
+
+// 开始时间与结束时间存入listStore
+listStore.startTime = dimension.value === 'week' ? startWeek : startTime
+listStore.endTime = endTime
 
 //监听数据维度变化，更新store
 watch(
   dimension,
   val => {
-    const dimension = val.value === 'week' ? 'day' : 'hour'
-    boardStore.addFilterValue({ dimension })
+    const storeDimesion = val === 'week' ? 'day' : 'hour'
+    boardStore.addFilterValue({ dimension: storeDimesion })
+    listStore.startTime = val === 'week' ? startWeek : startTime
     addOrUpdateUrlParams({ dimen: val })
   },
   { immediate: true },

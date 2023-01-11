@@ -30,8 +30,6 @@ export const useReportStore = defineStore({
   state: (): BoardState => ({
     // 项目信息
     boardInfoState: { appid: '', eventid: '', id: -1, project_name: '' },
-    // 加载标志
-    loadingState: false,
     // 筛选条件
     filterState: { start_time: '', end_time: '', dimension: 'day' },
     // 日志详情
@@ -44,21 +42,6 @@ export const useReportStore = defineStore({
     tabState: '',
   }),
   getters: {
-    getBoardInfoState(): BoardInfo {
-      return this.boardInfoState
-    },
-    getLoadingState(): boolean {
-      return this.loadingState
-    },
-    getFilterState(): filter {
-      return this.filterState
-    },
-    getLogInfoState(): logInfo {
-      return this.logInfoState
-    },
-    getTopicIdState(): string {
-      return this.topicIdState
-    },
     getLatestSDKVersionState(): string {
       return this.latestSDKVersionState
     },
@@ -82,9 +65,6 @@ export const useReportStore = defineStore({
   actions: {
     commitBoardInfoState(info: BoardInfo): void {
       this.boardInfoState = info
-    },
-    commitLoadingState(loading: boolean): void {
-      this.loadingState = loading
     },
     commitFilterState(filter: filter): void {
       this.filterState = filter

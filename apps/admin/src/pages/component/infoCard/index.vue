@@ -3,9 +3,19 @@
     <template #title>
       <div class="h-7">
         <span class="mr-4">项目信息</span>
-        <a-select v-model:value="projectId" placeholder="请选择项目名称" style="width: 300px" showSearch
-          optionFilterProp="label">
-          <a-select-option v-for="item of projectList" :key="item.id" :label="item.project_name" :value="item.id">
+        <a-select
+          v-model:value="projectId"
+          placeholder="请选择项目名称"
+          style="width: 300px"
+          showSearch
+          optionFilterProp="label"
+        >
+          <a-select-option
+            v-for="item of projectList"
+            :key="item.id"
+            :label="item.project_name"
+            :value="item.id"
+          >
             <div>
               <a-tag color="red" v-if="item.saas === 'yes'">学科</a-tag>
               <a-tag color="blue" v-else>素质</a-tag>
@@ -15,10 +25,7 @@
         </a-select>
       </div>
     </template>
-    <div v-if="loading" class="flex min-h-40 justify-center items-center">
-      <a-spin size="large" />
-    </div>
-    <div v-else-if="projectId" class="flex gap-3 flex-wrap">
+    <div v-if="projectId" class="flex gap-3 flex-wrap">
       <InfoTag title="appid">
         <template #content>
           <a-tooltip title="点击跳转本项目的kibana数据看板">
@@ -32,9 +39,12 @@
           <SDKVersion :currentSDKVersion="projectInfo.sdk_version" />
         </template>
       </InfoTag>
-      <InfoTag title="接入方式" :content="
-        projectInfo.access_mode ? (projectInfo.access_mode === 'sdk' ? 'NPM' : 'CDN') : '未知'
-      " />
+      <InfoTag
+        title="接入方式"
+        :content="
+          projectInfo.access_mode ? (projectInfo.access_mode === 'sdk' ? 'NPM' : 'CDN') : '未知'
+        "
+      />
       <InfoTag title="创建时间" :content="moment(projectInfo.create_time).format('YY.MM.DD')" />
       <InfoTag title="管理员" v-if="adminUsers.length">
         <template #content>
@@ -46,7 +56,11 @@
       </InfoTag>
       <InfoTag>
         <template #content>
-          <a class="link" @click="currentInstance.ctx.$refs.alarmSetting.showModal()" color="warning">
+          <a
+            class="link"
+            @click="currentInstance.ctx.$refs.alarmSetting.showModal()"
+            color="warning"
+          >
             <AlertTwoTone twoToneColor="#d4542d" key="alarm" class="mr-2" /> 预警设置
           </a>
         </template>
@@ -79,34 +93,35 @@
 
 <script setup lang="ts">
 // 质量监控页 项目卡片组件
-import { ref, computed, watch, PropType, getCurrentInstance, onMounted } from 'vue';
-import { message } from 'ant-design-vue';
-import { useBoardStore } from '@/store/modules/board';
-import { useReportStore } from '@/store/modules/report';
-import { useBoardDataStore } from '@/store/modules/panel';
+import { ref, computed, watch, PropType, getCurrentInstance, onMounted } from 'vue'
+import { message } from 'ant-design-vue'
+import { useBoardStore } from '@/store/modules/board'
+import { useReportStore } from '@/store/modules/report'
+import { useBoardDataStore } from '@/store/modules/panel'
 import {
   AlertTwoTone,
   FundOutlined,
   PieChartOutlined,
   AreaChartOutlined,
-} from '@ant-design/icons-vue';
-import { kibanaHref } from '../logDetail/util';
-import { getGroupRoleUsers } from '@/apis/bigfish';
-import { getKibanaTopicId } from '@/apis/board/logCenter';
-import moment from 'moment';
+} from '@ant-design/icons-vue'
+import { kibanaHref } from '../logDetail/util'
+import { getGroupRoleUsers } from '@/apis/bigfish'
+import { getKibanaTopicId } from '@/apis/board/logCenter'
+import moment from 'moment'
 
-import SDKVersion from '../sdkVersion.vue';
-import AlarmSetting from '../alarm/alarmSetting.vue';
-import InfoTag from './infoTag.vue';
+import SDKVersion from '../sdkVersion.vue'
+import AlarmSetting from '../alarm/alarmSetting.vue'
+import InfoTag from './infoTag.vue'
+import { useLinkToUrl } from '@/hooks/board/useLink'
 
-const boardStore = useBoardStore();
-const reportStore = useReportStore();
-const boardDataStore = useBoardDataStore();
+const boardStore = useBoardStore()
+const reportStore = useReportStore()
+const boardDataStore = useBoardDataStore()
 
 const props = defineProps({
   projectId: {
     type: Number,
-    required: true,
+    default: 0,
   },
   projectList: {
     type: Array as PropType<any[]>,
@@ -119,97 +134,75 @@ const props = defineProps({
     type: String,
     default: 'general',
   },
-});
-
-const emit = defineEmits(['showModal']);
+})
 
 const store =
   props.boardType === 'general'
     ? boardStore
     : props.boardType === 'data'
-      ? boardDataStore
-      : reportStore;
+    ? boardDataStore
+    : reportStore
 
-const projectId = ref(props.projectId);
-
-// loading
-const loading = computed(() => store.loadingState);
+const projectId = ref<number>(props.projectId)
 
 // 当前选中项目信息
-const projectInfo = ref<any>({});
+const projectInfo = ref<any>({})
 
 // 用于sourcemap详情的topicid信息
-const topicId = ref('');
+const topicId = ref('')
 
 // 跳转kibana链接
 const jumpKibanaURL = computed(
   () =>
-    `${kibanaHref}/app/kibana#/discover?_g=(filters:!(('$state':(store:globalState),meta:(alias:!n,disabled:!f,index:'${topicId.value}',key:data.eventid.keyword,negate:!f,params:(query:'${projectInfo.value.eventid}',type:phrase),type:phrase,value:'${projectInfo.value.eventid}'),query:(match:(data.eventid.keyword:(query:'${projectInfo.value.eventid}',type:phrase))))),refreshInterval:(pause:!t,value:0),time:(from:now-7d,mode:quick,to:now))&_a=(columns:!(_source),index:'${topicId.value}',interval:auto,query:(language:lucene,query:''),sort:!('@timestamp',desc))`
-);
+    `${kibanaHref}/app/kibana#/discover?_g=(filters:!(('$state':(store:globalState),meta:(alias:!n,disabled:!f,index:'${topicId.value}',key:data.eventid.keyword,negate:!f,params:(query:'${projectInfo.value.eventid}',type:phrase),type:phrase,value:'${projectInfo.value.eventid}'),query:(match:(data.eventid.keyword:(query:'${projectInfo.value.eventid}',type:phrase))))),refreshInterval:(pause:!t,value:0),time:(from:now-7d,mode:quick,to:now))&_a=(columns:!(_source),index:'${topicId.value}',interval:auto,query:(language:lucene,query:''),sort:!('@timestamp',desc))`,
+)
 
 let currentInstance: any = ''
 onMounted(() => {
   currentInstance = getCurrentInstance()
 })
 
-//点击数据大盘按钮跳转的路由
-const boardDataUrl = computed(() => {
-  if (!props.platformType) {
-    return `/monitor/board?projectId=${projectId.value}`;
-  }
-  return `/huatuo/data/${projectId.value}`;
-});
-
-//点击质量监控按钮跳转的路由
-const boardUrl = computed(() => {
-  if (!props.platformType) {
-    return `/monitor/board?projectId=${projectId.value}`;
-  }
-  return `/huatuo/board/${projectId.value}`;
-});
-
+//点击卡片跳转的路由
+const boardUrl = useLinkToUrl(projectId.value, 'board')
 //点击质量周报按钮跳转的路由
-const reportUrl = computed(() => {
-  if (!props.platformType) {
-    return `/projectboard/qcEntry${projectId.value}/:week`;
-  }
-  return `/huatuo/report/${projectId.value}/:week`;
-});
+const reportUrl = useLinkToUrl(projectId.value, 'report')
+//点击数据大盘按钮跳转的路由
+const boardDataUrl = useLinkToUrl(projectId.value, 'data')
 
 //项目管理员信息<
-const admin_uc_group_id = ref(undefined); // 管理该项目的uc_group_id
-const adminUsers = ref<any[]>([]); // 管理员们
-const totalAdmins = ref(0); // 全部管理员数量
+const admin_uc_group_id = ref<number | undefined>(undefined) // 管理该项目的uc_group_id
+const adminUsers = ref<any[]>([]) // 管理员们
+const totalAdmins = ref(0) // 全部管理员数量
 
 //根据用户组获取用户知音楼信息
 const freshYachId = async (limit = 3, group_id = admin_uc_group_id.value) => {
-  if (!group_id) return;
-  if (admin_uc_group_id.value !== group_id) admin_uc_group_id.value = group_id;
-  const result = await getGroupRoleUsers(group_id, 0, limit);
+  if (!group_id) return
+  if (admin_uc_group_id.value !== group_id) admin_uc_group_id.value = group_id
+  const result = await getGroupRoleUsers(group_id, 0, limit)
   if (result?.stat === 1) {
     adminUsers.value =
       result.data?.users.map(item => ({
         user_name: item.user_name,
         href: `yach://yach.zhiyinlou.com/session/sessionp2p?sessionid=${item.yachid}`,
-      })) ?? [];
-    totalAdmins.value = result.data?.total ?? 0;
+      })) ?? []
+    totalAdmins.value = result.data?.total ?? 0
   }
-};
+}
 
 //根据appId获取topicId
 // 接口文档 https://wiki.zhiyinlou.com/pages/viewpage.action?pageId=120097310
 async function getTopicId(appId, isSaas) {
   if (!appId) {
-    return;
+    return
   }
-  const saasFlag = isSaas === 'yes' ? 'xk-' : '';
-  const href = `https://app.xesv5.com/logcenterbigdata/api/v1/kibana/index-pattern/title/basiclog-${saasFlag}sys_${appId}-*`;
-  const res = await getKibanaTopicId(href);
+  const saasFlag = isSaas === 'yes' ? 'xk-' : ''
+  const href = `https://app.xesv5.com/logcenterbigdata/api/v1/kibana/index-pattern/title/basiclog-${saasFlag}sys_${appId}-*`
+  const res = await getKibanaTopicId(href)
   if (res.stat === 1 && res.data) {
-    topicId.value = res.data;
-    store.commitTopicIdState(res.data);
+    topicId.value = res.data
+    store.commitTopicIdState(res.data)
   } else {
-    message.error(res.msg);
+    message.error(res.msg)
   }
 }
 
@@ -217,24 +210,23 @@ async function getTopicId(appId, isSaas) {
 watch(
   projectId,
   (newId, oldId) => {
+    if (!newId || newId === oldId) return
     for (const project of props.projectList) {
       if (project.id === newId) {
-        // 重新获取TopicID
-        store.commitLoadingState(true);
-        if (oldId) window.history.pushState({}, '', window.location.href.replace(`${oldId}`, `${newId}`));
-        getTopicId(project.appid, project.saas);
+        if (oldId)
+          window.history.pushState({}, '', window.location.href.replace(`${oldId}`, `${newId}`))
+        getTopicId(project.appid, project.saas)
         // 重新获取创建者知音楼用户信息
-        freshYachId(undefined, project.uc_group_id);
+        freshYachId(undefined, project.uc_group_id)
         // 项目信息存入state
-        projectInfo.value = project;
+        projectInfo.value = project
         // 项目信息存入store供其他组件调用
-        store.initStateValue({ ...project, noInitFilter: true });
-        store.commitLoadingState(false);
+        store.initStateValue({ ...project, noInitFilter: true })
       }
     }
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 
 //项目Select框变更处理，路由跳转
 // const go = useGo();

@@ -1,20 +1,24 @@
-import { defineStore } from "pinia";
-import { getUserGroups } from "@/apis/list";
+import { defineStore } from 'pinia'
+import { getUserGroups } from '@/apis/list'
 
 interface ListState {
-  platform: "" | "huatuo";
-  ucGroups: any[];
-  ucGroupVisible: boolean;
+  platform: '' | 'huatuo'
+  startTime: string
+  endTime: string
+  ucGroups: any[]
+  ucGroupVisible: boolean
   forceFlashFlag: {
-    all: boolean;
-    star: boolean;
-  };
+    all: boolean
+    star: boolean
+  }
 }
 
 export const useListStore = defineStore({
-  id: "app-list",
+  id: 'app-list',
   state: (): ListState => ({
-    platform: "",
+    platform: '',
+    startTime: '',
+    endTime: '',
     ucGroups: [],
     ucGroupVisible: false,
     forceFlashFlag: {
@@ -27,10 +31,10 @@ export const useListStore = defineStore({
   actions: {
     //获取有权限的用户组
     async requestUCGroups() {
-      const res = <any>await getUserGroups();
+      const res = <any>await getUserGroups()
       if (res.stat === 1) {
-        this.ucGroups = res.data;
+        this.ucGroups = res.data
       }
     },
   },
-});
+})

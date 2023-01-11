@@ -1,39 +1,29 @@
 <template>
-  <div v-if="loading" class="flex min-h-200 justify-center items-center">
-    <a-spin size="large" />
+  <div class="grid grid-cols-2 gap-3">
+    <div class="chart-container">
+      <InfoCard
+        :projectId="projectId"
+        :projectList="projectList"
+        :platformType="props.platformType"
+      />
+    </div>
+    <div class="chart-container">
+      <FilterCard />
+    </div>
   </div>
-  <div v-else>
-    <template v-if="projectId">
-      <div class="grid grid-cols-2 gap-3">
-        <div class="chart-container">
-          <InfoCard
-            :projectId="projectId"
-            :projectList="projectList"
-            :platformType="props.platformType"
-          />
-        </div>
-        <div class="chart-container">
-          <FilterCard />
-        </div>
+  <Content v-if="projectId" :platformType="props.platformType" />
+  <a-empty class="my-28" v-else>
+    <template #description>
+      <div>
+        <a target="blink" href="http://app.xesv5.com/doc/pages/fedata/">质量监控项目接入指南</a>
       </div>
-      <div v-if="boardLoading" class="flex min-h-150 justify-center items-center">
-        <a-spin size="large" />
-      </div>
-      <Content v-else :platformType="props.platformType" />
     </template>
-    <a-empty class="my-28" v-else>
-      <template #description>
-        <div>
-          <a target="blink" href="http://app.xesv5.com/doc/pages/fedata/">质量监控项目接入指南</a>
-        </div>
-      </template>
-    </a-empty>
-  </div>
+  </a-empty>
 </template>
 
 <script setup lang="ts">
 //新版性能监测详情页Index
-import { ref, onMounted, h, computed } from 'vue'
+import { ref, h } from 'vue'
 import { message, Modal } from 'ant-design-vue'
 // import { useRouter } from "vue-router";
 import { getProjectById, getGroupRoleUsers } from '@/apis/bigfish'
@@ -44,6 +34,7 @@ import InfoCard from '../component/infoCard/index.vue'
 import FilterCard from '../component/filterCard/index.vue'
 import Content from './component/content.vue'
 import { getUrlParams } from '@vben/utils'
+// import { storeToRefs } from 'pinia'
 
 const boardStore = useBoardStore()
 
@@ -51,14 +42,12 @@ const props = defineProps({
   platformType: String,
 })
 
-// const { currentRoute } = useRouter();
-//当前选中的项目id
-const projectId = ref<undefined | number>(+getUrlParams().projectId || undefined)
-
+// 项目id
+const storeProjectId = boardStore.boardInfoState.id
+const { projectId: urlProjectId } = getUrlParams()
+const projectId = ref<undefined | number>(storeProjectId || +urlProjectId || undefined)
 console.log(projectId.value)
-//loading
-const loading = ref(true)
-const boardLoading = computed(() => boardStore.loadingState)
+
 //项目列表
 const projectList = ref<any[]>([])
 //项目管理员信息
@@ -66,19 +55,15 @@ const adminUsers = ref<any[]>([])
 const totalAdmins = ref(0)
 const admin_uc_group_id = ref(null) //管理该项目的uc_group_id
 
-onMounted(async () => {
-  //请求当前用户组管理的项目列表
-  getProjectListByGroup()
-})
-
 //获取华佗用户组对应应用列表
-async function getProjectListByGroup(page = 1, page_size = 100000, type = '') {
+async function getProjectListByGroup(
+  needHandledId = false,
+  page = 1,
+  page_size = 100000,
+  type = '',
+) {
   //请求参数
-  const params = {
-    page,
-    page_size,
-    type,
-  }
+  const params = { page, page_size, type }
   //请求后端数据
   const result = await getProjectList(params)
   if (result.stat === 1 && result.data.projects?.length) {
@@ -87,38 +72,31 @@ async function getProjectListByGroup(page = 1, page_size = 100000, type = '') {
     if (result.data.latestSDKVersion) {
       boardStore.commitLatestSDKVersionState(result.data.latestSDKVersion)
     }
+    if (needHandledId) {
+      handleUrlProjectId()
+    }
   }
-  //根据路由中字段匹配项目id
-  initProjectId()
 }
 
-//处理路由中的项目id
-function initProjectId() {
+// 处理路由中的项目id
+function handleUrlProjectId() {
   let permissionFlag = false
-  //空id，暂无操作
-  if (!projectId.value) {
-    loading.value = false
-  }
-  //url中有项目id
-  else {
-    //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
-    for (const project of projectList.value) {
-      if (projectId.value === project.id) {
-        permissionFlag = true
-        //判断项目是否关闭
-        if (project.close_project === 1) {
-          projectClosed(project)
-          projectId.value = undefined
-        }
-        break
+  //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
+  for (const project of projectList.value) {
+    if (projectId.value === project.id) {
+      permissionFlag = true
+      //判断项目是否关闭
+      if (project.close_project === 1) {
+        projectClosed(project)
+        projectId.value = undefined
       }
+      break
     }
-    loading.value = false
-    //若在项目列表中没找到此id，则没有该项目的权限，或为不存在的项目
-    if (!permissionFlag) {
-      noPermission(projectId.value)
-      projectId.value = undefined
-    }
+  }
+  //若在项目列表中没找到此id，则没有该项目的权限，或为不存在的项目
+  if (!permissionFlag) {
+    noPermission(projectId.value)
+    projectId.value = undefined
   }
 }
 
@@ -188,6 +166,15 @@ const freshYachId = async limit => {
       })) ?? []
     totalAdmins.value = result.data?.total ?? 0
   }
+}
+
+if (storeProjectId) {
+  // 若store中存在projectId，代表用户已经有项目权限，project信息已经获得
+  // 只需要请求项目列表发送给InfoCard组件
+  getProjectListByGroup()
+} else if (urlProjectId) {
+  // 若路由中存在projectId，代表用户直接进入该页面，project信息未获得，未鉴权
+  getProjectListByGroup(true)
 }
 </script>
 

@@ -1,4 +1,5 @@
 import moment from "moment";
+import dayjs from "dayjs";
 import { useBoardStore } from "@/store/modules/board";
 const boardStore = useBoardStore();
 
@@ -18,7 +19,7 @@ export const datePickerRanges = {
   最近一周: [
     moment().startOf("day").subtract(7, "day"),
     moment()
-      .minute(10 * Math.floor(moment().minutes() / 10))
+      .minute(10 * Math.floor(dayjs().minute() / 10))
       .second(0),
   ],
   最近两周: [

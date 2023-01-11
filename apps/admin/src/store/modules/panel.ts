@@ -1,7 +1,6 @@
-import { addOrUpdateUrlParams, delUrlParams, getUrlParams } from '@vben/utils'
+import { addOrUpdateUrlParams, delUrlParams, getUrlParams, computeTimeFormatStr } from '@vben/utils'
 import { logTypeEnum } from '@vben/constants'
 import { message } from 'ant-design-vue'
-import moment from 'moment'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
 
@@ -26,36 +25,11 @@ const allFilterKeys = [
   'api_range',
 ]
 
-const computeTimeFormatStr = (
-  start_time: string,
-  end_time: string,
-  dimension: string | undefined,
-) => {
-  let result = ''
-  if (!(start_time && start_time)) return result
-  typeof moment(start_time)
-  const dura = moment.duration(moment(end_time).diff(moment(start_time)))
-  const dime = dimension
-  if (dura.years() > 0) {
-    //当跨度超过1年时，展示年份
-    result = dime === 'day' ? 'YY-MM-DD' : dime === 'hour' ? 'YY-MM-DD HH' : 'YY-MM-DD 2'
-  } else if (dura.days() > 0 || dime === 'day') {
-    //当跨度不超过一年或者展示维度为1天时，不展示年份
-    result = dime === 'day' ? 'mm-dd' : dime === 'hour' ? 'mm-dd HH' : 'mm-dd HH2'
-  } else if (dime !== 'day') {
-    //当跨度不超过一天时且展示维度不为1天时，不展示天
-    result = dime === 'hour' ? 'HH' : 'HH2'
-  }
-  return result
-}
-
 export const useBoardDataStore = defineStore({
   id: 'app-board-data',
   state: (): BoardState => ({
     // 项目信息
     boardInfoState: { appid: '', eventid: '', id: -1, project_name: '' },
-    // 加载标志
-    loadingState: false,
     // 筛选条件
     filterState: { start_time: '', end_time: '', dimension: 'day' },
     // 日志详情
@@ -68,21 +42,6 @@ export const useBoardDataStore = defineStore({
     tabState: 'pageview',
   }),
   getters: {
-    getBoardInfoState(): BoardInfo {
-      return this.boardInfoState
-    },
-    getLoadingState(): boolean {
-      return this.loadingState
-    },
-    getFilterState(): filter {
-      return this.filterState
-    },
-    getLogInfoState(): logInfo {
-      return this.logInfoState
-    },
-    getTopicIdState(): string {
-      return this.topicIdState
-    },
     getLatestSDKVersionState(): string {
       return this.latestSDKVersionState
     },
@@ -106,9 +65,6 @@ export const useBoardDataStore = defineStore({
   actions: {
     commitBoardInfoState(info: BoardInfo): void {
       this.boardInfoState = info
-    },
-    commitLoadingState(loading: boolean): void {
-      this.loadingState = loading
     },
     commitFilterState(filter: filter): void {
       this.filterState = filter
@@ -178,7 +134,7 @@ export const useBoardDataStore = defineStore({
     initStateValue(info: BoardInfo): void {
       this.commitBoardInfoState(info)
       const {
-        dimension = this.getFilterState.dimension,
+        dimension = this.filterState.dimension,
         start_time = '',
         end_time = '',
       } = getUrlParams()

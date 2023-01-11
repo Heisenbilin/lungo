@@ -108,7 +108,7 @@ const props = defineProps({
 
 //跳转Url
 const getJumpUrl = tabKey => {
-  return `${props.linkToUrl}?tabkey=${tabKey}`
+  return `${props.linkToUrl}&tabkey=${tabKey}`
 }
 // const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 

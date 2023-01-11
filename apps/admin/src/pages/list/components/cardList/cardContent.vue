@@ -90,14 +90,14 @@ import { getTendencyChartOption } from './tendencyChartConfig'
 import { BasicChart } from '@vben/components'
 import { Empty } from 'ant-design-vue'
 import { useBoardStore } from '@/store/modules/board'
+import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from 'pinia'
 import ContentItem from './contentItem.vue'
 
 const boardStore = useBoardStore()
+const listStore = useListStore()
 
 const props = defineProps({
-  startTime: String,
-  endTime: String,
   linkToUrl: {
     type: String,
     required: true,
@@ -126,8 +126,8 @@ const initCardContentData = async () => {
   loading.value = true
   const params = {
     project_id: props.projectId,
-    start_time: props.startTime,
-    end_time: props.endTime,
+    start_time: listStore.startTime,
+    end_time: listStore.endTime,
     time_dimension: filterState.value.dimension === 'hour' ? 'day' : 'week',
   }
   try {
@@ -146,7 +146,7 @@ watch(props, initCardContentData, { immediate: true })
 
 //跳转Url
 const getJumpUrl = tabKey => {
-  return `${props.linkToUrl}?tabkey=${tabKey}`
+  return `${props.linkToUrl}&tabkey=${tabKey}`
 }
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>

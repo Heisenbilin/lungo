@@ -1,8 +1,20 @@
-import { useListStore } from '@/store/modules/list'
 import { Page } from '@vben/constants'
+import { useListStore } from '@/store/modules/list'
+import { useBoardStore } from '@/store/modules/board'
+import { useReportStore } from '@/store/modules/report'
+import { useBoardDataStore } from '@/store/modules/panel'
+import { BoardInfo } from '@vben/types'
 
-const { platform } = useListStore()
+const listStore = useListStore()
+const boardStore = useBoardStore()
+const reportStore = useReportStore()
+const boardDataStore = useBoardDataStore()
 
+const { platform } = listStore
+
+/*
+ * 生成跳转链接
+ */
 export const useLinkToUrl = (projectId: string | number, page: Page) => {
   if (platform === '') {
     switch (page) {
@@ -24,4 +36,21 @@ export const useLinkToUrl = (projectId: string | number, page: Page) => {
     }
   }
   return ''
+}
+
+/*
+ * 将项目信息存入store
+ */
+export const useStoreProject = (project: BoardInfo, page: Page) => {
+  switch (page) {
+    case 'board':
+      boardStore.boardInfoState = project
+      break
+    case 'data':
+      boardDataStore.boardInfoState = project
+      break
+    case 'report':
+      reportStore.boardInfoState = project
+      break
+  }
 }

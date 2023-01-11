@@ -31,6 +31,7 @@ export interface BoardInfo {
   collectFlag?: string
   create_time?: string
   eventid: string
+  gateway?: string
   id: number
   log_version?: number
   project_desc?: string
@@ -68,7 +69,6 @@ export interface logInfo {
 
 export interface BoardState {
   boardInfoState: BoardInfo
-  loadingState: boolean
   filterState: filter
   logInfoState: logInfo
   topicIdState: string

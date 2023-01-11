@@ -14,12 +14,7 @@
         <a-card-meta>
           <template #description>
             <div v-if="project.close_project !== 1 || openFlag" class="h-52">
-              <CardContent
-                :projectId="project.id"
-                :startTime="startTime"
-                :endTime="endTime"
-                :linkToUrl="boardUrl"
-              />
+              <CardContent :projectId="project.id" :linkToUrl="boardUrl" />
             </div>
             <div v-else class="h-52 bg-gray-900 bg-opacity-50 flex justify-center items-center">
               <a-popconfirm
@@ -92,19 +87,19 @@
             </a-button>
           </a-tooltip> -->
           <router-link :to="boardUrl">
-            <a-button type="link" class="!w-full">
+            <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'board')">
               <AreaChartOutlined style="color: #7ed591" class="text-lg mr-1" />
               <span class="text-gray-700">监控</span>
             </a-button>
           </router-link>
           <router-link :to="dataBoardUrl">
-            <a-button type="link" class="!w-full">
+            <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'data')">
               <PieChartOutlined style="color: #f77f00" class="text-lg mr-1" />
               <span class="text-gray-700">大盘</span>
             </a-button>
           </router-link>
           <div v-if="!isEditProject">
-            <router-link :to="reportUrl">
+            <router-link :to="reportUrl" @click="() => useStoreProject(project, 'report')">
               <a-button v-if="!isEditProject" type="link" class="!w-full">
                 <FundOutlined style="color: #f07d70" class="text-lg mr-1" />
                 <span class="text-gray-700">周报</span>
@@ -129,7 +124,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, PropType } from 'vue'
 import {
   SettingOutlined,
   AreaChartOutlined,
@@ -146,14 +141,15 @@ import { message } from 'ant-design-vue'
 import { modifyProjectParams, starProject } from '@/apis/list'
 import CardContent from './cardContent.vue'
 import moment from 'moment'
-import { useLinkToUrl } from '@/hooks/board/useLink'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
+import { BoardInfo } from '@vben/types'
 
 const appStore = useAppStore()
 const listStore = useListStore()
 
 const props = defineProps({
   project: {
-    type: Object,
+    type: Object as PropType<BoardInfo>,
     required: true,
   },
   isStar: {
@@ -165,14 +161,6 @@ const props = defineProps({
     default: '',
   },
   closeDays: {
-    type: String,
-    required: true,
-  },
-  startTime: {
-    type: String,
-    required: true,
-  },
-  endTime: {
     type: String,
     required: true,
   },
