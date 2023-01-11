@@ -23,7 +23,7 @@ export const useLinkToUrl = (projectId: string | number, page: Page) => {
       case 'data':
         return `/monitor/data?projectId=${projectId}`
       case 'report':
-        return `/monitor/report?projectId=${projectId}`
+        return `/monitor/report?projectId=${projectId}&dimen=week`
     }
   } else if (platform === 'huatuo') {
     switch (page) {

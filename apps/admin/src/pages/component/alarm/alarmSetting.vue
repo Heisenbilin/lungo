@@ -346,7 +346,7 @@ const closeModal = () => {
 }
 // const projectId = inject('projectId');
 const getAlarmRuleList = async () => {
-  if (!projectId) return
+  if (!projectId.value) return
   const {
     stat = 0,
     msg = '',
@@ -370,7 +370,7 @@ const alarmActionLogForm = reactive({
   limit: 5,
 })
 const getAlarmLogList = async () => {
-  if (!projectId) return
+  if (!projectId.value) return
   const {
     stat = 0,
     msg = '',
@@ -390,7 +390,7 @@ const getAlarmLogList = async () => {
   message.error(msg)
 }
 const getAlarmActionLogList = async () => {
-  if (!projectId) return
+  if (!projectId.value) return
   const {
     stat = 0,
     msg = '',

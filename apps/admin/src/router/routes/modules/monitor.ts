@@ -30,6 +30,16 @@ const dashboard: RouteRecordItem = {
         hideBreadcrumb: true,
       },
     },
+    {
+      path: "report",
+      name: "Report", 
+      component: () => import("@/pages/report/reportInfo.vue"),
+      meta: {
+        title: "routes.monitor.report",
+        icon: "ion:grid-outline",
+        hideBreadcrumb: true,
+      },
+    } 
     // {
     //   path: "workbench",
     //   name: "Workbench",
