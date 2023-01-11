@@ -66,9 +66,9 @@ const loading = ref(0) //0为加载，1无数据，2有数据
 const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE)
 
 const params = computed(() => ({
-  project_id: `${reportStore.getBoardInfoState.id}`,
-  start_time: reportStore.getFilterState.start_time,
-  end_time: reportStore.getFilterState.end_time,
+  project_id: `${reportStore.boardInfoState.id}`,
+  start_time: reportStore.filterState.start_time,
+  end_time: reportStore.filterState.end_time,
 }))
 
 watch(params, initData, { immediate: true })

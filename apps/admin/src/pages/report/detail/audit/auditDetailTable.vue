@@ -118,12 +118,18 @@
 import { nextTick, ref } from 'vue';
 import linkText from '../linkText.vue';
 import { parseURL, bytesToSize, formatDuration, isURL, handleObjectType } from '../util';
-const props: any = defineProps({
+
+
+
+const props = defineProps({
   details: {
     type: Object,
-    require: true,
+    required: true,
   },
-  index:Number
+  index: {
+    type: Number,
+    required: true,
+  },
 });
 //建议框架组件
     // console.log(props.details)

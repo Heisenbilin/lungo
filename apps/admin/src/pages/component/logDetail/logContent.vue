@@ -7,7 +7,8 @@
         <template #extra v-if="content.jumpKibana !== undefined">
           <a :href="content.jumpKibana(topicId)" target="_blank">跳转Kibana</a>
         </template>
-        <a-descriptions-item v-for="(item, index) in content.abstract" :label="item.name" :key="index"
+        <a-descriptions-item
+v-for="(item, index) in content.abstract" :label="item.name" :key="index"
           :span="item.span || 2">
           <template v-if="item.isHref">
             <a-tooltip :overlayStyle="{ maxWidth: '400px' }">
@@ -46,7 +47,8 @@
         <WaterfallChart :content="content.performance" />
       </div>
       <a-descriptions title="用户信息" bordered size="small" :column="2" v-if="content.userInfo !== undefined">
-        <a-descriptions-item v-for="(item, index) in content.userInfo" :label="item.name" :key="index"
+        <a-descriptions-item
+v-for="(item, index) in content.userInfo" :label="item.name" :key="index"
           :span="item.span || 2">
           {{ item.value }}
         </a-descriptions-item>
@@ -63,7 +65,8 @@
           <!--              </span>-->
           <!--              <a-tabs class="sourcemap-upload-tab">-->
           <!--                <a-tab-pane key="localupload" size="large" tab="本地上传">-->
-          <a-upload-dragger v-model:fileList="sourcemapFileList" name="file"
+          <a-upload-dragger
+v-model:fileList="sourcemapFileList" name="file"
             :before-upload="handleBeforeSourcemapUpload" :maxCount="1" accept="application/json,.map">
             <p class="ant-upload-drag-icon">
               <inbox-outlined />
@@ -85,7 +88,8 @@
             <a-tag v-if="msg" color="error" class="w-max">{{ msg }}</a-tag>
           </div>
           <a-empty v-else-if="sourceMapLoading === 'notOpen'" :image="simpleImage" description="项目未接入SourceMap">
-            <a-button type="primary" href="https://app.xesv5.com/doc/pages/fedata/sourcemap/sourcemap.html"
+            <a-button
+type="primary" href="https://app.xesv5.com/doc/pages/fedata/sourcemap/sourcemap.html"
               target="_blank">
               SourceMap接入指南
             </a-button>
@@ -117,8 +121,8 @@ import { getUrlParams } from '@vben/utils';
 import { useBoardStore } from '@/store/modules/board';
 import { uploadSourcemap, getMappingList } from '@/apis/board/sourceMap';
 import { WaterfallChart, CodeArea, SourceCodeArea } from '@vben/components';
-import VueJsonPretty from 'vue-json-pretty';
-import 'vue-json-pretty/lib/styles.css';
+// import VueJsonPretty from 'vue-json-pretty';
+// import 'vue-json-pretty/lib/styles.css';
 
 const boardStore = useBoardStore();
 
