@@ -145,10 +145,10 @@ function initProjectId() {
         const defaultDate = formatToDate(dayjs().day(-6));
         //url中有 日期of周
         if (!(dimen == 'week')) {
-          const firstDateValue = moment(dimen, 'YYYY-MM-DD');
+          const firstDateValue = dayjs(dimen, 'YYYY-MM-DD');
           console.log(firstDateValue);
           //日期解析失败，默认显示上周周报
-          if (firstDateValue === 'Invalid date') {
+          if (firstDateValue.isValid()) {
             reportStore.addFilterValue({ start_time: defaultDate });
             go({
               params: {

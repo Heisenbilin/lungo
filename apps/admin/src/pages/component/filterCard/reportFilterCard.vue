@@ -21,7 +21,7 @@ import moment from 'moment';
 
 const reportStore = useReportStore()
 
-const startTime = computed(() => reportStore.getFilterState.start_time);
+const startTime = computed(() => reportStore.filterState.start_time);
 //周次相关信息
 const firstDate = startTime.value; //初始值
 const week = ref(firstDate ? moment(firstDate, 'YYYY-MM-DD') : moment().weekday(-7)); //antd通过日期来生成周次
