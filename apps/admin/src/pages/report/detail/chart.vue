@@ -5,7 +5,6 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-// @ts-ignore
 import * as echarts from 'echarts';
 import { bindResize } from './resize';
 
@@ -24,9 +23,9 @@ onMounted(() => {
 //绘图
 function drawChart() {
   let chartDom = document.getElementById(props.chartName as string);
-  let myChart = echarts.getInstanceByDom(chartDom);
+  let myChart = echarts.getInstanceByDom(chartDom!);
   if (myChart == undefined) {
-    myChart = echarts.init(chartDom);
+    myChart = echarts.init(chartDom!);
   }
   props.option && myChart.setOption(props.option);
   myChart?.resize();

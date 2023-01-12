@@ -59,14 +59,14 @@ const props = defineProps({
   platformType: String,
   projectName: String,
 });
-// const { projectid, dimen } = getUrlParams();
 const reportStore = useReportStore()
 // const store = useStore();
 const userid = "xiongbilin"
 
-const { boardInfoState } = storeToRefs(reportStore)
-const { projectId: urlProjectId ,dimen } = getUrlParams()
+const { boardInfoState,filterState } = storeToRefs(reportStore)
+const { projectId: urlProjectId ,dimension } = getUrlParams()
 const projectId = ref<undefined | number>(boardInfoState.value.id || +urlProjectId || undefined)
+const dimen = ref<undefined | string>(filterState.value.dimension || dimension || undefined)
 
 const go = useGo();
 const { currentRoute } = useRouter();
@@ -138,8 +138,8 @@ function initProjectId() {
       } else {
         const defaultDate = formatToDate(dayjs().day(-6));
         //url中有 日期of周
-        if (!(dimen == 'week')) {
-          const firstDateValue = dayjs(dimen, 'YYYY-MM-DD');
+        if (!(dimen.value == 'week')) {
+          const firstDateValue = dayjs(dimen.value, 'YYYY-MM-DD');
           console.log(firstDateValue);
           //日期解析失败，默认显示上周周报
           if (firstDateValue.isValid()) {
@@ -152,7 +152,7 @@ function initProjectId() {
             });
             break;
           } else {
-            reportStore.addFilterValue({ start_time: dimen });
+            reportStore.addFilterValue({ start_time: dimen.value });
           }
         } else {
           // projectId.value = +pid;
@@ -245,7 +245,7 @@ function createWatermark() {
   const projectName = props.projectName || '';
   const container = document.getElementById('project-boardReport-content');
   if (container) {
-    drawWatermark({
+    useWatermark({
       container: container,
       content: `${props.type ? '华佗' : '小松鼠'}-${projectName}-${username}`,
       // rotate默认30度，因此长宽比为1.732:1能最大程度利用空间（容纳最多字符）

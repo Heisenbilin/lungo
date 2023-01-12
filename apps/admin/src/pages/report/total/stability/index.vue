@@ -120,7 +120,6 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import * as ApiErrorApis from '@/apis/board/apiError';
-
 import { reportApis } from '@/apis/report';
 import { litSquirrelApi } from '@/apis/litSquirrel';
 import { getTwoWeeksOption } from '../utils/configs';
@@ -131,12 +130,15 @@ import {
 } from '@/pages/board/component/util/pieChartConfig';
 import { commafy } from '@vben/utils';
 import { logTypeEnum } from '@vben/constants';
-
 import projectAccessStatus from './projectAccessStatus.vue';
 // import LogDrawer from '/@/components/boardNew/component/logDetail/logDrawer.vue';
 import {BaseChart} from '@vben/components';
-import { useBoardStore } from '@/store/modules/board';
-const boardStore = useBoardStore()
+import { useReportStore } from '@/store/modules/report';
+import { storeToRefs } from 'pinia'
+
+const boardStore = useReportStore()
+
+// const { boardInfoState } = storeToRefs(boardStore)
 // @ts-ignore
 // TODO: 临时解决方案
 // const { account: userid = '' } = store.state.userInfo;
