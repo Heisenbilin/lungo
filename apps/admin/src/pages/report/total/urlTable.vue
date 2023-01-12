@@ -212,7 +212,7 @@ watch(
 
 //跳转页面详细质量周报处理
 const toReport = url => {
-  const path = props.type === 'huatuo' ? '/huatuo/reportUrl' : '/projectboard/qcReport';
+  const path = props.type === 'huatuo' ? '/huatuo/reportUrl' : '/monitor/qcReport';
   const query = {
     project_id: projectId.value,
     project_name: encodeURIComponent(reportStore.boardInfoState.project_name),

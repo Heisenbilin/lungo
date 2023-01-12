@@ -39,7 +39,16 @@ const dashboard: RouteRecordItem = {
         icon: "ion:grid-outline",
         hideBreadcrumb: true,
       },
-    } 
+    } ,
+    {
+      path: 'qcReport',
+      name: 'qcReport',
+      component: () => import("@/pages/report/reportDetail.vue"),
+      meta: {
+        title: '页面质量周报',
+        hideBreadcrumb: true,
+      },
+    },
     // {
     //   path: "workbench",
     //   name: "Workbench",

@@ -124,18 +124,12 @@ function isMobile() {
 
 //处理路由中的项目id
 function initProjectId() {
-  // const pid = unref(currentRoute).params.projectid;
   let permissionFlag = false;
-  // const [firstDate] = unref(currentRoute).params.week.split('&');
-  //空id，暂无操作
-  if (!projectId.value) {
-    loading.value = false;
-    return;
-  }
   //url中有项目id
   //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
   for (const project of projectList.value) {
     if (projectId.value === project.id) {
+      boardInfoState.value = project
       permissionFlag = true;
       //判断项目是否关闭
       if (project.close_project === 1) {
