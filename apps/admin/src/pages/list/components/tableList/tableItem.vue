@@ -10,7 +10,7 @@
       <!-- 正常 -->
       <div
         class="flex my-1 items-center whitespace-nowrap center"
-        @click="() => useStoreProject(project, 'board')"
+        @click="() => useStoreProject(project, 'board', 'list')"
       >
         <div class="text-1xl text-gray-700 font-medium center">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
@@ -25,7 +25,10 @@
     >
       <!-- 具有一定灰度、字体更小 -->
 
-      <div class="flex my-1 items-center center" @click="() => useStoreProject(project, 'board')">
+      <div
+        class="flex my-1 items-center center"
+        @click="() => useStoreProject(project, 'board', 'list')"
+      >
         <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>

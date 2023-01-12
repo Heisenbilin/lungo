@@ -1,4 +1,4 @@
-import { formatDateString } from '@vben/utils'
+import { formatDateString } from '../date'
 // 按照用户选择的统计维度聚合数据（按时间间隔求和），用于横坐标是时间的图表。
 // 要求chartData数组中的board_type一致，仅保留第一项的type。聚合数据项为board_count，会清除board_data
 export function dataAggregate(chartData, dimension = 1) {

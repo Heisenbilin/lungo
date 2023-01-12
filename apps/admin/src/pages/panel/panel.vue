@@ -2,10 +2,10 @@
   <div class="p-4 bg-gray-100">
     <div class="grid grid-cols-2 gap-3">
       <div class="chart-container">
-        <InfoCard :projectList="projectList" :platformType="props.platformType" boardType="board" />
+        <InfoCard :projectList="projectList" :platformType="props.platformType" boardType="panel" />
       </div>
       <div v-if="boardInfoState.id" class="chart-container">
-        <FilterCard />
+        <FilterCard boardType="data" />
       </div>
     </div>
     <Content v-if="boardInfoState.id" :platformType="props.platformType" />
@@ -19,7 +19,7 @@ import { message, Modal } from 'ant-design-vue'
 // import { useRouter } from "vue-router";
 import { getProjectById, getGroupRoleUsers } from '@/apis/bigfish'
 import { getProjectList } from '@/apis/list'
-import { useBoardStore } from '@/store/modules/board'
+import { useBoardDataStore } from '@/store/modules/panel'
 import { getUrlParams } from '@vben/utils'
 import { storeToRefs } from 'pinia'
 
@@ -27,14 +27,14 @@ import InfoCard from '../component/infoCard/index.vue'
 import FilterCard from '../component/filterCard/index.vue'
 import Content from './component/content.vue'
 
-const boardStore = useBoardStore()
+const boardDataStore = useBoardDataStore()
 
 const props = defineProps({
   platformType: String,
 })
 
 // 项目id
-const { boardInfoState } = storeToRefs(boardStore)
+const { boardInfoState } = storeToRefs(boardDataStore)
 const { projectId: urlProjectId } = getUrlParams()
 const projectId = ref<undefined | number>(boardInfoState.value.id || +urlProjectId || undefined)
 
@@ -128,7 +128,7 @@ async function getProjectListByGroup(
     projectList.value = result.data.projects
     //若后台传入最新sdk版本号，则更新当前最新sdk版本号value
     if (result.data.latestSDKVersion) {
-      boardStore.commitLatestSDKVersionState(result.data.latestSDKVersion)
+      boardDataStore.commitLatestSDKVersionState(result.data.latestSDKVersion)
     }
     if (needHandledId) {
       handleUrlProjectId()

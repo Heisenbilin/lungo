@@ -26,9 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 // import { useStore } from 'vuex';
-import { getUrlParams } from '@vben/utils'
+import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useWatermark } from '@vben/hooks'
 import { tabListEnum } from '@vben/constants'
@@ -68,6 +68,11 @@ const { tabkey = 'pageview' } = getUrlParams()
 if (tabListEnum[tabkey] ? tabkey : 'pageview') {
   activeKey.value = tabkey
 }
+watch(activeKey, val => {
+  if (tabkey !== val) {
+    addOrUpdateUrlParams({ tabkey: val }), { immediate: true }
+  }
+})
 
 //tab页的key值与路由绑定
 

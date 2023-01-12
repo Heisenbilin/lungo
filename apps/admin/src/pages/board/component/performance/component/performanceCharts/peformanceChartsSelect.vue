@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, watch, ref } from 'vue'
+import { watch, ref } from 'vue'
 // import { useStore } from "vuex";
 import { getTimeSlotDataByType, getChartData } from '@/apis/board/sourceMap'
 import { boardConfigs, getPerformanceChartOption } from './performanceChartsConfig'

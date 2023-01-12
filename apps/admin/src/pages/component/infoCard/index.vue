@@ -65,24 +65,30 @@
           </a>
         </template>
       </InfoTag>
-      <InfoTag v-if="props.boardType !== 'data'">
+      <InfoTag v-if="boardType !== 'panel'">
         <template #content>
           <router-link :to="boardDataUrl">
-            <PieChartOutlined style="color: #f77f00" key="data" class="mr-2" /> 数据大盘
+            <span @click="() => useStoreProject(projectInfo, 'panel', boardType)">
+              <PieChartOutlined style="color: #f77f00" key="data" class="mr-2" /> 数据大盘
+            </span>
           </router-link>
         </template>
       </InfoTag>
-      <InfoTag v-if="props.boardType !== 'general'">
+      <InfoTag v-if="boardType !== 'board'">
         <template #content>
           <router-link :to="boardUrl">
-            <AreaChartOutlined style="color: #7ed591" key="board" class="mr-2" /> 质量监控
+            <span @click="() => useStoreProject(projectInfo, 'board', boardType)">
+              <AreaChartOutlined style="color: #7ed591" key="board" class="mr-2" /> 质量监控
+            </span>
           </router-link>
         </template>
       </InfoTag>
-      <InfoTag v-if="props.boardType !== 'report' && projectInfo.appid !== '1001970'">
+      <InfoTag v-if="boardType !== 'report' && projectInfo.appid !== '1001970'">
         <template #content>
           <router-link :to="reportUrl">
-            <FundOutlined style="color: #720096" key="report" class="mr-2" /> 质量周报
+            <span @click="() => useStoreProject(projectInfo, 'report', boardType)">
+              <FundOutlined style="color: #720096" key="report" class="mr-2" /> 质量周报
+            </span>
           </router-link>
         </template>
       </InfoTag>
@@ -112,9 +118,10 @@ import moment from 'moment'
 import SDKVersion from '../sdkVersion.vue'
 import AlarmSetting from '../alarm/alarmSetting.vue'
 import InfoTag from './infoTag.vue'
-import { useLinkToUrl } from '@/hooks/board/useLink'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { storeToRefs } from 'pinia'
 import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
+import { MonitorPage } from '@vben/constants'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
@@ -129,15 +136,15 @@ const props = defineProps({
     type: String,
   },
   boardType: {
-    type: String,
-    default: 'general',
+    type: String as PropType<MonitorPage>,
+    required: true,
   },
 })
 
 const store =
-  props.boardType === 'general'
+  props.boardType === 'board'
     ? boardStore
-    : props.boardType === 'data'
+    : props.boardType === 'panel'
     ? boardDataStore
     : reportStore
 
@@ -165,7 +172,7 @@ const boardUrl = useLinkToUrl(projectInfo.value.id, 'board')
 //点击质量周报按钮跳转的路由
 const reportUrl = useLinkToUrl(projectInfo.value.id, 'report')
 //点击数据大盘按钮跳转的路由
-const boardDataUrl = useLinkToUrl(projectInfo.value.id, 'data')
+const boardDataUrl = useLinkToUrl(projectInfo.value.id, 'panel')
 
 //项目管理员信息<
 const admin_uc_group_id = ref<number | undefined>(undefined) // 管理该项目的uc_group_id

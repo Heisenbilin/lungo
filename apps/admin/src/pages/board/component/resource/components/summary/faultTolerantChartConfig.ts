@@ -1,5 +1,5 @@
 import { cloneDeep, commafy, accSub, getDateWeekday } from '@vben/utils'
-import { dataAggregateByTime } from '../../../util/aggregate'
+import { dataAggregateByTime } from '@vben/utils'
 
 //图表基础配置
 //柱状图与曲线图结合，支持时间范围选择

@@ -29,7 +29,7 @@ export const useBoardDataStore = defineStore({
   id: 'app-board-data',
   state: (): BoardState => ({
     // 项目信息
-    boardInfoState: { appid: '', eventid: '', id: -1, project_name: '' },
+    boardInfoState: { appid: '', eventid: '', id: 0, project_name: '' },
     // 筛选条件
     filterState: { start_time: '', end_time: '', dimension: 'day' },
     // 日志详情
@@ -42,12 +42,6 @@ export const useBoardDataStore = defineStore({
     tabState: 'pageview',
   }),
   getters: {
-    getLatestSDKVersionState(): string {
-      return this.latestSDKVersionState
-    },
-    // getTabState(): string | undefined {
-    //   return this.tabState;
-    // },
     // 根据时间范围与展示维度计算合适的日期格式化规则
     getTimeFormatStr(): string {
       const { start_time, end_time, dimension } = this.filterState
@@ -69,6 +63,7 @@ export const useBoardDataStore = defineStore({
     commitFilterState(filter: filter): void {
       this.filterState = filter
       addOrUpdateUrlParams(this.filterState)
+
       // 删除路由中不需要的参数
       const delKeys: string[] = []
       allFilterKeys.map(key => !Object.keys(filter).includes(key) && delKeys.push(key))
@@ -77,10 +72,10 @@ export const useBoardDataStore = defineStore({
     commitLogInfoState(logInfo: logInfo): void {
       this.logInfoState = logInfo
     },
-    // commitTabState(tabkey: string): void {
-    //   this.tabState = tabkey;
-    //   addOrUpdateUrlParams({ tabkey });
-    // },
+    commitTabState(tabkey: string): void {
+      this.tabState = tabkey
+      addOrUpdateUrlParams({ tabkey })
+    },
     openLogInfoState(logInfo: logInfo): void {
       // 只有进入的新状态为true打开状态、且state中为false关闭状态才生效
       if (!logInfo.visible || this.logInfoState.visible) return
@@ -109,6 +104,7 @@ export const useBoardDataStore = defineStore({
     },
 
     addFilterValue(values: object): void {
+      console.log(JSON.stringify(values))
       const oldFilter = JSON.stringify(this.filterState)
       Object.assign(this.filterState, values)
       const newFilter = JSON.stringify(this.filterState)
@@ -132,11 +128,12 @@ export const useBoardDataStore = defineStore({
     },
 
     initStateValue(info: BoardInfo): void {
+      console.log(info, this.filterState)
       this.commitBoardInfoState(info)
       const {
         dimension = this.filterState.dimension,
-        start_time = '',
-        end_time = '',
+        start_time = this.filterState.start_time,
+        end_time = this.filterState.end_time,
       } = getUrlParams()
       this.commitFilterState({ start_time, end_time, dimension })
       this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })

@@ -6,7 +6,7 @@
         <a-tag v-else color="blue">素质</a-tag>
         <span
           class="ml-2 text-gray-800 text-lg truncate trun-cate w-64"
-          @click="() => useStoreProject(project, 'board')"
+          @click="() => useStoreProject(project, 'board', 'list')"
         >
           {{ project.project_name }}
         </span>

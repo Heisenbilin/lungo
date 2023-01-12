@@ -1,51 +1,61 @@
-import { LAYOUT } from "../basic";
+import { LAYOUT } from '../basic'
 
 const dashboard: RouteRecordItem = {
-  path: "/monitor",
-  name: "Monitor",
+  path: '/monitor',
+  name: 'Monitor',
   component: LAYOUT,
-  redirect: "/monitor/list",
+  redirect: '/monitor/list',
   meta: {
     orderNo: 2,
-    icon: "ion:grid-outline",
-    title: "Web端质量监控",
+    icon: 'ion:grid-outline',
+    title: 'Web端质量监控',
   },
   children: [
     {
-      path: "list",
-      name: "List",
-      component: () => import("@/pages/list/list.vue"),
+      path: 'list',
+      name: 'List',
+      component: () => import('@/pages/list/list.vue'),
       meta: {
-        title: "routes.monitor.list",
-        icon: "ion:grid-outline",
+        title: 'routes.monitor.list',
+        icon: 'ion:grid-outline',
       },
     },
     {
-      path: "board",
-      name: "Board",
-      component: () => import("@/pages/board/board.vue"),
+      path: 'board',
+      name: 'Board',
+      component: () => import('@/pages/board/board.vue'),
       meta: {
-        title: "routes.monitor.board",
-        icon: "ion:grid-outline",
+        title: 'routes.monitor.board',
+        icon: 'ion:grid-outline',
         hideBreadcrumb: true,
       },
     },
     {
-      path: "report",
-      name: "Report", 
-      component: () => import("@/pages/report/reportInfo.vue"),
+      path: 'report',
+      name: 'Report',
+      component: () => import('@/pages/report/reportInfo.vue'),
       meta: {
-        title: "routes.monitor.report",
-        icon: "ion:grid-outline",
+        title: 'routes.monitor.report',
+        icon: 'ion:grid-outline',
         hideBreadcrumb: true,
       },
-    } ,
+    },
     {
       path: 'qcReport',
       name: 'qcReport',
-      component: () => import("@/pages/report/reportDetail.vue"),
+      component: () => import('@/pages/report/reportDetail.vue'),
       meta: {
-        title: '页面质量周报',
+        title: 'routes.monitor.urlReport',  
+        hideBreadcrumb: true,
+      },
+    },
+    {
+      path: 'panel',
+      name: 'Panel',
+      component: () => import('@/pages/panel/panel.vue'),
+      meta: {
+        title: 'routes.monitor.panel',
+        icon: 'ion:grid-outline',
         hideBreadcrumb: true,
       },
     },
@@ -59,6 +69,6 @@ const dashboard: RouteRecordItem = {
     //   },
     // },
   ],
-};
+}
 
-export default dashboard;
+export default dashboard

@@ -1,8 +1,5 @@
 import { cloneDeep, commafy, getPercentValue } from '@vben/utils'
-import {
-  dataAggregateBoardDataByTime,
-  dataAggregateBoard2DataByTime,
-} from '../../../util/aggregate'
+import { dataAggregateBoardDataByTime, dataAggregateBoard2DataByTime } from '@vben/utils'
 
 export const boardConfigs = {
   dns: {

@@ -87,19 +87,27 @@
             </a-button>
           </a-tooltip> -->
           <router-link :to="boardUrl">
-            <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'board')">
+            <a-button
+              type="link"
+              class="!w-full"
+              @click="() => useStoreProject(project, 'board', 'list')"
+            >
               <AreaChartOutlined style="color: #7ed591" class="text-lg mr-1" />
               <span class="text-gray-700">监控</span>
             </a-button>
           </router-link>
           <router-link :to="dataBoardUrl">
-            <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'data')">
+            <a-button
+              type="link"
+              class="!w-full"
+              @click="() => useStoreProject(project, 'panel', 'list')"
+            >
               <PieChartOutlined style="color: #f77f00" class="text-lg mr-1" />
               <span class="text-gray-700">大盘</span>
             </a-button>
           </router-link>
           <div v-if="!isEditProject">
-            <router-link :to="reportUrl" @click="() => useStoreProject(project, 'report')">
+            <router-link :to="reportUrl" @click="() => useStoreProject(project, 'report', 'list')">
               <a-button v-if="!isEditProject" type="link" class="!w-full">
                 <FundOutlined style="color: #f07d70" class="text-lg mr-1" />
                 <span class="text-gray-700">周报</span>
@@ -175,7 +183,7 @@ const boardUrl = useLinkToUrl(props.project.id, 'board')
 //点击质量周报按钮跳转的路由
 const reportUrl = useLinkToUrl(props.project.id, 'report')
 //点击数据大盘按钮跳转的路由
-const dataBoardUrl = useLinkToUrl(props.project.id, 'data')
+const dataBoardUrl = useLinkToUrl(props.project.id, 'panel')
 
 const openFlag = ref(false) //项目开启/关闭标志
 const collectFlag = props.project.collectFlag === '1' ? true : false

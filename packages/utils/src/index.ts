@@ -15,6 +15,6 @@ export * from "./compute";
 export * from "./format";
 export * from "./uuid";
 export * from "./checkAuth";
-export * from "./chart";
+export * from "./chart/index";
 
 // export * from 'lodash-es'
