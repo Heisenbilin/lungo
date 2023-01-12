@@ -206,14 +206,17 @@ async function getTopicId(appId, isSaas) {
 
 // 切换项目
 watch(
-  projectId,
-  (newId, oldId) => {
-    if (!newId || newId === oldId) return
+  () => [projectId.value, props.projectList],
+  () => {
+    const newId = projectId.value
+    if (!props.projectList.length || !newId) return
     for (const project of props.projectList) {
       if (project.id === newId) {
+        if (newId !== projectInfo.value.id) {
+          // 项目信息存入store供其他组件调用
+          store.initStateValue({ ...project, noInitFilter: true })
+        }
         addOrUpdateUrlParams({ projectId: newId })
-        // 项目信息存入store供其他组件调用
-        store.initStateValue({ ...project, noInitFilter: true })
         getTopicId(project.appid, project.saas)
         // 重新获取创建者知音楼用户信息
         freshYachId(undefined, project.uc_group_id)

@@ -42,9 +42,16 @@ const props = defineProps({
 const loading = ref<boolean>(true)
 const chartData = ref(null)
 const chartOption = computed(() => props.getOptionFunc(chartData.value))
+let oldParamsString: string = ''
 watch(
   () => props.requestParams,
   async val => {
+    console.log(JSON.stringify(val), oldParamsString)
+    if (JSON.stringify(val) === oldParamsString) {
+      loading.value = false
+      return
+    }
+    oldParamsString = JSON.stringify(val)
     loading.value = true
     try {
       const result = await props.requestFunc(val)

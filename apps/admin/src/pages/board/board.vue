@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 //新版性能监测详情页Index
-import { ref, h, watch } from 'vue'
+import { ref, h } from 'vue'
 import { message, Modal } from 'ant-design-vue'
 // import { useRouter } from "vue-router";
 import { getProjectById, getGroupRoleUsers } from '@/apis/bigfish'

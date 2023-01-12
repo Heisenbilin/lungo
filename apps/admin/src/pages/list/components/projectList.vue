@@ -155,7 +155,6 @@ import { checkProjectData } from '@/apis/list'
 import { message, Modal } from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
-import { useBoardStore } from '@/store/modules/board'
 import { useListStore } from '@/store/modules/list'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
@@ -176,7 +175,6 @@ const {
 } = getUrlParams()
 
 const listStore = useListStore()
-const boardStore = useBoardStore()
 const appStore = useAppStore()
 
 // const store = useStore();
@@ -251,8 +249,7 @@ listStore.endTime = endTime
 watch(
   dimension,
   val => {
-    const storeDimesion = val === 'week' ? 'day' : 'hour'
-    boardStore.addFilterValue({ dimension: storeDimesion })
+    listStore.dimension = val
     listStore.startTime = val === 'week' ? startWeek : startTime
     addOrUpdateUrlParams({ dimen: val })
   },

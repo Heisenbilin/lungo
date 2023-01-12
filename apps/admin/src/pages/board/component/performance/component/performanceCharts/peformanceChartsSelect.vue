@@ -55,16 +55,13 @@ const requestParams = ref<any>({
 const chartName = ref('dns')
 
 watch(chartName, val => {
+  console.log(val)
   if (boardConfigs[val].type === 1) {
-    nextTick(() => {
-      requestParams.value.filter.boardType = val
-      delete requestParams.value.estask_list
-    })
+    delete requestParams.value.estask_list
+    requestParams.value.filter.boardType = val
   } else {
-    nextTick(() => {
-      delete requestParams.value.filter.boardType
-      requestParams.value.estask_list = [boardConfigs[val].apiName]
-    })
+    delete requestParams.value.filter.boardType
+    requestParams.value.estask_list = [boardConfigs[val].apiName]
   }
 })
 

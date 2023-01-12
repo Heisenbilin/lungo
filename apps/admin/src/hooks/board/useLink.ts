@@ -46,6 +46,7 @@ export const useStoreProject = (project: BoardInfo, page: Page) => {
     case 'board':
       boardStore.filterState.start_time = listStore.startTime
       boardStore.filterState.end_time = listStore.endTime
+      boardStore.filterState.dimension = listStore.dimension === 'week' ? 'day' : 'hour'
       boardStore.boardInfoState = project
       break
     case 'data':

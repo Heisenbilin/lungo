@@ -5,6 +5,7 @@ interface ListState {
   platform: '' | 'huatuo'
   startTime: string
   endTime: string
+  dimension: 'week' | 'day'
   ucGroups: any[]
   ucGroupVisible: boolean
   forceFlashFlag: {
@@ -19,6 +20,7 @@ export const useListStore = defineStore({
     platform: '',
     startTime: '',
     endTime: '',
+    dimension: 'week',
     ucGroups: [],
     ucGroupVisible: false,
     forceFlashFlag: {

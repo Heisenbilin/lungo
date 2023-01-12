@@ -1,35 +1,25 @@
 //版本号比较
-export const versionStringCompare = (preVersion = "", lastVersion = "") => {
-  const sources = preVersion.split(".");
-  const dests = lastVersion.split(".");
-  const maxL = Math.max(sources.length, dests.length);
-  let result = 0;
-  for (let i = 0; i < maxL; i++) {
-    const preValue: any = sources.length > i ? sources[i] : 0;
-    const preNum = isNaN(Number(preValue)) ? preValue.charCodeAt() : Number(preValue);
-    const lastValue: any = dests.length > i ? dests[i] : 0;
-    const lastNum = isNaN(Number(lastValue)) ? lastValue.charCodeAt() : Number(lastValue);
-    if (preNum < lastNum) {
-      result = -1;
-      break;
-    } else if (preNum > lastNum) {
-      result = 1;
-      break;
-    }
+export const versionStringCompare = (version1 = '', version2 = '') => {
+  const arr1 = version1.split('.').map(e => +e)
+  const arr2 = version2.split('.').map(e => +e)
+  const length = Math.max(arr1.length, arr2.length)
+  for (let i = 0; i < length; i++) {
+    if ((arr1[i] || 0) > (arr2[i] || 0)) return 1
+    if ((arr1[i] || 0) < (arr2[i] || 0)) return -1
   }
-  return result;
-};
+  return 0
+}
 
 export const compare = function (prop) {
   return function (obj1, obj2) {
-    var val1 = obj1[prop];
-    var val2 = obj2[prop];
+    var val1 = obj1[prop]
+    var val2 = obj2[prop]
     if (val1 > val2) {
-      return -1;
+      return -1
     } else if (val1 < val2) {
-      return 1;
+      return 1
     } else {
-      return 0;
+      return 0
     }
-  };
-};
+  }
+}
