@@ -1,6 +1,5 @@
 <template>
   <a-table
-    rowKey="id"
     :loading="loading === 'loading'"
     :columns="columns"
     :data-source="huatuoProjectList"
@@ -8,96 +7,113 @@
     :scroll="{ x: 1600 }"
     :customRow="customRowWithScore"
   >
-    <template #rendername="{ record }">
-      <tableHeader :project="record" @star="starProject" :closeDays="closeDays" :isStar="isStar" />
-    </template>
-    <template #sdk="{ record }">
-      <div :style="{ display: show(record.close_project) }">
-        <tableSdk :project="record" :latestSDKVersion="latestSDKVersion" />
-      </div>
-    </template>
-    <template #score="{ record }">
-      <div
-        class="text-center items-center opacity-80"
-        :style="{ display: show(record.close_project) }"
-      >
-        <tableContent :projectId="record.id" title="分数" :data="record" :loading="loadingT" />
-      </div>
-    </template>
-
-    <template #pv="{ record }">
-      <div :style="{ display: show(record.close_project) }">
-        <tableContent :projectId="record.id" title="pv" :data="record" :loading="loadingT" />
-      </div>
-    </template>
-    <template #uv="{ record }">
-      <div :style="{ display: show(record.close_project) }">
-        <tableContent :projectId="record.id" title="uv" :data="record" :loading="loadingT" />
-      </div>
-    </template>
-    <template #runtimeError="{ record }">
-      <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="运行时异常率"
-          :data="record"
-          :loading="loadingT"
+    <template #bodyCell="{ column, record, index }">
+      <template v-if="column.key === 'name'">
+        <tableHeader
+          :project="record"
+          @star="starProject"
+          :closeDays="closeDays"
+          :isStar="isStar"
         />
-      </div>
-    </template>
-    <template #resourceError="{ record }">
-      <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="资源异常率"
-          :data="record"
-          :loading="loadingT"
-        />
-      </div>
-    </template>
-    <template #success="{ record }">
-      <div :style="{ display: show(record.close_project) }">
-        <tableContent
-          :projectId="record.id"
-          title="请求成功率"
-          :data="record"
-          :loading="loadingT"
-        />
-      </div>
-    </template>
-    <template #chartOption="{ record }">
-      <div class="content" :style="{ display: show(record.close_project) }">
-        <tableContent :projectId="record.id" title="活跃趋势" :data="record" :loading="loadingT" />
-      </div>
-    </template>
-    <template #pageloadData="{ record }">
-      <div :style="{ display: show(record.close_project) }">
-        <tableContent :projectId="record.id" title="页面加载" :data="record" :loading="loadingT" />
-      </div>
-    </template>
-    <template #screen="{ record, index }">
-      <div v-if="record.close_project === 1">
-        <a-popconfirm
-          :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
-          ok-text="是"
-          cancel-text="否"
-          @confirm="openProject(record.id, index)"
+      </template>
+      <template v-if="column.key === 'sdk'">
+        <div :style="{ display: show(record.close_project) }">
+          <tableSdk :project="record" :latestSDKVersion="latestSDKVersion" />
+        </div>
+      </template>
+      <template v-if="column.key === 'score'">
+        <div
+          class="text-center items-center opacity-80"
+          :style="{ display: show(record.close_project) }"
         >
-          <a-button type="primary"> <InfoCircleOutlined /> 开启项目 </a-button>
-        </a-popconfirm>
-      </div>
-      <div v-else>
-        <tableScreen :project="record" />
-      </div>
-    </template>
-    <template #action="{ record }">
-      <tableActions
-        :projectId="record.id"
-        :collectFlag="record.collectFlag"
-        @edit="id => emit('edit', id)"
-        @star="starProject"
-        :isStar="isStar"
-      />
+          <tableContent :projectId="record.id" title="分数" :data="record" :loading="loadingT" />
+        </div>
+      </template>
+
+      <template v-if="column.key === 'pv'">
+        <div :style="{ display: show(record.close_project) }">
+          <tableContent :projectId="record.id" title="pv" :data="record" :loading="loadingT" />
+        </div>
+      </template>
+      <template v-if="column.key === 'uv'">
+        <div :style="{ display: show(record.close_project) }">
+          <tableContent :projectId="record.id" title="uv" :data="record" :loading="loadingT" />
+        </div>
+      </template>
+      <template v-if="column.key === 'runtimeError'">
+        <div :style="{ display: show(record.close_project) }">
+          <tableContent
+            :projectId="record.id"
+            title="运行时异常率"
+            :data="record"
+            :loading="loadingT"
+          />
+        </div>
+      </template>
+      <template v-if="column.key === 'resourceError'">
+        <div :style="{ display: show(record.close_project) }">
+          <tableContent
+            :projectId="record.id"
+            title="资源异常率"
+            :data="record"
+            :loading="loadingT"
+          />
+        </div>
+      </template>
+      <template v-if="column.key === 'success'">
+        <div :style="{ display: show(record.close_project) }">
+          <tableContent
+            :projectId="record.id"
+            title="请求成功率"
+            :data="record"
+            :loading="loadingT"
+          />
+        </div>
+      </template>
+      <template v-if="column.key === 'chartOption'">
+        <div class="content" :style="{ display: show(record.close_project) }">
+          <tableContent
+            :projectId="record.id"
+            title="活跃趋势"
+            :data="record"
+            :loading="loadingT"
+          />
+        </div>
+      </template>
+      <template v-if="column.key === 'pageloadData'">
+        <div :style="{ display: show(record.close_project) }">
+          <tableContent
+            :projectId="record.id"
+            title="页面加载"
+            :data="record"
+            :loading="loadingT"
+          />
+        </div>
+      </template>
+      <template v-if="column.key === 'screen'">
+        <div v-if="record.close_project === 1">
+          <a-popconfirm
+            :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
+            ok-text="是"
+            cancel-text="否"
+            @confirm="openProject(record.id, index)"
+          >
+            <a-button type="primary"> <InfoCircleOutlined /> 开启项目 </a-button>
+          </a-popconfirm>
+        </div>
+        <div v-else>
+          <tableScreen :project="record" />
+        </div>
+      </template>
+      <template v-if="column.key === 'action'">
+        <tableActions
+          :projectId="record.id"
+          :collectFlag="record.collectFlag"
+          @edit="id => emit('edit', id)"
+          @star="starProject"
+          :isStar="isStar"
+        />
+      </template>
     </template>
   </a-table>
   <div class="text-right mt-4">
@@ -122,7 +138,6 @@ import { message } from 'ant-design-vue'
 import { getProjectList, getProjectBoard, modifyProjectParams } from '@/apis/list'
 import { caculatePageSizeByWidth } from '../utils'
 import { debounce } from '@vben/utils'
-// import { useStore } from "vuex";
 import { useListStore } from '@/store/modules/list'
 import { useBoardStore } from '@/store/modules/board'
 import { storeToRefs } from 'pinia'
@@ -135,7 +150,6 @@ import tableScreen from './tableScreen.vue'
 import tableContent from './tableContent.vue'
 import tableSdk from './tableSdk.vue'
 
-// const store = useStore();
 const listStore = useListStore()
 const boardStore = useBoardStore()
 
@@ -155,7 +169,6 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['edit'])
-// eslint-disable-next-line vue/return-in-computed-property
 // 设置表格隐藏
 const show = closeNum => {
   if (closeNum === 1) {

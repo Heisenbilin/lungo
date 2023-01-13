@@ -12,21 +12,21 @@ const defaultColumns = [
     dataIndex: "url",
     width: "70%",
     key: "url",
-    slots: { customRender: "api" },
+    // slots: { customRender: "api" },
   },
   {
     title: "请求数量",
     dataIndex: "count",
     key: "count",
     align: "center",
-    slots: { customRender: "count" },
+    // slots: { customRender: "count" },
   },
   {
     title: "操作",
     align: "center",
     width: "16%",
     key: "operation",
-    slots: { customRender: "operation" },
+    // slots: { customRender: "operation" },
   },
 ];
 

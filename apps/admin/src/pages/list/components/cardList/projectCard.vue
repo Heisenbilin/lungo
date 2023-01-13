@@ -54,7 +54,7 @@
               {{ project.sdk_version }}
             </a-tag>
           </a-tooltip>
-          <a-tag v-if="project.appid === '1001970'" color="cyan">编辑器应用</a-tag>
+          <a-tag v-if="project.appid === '1001970'" color="cyan">编辑器</a-tag>
           <span class="px-1 text-lg">
             <LoadingOutlined v-if="staring" />
             <a-tooltip :style="{ color: '#b1b1b1' }" title="取消收藏" v-else-if="starFlag">

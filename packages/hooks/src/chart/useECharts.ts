@@ -1,104 +1,102 @@
-import type { EChartsOption } from "echarts";
-import type { Ref } from "vue";
-import { useTimeoutFn } from "../core/useTimeout";
-import { tryOnUnmounted } from "@vueuse/core";
-import { unref, nextTick, watch, computed, ref } from "vue";
-import { useDebounceFn } from "@vueuse/core";
-import { useEventListener } from "../event/useEventListener";
-import { useBreakpoint } from "../event/useBreakpoint";
-import * as echarts from 'echarts';
+import type { EChartsOption } from 'echarts'
+import type { Ref } from 'vue'
+import { useTimeoutFn } from '../core/useTimeout'
+import { tryOnUnmounted } from '@vueuse/core'
+import { unref, nextTick, watch, computed, ref } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
+import { useEventListener } from '../event/useEventListener'
+import { useBreakpoint } from '../event/useBreakpoint'
+import * as echarts from 'echarts'
 // import { useRootSetting } from './setting/useRootSetting';
 // import { useMenuSetting } from './setting/useMenuSetting';
 
 export function useECharts(
   elRef: Ref<HTMLDivElement>,
-  theme: "light" | "dark" | "default" = "default"
+  theme: 'light' | 'dark' | 'default' = 'default',
 ) {
   // const { getDarkMode: getSysDarkMode } = useRootSetting();
   // const { getCollapsed } = useMenuSetting();
 
   const getDarkMode = computed(() => {
-    return theme; //theme === 'default' ? getSysDarkMode.value :
-  });
-  let chartInstance: echarts.ECharts | null = null;
-  let resizeFn: Fn = resize;
-  const cacheOptions = ref({}) as Ref<EChartsOption>;
-  let removeResizeFn: Fn = () => {};
+    return theme //theme === 'default' ? getSysDarkMode.value :
+  })
+  let chartInstance: echarts.ECharts | null = null
+  let resizeFn: Fn = resize
+  const cacheOptions = ref({}) as Ref<EChartsOption>
+  let removeResizeFn: Fn = () => {}
 
-  resizeFn = useDebounceFn(resize, 200);
+  resizeFn = useDebounceFn(resize, 200)
 
   const getOptions = computed(() => {
-    if (getDarkMode.value !== "dark") {
-      return cacheOptions.value as EChartsOption;
+    if (getDarkMode.value !== 'dark') {
+      return cacheOptions.value as EChartsOption
     }
     return {
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       ...cacheOptions.value,
-    } as EChartsOption;
-  });
+    } as EChartsOption
+  })
 
   function initCharts(t = theme) {
-    const el = unref(elRef);
+    const el = unref(elRef)
     if (!el || !unref(el)) {
-      return;
+      return
     }
 
-    chartInstance = echarts.init(el, t);
+    chartInstance = echarts.init(el, t)
     const { removeEvent } = useEventListener({
       el: window,
-      name: "resize",
+      name: 'resize',
       listener: resizeFn,
-    });
-    removeResizeFn = removeEvent;
-    const { widthRef, ScreenValueEnum } = useBreakpoint();
+    })
+    removeResizeFn = removeEvent
+    const { widthRef, ScreenValueEnum } = useBreakpoint()
     if (unref(widthRef) <= ScreenValueEnum.MD || el.offsetHeight === 0) {
       useTimeoutFn(() => {
-        resizeFn();
-      }, 30);
+        resizeFn()
+      }, 30)
     }
   }
 
   function setOptions(options: EChartsOption, clear = true) {
-    cacheOptions.value = options;
+    cacheOptions.value = options
     if (unref(elRef)?.offsetHeight === 0) {
       useTimeoutFn(() => {
-        setOptions(unref(getOptions));
-      }, 30);
-      return;
+        setOptions(unref(getOptions))
+      }, 30)
+      return
     }
     nextTick(() => {
       useTimeoutFn(() => {
         if (!chartInstance) {
-          initCharts(getDarkMode.value as "default");
-
-          if (!chartInstance) return;
+          initCharts(getDarkMode.value as 'default')
+          if (!chartInstance) return
         }
-        clear && chartInstance?.clear();
-
-        chartInstance?.setOption(unref(getOptions));
-      }, 30);
-    });
+        clear && chartInstance?.clear()
+        chartInstance?.setOption(unref(getOptions))
+      }, 30)
+    })
   }
 
   function resize() {
     chartInstance?.resize({
       animation: {
         duration: 300,
-        easing: "quadraticIn",
+        easing: 'quadraticIn',
       },
-    });
+    })
   }
 
   watch(
     () => getDarkMode.value,
-    (theme) => {
+    theme => {
       if (chartInstance) {
-        chartInstance.dispose();
-        initCharts(theme as "default");
-        setOptions(cacheOptions.value);
+        chartInstance.dispose()
+        initCharts(theme as 'default')
+        setOptions(cacheOptions.value)
       }
-    }
-  );
+    },
+  )
 
   // watch(getCollapsed, (_) => {
   //   useTimeoutFn(() => {
@@ -107,23 +105,22 @@ export function useECharts(
   // });
 
   tryOnUnmounted(() => {
-    if (!chartInstance) return;
-    removeResizeFn();
-    chartInstance.dispose();
-    chartInstance = null;
-  });
+    if (!chartInstance) return
+    removeResizeFn()
+    chartInstance.dispose()
+    chartInstance = null
+  })
 
   function getInstance(): echarts.ECharts | null {
     if (!chartInstance) {
-      initCharts(getDarkMode.value as "default");
+      initCharts(getDarkMode.value as 'default')
     }
-    return chartInstance;
+    return chartInstance
   }
 
   return {
     setOptions,
     resize,
-    echarts,
     getInstance,
-  };
+  }
 }

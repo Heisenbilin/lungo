@@ -7,69 +7,66 @@
       <div></div>
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="1" tab="告警规则">
-          <a-table
-            :dataSource="alarmRuleList"
-            :columns="alarmRuleColumns"
-            rowKey="id"
-            :pagination="false"
-          >
-            <template #AlarmErrorType="{ record }">
-              <div v-for="item in record.AlarmSetting.AlarmErrorType" :key="item.id">
-                {{ item.errorType }}
-              </div>
-            </template>
-            <template #ignoreErrorType="{ record }">
-              <div
-                v-for="item in formatIgnoreError(
-                  record.AlarmSetting.AlarmErrorType,
-                  record.ignoreErrorIds,
-                )"
-                :key="item"
-              >
-                {{ item }}
-              </div>
-            </template>
-            <template #settingRobots="{ record }">
-              <div>{{ record.AlarmSetting.robot.length }}个告警群</div>
-            </template>
-            <template #isActive="{ record }">
-              <a-switch
-                checked-children="开"
-                un-checked-children="关"
-                v-model:checked="record.isActive"
-                @change="val => updateRuleStatus(val, record)"
-              />
-            </template>
-            <template #handle="{ record }">
-              <a-button type="link" @click="openUpdateForm(record)">修改</a-button>
-              <a-button
-                type="link"
-                v-for="item in formatCanIgnoreErrorList(
-                  record.ignoreErrorIds,
-                  record.AlarmSetting.AlarmErrorType,
-                )"
-                :key="item.id"
-                @click="ignoreErrorType(record.id, record.ignoreErrorIds, item.id)"
-                >忽略{{ item.errorType }}</a-button
-              >
-              <a-button
-                type="link"
-                v-for="item in formatCanRemoveIgnoreErrorList(
-                  record.ignoreErrorIds,
-                  record.AlarmSetting.AlarmErrorType,
-                )"
-                :key="item.id"
-                @click="removeIgnoreErrorType(record.id, record.ignoreErrorIds, item.id)"
-                >取消忽略{{ item.errorType }}</a-button
-              >
-              <a-popconfirm
-                title="确认删除该规则？"
-                ok-text="Yes"
-                cancel-text="No"
-                @confirm="removeAlarmRule(record.id)"
-              >
-                <a-button type="link">删除</a-button>
-              </a-popconfirm>
+          <a-table :dataSource="alarmRuleList" :columns="alarmRuleColumns" :pagination="false">
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.key === 'AlarmErrorType'">
+                <div v-for="item in record.AlarmSetting.AlarmErrorType" :key="item.id">
+                  {{ item.errorType }}
+                </div>
+              </template>
+              <template v-if="column.key === 'ignoreErrorType'">
+                <div
+                  v-for="item in formatIgnoreError(
+                    record.AlarmSetting.AlarmErrorType,
+                    record.ignoreErrorIds,
+                  )"
+                  :key="item"
+                >
+                  {{ item }}
+                </div>
+              </template>
+              <template v-if="column.key === 'settingRobots'">
+                <div>{{ record.AlarmSetting.robot.length }}个告警群</div>
+              </template>
+              <template v-if="column.key === 'isActive'">
+                <a-switch
+                  checked-children="开"
+                  un-checked-children="关"
+                  v-model:checked="record.isActive"
+                  @change="val => updateRuleStatus(val, record)"
+                />
+              </template>
+              <template v-if="column.key === 'handle'">
+                <a-button type="link" @click="openUpdateForm(record)">修改</a-button>
+                <a-button
+                  type="link"
+                  v-for="item in formatCanIgnoreErrorList(
+                    record.ignoreErrorIds,
+                    record.AlarmSetting.AlarmErrorType,
+                  )"
+                  :key="item.id"
+                  @click="ignoreErrorType(record.id, record.ignoreErrorIds, item.id)"
+                  >忽略{{ item.errorType }}</a-button
+                >
+                <a-button
+                  type="link"
+                  v-for="item in formatCanRemoveIgnoreErrorList(
+                    record.ignoreErrorIds,
+                    record.AlarmSetting.AlarmErrorType,
+                  )"
+                  :key="item.id"
+                  @click="removeIgnoreErrorType(record.id, record.ignoreErrorIds, item.id)"
+                  >取消忽略{{ item.errorType }}</a-button
+                >
+                <a-popconfirm
+                  title="确认删除该规则？"
+                  ok-text="Yes"
+                  cancel-text="No"
+                  @confirm="removeAlarmRule(record.id)"
+                >
+                  <a-button type="link">删除</a-button>
+                </a-popconfirm>
+              </template>
             </template>
           </a-table>
         </a-tab-pane>
@@ -80,20 +77,22 @@
             rowKey="id"
             :pagination="alarmLogPagination"
           >
-            <template #alarmRule="{ record }">
-              {{ record.AlarmRule.alarmName }}
-            </template>
-            <template #alarmRule1="{ record }">
-              {{ record.AlarmRule.interval }}分钟内达到{{ record.AlarmRule.value }}
-            </template>
-            <template #alarmRule2="{ record }">
-              {{ record.AlarmRule.upgradeCondition }}分钟内触发{{ record.AlarmRule.upgradeNum }}
-            </template>
-            <template #isUpgrade="{ record }">
-              {{ record.isUpgrade ? '升级' : '普通' }}
-            </template>
-            <template #createTime="{ record }">
-              {{ formatUtcTime(record.createTime) }}
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.key === 'alarmRule'">
+                {{ record.AlarmRule.alarmName }}
+              </template>
+              <template v-if="column.key === 'alarmRule1'">
+                {{ record.AlarmRule.interval }}分钟内达到{{ record.AlarmRule.value }}
+              </template>
+              <template v-if="column.key === 'alarmRule2'">
+                {{ record.AlarmRule.upgradeCondition }}分钟内触发{{ record.AlarmRule.upgradeNum }}
+              </template>
+              <template v-if="column.key === 'isUpgrade'">
+                {{ record.isUpgrade ? '升级' : '普通' }}
+              </template>
+              <template v-if="column.key === 'createTime'">
+                {{ formatUtcTime(record.createTime) }}
+              </template>
             </template>
           </a-table>
         </a-tab-pane>
@@ -104,27 +103,29 @@
             rowKey="id"
             :pagination="alarmActionLogPagination"
           >
-            <template #alarmRule="{ record }">
-              {{ record.AlarmRule.alarmName }}
-            </template>
-            <template #source="{ record }">
-              <a-tag color="green">{{ formatSource(record.source) }}</a-tag>
-            </template>
-            <template #action="{ record }">
-              <a-tag color="orange">{{ formatAction(record.action) }}</a-tag>
-            </template>
-            <template #user="{ record }">
-              <a-button type="link" @click="openYach(formatUser(record.user).account)">{{
-                formatUser(record.user).name
-              }}</a-button>
-            </template>
-            <template #createTime="{ record }">
-              {{ formatLocalTime(record.createTime) }}
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.key === 'alarmRule'">
+                {{ record.AlarmRule.alarmName }}
+              </template>
+              <template v-if="column.key === 'source'">
+                <a-tag color="green">{{ formatSource(record.source) }}</a-tag>
+              </template>
+              <template v-if="column.key === 'action'">
+                <a-tag color="orange">{{ formatAction(record.action) }}</a-tag>
+              </template>
+              <template v-if="column.key === 'user'">
+                <a-button type="link" @click="openYach(formatUser(record.user).account)">{{
+                  formatUser(record.user).name
+                }}</a-button>
+              </template>
+              <template v-if="column.key === 'createTime'">
+                {{ formatLocalTime(record.createTime) }}
+              </template>
             </template>
           </a-table>
         </a-tab-pane>
       </a-tabs>
-      <alarm-form ref="alarmForm" @close="onClose"/>
+      <alarm-form ref="alarmForm" @close="onClose" />
     </a-modal>
   </div>
 </template>
@@ -147,6 +148,7 @@ import { requestYachId } from '@/apis/tool'
 const props = defineProps({
   projectId: {
     type: Number,
+    required: true,
   },
   ucGroupId: {
     type: Number,
@@ -178,13 +180,13 @@ const alarmRuleColumns = reactive([
     title: '监控类型',
     dataIndex: 'AlarmSetting',
     key: 'AlarmErrorType',
-    slots: { customRender: 'AlarmErrorType' },
+    // slots: { customRender: 'AlarmErrorType' },
   },
   {
     title: '已忽略类型',
     dataIndex: 'AlarmSetting',
     key: 'ignoreErrorType',
-    slots: { customRender: 'ignoreErrorType' },
+    // slots: { customRender: 'ignoreErrorType' },
   },
   {
     title: '告警周期【分钟】',
@@ -210,18 +212,18 @@ const alarmRuleColumns = reactive([
     title: '告警提醒群',
     dataIndex: 'settingId',
     key: 'settingRobots',
-    slots: { customRender: 'settingRobots' },
+    // slots: { customRender: 'settingRobots' },
   },
   {
     title: '告警状态',
     dataIndex: 'isActive',
     key: 'isActive',
-    slots: { customRender: 'isActive' },
+    // slots: { customRender: 'isActive' },
   },
   {
     title: '操作',
     key: 'handle',
-    slots: { customRender: 'handle' },
+    // slots: { customRender: 'handle' },
   },
 ])
 const alarmLogColumns = reactive([
@@ -229,19 +231,19 @@ const alarmLogColumns = reactive([
     title: '告警规则名称',
     dataIndex: 'alarmRuleId',
     key: 'alarmRule',
-    slots: { customRender: 'alarmRule' },
+    // slots: { customRender: 'alarmRule' },
   },
   {
     title: '告警设置',
     dataIndex: 'alarmRuleId',
     key: 'alarmRule1',
-    slots: { customRender: 'alarmRule1' },
+    // slots: { customRender: 'alarmRule1' },
   },
   {
     title: '升级设置',
     dataIndex: 'alarmRuleId',
     key: 'alarmRule2',
-    slots: { customRender: 'alarmRule2' },
+    // slots: { customRender: 'alarmRule2' },
   },
   {
     title: '错误数量',
@@ -252,13 +254,13 @@ const alarmLogColumns = reactive([
     title: '是否升级告警',
     dataIndex: 'isUpgrade',
     key: 'isUpgrade',
-    slots: { customRender: 'isUpgrade' },
+    // slots: { customRender: 'isUpgrade' },
   },
   {
     title: '触发时间',
     dataIndex: 'createTime',
     key: 'createTime',
-    slots: { customRender: 'createTime' },
+    // slots: { customRender: 'createTime' },
   },
   /*{
       title: '操作',
@@ -271,36 +273,36 @@ const alarmActionLogColumns = reactive([
     title: '告警规则名称',
     dataIndex: 'alarmRuleId',
     key: 'alarmRule',
-    slots: { customRender: 'alarmRule' },
+    // slots: { customRender: 'alarmRule' },
   },
   {
     title: '来源',
     dataIndex: 'source',
     key: 'source',
-    slots: { customRender: 'source' },
+    // slots: { customRender: 'source' },
   },
   {
     title: '动作',
     dataIndex: 'action',
     key: 'action',
-    slots: { customRender: 'action' },
+    // slots: { customRender: 'action' },
   },
   {
     title: '人员',
     dataIndex: 'user',
     key: 'user',
-    slots: { customRender: 'user' },
+    // slots: { customRender: 'user' },
   },
   {
     title: '触发时间',
     dataIndex: 'createTime',
     key: 'createTime',
-    slots: { customRender: 'createTime' },
+    // slots: { customRender: 'createTime' },
   },
   /*{
       title: '操作',
       key: 'handle',
-      slots: { customRender: 'handle' },
+      // slots: { customRender: 'handle' },
     },*/
 ])
 // 分页配置

@@ -2,83 +2,83 @@
   <a-table
     :columns="tableColumns"
     :data-source="dataList"
-    :row-key="(_, i) => i"
     size="middle"
     :pagination="pagination"
     @change="handleTableChange"
     tableLayout="fixed"
     :loading="loading"
   >
-    <template #url="{ record }">
-      <a-tooltip title="点击跳转该页面">
-        <a :href="record.resource_currenthref" target="_blank">
-          {{ record.resource_currenthref || "未知" }}
-        </a>
-      </a-tooltip>
-    </template>
-    <template #operation="{ record }">
-      <template v-if="record.resource_currenthref">
-        <span class="mr-2" v-if="!requestParams.url">
-          <a @click="changeSearchUrl(record.resource_currenthref || '未知')">设为筛选</a>
-        </span>
-        <span class="mr-2" v-else>
-          <a @click="cancelSearchUrl()">取消筛选</a>
+    <template #bodyCell="{ column, record }">
+      <template v-if="column.key === 'url'">
+        <a-tooltip title="点击跳转该页面">
+          <a :href="record.resource_currenthref" target="_blank">
+            {{ record.resource_currenthref || '未知' }}
+          </a>
+        </a-tooltip>
+      </template>
+      <template v-if="column.key === 'operation'">
+        <template v-if="record.resource_currenthref">
+          <span class="mr-2" v-if="!requestParams.url">
+            <a @click="changeSearchUrl(record.resource_currenthref || '未知')">设为筛选</a>
+          </span>
+          <span class="mr-2" v-else>
+            <a @click="cancelSearchUrl()">取消筛选</a>
+          </span>
+        </template>
+        <span>
+          <a @click="openLog(record)">查看日志</a>
         </span>
       </template>
-      <span>
-        <a @click="openLog(record)">查看日志</a>
-      </span>
+      <template v-if="column.key === 'count'"> {{ commafy(record.count) }} </template>
     </template>
-    <template #count="{ record }"> {{ commafy(record.count) }} </template>
   </a-table>
 </template>
 
 <script setup lang="ts">
 //资源异常数据汇总Tab内部图表组件
-import { ref, computed, watch, reactive } from "vue";
-import { getFErrorListData, getListData } from "@/apis/board/resource";
-import { debounce, commafy } from "@vben/utils";
-import { getDefaultColumns } from "./resultTabTableConfig";
-import { useBoardStore } from "@/store/modules/board";
-import { logTypeEnum } from "@vben/constants";
+import { ref, computed, watch, reactive } from 'vue'
+import { getFErrorListData, getListData } from '@/apis/board/resource'
+import { debounce, commafy } from '@vben/utils'
+import { getDefaultColumns } from './resultTabTableConfig'
+import { useBoardStore } from '@/store/modules/board'
+import { logTypeEnum } from '@vben/constants'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 const props = defineProps({
   type: {
     type: String,
-    default: "",
+    default: '',
   },
   searchValue: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+})
 
-const isFaultTolerant = props.type === "faultTolerant" ? true : false;
+const isFaultTolerant = props.type === 'faultTolerant' ? true : false
 
 // 表格loading
-const loading = ref(true);
+const loading = ref(true)
 // 表格页码
 const pagination = reactive({
   total: 0,
   current: 1,
   pageSize: 10,
   showQuickJumper: false,
-});
+})
 
 // 表格列，自动生成表格序号
 const tableColumns = computed(() => {
-  const columns = getDefaultColumns(props.type);
-  columns[0].customRender = (item) =>
-    (pagination.current - 1) * pagination.pageSize + item.index + 1;
-  return columns;
-});
+  const columns = getDefaultColumns(props.type)
+  columns[0].customRender = item => (pagination.current - 1) * pagination.pageSize + item.index + 1
+  return columns
+})
 // 表格数据
-const dataList = ref([]);
+const dataList = ref([])
 
 // 请求序号，防止前面的请求返回结果覆盖后面的
-let lastSearchId = 0;
+let lastSearchId = 0
 
 //请求参数
 const requestParams = computed(() => {
@@ -102,59 +102,59 @@ const requestParams = computed(() => {
       : {
           error_type: props.type,
           error_content: props.searchValue,
-        }
-  );
-});
+        },
+  )
+})
 
-const getApiData = async (params) => {
-  return await (isFaultTolerant ? getFErrorListData(params) : getListData(params));
-};
+const getApiData = async params => {
+  return await (isFaultTolerant ? getFErrorListData(params) : getListData(params))
+}
 
 const getResultTableData = debounce((page = pagination.current) => {
-  lastSearchId += 1;
-  const searchId = lastSearchId;
+  lastSearchId += 1
+  const searchId = lastSearchId
   //开始loading
-  loading.value = true;
+  loading.value = true
   //开始请求
   getApiData({
     ...requestParams.value,
     page: `${page}`,
   })
-    .then((data) => {
+    .then(data => {
       if (searchId !== lastSearchId) {
         // for fetch callback order
-        return;
+        return
       }
       if (data.stat === 1) {
-        dataList.value = data.data.list;
-        pagination.current = page;
-        pagination.total = data.data.total;
+        dataList.value = data.data.list
+        pagination.current = page
+        pagination.total = data.data.total
         //为过多的分页添加快速跳转输入框
         if (pagination.total && pagination.total / pagination.pageSize > 10) {
-          pagination.showQuickJumper = true;
+          pagination.showQuickJumper = true
         }
       } else {
-        dataList.value = [];
-        pagination.current = 1;
-        pagination.total = 0;
-        pagination.showQuickJumper = false;
+        dataList.value = []
+        pagination.current = 1
+        pagination.total = 0
+        pagination.showQuickJumper = false
       }
     })
     .finally(() => {
-      loading.value = false;
-    });
-}, 500);
+      loading.value = false
+    })
+}, 500)
 
 //表格变化时触发  , _, sorter
-const handleTableChange = (page) => {
+const handleTableChange = page => {
   //页面跳转，请求数据
   if (page.current !== pagination.current) {
     //case1: 页码无跳转，一定是有排序选择变化，跳转至首页进行排序
     // pagination.current = 1;
     //无order
     // if (!sorter.order) {
-    pagination.current = page.current;
-    getResultTableData();
+    pagination.current = page.current
+    getResultTableData()
     // } else {
     //   this.getUrlByPro(1, sorter.order, sorter.field);
     // }
@@ -169,19 +169,19 @@ const handleTableChange = (page) => {
   //   this.pagination.current = page.current;
   //   this.getUrlByPro(page.current);
   // }
-};
+}
 
 // 改变日志state，打开日志详情
-const openLog = (record) => {
-  if (props.type === "href" || props.type === "domain") {
+const openLog = record => {
+  if (props.type === 'href' || props.type === 'domain') {
     boardStore.openLogInfoState({
       type: logTypeEnum.RESOURCE,
       visible: true,
       requestParams: {
         error_type: props.type,
-        err_content: props.type === "href" ? record.resource_url : record.resource_currenthref,
+        err_content: props.type === 'href' ? record.resource_url : record.resource_currenthref,
       },
-    });
+    })
   }
   if (isFaultTolerant) {
     boardStore.openLogInfoState({
@@ -190,25 +190,25 @@ const openLog = (record) => {
       requestParams: {
         successresource: record.successsource,
       },
-    });
+    })
   }
-};
+}
 
 // 设为筛选
-const changeSearchUrl = (url) => {
-  boardStore.addFilterValue({ url });
-};
+const changeSearchUrl = url => {
+  boardStore.addFilterValue({ url })
+}
 
 // 取消筛选
 const cancelSearchUrl = () => {
-  boardStore.delFilterValue("url");
-};
+  boardStore.delFilterValue('url')
+}
 
 watch(
   [() => props, requestParams],
   () => {
-    getResultTableData(1);
+    getResultTableData(1)
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 </script>

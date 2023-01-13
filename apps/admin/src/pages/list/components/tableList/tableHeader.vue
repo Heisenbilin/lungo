@@ -10,7 +10,7 @@
         >
           {{ project.project_name }}
         </span>
-        <a-tag v-if="project.appid === '1001970'" color="cyan">编辑器应用</a-tag>
+        <a-tag v-if="project.appid === '1001970'" color="cyan">编辑器</a-tag>
       </router-link>
     </div>
   </div>
