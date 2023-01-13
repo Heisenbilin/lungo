@@ -63,16 +63,13 @@ const username = 'xiongbilin'
 
 //tab页key值
 const { tabState: activeKey } = storeToRefs(boardStore)
-//将路由中的tabkey与activeKey同步
-const { tabkey = 'pageview' } = getUrlParams()
-if (tabListEnum[tabkey] ? tabkey : 'pageview') {
-  activeKey.value = tabkey
+if (!activeKey.value) {
+  // store中没有值，从url中获取
+  const { tabkey } = getUrlParams()
+  activeKey.value = tabListEnum[tabkey] ? tabkey : 'pageview'
 }
-watch(activeKey, val => {
-  if (tabkey !== val) {
-    addOrUpdateUrlParams({ tabkey: val }), { immediate: true }
-  }
-})
+console.log(activeKey.value)
+watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), { immediate: true })
 
 //tab页的key值与路由绑定
 

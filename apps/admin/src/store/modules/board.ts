@@ -39,7 +39,7 @@ export const useBoardStore = defineStore({
     // 最新sdk版本号
     latestSDKVersionState: '',
     // tab页
-    tabState: 'pageview',
+    tabState: '',
   }),
   getters: {
     // 根据时间范围与展示维度计算合适的日期格式化规则

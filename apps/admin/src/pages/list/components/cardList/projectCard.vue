@@ -14,7 +14,7 @@
         <a-card-meta>
           <template #description>
             <div v-if="project.close_project !== 1 || openFlag" class="h-52">
-              <CardContent :projectId="project.id" :linkToUrl="boardUrl" />
+              <CardContent :project="project" :linkToUrl="boardUrl" />
             </div>
             <div v-else class="h-52 bg-gray-900 bg-opacity-50 flex justify-center items-center">
               <a-popconfirm

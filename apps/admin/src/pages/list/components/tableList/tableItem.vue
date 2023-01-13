@@ -10,7 +10,7 @@
       <!-- 正常 -->
       <div
         class="flex my-1 items-center whitespace-nowrap center"
-        @click="() => useStoreProject(project, 'board', 'list')"
+        @click="() => useStoreProject(project, 'board', 'list', tabKey)"
       >
         <div class="text-1xl text-gray-700 font-medium center">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
@@ -27,7 +27,7 @@
 
       <div
         class="flex my-1 items-center center"
-        @click="() => useStoreProject(project, 'board', 'list')"
+        @click="() => useStoreProject(project, 'board', 'list', tabKey)"
       >
         <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
@@ -69,6 +69,10 @@ defineProps({
   jumpUrl: {
     type: String,
     default: '',
+  },
+  tabKey: {
+    type: String,
+    default: 'pageview',
   },
   project: {
     type: Object as PropType<BoardInfo>,

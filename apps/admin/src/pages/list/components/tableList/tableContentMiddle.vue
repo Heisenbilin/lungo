@@ -7,7 +7,8 @@
         title="PV量"
         unit=""
         :needCommafy="true"
-        :jumpUrl="getJumpUrl('pageview')"
+        :jumpUrl="linkToUrl"
+        tabKey="pageview"
       />
     </div>
     <div v-else-if="title == 'uv'">
@@ -17,7 +18,8 @@
         title="UV量"
         unit=""
         :needCommafy="true"
-        :jumpUrl="getJumpUrl('pageview')"
+        :jumpUrl="linkToUrl"
+        tabKey="pageview"
       />
     </div>
     <div v-else-if="title == '页面加载'">
@@ -29,7 +31,8 @@
         :needCommafy="true"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="getJumpUrl('performance')"
+        :jumpUrl="linkToUrl"
+        tabKey="performance"
       />
     </div>
     <div v-else-if="title == '运行时异常率'">
@@ -41,7 +44,8 @@
         numName="运行时异常量"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="getJumpUrl('runtime')"
+        :jumpUrl="linkToUrl"
+        tabKey="runtime"
       />
     </div>
     <div v-else-if="title == '资源异常率'">
@@ -53,7 +57,8 @@
         numName="资源异常量"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="getJumpUrl('resource')"
+        :jumpUrl="linkToUrl"
+        tabKey="resource"
       />
     </div>
     <div v-else-if="title == '请求成功率'">
@@ -64,7 +69,8 @@
         unit="%"
         numName="成功请求量"
         :needGray="true"
-        :jumpUrl="getJumpUrl('api')"
+        :jumpUrl="linkToUrl"
+        tabKey="api"
       />
     </div>
     <div
@@ -117,10 +123,6 @@ const props = defineProps({
   },
 })
 
-//跳转Url
-const getJumpUrl = tabKey => {
-  return `${props.linkToUrl}&tabkey=${tabKey}`
-}
 // const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 
 //今日活跃趋势图表option

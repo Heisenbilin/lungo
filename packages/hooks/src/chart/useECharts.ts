@@ -78,6 +78,24 @@ export function useECharts(
     })
   }
 
+  function setActions(functions: any = {}, zrenderFunctions: any = {}) {
+    nextTick(() => {
+      useTimeoutFn(() => {
+        if (!chartInstance) return
+        if (Object.keys(functions).length) {
+          Object.keys(functions).forEach(key => {
+            chartInstance?.on(key, functions[key])
+          })
+        }
+        if (Object.keys(zrenderFunctions).length) {
+          Object.keys(zrenderFunctions).forEach(key => {
+            chartInstance?.getZr().on(key, params => zrenderFunctions[key](params, chartInstance))
+          })
+        }
+      }, 30)
+    })
+  }
+
   function resize() {
     chartInstance?.resize({
       animation: {
@@ -121,6 +139,7 @@ export function useECharts(
   return {
     setOptions,
     resize,
+    setActions,
     getInstance,
   }
 }

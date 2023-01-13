@@ -64,7 +64,7 @@ const columns = [
   },
   {
     title: '资源异常率',
-    key: 'error',
+    key: 'resourceError',
     dataIndex: 'error',
     // slots: { customRender: 'resourceError' },
     width: '50px',

@@ -4,38 +4,50 @@
       网络类型
       <a-tag color="blue" class="filter-tag"> 单击筛选：网络 </a-tag>
     </div>
-    <BaseChart :requestParams="requestParams" :requestFunc="getNetworkData" :getOptionFunc="getNetworkTypeOption"
-      :bindFuncs="{ click: (title) => addFilter(title, 'network') }" />
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getNetworkData"
+      :getOptionFunc="getNetworkTypeOption"
+      :bindFuncs="{ click: title => addFilter(title, 'network') }"
+    />
   </div>
   <div class="chart-container">
     <div class="chart-title">
       客户端类型 <a-tag color="blue" class="filter-tag"> 单击筛选：客户端 </a-tag>
     </div>
-    <BaseChart :requestParams="requestParams" :requestFunc="getClientData" :getOptionFunc="getClientTypeOption"
-      :bindFuncs="{ click: (title) => addFilter(title, 'client') }" />
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getClientData"
+      :getOptionFunc="getClientTypeOption"
+      :bindFuncs="{ click: title => addFilter(title, 'client') }"
+    />
   </div>
   <div class="chart-container">
     <div class="chart-title">
       设备类型 <a-tag color="blue" class="filter-tag"> 单击筛选：设备 </a-tag>
     </div>
-    <BaseChart :requestParams="requestParams" :requestFunc="getDeviceData" :getOptionFunc="getDeviceTypeOption"
-      :bindFuncs="{ click: (title) => addFilter(title, 'device') }" />
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getDeviceData"
+      :getOptionFunc="getDeviceTypeOption"
+      :bindFuncs="{ click: title => addFilter(title, 'device') }"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { getNetworkData, getDeviceData, getClientData } from "@/apis/board/pv";
+import { computed } from 'vue'
+import { getNetworkData, getDeviceData, getClientData } from '@/apis/board/pv'
 import {
   getNetworkTypeOption,
   getClientTypeOption,
   getDeviceTypeOption,
-} from "../../util/pieChartConfig";
-import { clientUserAgent } from "@vben/constants";
-import { useBoardStore } from "@/store/modules/board";
-import { BaseChart } from "@vben/components";
+} from '../../util/pieChartConfig'
+import { clientUserAgent } from '@vben/constants'
+import { useBoardStore } from '@/store/modules/board'
+import { BaseChart } from '@vben/components'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 //请求参数
 const requestParams = computed(() => ({
@@ -51,15 +63,17 @@ const requestParams = computed(() => ({
   os: boardStore.filterState.os, //操作系统筛选
   performance_key: boardStore.filterState.performance_key, //性能筛选
   performance_range: boardStore.filterState.performance_range, //性能筛选
-}));
+}))
 
 const addFilter = (title, key) => {
+  console.log(title)
   const name =
-    key === "client"
-      ? `${Object.keys(clientUserAgent).find((key) => clientUserAgent[key] === title.data.name) ??
-      "未知"
-      }`
-      : title.data.name;
-  boardStore.addFilterValue({ [key]: name });
-};
+    key === 'client'
+      ? `${
+          Object.keys(clientUserAgent).find(key => clientUserAgent[key] === title.data.name) ??
+          '未知'
+        }`
+      : title.data.name
+  boardStore.addFilterValue({ [key]: name })
+}
 </script>

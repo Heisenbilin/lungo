@@ -8,10 +8,12 @@
   <div v-else class="flex flex-wrap h-52">
     <ContentItem
       :data="itemsData.pvData"
+      :project="project"
       title="PV量"
       unit=""
       :needCommafy="true"
-      :jumpUrl="getJumpUrl('pageview')"
+      jumpKey="pageview"
+      :linkToUrl="linkToUrl"
     />
     <div class="w-2/4 mt-1 px-2">
       <div class="text-gray-500 pl-2">
@@ -23,10 +25,12 @@
     </div>
     <ContentItem
       :data="itemsData.uvData"
+      :project="project"
       title="UV量"
       unit=""
       :needCommafy="true"
-      :jumpUrl="getJumpUrl('pageview')"
+      jumpKey="pageview"
+      :linkToUrl="linkToUrl"
     />
     <div class="flex w-full mt-4">
       <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
@@ -46,38 +50,46 @@
       </a-tooltip>
       <ContentItem
         :data="itemsData.pageloadData"
+        :project="project"
         title="页面加载"
         unit="ms"
         :needCommafy="true"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="getJumpUrl('performance')"
+        jumpKey="performance"
+        :linkToUrl="linkToUrl"
       />
       <ContentItem
         :data="itemsData.runtimeData"
+        :project="project"
         title="运行时异常率"
         unit="%"
         numName="运行时异常量"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="getJumpUrl('runtime')"
+        jumpKey="runtime"
+        :linkToUrl="linkToUrl"
       />
       <ContentItem
         :data="itemsData.resourceData"
+        :project="project"
         title="资源异常率"
         unit="%"
         numName="资源异常量"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="getJumpUrl('resource')"
+        jumpKey="resource"
+        :linkToUrl="linkToUrl"
       />
       <ContentItem
         :data="itemsData.ajaxData"
+        :project="project"
         title="请求成功率"
         unit="%"
         numName="成功请求量"
         :needGray="true"
-        :jumpUrl="getJumpUrl('api')"
+        jumpKey="api"
+        :linkToUrl="linkToUrl"
       />
     </div>
   </div>
@@ -93,6 +105,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from 'pinia'
 import ContentItem from './contentItem.vue'
+import { BoardInfo } from '@vben/types'
 
 const boardStore = useBoardStore()
 const listStore = useListStore()
@@ -102,8 +115,8 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  projectId: {
-    type: Number,
+  project: {
+    type: Object as PropType<BoardInfo>,
     required: true,
   },
 })
@@ -125,7 +138,7 @@ const chartOption = computed(() => {
 const initCardContentData = async () => {
   loading.value = true
   const params = {
-    project_id: props.projectId,
+    project_id: props.project.id,
     start_time: listStore.startTime,
     end_time: listStore.endTime,
     time_dimension: filterState.value.dimension === 'hour' ? 'day' : 'week',
@@ -144,9 +157,5 @@ const initCardContentData = async () => {
 
 watch(props, initCardContentData, { immediate: true })
 
-//跳转Url
-const getJumpUrl = tabKey => {
-  return `${props.linkToUrl}&tabkey=${tabKey}`
-}
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>
