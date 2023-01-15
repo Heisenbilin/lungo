@@ -14,12 +14,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-// @ts-ignore
 import { useDataToWaterfallChartOption } from '@vben/hooks';
-
 import * as PerformanceApis from '@/apis/board/performance';
 import BaseChart from '@vben/components/src/chart/baseChart.vue';
 import moment from 'moment'
+import dayjs from 'dayjs'
 import { useReportStore } from '@/store/modules/report';
 const reportStore = useReportStore()
 const requestParams = computed(() => ({
@@ -30,7 +29,7 @@ const requestParams = computed(() => ({
 
 const lastWeekRequestParams = computed(() => ({
   project_id: `${reportStore.boardInfoState.id}`,
-  start_time: moment(reportStore.filterState.start_time).subtract(1, 'w').format('YYYY-MM-DD'),
+  start_time: dayjs(reportStore.filterState.start_time).subtract(1, 'w').format('YYYY-MM-DD'),
   end_time: reportStore.filterState.start_time,
 }));
 </script>

@@ -90,6 +90,7 @@ const params = computed(() => ({
 }));
 
 function initData() {
+  // if(!params.value.project_id) return
   //异步check 容错接入
   checkResource();
   //异步check CDN接入

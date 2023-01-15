@@ -222,6 +222,8 @@ export const reportApis = {
   },
   //是否接入容错系统
   checkResourceStatus(params) {
+    if (params.project_id=='0') return
+    
     return request.get({
       url: TaskType.REPORT_CHECK_RESOURCE,
       params,
@@ -229,6 +231,8 @@ export const reportApis = {
   },
   //是否接入cdn
   checkCDNStatus(params) {
+    if (params.project_id=='0')return
+    
     return request.get({
       url: TaskType.REPORT_CHECK_CDN,
       params,

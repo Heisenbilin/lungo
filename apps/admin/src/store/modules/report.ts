@@ -109,6 +109,7 @@ export const useReportStore = defineStore({
     },
 
     addFilterValue(values: object): void {
+    
       const oldFilter = JSON.stringify(this.filterState)
       Object.assign(this.filterState, values)
       const newFilter = JSON.stringify(this.filterState)
@@ -131,10 +132,10 @@ export const useReportStore = defineStore({
       }
     },
 
-    initStateValue(info: BoardInfo): void {
-      // if (!info?.noInitFilter) {
-      this.filterState = { start_time: '', end_time: '' }
-      // }
+    initStateValue(info: BoardInfo & { noInitFilter: boolean }): void {
+      if (!info.noInitFilter) {
+        this.filterState = { start_time: '', end_time: '' }
+      }
       this.boardInfoState = info
       this.logInfoState = { type: logTypeEnum.DEFAULT, visible: false, requestParams: {} }
     },

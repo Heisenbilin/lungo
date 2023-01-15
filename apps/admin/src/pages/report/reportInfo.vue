@@ -2,19 +2,14 @@
   <div class="project-board-container">
     <div v-if="projectId" class="grid grid-cols-2 gap-3">
       <div class="chart-container py-0">
-        <InfoCard
-          boardType="report"
-          :projectId="projectId"
-          :projectList="projectList"
-          :platformType="platformType"
-        />
+        <InfoCard boardType="report" :projectId="projectId" :projectList="projectList" :platformType="platformType" />
       </div>
       <div class="chart-container py-0">
         <ReportFilterCard />
       </div>
     </div>
 
-    <div v-if="projectId && !loading" class="project-board" id="project-boardReport-content">
+    <div v-if="projectId" class="project-board" id="project-boardReport-content">
       <projectScore />
       <projectBase />
       <projectPerformance />
@@ -29,16 +24,16 @@
 
 <script setup lang="ts">
 //新版质量周报详情页Index
-import { ref,  onMounted, provide, h, nextTick } from 'vue';
+import { ref, onMounted, provide, h, nextTick, unref } from 'vue';
 import { message, Modal } from 'ant-design-vue';
 import { useGo } from '@vben/hooks';
 // import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { formatToDate } from '@vben/utils';
-import { getProjectList} from '@/apis/list';
+import { getProjectList } from '@/apis/list';
 import { getGroupRoleUsers, getProjectById } from '@/apis/bigfish';
 import { useReportStore } from '@/store/modules/report'
-import {useWatermark} from '@vben/hooks';
+import { useWatermark } from '@vben/hooks';
 import dayjs from 'dayjs';
 import moment from 'moment'
 
@@ -59,21 +54,16 @@ const props = defineProps({
   platformType: String,
   projectName: String,
 });
-const reportStore = useReportStore()
 // const store = useStore();
 const userid = "xiongbilin"
 
-const { boardInfoState,filterState } = storeToRefs(reportStore)
-const { projectId: urlProjectId ,dimension } = getUrlParams()
-const projectId = ref<undefined | number>(boardInfoState.value.id || +urlProjectId || undefined)
-const dimen = ref<undefined | string>(filterState.value.dimension || dimension || undefined)
+const { boardInfoState } = storeToRefs(useReportStore())
+const { commitLatestSDKVersionState } = useReportStore()
+const { projectId: urlProjectId } = getUrlParams()
+// console.log('urlProjectId', urlProjectId);
 
-const go = useGo();
-const { currentRoute } = useRouter();
 //当前选中的项目id
-// const projectId = ref(+projectid);
-//loading
-const loading = ref(true);
+const projectId = ref<undefined | number>(boardInfoState.value.id == -1 ?+urlProjectId  : boardInfoState.value.id)
 //项目列表
 const projectList = <any>ref([]);
 //项目管理员信息
@@ -83,11 +73,12 @@ let admin_uc_group_id = ref(null); //管理该项目的uc_group_id
 
 //当使用手机查看时的警告信息
 const warnMessage = ref('');
-provide('warnMessage', warnMessage);
-
-onMounted(()=> {
-  //请求当前用户组管理的项目列表
-  getProjectListByGroup();
+provide('warnMessage', warnMessage); 
+ //请求当前用户组管理的项目列表
+ getProjectListByGroup(Boolean(urlProjectId));
+onMounted(() => {
+  // //请求当前用户组管理的项目列表
+  // getProjectListByGroup(Boolean(urlProjectId));
   //判断是否为手机查看
   if (isMobile()) {
     warnMessage.value = '推荐使用电脑端查看周报汇总及详情信息';
@@ -95,24 +86,28 @@ onMounted(()=> {
 });
 
 //获取华佗用户组对应应用列表
-async function getProjectListByGroup(page = 1, page_size = 100000, type = '') {
-  //请求参数
-  const params = {
-    page,
-    page_size,
-    type,
-  };
+async function getProjectListByGroup(
+  needHandledId = false,
+  page = 1,
+  page_size = 100000,
+  type = '',
+) {
+  // 该请求只在projectList为空的情况下执行
+  if (projectList.value.length) return
+  //若当前项目id不为空，则将当前项目id赋值给boardInfoState.value.id
+  boardInfoState.value.id = projectId.value  as number
   //请求后端数据
-  const result = await getProjectList(params);
+  const result = await getProjectList({ page, page_size, type })
   if (result.stat === 1 && result.data.projects?.length) {
-    projectList.value = result.data.projects;
+    projectList.value = result.data.projects
     //若后台传入最新sdk版本号，则更新当前最新sdk版本号value
     if (result.data.latestSDKVersion) {
-      reportStore.commitLatestSDKVersionState(result.data.latestSDKVersion);
+      commitLatestSDKVersionState(result.data.latestSDKVersion)
+    }
+    if (needHandledId) {
+      initProjectId()
     }
   }
-  //根据路由中字段匹配项目id
-  initProjectId();
 }
 
 //判断ua是否为移动端
@@ -123,52 +118,6 @@ function isMobile() {
 }
 
 //处理路由中的项目id
-function initProjectId() {
-  let permissionFlag = false;
-  //url中有项目id
-  //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
-  for (const project of projectList.value) {
-    if (projectId.value === project.id) {
-      boardInfoState.value = project
-      permissionFlag = true;
-      //判断项目是否关闭
-      if (project.close_project === 1) {
-        projectClosed(project);
-        projectId.value = undefined;
-      } else {
-        const defaultDate = formatToDate(dayjs().day(-6));
-        //url中有 日期of周
-        if (!(dimen.value == 'week')) {
-          const firstDateValue = dayjs(dimen.value, 'YYYY-MM-DD');
-          console.log(firstDateValue);
-          //日期解析失败，默认显示上周周报
-          if (firstDateValue.isValid()) {
-            reportStore.addFilterValue({ start_time: defaultDate });
-            go({
-              params: {
-                projectid: projectId.value,
-                week: defaultDate,
-              },
-            });
-            break;
-          } else {
-            reportStore.addFilterValue({ start_time: dimen.value });
-          }
-        } else {
-          // projectId.value = +pid;
-          reportStore.addFilterValue({ start_time: defaultDate });
-        }
-      }
-    }
-  }
-  loading.value = false;
-  //若在项目列表中没找到此id，则没有该项目的权限，或为不存在的项目
-  if (!permissionFlag) {
-    noPermission(projectId.value);
-    projectId.value = undefined;
-  }
-  nextTick(() => createWatermark());
-}
 
 //当项目状态未关闭时，添加提示
 const projectClosed = async project => {
@@ -237,6 +186,31 @@ const freshYachId = async limit => {
     totalAdmins.value = result.data?.total ?? 0;
   }
 };
+const currentRoute = useRoute();
+//处理路由中的项目id
+function initProjectId() {
+  let permissionFlag = false
+  //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
+  for (const project of projectList.value) {
+    if (projectId.value === project.id) {
+      boardInfoState.value = project
+      permissionFlag = true
+      //判断项目是否关闭
+      if (project.close_project === 1) {
+        projectClosed(project)
+        projectId.value = undefined
+      }
+      break
+    }
+  }
+  //若在项目列表中没找到此id，则没有该项目的权限，或为不存在的项目
+  if (!permissionFlag) {
+    noPermission(projectId.value)
+    projectId.value = undefined
+  }
+  nextTick(() => createWatermark());
+
+}
 
 // 生成水印
 function createWatermark() {
@@ -263,14 +237,17 @@ function createWatermark() {
     border-color: #fff;
   }
 }
+
 .project-board-container {
   overflow: hidden;
   min-height: 50vh;
+
   .project-board {
     padding: 2%;
     margin: 12px 0;
     background-color: white;
   }
+
   .warn-massage {
     font-size: 140%;
     color: #ff0000;

@@ -146,7 +146,7 @@ async function initData() {
     board_url: decodeURIComponent(board_url as string),
     board_type: 'runtime,resource',
   };
-  await initWhite(params);
+  // await initWhite(params);
 
   //获取resource&runtime异常的总数统计
   const result = await getErrSummary(params);
@@ -187,22 +187,22 @@ async function initData() {
   emit('stabilityScoreChange', parseFloat(stabilityScore.value));
 }
 
-async function initWhite(params) {
-  let p = {
-    start_time: `${params.start_time} 00:00:00`,
-    end_time: `${params.end_time} 00:00:00`,
-    url: params.board_url,
-  };
-  let result = await getWhiteRate(p);
-  if (Object.keys(result.data).length === 0 || result.data.errcode) {
-    //message.error("白屏部分："+result.data.msg);
-    whiteRate.value = +'0%';
-    noWhite.value = true;
-  } else {
-    whiteRate.value = result.data.rate ? result.data.rate : +'0%';
-    noWhite.value = false;
-  }
-}
+// async function initWhite(params) {
+//   let p = {
+//     start_time: `${params.start_time} 00:00:00`,
+//     end_time: `${params.end_time} 00:00:00`,
+//     url: params.board_url,
+//   };
+//   let result = await getWhiteRate(p);
+//   if (Object.keys(result.data).length === 0 || result.data.errcode) {
+//     //message.error("白屏部分："+result.data.msg);
+//     whiteRate.value = +'0%';
+//     noWhite.value = true;
+//   } else {
+//     whiteRate.value = result.data.rate ? result.data.rate : +'0%';
+//     noWhite.value = false;
+//   }
+// }
 
 
 </script>
