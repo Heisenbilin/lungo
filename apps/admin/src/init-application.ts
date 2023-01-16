@@ -15,7 +15,7 @@ import {
   getChildrenMenus,
   getCurrentParentPath,
   getMenus,
-  getShallowMenus
+  getShallowMenus,
 } from '@/router'
 import { useDesign } from '@/hooks/web/useDesign'
 import { useAppInject } from '@/hooks/web/use-app-inject'
@@ -28,8 +28,9 @@ import Logo from '@/layout/components/logo.vue'
 import { useMenuSetting } from '@/hooks/setting/useMenuSetting'
 import { useLockStore } from '@/store/lock'
 import { unref } from 'vue'
-import { useLockScreen } from "@/hooks/web/useLockScreen";
-import { message } from 'ant-design-vue'
+import { useLockScreen } from '@/hooks/web/useLockScreen'
+import { siteSetting } from '@/config'
+import { useMultipleTabSetting } from '@/hooks/setting/useMultipleTabSetting'
 // To decouple the modules below `packages/*`, they no longer depend on each other
 // If the modules are heavily dependent on each other, you need to provide a decoupling method, and the caller will pass the parameters
 // Each module needs to provide `bridge` file as a decoupling method
@@ -104,9 +105,11 @@ async function initPackages() {
         useConfigStore,
         Logo,
         useMenuSetting,
+        useMultipleTabSetting,
         useTransitionSetting,
         useLockStore,
-        useLockScreen
+        useLockScreen,
+        siteSetting,
       }
     })
   }

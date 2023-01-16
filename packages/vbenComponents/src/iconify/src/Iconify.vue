@@ -96,6 +96,6 @@ onMounted(update)
 }
 
 .iconify__infinite {
-  animation: loadingCircle 1s infinite linear;
+  animation: loading-circle 1s infinite linear;
 }
 </style>
