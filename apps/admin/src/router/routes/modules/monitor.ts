@@ -27,7 +27,7 @@ const dashboard: RouteRecordItem = {
       meta: {
         title: 'routes.monitor.board',
         icon: 'ion:grid-outline',
-        hideBreadcrumb: true,
+        hideMenu: true,
       },
     },
     {
@@ -37,7 +37,7 @@ const dashboard: RouteRecordItem = {
       meta: {
         title: 'routes.monitor.report',
         icon: 'ion:grid-outline',
-        hideBreadcrumb: true,
+        hideMenu: true,
       },
     },
     {
@@ -45,8 +45,8 @@ const dashboard: RouteRecordItem = {
       name: 'qcReport',
       component: () => import('@/pages/report/reportDetail.vue'),
       meta: {
-        title: 'routes.monitor.urlReport',  
-        hideBreadcrumb: true,
+        title: 'routes.monitor.urlReport',
+        hideMenu: true,
       },
     },
     {
@@ -56,7 +56,7 @@ const dashboard: RouteRecordItem = {
       meta: {
         title: 'routes.monitor.panel',
         icon: 'ion:grid-outline',
-        hideBreadcrumb: true,
+        hideMenu: true,
       },
     },
     // {

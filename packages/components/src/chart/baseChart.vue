@@ -42,16 +42,18 @@ const props = defineProps({
 const loading = ref<boolean>(true)
 const chartData = ref(null)
 const chartOption = computed(() => props.getOptionFunc(chartData.value))
+// 旧请求参数字符串，防止重复请求
 let oldParamsString: string = ''
+
 watch(
   () => props.requestParams,
   async val => {
-    console.log(JSON.stringify(val), oldParamsString)
-    if (JSON.stringify(val) === oldParamsString) {
+    const newPramsString = JSON.stringify(val)
+    if (newPramsString === oldParamsString) {
       loading.value = false
       return
     }
-    oldParamsString = JSON.stringify(val)
+    oldParamsString = newPramsString
     loading.value = true
     try {
       const result = await props.requestFunc(val)
