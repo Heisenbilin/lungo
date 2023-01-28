@@ -35,7 +35,7 @@ import { getGroupRoleUsers, getProjectById } from '@/apis/bigfish';
 import { useReportStore } from '@/store/modules/report'
 import { useWatermark } from '@vben/hooks';
 import dayjs from 'dayjs';
-import moment from 'moment'
+// import moment from 'moment'
 
 
 import InfoCard from '@/pages/component/infoCard/index.vue';

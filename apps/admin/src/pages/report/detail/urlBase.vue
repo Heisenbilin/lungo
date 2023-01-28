@@ -72,7 +72,8 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import  CircleProgress  from '@vben/components/src/chart/circleProgress.vue';
 // import { formatToDate } from '@vben/utils';
-import moment from 'moment';
+// import moment from 'moment';
+import  dayjs  from 'dayjs';
 
 //页面质量周报总评组件
 const props = defineProps({
@@ -106,7 +107,7 @@ const props = defineProps({
       urlInfo.value = {
         projectName: decodeURIComponent(project_name as string), 
         boardURL: decodeURIComponent(board_url  as string),
-        reportTime: `${start_time}至${moment(end_time as string).subtract(1, 'd').format('YYYY-MM-DD')}`,
+        reportTime: `${start_time}至${dayjs(end_time as string).subtract(1, 'd').format('YYYY-MM-DD')}`,
       };
     });
 

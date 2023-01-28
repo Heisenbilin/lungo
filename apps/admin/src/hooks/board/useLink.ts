@@ -32,7 +32,7 @@ export const useLinkToUrl = (projectId: string | number, page: MonitorPage) => {
       case 'panel':
         return `/huatuo/panel}`
       case 'report':
-        return `/huatuo/report/${projectId}`
+        return `/huatuo/report`
     }
   }
   return ''
