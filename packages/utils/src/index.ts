@@ -17,5 +17,6 @@ export * from './uuid'
 export * from './checkAuth'
 export * from './chart/index'
 export * from './theme'
+export * from './cookie'
 
 // export * from 'lodash-es'

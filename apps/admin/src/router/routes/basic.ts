@@ -1,15 +1,12 @@
-import {
-  REDIRECT_NAME,
-  PAGE_NOT_FOUND_NAME,
-  BASIC_HOME_PATH,
-} from '@vben/constants'
+import { REDIRECT_NAME, PAGE_NOT_FOUND_NAME, BASIC_HOME_PATH } from '@vben/constants'
 import { Redirect } from '@vben/components'
 import { t } from '@vben/locale'
 
 const LAYOUT = () => import('@/layout/index.vue')
+const HUATUO_LAYOUT = () => import('@/layout/huatuoLayout/index.vue')
 
 const PARENT_LAYOUT = () => () =>
-  new Promise((resolve) => {
+  new Promise(resolve => {
     resolve({ name: 'ParentLayout' })
   })
 
@@ -86,10 +83,11 @@ const LOCK_SCREEN_ROUTE: RouteRecordItem = {
 
 export {
   LAYOUT,
+  HUATUO_LAYOUT,
   PARENT_LAYOUT,
   PAGE_NOT_FOUND_ROUTE,
   REDIRECT_ROUTE,
   ROOT_ROUTE,
   LOGIN_ROUTE,
-  LOCK_SCREEN_ROUTE
+  LOCK_SCREEN_ROUTE,
 }

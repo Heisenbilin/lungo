@@ -112,88 +112,200 @@ export const DEFAULT_FORM: any = {
   },
 }
 
-export const GATEWAYS = {
-  '世纪互联-线上环境-网校-APP网关-公共集群-公共业务': 'basiclog-ha-access*',
-  '世纪互联-线上环境-美校大班云-APP网关-公共集群-公共业务':
-    'basiclog-xk-nfx-online-bigclass-app-common-common*',
-  '世纪互联-线上环境-网校-APP网关-课前集群-公共业务': 'basiclog-online-xes-app-keqian-access*',
-  '世纪互联-线上环境-网校-APP网关-大班集群-公共业务': 'basiclog-online-xes-app-study-access*',
-  '阿里云-线上环境-网校-独立APP网关-公共集群-公共业务': 'basiclog-ali-independent-gw-l7-access*',
-  '阿里云-线上环境-网校-独立API网关-公共集群-公共业务': 'basiclog-ali-independent-gw-api-access*',
-  '阿里云-生产环境-培优业务系统-APP网关-公共集群-公共业务':
-    'basiclog-ali-online-speiyoubusiness-app-common-common-access-1*',
-  '阿里云-生产环境-培优线下课堂-APP网关-公共集群-公共业务':
-    'basiclog-ali-online-speiyouofflineclass-app-access*',
-  '阿里云-灰度环境-培优业务系统-APP网关-公共集群-公共业务':
-    'basiclog-ali-gray-speiyouxesapp-app-access*',
-  '阿里云-生产环境-培优在线课堂-APP网关-运营平台-公共业务':
-    'basiclog-ali-online-speiyouonlineclass-app-access*',
-  '阿里云-生产环境-培优在线课堂-APP网关-课堂平台-公共业务':
-    'basiclog-ali-online-speiyouonlineclass-app-access*',
-  '阿里云-生产环境-培优在线课堂-APP网关-消息平台-公共业务':
-    'basiclog-ali-online-speiyouonlineclass-app-access*',
-  '阿里云-生产环境-培优在线课堂-APP网关-直播平台-公共业务':
-    'basiclog-ali-online-speiyouonlineclass-app-access*',
-  'M5-生产环境-培优业务系统-APP网关-公共集群-公共业务':
-    'basiclog-m5-online-speiyoubusiness-app-common-common-access-1*',
-  '阿里云-生产环境-培优学而思APP-APP网关-公共集群-公共业务':
-    'basiclog-ali-online-speiyouxesapp-app-common-common-access*',
-  '阿里云-正式环境-培优云平台-APP网关-公共部门-公共业务':
-    'basiclog-ali-online-speiyoucloud-app-access*',
-  '阿里云-生产环境-培优在线课堂-APP网关-静态平台':
-    'basiclog-ali-online-speiyouonlineclass-app-access*',
-  '阿里云-生产环境-培优学而思APP-APP网关-B端集群-公共业务':
-    'basiclog-ali-online-speiyouxesapp-app-b-common-access*',
-  '博兴-正式环境-用户中台-APP网关-公共部门-公共业务': 'basiclog-bx-online-udc-app-access*',
-  '博兴-正式环境-用户中台-API网关-公共部门-公共业务': 'basiclog-bx-online-udc-api-access*',
-  '阿里云-正式环境-用户中台-APP网关-公共部门-公共业务':
-    'basiclog-ali-online-udc-app-common-access*',
-  '阿里云-正式环境-用户中台-API网关-公共部门-公共业务':
-    'basiclog-ali-online-udc-api-common-access*',
-  '世纪互联-生产环境-AI中台-APP网关-公共部门-AI中台': 'basiclog-sjhl-online-aizhongtai-app-access*',
-  '阿里云-线上环境-网校-独立APP网关-网校1v1-公共业务':
-    'basiclog-ali-online-xes-app-idptxes1v1-common-access*',
-  '香港-正式环境-网校1v1-APP网关-公共部门-公共业务': 'basiclog-xg-online-xes1v1-app-common-access*',
-  '亚马逊-正式环境-网校1v1-APP网关-公共部门-公共业务': 'basiclog-aws-online-1v1-app-common-access*',
-  '阿里云-生产环境-大学生-APP网关-公共集群-公共业务': 'basiclog-academician-pro-gw-api-access*',
-  '阿里云-生产环境-直播云-APP网关-公共集群-公共业务': 'basiclog-ali-online-zhiboyun-app-access*',
-  '腾讯云-生产环境-智康-APP网关-公共集群-公共业务': 'basiclog-zhikang-gw-ha-access*',
-  '腾讯云-生产环境-智康-APP网关-公共集群-支付业务':
-    'basiclog-tx-online-izhikang-app-common-pay-access*',
-  '阿里云-生产环境-集团总部晓搜题-APP网关-公共集群-公共业务':
-    'basiclog-ali-online-jituan-tpp-app-access*',
-  '阿里云-生产环境-集团总部晓搜题-API网关-公共集群-公共业务':
-    'basiclog-ali-online-jituan-tpp-api-access*',
-  '阿里云-线上环境-集团总部学而思口算-APP网关-公共集群-公共业务':
-    'basiclog-ali-online-xeskousuan-app-access*',
-  '阿里云-线上环境-集团总部学而思口算-API网关-公共集群-公共业务':
-    'basiclog-ali-online-xeskousuan-api-access*',
-  '阿里云-线上环境-网校-独立网关独立APP网关-小猴独立网关-公共业务':
-    'basiclog-ali-online-xes-app-idptxiaohou-common-access*',
-  '阿里云-生产环境-内容云-APP网关-公共集群-公共业务': 'basiclog-ali-online-jtnry-app-access*',
-  '腾讯云-正式环境-Yach-APP网关-公共部门-公共业务':
-    'basiclog-sjhl-online-yach-app-common-common-access*',
-  '阿里云-线上环境-网校-独立APP网关-励步英语-公共业务':
-    'basiclog-ali-online-xes-app-idptlibuyingyu-common-access*',
-  '世纪互联-正式环境-爱贝壳-APP网关-公共部门-公共业务':
-    'basiclog-bx-online-aibeike-app-common-access*',
-  '阿里云-正式环境-轻课-APP网关-公共部门-公共业务':
-    'basiclog-ali-online-qingke-app-common-common-access*',
-  '马驹桥-正式环境-集团效能-APP网关-公共部门-公共业务':
-    'basiclog-mjq-online-efficiency-app-access*',
-  '马驹桥-正式环境-安全中台-APP网关-公共部门-公共业务':
-    'basiclog-mjq-online-anquanzhongtai-app-access*',
-  '阿里云-正式环境-魔法校直播云-APP网关-公共部门-公共业务':
-    'basiclog-ali-online-mfxzby-app-common-common-access*',
-  '阿里云-线上环境-AI中台-APP网关-公共部门-公共业务':
-    'basiclog-ali-online-aizhongtai-app-common-common-access*',
-  '世纪互联-线上环境-网校-API网关-公共集群-公共业务': 'basiclog-gw-admin*',
-  '阿里云-生产环境-培优学而思APP-APP网关-新B端集群-公共业务':
-    'basiclog-ali-online-speiyouxesapp-app-new-b-common-access*',
-  '阿里云-生产环境-培优学而思APP-APP网关-新vpc集群-公共业务': '*',
-  '腾讯云-线上环境-AI中台-APP网关-公共部门-公共业务':
-    'basiclog-tx-online-aizhongtai-app-common-common-access*',
-}
+export const GATEWAYS = [
+  {
+    label: '世纪互联-线上环境-网校-APP网关-公共集群-公共业务',
+    value: 'basiclog-ha-access*',
+  },
+  {
+    label: '世纪互联-线上环境-美校大班云-APP网关-公共集群-公共业务',
+    value: 'basiclog-xk-nfx-online-bigclass-app-common-common*',
+  },
+  {
+    label: '世纪互联-线上环境-网校-APP网关-课前集群-公共业务',
+    value: 'basiclog-online-xes-app-keqian-access*',
+  },
+  {
+    label: '世纪互联-线上环境-网校-APP网关-大班集群-公共业务',
+    value: 'basiclog-online-xes-app-study-access*',
+  },
+  {
+    label: '阿里云-线上环境-网校-独立APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-independent-gw-l7-access*',
+  },
+  {
+    label: '阿里云-线上环境-网校-独立API网关-公共集群-公共业务',
+    value: 'basiclog-ali-independent-gw-api-access*',
+  },
+  {
+    label: '阿里云-生产环境-培优业务系统-APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-speiyoubusiness-app-common-common-access-1*',
+  },
+  {
+    label: '阿里云-生产环境-培优线下课堂-APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-speiyouofflineclass-app-access*',
+  },
+  {
+    label: '阿里云-灰度环境-培优业务系统-APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-gray-speiyouxesapp-app-access*',
+  },
+  {
+    label: '阿里云-生产环境-培优在线课堂-APP网关-运营平台-公共业务',
+    value: 'basiclog-ali-online-speiyouonlineclass-app-access*',
+  },
+  {
+    label: '阿里云-生产环境-培优在线课堂-APP网关-课堂平台-公共业务',
+    value: 'basiclog-ali-online-speiyouonlineclass-app-access*',
+  },
+  {
+    label: '阿里云-生产环境-培优在线课堂-APP网关-消息平台-公共业务',
+    value: 'basiclog-ali-online-speiyouonlineclass-app-access*',
+  },
+  {
+    label: '阿里云-生产环境-培优在线课堂-APP网关-直播平台-公共业务',
+    value: 'basiclog-ali-online-speiyouonlineclass-app-access*',
+  },
+  {
+    label: 'M5-生产环境-培优业务系统-APP网关-公共集群-公共业务',
+    value: 'basiclog-m5-online-speiyoubusiness-app-common-common-access-1*',
+  },
+  {
+    label: '阿里云-生产环境-培优学而思APP-APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-speiyouxesapp-app-common-common-access*',
+  },
+  {
+    label: '阿里云-正式环境-培优云平台-APP网关-公共部门-公共业务',
+    value: 'basiclog-ali-online-speiyoucloud-app-access*',
+  },
+  {
+    label: '阿里云-生产环境-培优在线课堂-APP网关-静态平台',
+    value: 'basiclog-ali-online-speiyouonlineclass-app-access*',
+  },
+  {
+    label: '阿里云-生产环境-培优学而思APP-APP网关-B端集群-公共业务',
+    value: 'basiclog-ali-online-speiyouxesapp-app-b-common-access*',
+  },
+  {
+    label: '博兴-正式环境-用户中台-APP网关-公共部门-公共业务',
+    value: 'basiclog-bx-online-udc-app-access*',
+  },
+  {
+    label: '博兴-正式环境-用户中台-API网关-公共部门-公共业务',
+    value: 'basiclog-bx-online-udc-api-access*',
+  },
+  {
+    label: '阿里云-正式环境-用户中台-APP网关-公共部门-公共业务',
+    value: 'basiclog-ali-online-udc-app-common-access*',
+  },
+  {
+    label: '阿里云-正式环境-用户中台-API网关-公共部门-公共业务',
+    value: 'basiclog-ali-online-udc-api-common-access*',
+  },
+  {
+    label: '世纪互联-生产环境-AI中台-APP网关-公共部门-AI中台',
+    value: 'basiclog-sjhl-online-aizhongtai-app-access*',
+  },
+  {
+    label: '阿里云-线上环境-网校-独立APP网关-网校1v1-公共业务',
+    value: 'basiclog-ali-online-xes-app-idptxes1v1-common-access*',
+  },
+  {
+    label: '香港-正式环境-网校1v1-APP网关-公共部门-公共业务',
+    value: 'basiclog-xg-online-xes1v1-app-common-access*',
+  },
+  {
+    label: '亚马逊-正式环境-网校1v1-APP网关-公共部门-公共业务',
+    value: 'basiclog-aws-online-1v1-app-common-access*',
+  },
+  {
+    label: '阿里云-生产环境-大学生-APP网关-公共集群-公共业务',
+    value: 'basiclog-academician-pro-gw-api-access*',
+  },
+  {
+    label: '阿里云-生产环境-直播云-APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-zhiboyun-app-access*',
+  },
+  {
+    label: '腾讯云-生产环境-智康-APP网关-公共集群-公共业务',
+    value: 'basiclog-zhikang-gw-ha-access*',
+  },
+  {
+    label: '腾讯云-生产环境-智康-APP网关-公共集群-支付业务',
+    value: 'basiclog-tx-online-izhikang-app-common-pay-access*',
+  },
+  {
+    label: '阿里云-生产环境-集团总部晓搜题-APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-jituan-tpp-app-access*',
+  },
+  {
+    label: '阿里云-生产环境-集团总部晓搜题-API网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-jituan-tpp-api-access*',
+  },
+  {
+    label: '阿里云-线上环境-集团总部学而思口算-APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-xeskousuan-app-access*',
+  },
+  {
+    label: '阿里云-线上环境-集团总部学而思口算-API网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-xeskousuan-api-access*',
+  },
+  {
+    label: '阿里云-线上环境-网校-独立网关独立APP网关-小猴独立网关-公共业务',
+    value: 'basiclog-ali-online-xes-app-idptxiaohou-common-access*',
+  },
+  {
+    label: '阿里云-生产环境-内容云-APP网关-公共集群-公共业务',
+    value: 'basiclog-ali-online-jtnry-app-access*',
+  },
+  {
+    label: '腾讯云-正式环境-Yach-APP网关-公共部门-公共业务',
+    value: 'basiclog-sjhl-online-yach-app-common-common-access*',
+  },
+  {
+    label: '阿里云-线上环境-网校-独立APP网关-励步英语-公共业务',
+    value: 'basiclog-ali-online-xes-app-idptlibuyingyu-common-access*',
+  },
+  {
+    label: '世纪互联-正式环境-爱贝壳-APP网关-公共部门-公共业务',
+    value: 'basiclog-bx-online-aibeike-app-common-access*',
+  },
+  {
+    label: '阿里云-正式环境-轻课-APP网关-公共部门-公共业务',
+    value: 'basiclog-ali-online-qingke-app-common-common-access*',
+  },
+  {
+    label: '马驹桥-正式环境-集团效能-APP网关-公共部门-公共业务',
+    value: 'basiclog-mjq-online-efficiency-app-access*',
+  },
+  {
+    label: '马驹桥-正式环境-安全中台-APP网关-公共部门-公共业务',
+    value: 'basiclog-mjq-online-anquanzhongtai-app-access*',
+  },
+  {
+    label: '阿里云-正式环境-魔法校直播云-APP网关-公共部门-公共业务',
+    value: 'basiclog-ali-online-mfxzby-app-common-common-access*',
+  },
+  {
+    label: '阿里云-线上环境-AI中台-APP网关-公共部门-公共业务',
+    value: 'basiclog-ali-online-aizhongtai-app-common-common-access*',
+  },
+  {
+    label: '世纪互联-线上环境-网校-API网关-公共集群-公共业务',
+    value: 'basiclog-gw-admin*',
+  },
+  {
+    label: '阿里云-生产环境-培优学而思APP-APP网关-新B端集群-公共业务',
+    value: 'basiclog-ali-online-speiyouxesapp-app-new-b-common-access*',
+  },
+  {
+    label: '阿里云-生产环境-培优学而思APP-APP网关-新vpc集群-公共业务',
+    value: '*',
+  },
+  {
+    label: '腾讯云-线上环境-AI中台-APP网关-公共部门-公共业务',
+    value: 'basiclog-tx-online-aizhongtai-app-common-common-access*',
+  },
+]
 
 //表单验证规则
 export const VALIDATE_RULES = {

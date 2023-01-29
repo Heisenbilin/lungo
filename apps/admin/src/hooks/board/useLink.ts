@@ -30,9 +30,9 @@ export const useLinkToUrl = (projectId: string | number, page: MonitorPage) => {
       case 'board':
         return `/huatuo/board`
       case 'panel':
-        return `/huatuo/panel}`
+        return `/huatuo/panel`
       case 'report':
-        return `/huatuo/report/${projectId}`
+        return `/huatuo/report`
     }
   }
   return ''

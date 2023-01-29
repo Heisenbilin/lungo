@@ -36,6 +36,7 @@
     "@vben/styles": "workspace:*",
     "@vben/utils": "workspace:*",
     "@vben/vbencomponents": "workspace:*",
+    "@xes/duty-aid": "^0.0.13",
     "@xes/fe-utils": "^2.1.4",
     "@xes/uc": "0.0.22",
     "ant-design-vue": "^3.2.0",

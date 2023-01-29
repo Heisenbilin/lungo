@@ -108,18 +108,12 @@
                   v-model:value="formState.basic_info.uc_group_id"
                   allowClear
                   showSearch
+                  :options="groups"
                   placeholder="请选择用户组"
                   :filterOption="filterOption"
+                  :fieldNames="{ label: 'group_name', value: 'group_id' }"
                   @change="handleChangeUcGroup"
-                >
-                  <a-select-option
-                    v-for="item of groups"
-                    :value="item.group_id"
-                    :key="item.group_id"
-                  >
-                    {{ item.group_name }}
-                  </a-select-option>
-                </a-select>
+                />
               </a-form-item>
               <a-form-item
                 :name="['basic_info', 'gateway']"
@@ -137,11 +131,10 @@
                   allowClear
                   showSearch
                   placeholder="请选择所属网关"
-                  :filterOption="filterOption"
+                  :options="GATEWAYS"
+                  :filterOption="filterGateWayOption"
                 >
-                  <a-select-option v-for="(item, key) in GATEWAYS" :value="item" :key="key">
-                    {{ key }}({{ item }})
-                  </a-select-option>
+                  <template #option="{ value, label }"> {{ label }}({{ value }}) </template>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -950,8 +943,13 @@ function openUCGroup() {
 }
 
 //选择用户组/网关时，用户自己输入时的筛选条件
-function filterOption(inputValue, options) {
-  return options.children[0].children.includes(inputValue)
+const filterOption = (input: string, option: any) => {
+  return option.group_name.includes(input)
+}
+
+const filterGateWayOption = (input: string, option: any) => {
+  console.log('option', option)
+  return option.value.includes(input) || option.label.includes(input)
 }
 
 //增加或删除ua

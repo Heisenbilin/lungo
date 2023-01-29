@@ -18,6 +18,15 @@ export default {
     group: 'User Group',
     log: 'Operation Log',
   },
+  hautuo: {
+    list: 'Project List',
+    board: 'Board',
+    panel: 'Panel',
+    report: 'Weekly Report',
+    urlReport: 'Url Report',
+    group: 'User Group',
+    log: 'Operation Log',
+  },
   demo: {
     demo: 'Demo',
     card: 'Card',

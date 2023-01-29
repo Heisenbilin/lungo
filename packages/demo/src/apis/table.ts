@@ -1,5 +1,5 @@
 import { request } from '@vben/request'
 
 export function getTableData() {
-  return request.post({ url: '/demo/table' })
+  return request.post({ url: '/basic-api/demo/table' })
 }
