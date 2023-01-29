@@ -1,10 +1,10 @@
 <template>
   <h1>一、项目总评</h1>
-  <div v-if="loading === 1" class="flex min-h-60 justify-center items-center">
+  <div v-if="loading === 0" class="flex min-h-60 justify-center items-center">
     <a-spin size="large" />
   </div>
   <a-empty
-    v-else-if="loading === 0"
+    v-else-if="loading === 1"
     class="flex min-h-60 justify-center items-center"
     :image="simpleImage"
   />

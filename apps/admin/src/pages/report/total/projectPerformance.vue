@@ -17,7 +17,7 @@ import { computed } from 'vue';
 import { useDataToWaterfallChartOption } from '@vben/hooks';
 import * as PerformanceApis from '@/apis/board/performance';
 import BaseChart from '@vben/components/src/chart/baseChart.vue';
-import moment from 'moment'
+// import moment from 'moment'
 import dayjs from 'dayjs'
 import { useReportStore } from '@/store/modules/report';
 const reportStore = useReportStore()
