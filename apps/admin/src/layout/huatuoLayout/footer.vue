@@ -29,7 +29,7 @@
             <span id="connectme"></span>
             <a-tooltip class="tooltip" placement="topLeft">
               <template #title>
-                <img class="feedbackImg" src="../../assets/images/huatuo/huatuo-feedback.jpg" />
+                <img width="200" src="../../assets/images/huatuo/huatuo-feedback.jpg" />
               </template>
               <a class="link">问题反馈群</a>
             </a-tooltip>
@@ -204,10 +204,6 @@ onMounted(() => {
 
   .link:hover {
     color: #424446;
-  }
-
-  .feedbackImg {
-    width: 180px;
   }
 
   .tooltip {

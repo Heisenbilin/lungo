@@ -1,10 +1,10 @@
-import { HUATUO_LAYOUT } from '../basic'
+import { HUATUO_LAYOUT } from '@/router/routes'
 
-const dashboard: RouteRecordItem = {
+const Huatuo: RouteRecordItem = {
   path: '/huatuo',
   name: 'Huatuo',
   component: HUATUO_LAYOUT,
-  redirect: '/huatuo/list',
+  redirect: '/huatuo/index',
   meta: {
     orderNo: 5,
     icon: 'ion:grid-outline',
@@ -12,9 +12,9 @@ const dashboard: RouteRecordItem = {
   },
   children: [
     {
-      path: 'list',
-      name: 'List',
-      component: () => import('@/pages/list/list.vue'),
+      path: 'index',
+      name: 'HuatuoList',
+      component: () => import('@/pages/list/huatuoList.vue'),
       meta: {
         title: 'routes.huatuo.list',
         icon: 'ion:grid-outline',
@@ -22,8 +22,8 @@ const dashboard: RouteRecordItem = {
     },
     {
       path: 'board',
-      name: 'Board',
-      component: () => import('@/pages/board/board.vue'),
+      name: 'HuatuoBoard',
+      component: () => import('@/pages/board/huatuoBoard.vue'),
       meta: {
         title: 'routes.huatuo.board',
         icon: 'ion:grid-outline',
@@ -33,7 +33,7 @@ const dashboard: RouteRecordItem = {
     },
     {
       path: 'report',
-      name: 'Report',
+      name: 'HuatuoReport',
       component: () => import('@/pages/report/reportInfo.vue'),
       meta: {
         title: 'routes.huatuo.report',
@@ -44,7 +44,7 @@ const dashboard: RouteRecordItem = {
     },
     {
       path: 'qcReport',
-      name: 'qcReport',
+      name: 'HuatuoqcReport',
       component: () => import('@/pages/report/reportDetail.vue'),
       meta: {
         title: 'routes.huatuo.urlReport',
@@ -54,8 +54,8 @@ const dashboard: RouteRecordItem = {
     },
     {
       path: 'panel',
-      name: 'Panel',
-      component: () => import('@/pages/panel/panel.vue'),
+      name: 'HuatuoPanel',
+      component: () => import('@/pages/panel/huatuoPanel.vue'),
       meta: {
         title: 'routes.huatuo.panel',
         hideBreadcrumb: true,
@@ -66,4 +66,4 @@ const dashboard: RouteRecordItem = {
   ],
 }
 
-export default dashboard
+export default Huatuo

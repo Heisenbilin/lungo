@@ -1,4 +1,4 @@
-import { LAYOUT } from '../../basic'
+import { LAYOUT } from '@/router/routes'
 
 const dashboard: RouteRecordItem = {
   path: '/demo',

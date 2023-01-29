@@ -1,6 +1,6 @@
-import { LAYOUT } from '../basic'
+import { LAYOUT } from '@/router/routes'
 
-const dashboard: RouteRecordItem = {
+const Monitor: RouteRecordItem = {
   path: '/monitor',
   name: 'Monitor',
   component: LAYOUT,
@@ -71,4 +71,4 @@ const dashboard: RouteRecordItem = {
   ],
 }
 
-export default dashboard
+export default Monitor

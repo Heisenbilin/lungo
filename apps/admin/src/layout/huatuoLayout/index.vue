@@ -1,15 +1,15 @@
 <template>
   <Layout class="__main">
     <HuatuoHeader />
-    <template #main>
+    <LayoutContent>
       <RouterView />
-    </template>
+    </LayoutContent>
     <HuatuoFooter />
   </Layout>
 </template>
 
 <script setup lang="ts">
-import { Layout } from 'ant-design-vue'
+import { Layout, LayoutContent } from 'ant-design-vue'
 import HuatuoHeader from './header.vue'
 import HuatuoFooter from './footer.vue'
 </script>
@@ -25,9 +25,12 @@ import HuatuoFooter from './footer.vue'
 }
 .__main {
   background-color: #f0f0f0;
-  :deep(.vben-layout-content) {
-    padding-bottom: 0px;
-    min-height: calc(100vh - 397px);
+  // :deep(.vben-layout-content) {
+  //   padding-bottom: 0px;
+  //   min-height: calc(100vh - 397px);
+  // }
+  :deep(.ant-layout-content) {
+    padding: 1rem;
   }
 }
 </style>

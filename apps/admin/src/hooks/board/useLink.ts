@@ -10,12 +10,11 @@ const boardStore = useBoardStore()
 const reportStore = useReportStore()
 const boardDataStore = useBoardDataStore()
 
-const { platform } = listStore
-
 /*
  * 生成跳转链接
  */
 export const useLinkToUrl = (projectId: string | number, page: MonitorPage) => {
+  const { platform } = listStore
   if (platform === '') {
     switch (page) {
       case 'board':
