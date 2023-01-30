@@ -1,19 +1,17 @@
 <template>
-  <div class="huatuo">
-    <div class="huatuo-content">
-      <div class="content-menu">
-        <div class="breadcrumb">
-          <a-breadcrumb>
-            <a-breadcrumb-item>首页</a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <router-link :to="'/huatuo/index'">WEB端质量监控</router-link>
-            </a-breadcrumb-item>
-            <a-breadcrumb-item>{{ boardInfoState.project_name }}</a-breadcrumb-item>
-          </a-breadcrumb>
-        </div>
+  <div class="huatuo-content">
+    <div class="content-menu">
+      <div class="breadcrumb">
+        <a-breadcrumb>
+          <a-breadcrumb-item>首页</a-breadcrumb-item>
+          <a-breadcrumb-item>
+            <router-link :to="'/huatuo/index'">WEB端质量监控</router-link>
+          </a-breadcrumb-item>
+          <a-breadcrumb-item>{{ boardInfoState.project_name }}</a-breadcrumb-item>
+        </a-breadcrumb>
       </div>
-      <boardInfo platformType="huatuo" />
     </div>
+    <boardInfo platformType="huatuo" />
   </div>
 </template>
 
@@ -27,27 +25,24 @@ const { boardInfoState } = storeToRefs(boardStore)
 </script>
 
 <style lang="scss" scoped>
-.huatuo {
+.huatuo-content {
   width: 100%;
+  .content-menu {
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    /*flex 布局*/
+    display: flex;
+    /*实现垂直居中*/
+    align-items: center;
+    margin-bottom: 12px;
 
-  .huatuo-content {
-    .content-menu {
-      width: 100%;
-      height: 50px;
-      background-color: white;
-      /*flex 布局*/
-      display: flex;
-      /*实现垂直居中*/
-      align-items: center;
-      margin-bottom: 12px;
+    .ant-breadcrumb {
+      line-height: 14px;
+    }
 
-      .ant-breadcrumb {
-        line-height: 14px;
-      }
-
-      .breadcrumb {
-        padding: 1%;
-      }
+    .breadcrumb {
+      padding: 1%;
     }
   }
 }

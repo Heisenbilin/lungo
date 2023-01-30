@@ -45,7 +45,7 @@
           projectInfo.access_mode ? (projectInfo.access_mode === 'sdk' ? 'NPM' : 'CDN') : '未知'
         "
       />
-      <InfoTag title="创建时间" :content="moment(projectInfo.create_time).format('YY.MM.DD')" />
+      <InfoTag title="创建时间" :content="dayjs(projectInfo.create_time).format('YY.MM.DD')" />
       <InfoTag title="管理员" v-if="adminUsers.length">
         <template #content>
           <a v-for="(user, i) in adminUsers" :key="i" :href="user.href">
@@ -113,7 +113,7 @@ import {
 import { kibanaHref } from '../logDetail/util'
 import { getGroupRoleUsers } from '@/apis/bigfish'
 import { getKibanaTopicId } from '@/apis/board/logCenter'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 import SDKVersion from '../sdkVersion.vue'
 import AlarmSetting from '../alarm/alarmSetting.vue'

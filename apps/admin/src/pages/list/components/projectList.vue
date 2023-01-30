@@ -162,7 +162,7 @@ import cardList from './cardList/index.vue'
 import tableList from './tableList/index.vue'
 import addProjectModal from './addProject/addProjectDrawer.vue'
 import UcGroupModal from './ucGroupModal.vue'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const {
   tabKey = 'all',
@@ -229,10 +229,10 @@ const activeKey = ref(tabKey)
 watch(activeKey, val => addOrUpdateUrlParams({ tabKey: val }))
 
 //时间范围
-const startTime = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
-const startWeek = moment().startOf('day').subtract(6, 'd').format('YYYY-MM-DD HH:mm:ss')
-const endTime = moment()
-  .minute(10 * Math.floor(moment().minutes() / 10))
+const startTime = dayjs().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+const startWeek = dayjs().startOf('day').subtract(6, 'd').format('YYYY-MM-DD HH:mm:ss')
+const endTime = dayjs()
+  .minute(10 * Math.floor(dayjs().minute() / 10))
   .second(0)
   .format('YYYY-MM-DD HH:mm:ss')
 // provide('startTime', dimension.value === 'week' ? startWeek : startTime)

@@ -81,6 +81,12 @@ import { filterTitleConfig, tabActiveFilters, excludeFilters } from '@vben/const
 import { storeToRefs } from 'pinia'
 import FilterTag from './filterTag.vue'
 import dayjs from 'dayjs'
+import weekday from 'dayjs/plugin/weekday'
+import localeData from 'dayjs/plugin/localeData'
+
+dayjs.extend(weekday)
+dayjs.extend(localeData)
+
 type RangeValue = [dayjs.Dayjs, dayjs.Dayjs]
 
 const boardStore = useBoardStore()
@@ -143,20 +149,24 @@ const filterDate = ref<RangeValue>(initDate)
 watch(
   () => [store.filterState.start_time, store.filterState.end_time],
   val => {
-    if (val[0] && val[1]) filterDate.value = [dayjs(val[0]), dayjs(val[1])]
+    const [gteTime, lteTime] = filterDate.value
+    const start_time = gteTime.format('YYYY-MM-DD HH:mm:ss')
+    const end_time = lteTime.format('YYYY-MM-DD HH:mm:ss')
+    if (val[0] !== start_time && val[1] !== end_time) {
+      filterDate.value = [dayjs(val[0]), dayjs(val[1])]
+    }
   },
 )
 
-//处理时间范围变化
+// 处理时间范围变化
 watch(
   filterDate,
   val => {
-    console.log(JSON.stringify(val))
+    if (!val) return
     const [gteTime, lteTime] = val
     //把当前选择的时间转换为API规范的时间
-    const start_time = formatDateString(gteTime.valueOf(), type)
-    const end_time = formatDateString(lteTime.valueOf(), type)
-    console.log(start_time, end_time)
+    const start_time = gteTime.format('YYYY-MM-DD HH:mm:ss')
+    const end_time = lteTime.format('YYYY-MM-DD HH:mm:ss')
     if (start_time !== filters.value.start_time || end_time !== filters.value.end_time) {
       store.addFilterValue({ start_time, end_time })
     }

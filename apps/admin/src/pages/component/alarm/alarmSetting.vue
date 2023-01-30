@@ -142,7 +142,7 @@ import {
 } from '@/apis/alarm'
 import AlarmForm from './alarmForm.vue'
 import { message } from 'ant-design-vue'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { ToolsLib } from '@xes/fe-utils'
 import { requestYachId } from '@/apis/tool'
 const props = defineProps({
@@ -435,7 +435,8 @@ const updateRuleStatus = async (isActive, record) => {
  * @return {string}
  */
 const formatUtcTime = date => {
-  return moment(date).utcOffset(-8).format('YYYY-MM-DD HH:mm:ss')
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+  // return moment(date).utcOffset(-8).format('YYYY-MM-DD HH:mm:ss')
 }
 
 /**
@@ -444,7 +445,8 @@ const formatUtcTime = date => {
  * @return {string}
  */
 const formatLocalTime = date => {
-  return moment(date).format('YYYY-MM-DD HH:mm:ss')
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+  // return moment(date).format('YYYY-MM-DD HH:mm:ss')
 }
 
 /**

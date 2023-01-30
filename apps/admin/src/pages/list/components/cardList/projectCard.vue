@@ -75,7 +75,7 @@
             v-if="appStore.checkIsAdmin('xiongbilin')"
             class="absolute -top-1 right-20 text-gray-200"
           >
-            create: {{ moment(project.create_time).format('YY.MM.DD-HH:mm') }}
+            create: {{ dayjs(project.create_time).format('YY.MM.DD-HH:mm') }}
           </span>
         </template>
         <template v-if="project.close_project !== 1 || openFlag" #actions>
@@ -148,7 +148,7 @@ import { useListStore } from '@/store/modules/list'
 import { message } from 'ant-design-vue'
 import { modifyProjectParams, starProject } from '@/apis/list'
 import CardContent from './cardContent.vue'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
 
