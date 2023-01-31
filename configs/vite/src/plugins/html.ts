@@ -31,7 +31,6 @@ export async function configHtmlPlugin(root: string, env: ViteEnv, isBuild: bool
               tag: 'script',
               attrs: {
                 src: getAppConfigSrc(),
-                type: 'module',
               },
             },
           ]
