@@ -18,6 +18,7 @@ const Monitor: RouteRecordItem = {
       meta: {
         title: 'routes.monitor.list',
         icon: 'ion:grid-outline',
+        ignoreKeepAlive: false,
       },
     },
     {
