@@ -3,7 +3,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'
-import BasicChart from './BasicChart.vue'
+import { default as BasicChart } from './basicChart.vue'
 import { useWaterfallChartOption } from '@vben/hooks'
 const props = defineProps({
   content: {

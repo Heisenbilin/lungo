@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { Empty, Spin } from 'ant-design-vue'
 import { computed, watch, ref } from 'vue'
-import BasicChart from './BasicChart.vue'
+import { default as BasicChart } from './basicChart.vue'
 const props = defineProps({
   //请求参数
   requestParams: Object,
