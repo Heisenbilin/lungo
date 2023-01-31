@@ -41,7 +41,6 @@ import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import ProjectCard from './projectCard.vue'
 
-// const store = useStore();
 const listStore = useListStore()
 const props = defineProps({
   requestParams: {

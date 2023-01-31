@@ -29,6 +29,7 @@ const Monitor: RouteRecordItem = {
         title: 'routes.monitor.board',
         icon: 'ion:grid-outline',
         hideMenu: true,
+        // ignoreKeepAlive:true,
       },
     },
     {
@@ -39,6 +40,7 @@ const Monitor: RouteRecordItem = {
         title: 'routes.monitor.report',
         icon: 'ion:grid-outline',
         hideMenu: true,
+        // ignoreKeepAlive:true,
       },
     },
     {
@@ -58,6 +60,7 @@ const Monitor: RouteRecordItem = {
         title: 'routes.monitor.panel',
         icon: 'ion:grid-outline',
         hideMenu: true,
+        // ignoreKeepAlive:true,
       },
     },
     // {

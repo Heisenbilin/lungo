@@ -5,10 +5,7 @@ import { Layout } from '@vben/layouts'
 <template>
   <layout>
     <template #main>
-      <!-- <keep-alive>
-        <RouterView />
-      </keep-alive>
-  -->
+
   <RouterView>
   <template #default="{ Component, route }">
       <component :is="Component" v-if="route?.meta?.ignoreKeepAlive"></component>
@@ -17,6 +14,12 @@ import { Layout } from '@vben/layouts'
       </KeepAlive>
   </template>
 </RouterView>
+
+<!-- <KeepAlive include="List">
+  <RouterView>
+  </RouterView>
+</KeepAlive> -->
+
     </template>
   </layout>
 </template>

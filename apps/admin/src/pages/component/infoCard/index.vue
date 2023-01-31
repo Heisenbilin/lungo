@@ -152,6 +152,18 @@ const store =
 const { boardInfoState: projectInfo } = storeToRefs(store)
 const { projectId: urlProjectId } = getUrlParams()
 const projectId = ref<number | string>(projectInfo.value.id || +urlProjectId || '请选择应用')
+const currentId = computed(()=>  projectInfo.value.id || +urlProjectId || '请选择应用')
+watch(
+  () => currentId.value,
+  () => {
+    projectId.value = currentId.value;
+  },
+  { immediate: true }
+);
+
+// const projectId = computed(()=>{
+//   return projectInfo.value.id || +urlProjectId || '请选择应用'
+// })
 
 // 用于sourcemap详情的topicid信息
 const topicId = ref('')
