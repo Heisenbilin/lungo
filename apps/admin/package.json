@@ -1,15 +1,9 @@
 {
   "name": "@apps/admin",
   "version": "3.0.0-bata.1",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vbenjs/vue-vben-admin.git",
-    "directory": "apps/ant-app"
-  },
   "author": {
-    "name": "vben",
-    "email": "anncwb@126.com",
-    "url": "https://github.com/anncwb"
+    "name": "xiongbilin",
+    "email": "xiongbilin@tal.com"
   },
   "scripts": {
     "build": "pnpm cross-env NODE_ENV=production vite build",

@@ -1,17 +1,12 @@
 import { MockMethod } from 'vite-plugin-mock'
-import {
-  resultError,
-  resultSuccess,
-  getRequestToken,
-  requestParams,
-} from '@vben/utils/mock-util'
+import { resultError, resultSuccess, getRequestToken, requestParams } from '@vben/utils/mock-util'
 
 export function createFakeUserList() {
   return [
     {
       userId: '1',
       username: 'vben',
-      realname: 'Vben Admin',
+      realname: 'Sway Det',
       avatar: 'https://q1.qlogo.cn/g?b=qq&nk=190848757&s=640',
       desc: 'manager',
       password: '123456',
@@ -45,7 +40,8 @@ export function createFakeUserList() {
       realname: 'test user',
       avatar: 'https://q1.qlogo.cn/g?b=qq&nk=339449197&s=640',
       desc: 'tester',
-      accessToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoieGlvbmdiaWxpbiIsIm5hbWUiOiLnhornoqfmnpciLCJyb2xlIjoyLCJ3b3JrY29kZSI6IjMxMzMzOSIsImlhdCI6MTY3MjgwMjkzOCwiZXhwIjoxNjcyODg5MzM4fQ.f3TPBMLRo9ARrd_a3mGLQZCmRQFHWi0BZMyIkrK6J-Y',
+      accessToken:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoieGlvbmdiaWxpbiIsIm5hbWUiOiLnhornoqfmnpciLCJyb2xlIjoyLCJ3b3JrY29kZSI6IjMxMzMzOSIsImlhdCI6MTY3MjgwMjkzOCwiZXhwIjoxNjcyODg5MzM4fQ.f3TPBMLRo9ARrd_a3mGLQZCmRQFHWi0BZMyIkrK6J-Y',
       roles: [
         {
           name: 'Tester',
@@ -71,7 +67,7 @@ export default [
       const { username, password } = body
 
       const checkUser = createFakeUserList().find(
-        (item) => item.username === username && password === item.password,
+        item => item.username === username && password === item.password,
       )
 
       if (!checkUser) {
@@ -88,13 +84,9 @@ export default [
       const accessToken = getRequestToken(request)
 
       if (!accessToken) return resultError('Invalid accessToken.')
-      const checkUser = createFakeUserList().find(
-        (item) => item.accessToken === accessToken,
-      )
+      const checkUser = createFakeUserList().find(item => item.accessToken === accessToken)
       if (!checkUser) {
-        return resultError(
-          'The corresponding user information was not obtained!',
-        )
+        return resultError('The corresponding user information was not obtained!')
       }
       return resultSuccess(checkUser)
     },
@@ -106,9 +98,7 @@ export default [
     response: (request: requestParams) => {
       const accessToken = getRequestToken(request)
       if (!accessToken) return resultError('Invalid accessToken.')
-      const checkUser = createFakeUserList().find(
-        (item) => item.accessToken === accessToken,
-      )
+      const checkUser = createFakeUserList().find(item => item.accessToken === accessToken)
       if (!checkUser) {
         return resultError('Invalid accessToken.')
       }
@@ -124,9 +114,7 @@ export default [
     response: (request: requestParams) => {
       const accessToken = getRequestToken(request)
       if (!accessToken) return resultError('Invalid accessToken.')
-      const checkUser = createFakeUserList().find(
-        (item) => item.accessToken === accessToken,
-      )
+      const checkUser = createFakeUserList().find(item => item.accessToken === accessToken)
       if (!checkUser) {
         return resultError('Invalid accessToken.')
       }

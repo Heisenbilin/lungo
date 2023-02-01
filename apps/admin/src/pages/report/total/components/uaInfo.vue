@@ -16,12 +16,10 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-// import { useStore } from 'vuex';
-import { litSquirrelApi } from '@/apis/litSquirrel'
+import { getUaChartData } from '@/apis/report'
 import { getUAOption, getUAVersionOption } from './uaInfoConfig'
 import { useBoardDataStore } from '@/store/modules/panel'
 import { useReportStore } from '@/store/modules/report'
-// import { boardDataStore } from '/@/store/modules/boardData';
 import { BaseChart } from '@vben/components'
 import { BasicChart } from '@vben/components'
 
@@ -63,7 +61,7 @@ const uaVersionList = ref({}) //选中ua名对应的版本列表
 //从后端获取数据方法
 const getUAData = async params => {
   //拦截请求结果，存入uaVersionList中
-  const result = await litSquirrelApi.boardTaskInfo.getUAData(params)
+  const result = await getUaChartData(params)
   uaVersionList.value = result.data
   return result
 }

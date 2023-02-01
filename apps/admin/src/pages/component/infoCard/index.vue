@@ -99,7 +99,7 @@
 
 <script setup lang="ts">
 // 质量监控页 项目卡片组件
-import { ref, computed, watch, getCurrentInstance, onMounted } from 'vue'
+import { ref, computed, watch, getCurrentInstance, onMounted, h } from 'vue'
 import { message } from 'ant-design-vue'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
@@ -113,25 +113,23 @@ import {
 import { kibanaHref } from '../logDetail/util'
 import { getGroupRoleUsers } from '@/apis/bigfish'
 import { getKibanaTopicId } from '@/apis/board/logCenter'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
+import { MonitorPage } from '@vben/constants'
+import { useProjectDeny, useProjectClose } from '@/hooks/board/useAuth'
+import { getProjectList } from '@/apis/list'
+import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
+import { storeToRefs } from 'pinia'
 import dayjs from 'dayjs'
 
 import SDKVersion from '../sdkVersion.vue'
 import AlarmSetting from '../alarm/alarmSetting.vue'
 import InfoTag from './infoTag.vue'
-import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
-import { storeToRefs } from 'pinia'
-import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
-import { MonitorPage } from '@vben/constants'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
 const boardDataStore = useBoardDataStore()
 
 const props = defineProps({
-  projectList: {
-    type: Array as PropType<any[]>,
-    required: true,
-  },
   platformType: {
     type: String,
   },
@@ -152,18 +150,17 @@ const store =
 const { boardInfoState: projectInfo } = storeToRefs(store)
 const { projectId: urlProjectId } = getUrlParams()
 const projectId = ref<number | string>(projectInfo.value.id || +urlProjectId || '请选择应用')
-const currentId = computed(()=>  projectInfo.value.id || +urlProjectId || '请选择应用')
+const currentId = computed(() => projectInfo.value.id || +urlProjectId || '请选择应用')
+//项目列表
+const projectList = ref<any[]>([])
+
 watch(
   () => currentId.value,
   () => {
-    projectId.value = currentId.value;
+    projectId.value = currentId.value
   },
-  { immediate: true }
-);
-
-// const projectId = computed(()=>{
-//   return projectInfo.value.id || +urlProjectId || '请选择应用'
-// })
+  { immediate: true },
+)
 
 // 用于sourcemap详情的topicid信息
 const topicId = ref('')
@@ -225,12 +222,19 @@ async function getTopicId(appId, isSaas) {
 
 // 切换项目
 watch(
-  () => [projectId.value, props.projectList],
+  () => [projectId.value, projectList.value],
   () => {
     const newId = projectId.value
-    if (!props.projectList.length || !newId) return
-    for (const project of props.projectList) {
+    if (!projectList.value.length || !newId) return
+    let permissionFlag = false
+    for (const project of projectList.value) {
       if (project.id === newId) {
+        permissionFlag = true
+        if (project.close_project === 1) {
+          useProjectClose(project)
+          projectInfo.value.id = 0
+          return
+        }
         if (newId !== projectInfo.value.id) {
           // 项目信息存入store供其他组件调用
           store.initStateValue({ ...project, noInitFilter: true })
@@ -241,7 +245,28 @@ watch(
         freshYachId(undefined, project.uc_group_id)
       }
     }
+    if (!permissionFlag) {
+      useProjectDeny(projectId.value)
+      projectInfo.value.id = 0
+    }
   },
   { immediate: true },
 )
+
+//获取华佗用户组对应应用列表
+async function getProjectListByGroup(page = 1, page_size = 100000, type = '') {
+  // 该请求只在projectList为空的情况下执行
+  if (projectList.value.length) return
+  //请求后端数据
+  const result = await getProjectList({ page, page_size, type })
+  if (result.stat === 1 && result.data.projects?.length) {
+    projectList.value = result.data.projects
+    //若后台传入最新sdk版本号，则更新当前最新sdk版本号value
+    if (result.data.latestSDKVersion) {
+      store.commitLatestSDKVersionState(result.data.latestSDKVersion)
+    }
+  }
+}
+
+getProjectListByGroup()
 </script>

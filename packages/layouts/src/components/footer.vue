@@ -60,7 +60,7 @@ const style = computed(
         <VbenText depth="3" style="">{{ t('layout.footer.onlineDocument') }}</VbenText>
       </VbenButton>
     </div>
-    <VbenText depth="3">Copyright &copy;2023 Vben Admin</VbenText>
+    <VbenText depth="3">Copyright &copy;2023 大班云-前端研发部（Sway） </VbenText>
   </footer>
 </template>
 

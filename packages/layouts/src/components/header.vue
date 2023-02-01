@@ -86,23 +86,23 @@ const getShowHeaderMultipleTab = computed(()=>{
       <div class="pl-8px pr-8px">
         <slot name="buttons">
           <VbenSpace class="p-1" :size="16" align="center">
-            <AppSearch v-if="getShowSearch"/>
-            <AppNotify :is-dark="isDark" v-if="getShowNotice"/>
-            <AppFullScreen v-if="getShowFullScreen"/>
-            <VbenLocalePicker
+            <!-- <AppSearch v-if="getShowSearch"/>
+            <AppNotify :is-dark="isDark" v-if="getShowNotice"/> -->
+            <AppFullScreen v-if="getShowFullScreen" />
+            <!-- <VbenLocalePicker
               v-if="getShowLocalePicker"
               :reload="true"
               :showText="false"
-            />
-            <UserDropdown/>
-            <SettingButton v-if="getShowSetting"/>
+            /> -->
+            <UserDropdown />
+            <!-- <SettingButton v-if="getShowSetting" /> -->
           </VbenSpace>
         </slot>
       </div>
     </VbenSpace>
     <template v-if="getShowHeaderMultipleTab">
       <slot name="tabs">
-        <LayoutTabs/>
+        <LayoutTabs />
       </slot>
     </template>
   </VbenSpace>

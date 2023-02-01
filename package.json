@@ -1,20 +1,11 @@
 {
-  "name": "vben-admin-monorepo",
+  "name": "sway-det",
   "version": "3.0.0-bata.1",
   "private": true,
-  "homepage": "https://github.com/vbenjs/vue-vben-admin",
-  "bugs": {
-    "url": "https://github.com/vbenjs/vue-vben-admin/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vbenjs/vue-vben-admin.git"
-  },
   "license": "MIT",
   "author": {
-    "name": "vben",
-    "email": "anncwb@126.com",
-    "url": "https://github.com/anncwb"
+    "name": "xiongbilin",
+    "email": "xiongbilin@tal.com"
   },
   "scripts": {
     "bootstrap": "pnpm install",

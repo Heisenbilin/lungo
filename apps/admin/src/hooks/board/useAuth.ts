@@ -1,7 +1,9 @@
 import { buildUUID, handleDate } from '@vben/utils'
 import { changeFormFormat } from '@vben/utils'
 import { checkLightHouseAuth } from '@/apis/auth'
-import { message } from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
+import { h } from 'vue'
+import { getProjectById, getGroupRoleUsers } from '@/apis/bigfish'
 
 const REG_SPACE = /[ ]/g
 
@@ -92,4 +94,65 @@ export const useAuth = () => {
     clearFieldsSpace,
     checkAuth,
   }
+}
+
+//当id不在项目列表中时，添加项目无权限信息提示
+export const useProjectDeny = async pid => {
+  // 以下2个语句都可
+  // TODO: 改成专门根据projectid获取group成员的接口
+  const result = await getProjectById(pid)
+  // const result = await BigfishApi.getProjectById (unref(currentRoute).params.projectid);
+  const { stat, msg, data } = result
+  if (stat !== 1 || msg !== 'success') {
+    message.warning('项目权限请求失败')
+    return
+  }
+  if (!data || !Object.keys(data).length) {
+    message.error('不存在的项目')
+    return
+  }
+  const { uc_group_id, project_name, appid } = data
+  // admin_uc_group_id.value = uc_group_id
+  //获取用户组的知音楼信息
+  await getGroupRoleUsers(uc_group_id, 0, 10000)
+  if (result.stat === 1) {
+    const adminUsers =
+      result.data?.users.map(item => ({
+        user_name: item.user_name,
+        href: `yach://yach.zhiyinlou.com/session/sessionp2p?sessionid=${item.yachid}`,
+      })) ?? []
+    Modal.warning({
+      title: '没有该项目的查看权限',
+      content: h('div', {}, [
+        h('br'),
+        h('span', `项目名称：${project_name}`),
+        h('br'),
+        h('span', `appid：${appid}`),
+        h('br'),
+        h('span', [
+          `管理员：`,
+          adminUsers.map((user, index) =>
+            h(
+              'a',
+              { key: index, href: user.href },
+              `${user.user_name}${index !== adminUsers.length - 1 ? '、' : ''}`,
+            ),
+          ),
+        ]),
+      ]),
+    })
+  }
+}
+
+export const useProjectClose = project => {
+  Modal.warning({
+    title: '项目已关闭',
+    content: h('div', {}, [
+      h('br'),
+      h('span', `项目名称：${project.project_name}`),
+      h('br'),
+      h('br'),
+      h('span', '在项目列表中开启项目后方可查看该页面'),
+    ]),
+  })
 }

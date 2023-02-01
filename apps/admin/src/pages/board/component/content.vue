@@ -27,7 +27,6 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
-// import { useStore } from 'vuex';
 import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useWatermark } from '@vben/hooks'
@@ -53,13 +52,8 @@ const props = defineProps({
 })
 
 const boardStore = useBoardStore()
-// const store = useStore();
 
 const username = 'xiongbilin'
-
-// //页面筛选
-// const urlSelectValue = ref('所有页面');
-// const urlSelectList = ref({ board_url: '所有页面' });
 
 //tab页key值
 const { tabState: activeKey } = storeToRefs(boardStore)
@@ -76,32 +70,6 @@ watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), { immediate: true
 onMounted(() => {
   createWatermark()
 })
-
-//获取项目下的所有URL
-// const getUrls = async () => {
-//   let params = {
-//     project_id: props.projectInfo.id,
-//     start_time: '2022-04-18' || startTime.value.split(' ')[0],
-//     end_time: '2022-04-25' || endTime.value.split(' ')[0],
-//     page: 1,
-//   };
-//   const result = await reportApis.getList(params);
-//   console.log(result);
-//   if (result.msg === 'success' && result.data?.projectList?.length) {
-//     result.data.projectList.unshift({ board_url: '所有页面' });
-//     urlSelectList.value = result.data.projectList;
-//   } else {
-//     urlSelectList.value = [{ board_url: '所有页面' }];
-//   }
-// };
-
-// watch(
-//   () => props.projectInfo,
-//   () => {
-//     getUrls();
-//   },
-//   { immediate: true }
-// );
 
 // 生成水印
 function createWatermark() {
@@ -133,9 +101,4 @@ const handleStart = () => {
     })
     .start()
 }
-
-// const editUrl = () => {
-//   console.log('编辑筛选页面');
-//   store.dispatch('actSetFilterVisible', true);
-// };
 </script>

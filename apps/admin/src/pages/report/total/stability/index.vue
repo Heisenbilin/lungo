@@ -45,8 +45,8 @@
           }"
           :requestFunc="
             params => {
-              params.filter.boardType = 'runtimeTop';
-              return litSquirrelApi.boardTaskInfo.getBoardData(params);
+              params.filter.boardType = 'runtimeTop'
+              return getChartDataByType(params)
             }
           "
           :getOptionFunc="getTop10Option"
@@ -70,12 +70,12 @@
         <BaseChart
           :requestParams="errorChartDataRequestParams"
           :bindFuncs="{
-            click: title => openResourceLogDrawer(title.data.name, 'href')
+            click: title => openResourceLogDrawer(title.data.name, 'href'),
           }"
           :requestFunc="
             params => {
-              params.filter.boardType = 'resourceTop';
-              return litSquirrelApi.boardTaskInfo.getBoardData(params);
+              params.filter.boardType = 'resourceTop'
+              return getChartDataByType(params)
             }
           "
           :getOptionFunc="getTop10Option"
@@ -118,23 +118,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import * as ApiErrorApis from '@/apis/board/apiError';
-import { reportApis } from '@/apis/report';
-import { litSquirrelApi } from '@/apis/litSquirrel';
-import { getTwoWeeksOption } from '../utils/configs';
+import { ref, watch, computed } from 'vue'
+import * as ApiErrorApis from '@/apis/board/apiError'
+import { reportApis } from '@/apis/report'
+import { getChartDataByType } from '@/apis/board/sourceMap'
+import { getTwoWeeksOption } from '../utils/configs'
 import {
   getCostTimeChartOption,
   getTop10Option,
   getTop10UrlOption,
-} from '@/pages/board/component/util/pieChartConfig';
-import { commafy } from '@vben/utils';
-import { logTypeEnum } from '@vben/constants';
-import projectAccessStatus from './projectAccessStatus.vue';
-// import LogDrawer from '/@/components/boardNew/component/logDetail/logDrawer.vue';
-import {BaseChart} from '@vben/components';
-import { useReportStore } from '@/store/modules/report';
-import { storeToRefs } from 'pinia'
+} from '@/pages/board/component/util/pieChartConfig'
+import { commafy } from '@vben/utils'
+import { logTypeEnum } from '@vben/constants'
+import projectAccessStatus from './projectAccessStatus.vue'
+import LogDrawer from '@/pages/component/logDetail/logDrawer.vue'
+import { BaseChart } from '@vben/components'
+import { useReportStore } from '@/store/modules/report'
 
 const boardStore = useReportStore()
 
@@ -142,15 +141,15 @@ const boardStore = useReportStore()
 // @ts-ignore
 // TODO: 临时解决方案
 // const { account: userid = '' } = store.state.userInfo;
-const userid = "xiongbilin";
-const resourceTotal = ref('');
-const runtimeTotal = ref('');
+const userid = 'xiongbilin'
+const resourceTotal = ref('')
+const runtimeTotal = ref('')
 
 const chartDataRequestParams = computed(() => ({
   project_id: `${boardStore.boardInfoState.id}`,
   start_time: boardStore.filterState.start_time,
   end_time: boardStore.filterState.end_time,
-}));
+}))
 
 const errorChartDataRequestParams = computed(() => ({
   boardid: '0x000',
@@ -160,20 +159,20 @@ const errorChartDataRequestParams = computed(() => ({
   },
   projectid: `${boardStore.boardInfoState.id}`,
   userid: userid,
-}));
+}))
 //后台数据获取与处理
 async function initData() {
   //异常总数 数据获取与处理
-  let result = await reportApis.getErrorTotalSummary(chartDataRequestParams.value);
+  let result = await reportApis.getErrorTotalSummary(chartDataRequestParams.value)
   if (result.stat === 1 && Object.keys(result.data).length) {
-    resourceTotal.value = commafy(result.data.resourceTotal);
-    runtimeTotal.value = commafy(result.data.runtimeTotal);
+    resourceTotal.value = commafy(result.data.resourceTotal)
+    runtimeTotal.value = commafy(result.data.runtimeTotal)
   } else {
-    resourceTotal.value = runtimeTotal.value = '';
+    resourceTotal.value = runtimeTotal.value = ''
   }
 }
 
-watch(() => chartDataRequestParams, initData, { immediate: true });
+watch(() => chartDataRequestParams, initData, { immediate: true })
 
 /*
  *  LogDrawer
@@ -185,8 +184,8 @@ const openRuntimeLogDrawer = (error_content, error_type) => {
     type: logTypeEnum.RUNTIME,
     visible: true,
     requestParams: { error_content, error_type },
-  });
-};
+  })
+}
 
 // 打开runtime异常抽屉
 const openResourceLogDrawer = (err_content, error_type) => {
@@ -194,26 +193,26 @@ const openResourceLogDrawer = (err_content, error_type) => {
     type: logTypeEnum.RESOURCE,
     visible: true,
     requestParams: { error_type, err_content },
-  });
-};
+  })
+}
 
 // 打开API异常 CostTime 抽屉
 const openApiCostTimeLog = title => {
-  const [from, to] = title.data.name.split(' to ');
+  const [from, to] = title.data.name.split(' to ')
   boardStore.openLogInfoState({
     type: logTypeEnum.API,
     visible: true,
     requestParams: { range_start: from, range_end: to },
-  });
-};
+  })
+}
 // 打开API异常 top10 抽屉
 const openApiTop10Log = title => {
   boardStore.openLogInfoState({
     type: logTypeEnum.API,
     visible: true,
     requestParams: { request_url: title.data.name, response_type: 'fail' },
-  });
-};
+  })
+}
 </script>
 
 <style lang="scss" scoped>

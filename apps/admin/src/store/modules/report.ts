@@ -29,7 +29,7 @@ export const useReportStore = defineStore({
   id: 'app-report',
   state: (): BoardState => ({
     // 项目信息
-    boardInfoState: { appid: '', eventid: '', id: -1, project_name: '' },
+    boardInfoState: { appid: '', eventid: '', id: 0, project_name: '' },
     // 筛选条件
     filterState: { start_time: '', end_time: '', dimension: 'day' },
     // 日志详情
@@ -42,17 +42,6 @@ export const useReportStore = defineStore({
     tabState: '',
   }),
   getters: {
-    getLatestSDKVersionState(): string {
-      return this.latestSDKVersionState
-    },
-    // getTabState(): string | undefined {
-    //   return this.tabState;
-    // },
-    // 根据时间范围与展示维度计算合适的日期格式化规则
-    // getTimeFormatStr(): string {
-    //   const { start_time, end_time, dimension } = this.filterState;
-    //   return computeTimeFormatStr(start_time, end_time, dimension);
-    // },
     logRequestParams(): object {
       return {
         project_id: this.boardInfoState.id,
@@ -134,10 +123,10 @@ export const useReportStore = defineStore({
 
     initStateValue(info: BoardInfo & { noInitFilter: boolean }): void {
       if (!info.noInitFilter) {
-        this.filterState = { start_time: '', end_time: '' }
+        this.commitFilterState({ start_time: '', end_time: '' })
       }
-      this.boardInfoState = info
-      this.logInfoState = { type: logTypeEnum.DEFAULT, visible: false, requestParams: {} }
+      this.commitBoardInfoState(info)
+      this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })
     },
   },
 })

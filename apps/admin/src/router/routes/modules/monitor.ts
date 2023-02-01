@@ -1,4 +1,4 @@
-import { LAYOUT } from '@/router/routes'
+import { LAYOUT } from '../basic'
 
 const Monitor: RouteRecordItem = {
   path: '/monitor',
@@ -6,8 +6,8 @@ const Monitor: RouteRecordItem = {
   component: LAYOUT,
   redirect: '/monitor/list',
   meta: {
-    orderNo: 2,
-    icon: 'ion:grid-outline',
+    orderNo: 1,
+    icon: 'mdi:monitor-dashboard',
     title: 'Web端质量监控',
   },
   children: [
@@ -29,7 +29,6 @@ const Monitor: RouteRecordItem = {
         title: 'routes.monitor.board',
         icon: 'ion:grid-outline',
         hideMenu: true,
-        // ignoreKeepAlive:true,
       },
     },
     {
@@ -40,7 +39,6 @@ const Monitor: RouteRecordItem = {
         title: 'routes.monitor.report',
         icon: 'ion:grid-outline',
         hideMenu: true,
-        // ignoreKeepAlive:true,
       },
     },
     {
@@ -60,18 +58,8 @@ const Monitor: RouteRecordItem = {
         title: 'routes.monitor.panel',
         icon: 'ion:grid-outline',
         hideMenu: true,
-        // ignoreKeepAlive:true,
       },
     },
-    // {
-    //   path: "workbench",
-    //   name: "Workbench",
-    //   component: () => import("@/pages/dashboard/workbench/index.vue"),
-    //   meta: {
-    //     title: "routes.dashboard.workbench",
-    //     icon: "ion:grid-outline",
-    //   },
-    // },
   ],
 }
 

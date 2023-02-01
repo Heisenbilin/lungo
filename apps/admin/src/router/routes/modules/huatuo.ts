@@ -1,4 +1,4 @@
-import { HUATUO_LAYOUT } from '@/router/routes'
+import { HUATUO_LAYOUT } from '../basic'
 
 const Huatuo: RouteRecordItem = {
   path: '/huatuo',

@@ -1,15 +1,15 @@
 <template>
   <div class="project-board-container">
-    <div v-if="projectId" class="grid grid-cols-2 gap-3">
+    <div class="grid grid-cols-2 gap-3">
       <div class="chart-container py-0">
-        <InfoCard boardType="report" :projectId="projectId" :projectList="projectList" :platformType="platformType" />
+        <InfoCard boardType="report" :platformType="platformType" />
       </div>
-      <div class="chart-container py-0">
+      <div v-if="boardInfoState.id" class="chart-container py-0">
         <ReportFilterCard />
       </div>
     </div>
 
-    <div v-if="projectId" class="project-board" id="project-boardReport-content">
+    <div v-if="boardInfoState.id" class="project-board" id="project-boardReport-content">
       <projectScore />
       <projectBase />
       <projectPerformance />
@@ -24,210 +24,45 @@
 
 <script setup lang="ts">
 //新版质量周报详情页Index
-import { ref, onMounted, provide, h, nextTick, unref } from 'vue';
-import { message, Modal } from 'ant-design-vue';
-import { useGo } from '@vben/hooks';
-// import { useStore } from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
-import { formatToDate } from '@vben/utils';
-import { getProjectList } from '@/apis/list';
-import { getGroupRoleUsers, getProjectById } from '@/apis/bigfish';
+import { ref, onMounted, provide } from 'vue'
 import { useReportStore } from '@/store/modules/report'
-import { useWatermark } from '@vben/hooks';
-import dayjs from 'dayjs';
-// import moment from 'moment'
 
+import InfoCard from '@/pages/component/infoCard/index.vue'
+import ReportFilterCard from '@/pages/component/filterCard/reportFilterCard.vue'
 
-import InfoCard from '@/pages/component/infoCard/index.vue';
-import ReportFilterCard from '@/pages/component/filterCard/reportFilterCard.vue';
-
-import projectScore from '@/pages/report/total/projectScore.vue';
-import projectPerformance from '@/pages/report/total/projectPerformance.vue';
-import projectStability from '@/pages/report/total/stability/index.vue';
-import projectBase from '@/pages/report/total/projectBase.vue';
-import urlTable from '@/pages/report/total/urlTable.vue';
-import { getUrlParams } from '@vben/utils';
+import projectScore from '@/pages/report/total/projectScore.vue'
+import projectPerformance from '@/pages/report/total/projectPerformance.vue'
+import projectStability from '@/pages/report/total/stability/index.vue'
+import projectBase from '@/pages/report/total/projectBase.vue'
+import urlTable from '@/pages/report/total/urlTable.vue'
 import { storeToRefs } from 'pinia'
 
-const props = defineProps({
+console.log('useReportStore', useReportStore())
+
+defineProps({
   type: String,
   platformType: String,
-  projectName: String,
-});
-// const store = useStore();
-const userid = "xiongbilin"
+})
 
 const { boardInfoState } = storeToRefs(useReportStore())
-const { commitLatestSDKVersionState } = useReportStore()
-const { projectId: urlProjectId } = getUrlParams()
-// console.log('urlProjectId', urlProjectId);
-
-//当前选中的项目id
-const projectId = ref<undefined | number>(boardInfoState.value.id == -1 ?+urlProjectId  : boardInfoState.value.id)
-//项目列表
-const projectList = <any>ref([]);
-//项目管理员信息
-const adminUsers = <any>ref([]);
-const totalAdmins = ref(0);
-let admin_uc_group_id = ref(null); //管理该项目的uc_group_id
 
 //当使用手机查看时的警告信息
-const warnMessage = ref('');
-provide('warnMessage', warnMessage); 
- //请求当前用户组管理的项目列表
- getProjectListByGroup(Boolean(urlProjectId));
+const warnMessage = ref('')
+provide('warnMessage', warnMessage)
 onMounted(() => {
   // //请求当前用户组管理的项目列表
   // getProjectListByGroup(Boolean(urlProjectId));
   //判断是否为手机查看
   if (isMobile()) {
-    warnMessage.value = '推荐使用电脑端查看周报汇总及详情信息';
+    warnMessage.value = '推荐使用电脑端查看周报汇总及详情信息'
   }
-});
-
-//获取华佗用户组对应应用列表
-async function getProjectListByGroup(
-  needHandledId = false,
-  page = 1,
-  page_size = 100000,
-  type = '',
-) {
-  // 该请求只在projectList为空的情况下执行
-  if (projectList.value.length) return
-  //若当前项目id不为空，则将当前项目id赋值给boardInfoState.value.id
-  boardInfoState.value.id = projectId.value  as number
-  //请求后端数据
-  const result = await getProjectList({ page, page_size, type })
-  if (result.stat === 1 && result.data.projects?.length) {
-    projectList.value = result.data.projects
-    //若后台传入最新sdk版本号，则更新当前最新sdk版本号value
-    if (result.data.latestSDKVersion) {
-      commitLatestSDKVersionState(result.data.latestSDKVersion)
-    }
-    if (needHandledId) {
-      initProjectId()
-    }
-  }
-}
+})
 
 //判断ua是否为移动端
 function isMobile() {
   return navigator.userAgent.match(
-    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
-  );
-}
-
-//处理路由中的项目id
-
-//当项目状态未关闭时，添加提示
-const projectClosed = async project => {
-  Modal.warning({
-    title: '项目已关闭',
-    content: h('div', {}, [
-      h('br'),
-      h('span', `项目名称：${project.project_name}`),
-      h('br'),
-      h('br'),
-      h('span', '在项目列表中开启项目后方可查看该页面'),
-    ]),
-  });
-};
-
-//当id不在项目列表中时，添加项目无权限信息提示
-const noPermission = async pid => {
-  // 以下2个语句都可
-  const result = await getProjectById(pid);
-  // const result = await BigfishApi.getProjectById (unref(currentRoute).params.projectid);
-  const { stat, msg, data } = result;
-  if (stat !== 1 || msg !== 'success') {
-    message.warning('项目权限请求失败');
-    return;
-  }
-  if (!data || !Object.keys(data).length) {
-    message.error('不存在的项目');
-    return;
-  }
-  const { uc_group_id, project_name, appid } = data;
-  admin_uc_group_id.value = uc_group_id;
-  //获取用户组的知音楼信息
-  await freshYachId(100000);
-  Modal.warning({
-    title: '没有该项目的查看权限',
-    content: h('div', {}, [
-      h('br'),
-      h('span', `项目名称：${project_name}`),
-      h('br'),
-      h('span', `appid：${appid}`),
-      h('br'),
-      h('span', [
-        `管理员：`,
-        adminUsers.value.map((user, index) =>
-          h(
-            'a',
-            { key: index, href: user.href },
-            `${user.user_name}${index !== adminUsers.value.length - 1 ? '、' : ''}`
-          )
-        ),
-      ]),
-    ]),
-  });
-};
-
-//根据用户组获取用户知音楼信息
-const freshYachId = async limit => {
-  if (!admin_uc_group_id.value) return;
-  const result = await getGroupRoleUsers(admin_uc_group_id.value, 0, limit);
-  if (result.stat === 1) {
-    adminUsers.value =
-      result.data?.users.map(item => ({
-        user_name: item.user_name,
-        href: `yach://yach.zhiyinlou.com/session/sessionp2p?sessionid=${item.yachid}`,
-      })) ?? [];
-    totalAdmins.value = result.data?.total ?? 0;
-  }
-};
-const currentRoute = useRoute();
-//处理路由中的项目id
-function initProjectId() {
-  let permissionFlag = false
-  //若该id能在项目列表中找到，设置projectId，将关联数据初始化的操作
-  for (const project of projectList.value) {
-    if (projectId.value === project.id) {
-      boardInfoState.value = project
-      permissionFlag = true
-      //判断项目是否关闭
-      if (project.close_project === 1) {
-        projectClosed(project)
-        projectId.value = undefined
-      }
-      break
-    }
-  }
-  //若在项目列表中没找到此id，则没有该项目的权限，或为不存在的项目
-  if (!permissionFlag) {
-    noPermission(projectId.value)
-    projectId.value = undefined
-  }
-  nextTick(() => createWatermark());
-
-}
-
-// 生成水印
-function createWatermark() {
-  // const username = store.state.userInfo.name || '';
-  const username = userid || '';
-  const projectName = props.projectName || '';
-  const container = document.getElementById('project-boardReport-content');
-  if (container) {
-    useWatermark({
-      container: container,
-      content: `${props.type ? '华佗' : '小松鼠'}-${projectName}-${username}`,
-      // rotate默认30度，因此长宽比为1.732:1能最大程度利用空间（容纳最多字符）
-      width: '400px',
-      height: '300px',
-      font: '7.5px Microsoft Yahei Light',
-    });
-  }
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i,
+  )
 }
 </script>
 

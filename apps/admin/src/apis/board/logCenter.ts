@@ -1,6 +1,6 @@
-import { request } from "@vben/request";
+import { request } from '@vben/request'
 enum Api {
-  GET_TOPIC_ID = "/getTopicId",
+  GET_TOPIC_ID = '/getTopicId',
 }
 
 /**
@@ -8,4 +8,4 @@ enum Api {
  */
 
 export const getKibanaTopicId = (href: any) =>
-  request.get<any>({ url: Api.GET_TOPIC_ID, params: { href } });
+  request.get<any>({ url: Api.GET_TOPIC_ID, params: { href } })

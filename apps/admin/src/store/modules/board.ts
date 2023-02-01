@@ -128,7 +128,6 @@ export const useBoardStore = defineStore({
     },
 
     initStateValue(info: BoardInfo): void {
-      console.log(info, this.filterState)
       this.commitBoardInfoState(info)
       const {
         dimension = this.filterState.dimension,

@@ -8,8 +8,11 @@
           <a :href="content.jumpKibana(topicId)" target="_blank">跳转Kibana</a>
         </template>
         <a-descriptions-item
-v-for="(item, index) in content.abstract" :label="item.name" :key="index"
-          :span="item.span || 2">
+          v-for="(item, index) in content.abstract"
+          :label="item.name"
+          :key="index"
+          :span="item.span || 2"
+        >
           <template v-if="item.isHref">
             <a-tooltip :overlayStyle="{ maxWidth: '400px' }">
               <template #title>
@@ -46,62 +49,91 @@ v-for="(item, index) in content.abstract" :label="item.name" :key="index"
         <div class="description-title">页面加载瀑布图</div>
         <WaterfallChart :content="content.performance" />
       </div>
-      <a-descriptions title="用户信息" bordered size="small" :column="2" v-if="content.userInfo !== undefined">
+      <a-descriptions
+        title="用户信息"
+        bordered
+        size="small"
+        :column="2"
+        v-if="content.userInfo !== undefined"
+      >
         <a-descriptions-item
-v-for="(item, index) in content.userInfo" :label="item.name" :key="index"
-          :span="item.span || 2">
+          v-for="(item, index) in content.userInfo"
+          :label="item.name"
+          :key="index"
+          :span="item.span || 2"
+        >
           {{ item.value }}
         </a-descriptions-item>
       </a-descriptions>
       <br />
       <div v-if="content.tryToGetSourceMapList" class="description-title">
         异常位置
-        <a-button class="ml-4" size="small" type="primary" @click="openUploadSourcemapModal">上传sourcemap</a-button>
-        <a-modal v-model:visible="showUploadSourcemapModal" title="本地上传sourcemap" @ok="handleOk" height="45%">
-          <!--              <span title="最大化" class="resize-btn">-->
-          <!--                <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="16">-->
-          <!--                  <path d="M128 160v704h768v-704H128z m722.56 657.984H174.72V206.08h675.84v611.904z" fill="#a3a3a3"></path>-->
-          <!--                </svg>-->
-          <!--              </span>-->
-          <!--              <a-tabs class="sourcemap-upload-tab">-->
-          <!--                <a-tab-pane key="localupload" size="large" tab="本地上传">-->
+        <a-button class="ml-4" size="small" type="primary" @click="openUploadSourcemapModal"
+          >上传sourcemap</a-button
+        >
+        <a-modal
+          v-model:visible="showUploadSourcemapModal"
+          title="本地上传sourcemap"
+          @ok="handleOk"
+          height="45%"
+        >
           <a-upload-dragger
-v-model:fileList="sourcemapFileList" name="file"
-            :before-upload="handleBeforeSourcemapUpload" :maxCount="1" accept="application/json,.map">
+            v-model:fileList="sourcemapFileList"
+            name="file"
+            :before-upload="handleBeforeSourcemapUpload"
+            :maxCount="1"
+            accept="application/json,.map"
+          >
             <p class="ant-upload-drag-icon">
               <inbox-outlined />
             </p>
             <p class="ant-upload-text">点击或拖拽上传本地文件</p>
           </a-upload-dragger>
-          <!--                </a-tab-pane>-->
-          <!--              </a-tabs>-->
         </a-modal>
       </div>
       <a-tabs v-if="content.tryToGetSourceMapList" v-model:activeKey="activeKey">
         <a-tab-pane key="sourcemap" tab="SourceMap映射源码">
           <a-spin size="large" class="loading" v-if="sourceMapLoading === 'loading'" />
-          <a-empty v-else-if="sourceMapLoading === 'error'" :image="simpleImage" description="请求出错">
+          <a-empty
+            v-else-if="sourceMapLoading === 'error'"
+            :image="simpleImage"
+            description="请求出错"
+          >
             <a @click="getSourceMapData">重新请求</a>
           </a-empty>
           <div v-else-if="sourceMapLoading === 'empty'" class="flex flex-col items-center">
             <a-empty :image="simpleImage" description="已接入但无数据，请检查接入状态" />
             <a-tag v-if="msg" color="error" class="w-max">{{ msg }}</a-tag>
           </div>
-          <a-empty v-else-if="sourceMapLoading === 'notOpen'" :image="simpleImage" description="项目未接入SourceMap">
+          <a-empty
+            v-else-if="sourceMapLoading === 'notOpen'"
+            :image="simpleImage"
+            description="项目未接入SourceMap"
+          >
             <a-button
-type="primary" href="https://app.xesv5.com/doc/pages/fedata/sourcemap/sourcemap.html"
-              target="_blank">
+              type="primary"
+              href="https://app.xesv5.com/doc/pages/fedata/sourcemap/sourcemap.html"
+              target="_blank"
+            >
               SourceMap接入指南
             </a-button>
           </a-empty>
-          <div v-else-if="sourceMapLoading === 'success'" v-for="(item, index) in sourceMapList" :key="index">
+          <div
+            v-else-if="sourceMapLoading === 'success'"
+            v-for="(item, index) in sourceMapList"
+            :key="index"
+          >
             <div class="tool-bar">
               <span class="stack-index">错误序号：{{ index + 1 }}</span>
             </div>
             <SourceCodeArea :source="item" />
           </div>
         </a-tab-pane>
-        <a-tab-pane v-if="content.stackList?.length" key="stack" :tab="`堆栈信息(${content.stackList.length})`">
+        <a-tab-pane
+          v-if="content.stackList?.length"
+          key="stack"
+          :tab="`堆栈信息(${content.stackList.length})`"
+        >
           <div v-for="(item, index) in content.stackList" :key="index">
             <div class="tool-bar">
               <span class="stack-index">错误序号：{{ index + 1 }}</span>
@@ -114,17 +146,17 @@ type="primary" href="https://app.xesv5.com/doc/pages/fedata/sourcemap/sourcemap.
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import { Empty, message } from 'ant-design-vue';
-import { InboxOutlined } from '@ant-design/icons-vue';
-import { getUrlParams } from '@vben/utils';
-import { useBoardStore } from '@/store/modules/board';
-import { uploadSourcemap, getMappingList } from '@/apis/board/sourceMap';
-import { WaterfallChart, CodeArea, SourceCodeArea } from '@vben/components';
-// import VueJsonPretty from 'vue-json-pretty';
-// import 'vue-json-pretty/lib/styles.css';
+import { ref, watch, computed } from 'vue'
+import { Empty, message } from 'ant-design-vue'
+import { InboxOutlined } from '@ant-design/icons-vue'
+import { getUrlParams } from '@vben/utils'
+import { useBoardStore } from '@/store/modules/board'
+import { uploadSourcemap, getMappingList } from '@/apis/board/sourceMap'
+import { WaterfallChart, CodeArea, SourceCodeArea } from '@vben/components'
+import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 const props = defineProps({
   content: {
@@ -135,82 +167,82 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
-const topicId = computed(() => boardStore.topicIdState);
-const activeKey = ref('sourcemap');
-const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE); //空数据图片
-const sourceMapLoading = ref('loading'); //sourceMap源码加载状态：loading为加载中，notOpen为未开启，empty为数据为空，success为正常数据，error为请求出错
-const sourceMapList = ref([]);
-const sourcemapFileList = ref<any[]>([]);
-const showUploadSourcemapModal = ref(false);
+})
+const topicId = computed(() => boardStore.topicIdState)
+const activeKey = ref('sourcemap')
+const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE) //空数据图片
+const sourceMapLoading = ref('loading') //sourceMap源码加载状态：loading为加载中，notOpen为未开启，empty为数据为空，success为正常数据，error为请求出错
+const sourceMapList = ref([])
+const sourcemapFileList = ref<any[]>([])
+const showUploadSourcemapModal = ref(false)
 const openUploadSourcemapModal = () => {
-  sourcemapFileList.value = [];
-  showUploadSourcemapModal.value = true;
-};
-const msg = ref('');
+  sourcemapFileList.value = []
+  showUploadSourcemapModal.value = true
+}
+const msg = ref('')
 
 const handleOk = async () => {
   if (sourcemapFileList.value.length < 1) {
-    return;
+    return
   }
   // uploadApi()
   // console.log(sourcemapFileList.value);
-  const { projectid } = getUrlParams();
+  const { projectid } = getUrlParams()
   try {
-    const result = await uploadSourcemap(projectid, sourcemapFileList.value[0]);
+    const result = await uploadSourcemap(projectid, sourcemapFileList.value[0])
     if (result.msg === 'success') {
-      showUploadSourcemapModal.value = false;
-      message.success('上传成功');
+      showUploadSourcemapModal.value = false
+      message.success('上传成功')
     }
   } catch (e) {
-    message.error('上传错误，接口调用失败');
+    message.error('上传错误，接口调用失败')
   }
-};
+}
 const handleBeforeSourcemapUpload = file => {
-  sourcemapFileList.value.push(file);
-  return false;
-};
+  sourcemapFileList.value.push(file)
+  return false
+}
 watch(sourcemapFileList, value => {
   if (value.length > 1) {
-    sourcemapFileList.value.splice(0, value.length - 1);
+    sourcemapFileList.value.splice(0, value.length - 1)
   }
-});
+})
 
 //请求sourcemap数据
 const getSourceMapData = async () => {
-  sourceMapLoading.value = 'loading';
+  sourceMapLoading.value = 'loading'
   try {
     const res = await getMappingList({
       project_id: `${boardStore.boardInfoState.id}`,
       upload_time: props.content.upload_time,
       error_content: props.content.error_content,
-    });
+    })
     if (res.stat === 1 && res.data) {
       // 如果开启了sourcemap解析
       if (res.data.isSourceOpen === 0) {
-        sourceMapLoading.value = 'notOpen';
-        return;
+        sourceMapLoading.value = 'notOpen'
+        return
       }
       if (res.data.originalList?.length) {
-        const codeList = res.data.codeList;
-        const originalList = res.data.originalList;
+        const codeList = res.data.codeList
+        const originalList = res.data.originalList
         originalList.forEach(item => {
-          item.sourceCode = codeList.find(sub => item.source === sub.source).sourceCode;
-        });
-        sourceMapList.value = originalList;
-        sourceMapLoading.value = 'success';
-        return;
+          item.sourceCode = codeList.find(sub => item.source === sub.source).sourceCode
+        })
+        sourceMapList.value = originalList
+        sourceMapLoading.value = 'success'
+        return
       }
-      sourceMapLoading.value = 'empty';
+      sourceMapLoading.value = 'empty'
     }
     if (res.stat === 0) {
-      sourceMapLoading.value = 'empty';
-      msg.value = typeof res.msg === 'string' ? res.msg : JSON.stringify(res.msg);
+      sourceMapLoading.value = 'empty'
+      msg.value = typeof res.msg === 'string' ? res.msg : JSON.stringify(res.msg)
     }
   } catch {
-    sourceMapLoading.value = 'error';
+    sourceMapLoading.value = 'error'
   }
-};
+}
 
 watch(
   () => props.content,
@@ -218,11 +250,11 @@ watch(
     //若配置中包括sourceMap获取的请求，请求sourceMap数据
     //每一个LogContent单独请求，按需获取数据
     if (val.tryToGetSourceMapList) {
-      getSourceMapData();
+      getSourceMapData()
     }
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 </script>
 
 <style lang="scss" scoped>
