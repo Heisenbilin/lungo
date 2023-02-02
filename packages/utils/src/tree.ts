@@ -206,6 +206,7 @@ function doMapTree(
   const haveChildren =
     Array.isArray(data[children]) && data[children].length > 0
   const conversionData = conversion(data) || {}
+  
   if (haveChildren) {
     return {
       ...conversionData,

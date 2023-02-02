@@ -11,6 +11,7 @@ import {
 import { MenuTypeEnum } from '@vben/constants'
 import { useI18n } from '@vben/locale'
 import { REDIRECT_NAME } from '@vben/constants'
+import { Menu } from '@vben/types'
 const { Logo, getMenus, listenerRouteChange, useMenuSetting, useAppInject } = context
 
 const { getMenuType, getAccordion } = useMenuSetting()
@@ -39,9 +40,24 @@ const showOption = () => {
 // TODO 静态路由 待实现
 onMounted(async () => {
   const menus = await getMenus()
-  menuList.value = mapTree(menus, { conversion: (menu) => routerToMenu(menu) })
+  menuList.value = diffMenu(mapTree(menus, { conversion: (menu) => routerToMenu(menu) })) //做一层数据清洗
   showOption()
 })
+// todo 递归菜单menu数据结构 清除hideMenu=true的路由信息
+function diffMenu(menuList: Menu[]) {
+  let res =[]
+  menuList.forEach(menu => {
+    if (!menu.hideMenu) {
+      if(menu?.children?.length){
+        menu.children = diffMenu(menu.children)
+        res.push(menu)
+      }else{
+        res.push(menu)
+      }
+    }
+  });
+  return res
+}
 
 listenerRouteChange((route) => {
   if (route.name === REDIRECT_NAME) return
@@ -80,6 +96,7 @@ const routerToMenu = (item: RouteRecordItem) => {
       )
     },
     key: name,
+    hideMenu: meta.hideMenu,  //加上hidemenu 因为routerToMenu 返回的对象里面做了数据改动将hideMenu丢失了
     icon: renderIcon(icon),
   }
 }
@@ -91,25 +108,12 @@ function renderIcon(icon: string) {
 
 <template>
   <div :class="bem()">
-    <logo
-      :class="bem('logo')"
-      v-if="getMenuShowLogo || getIsMobile"
-      :showTitle="!getCollapsed"
-    />
+    <logo :class="bem('logo')" v-if="getMenuShowLogo || getIsMobile" :showTitle="!getCollapsed" />
 
     <VbenScrollbar :class="bem('scrollbar')">
-      <VbenMenu
-        v-model:value="activeKey"
-        :options="menuList"
-        :collapsed="getCollapsed"
-        :collapsed-width="48"
-        :collapsed-icon-size="22"
-        :indent="18"
-        :root-indent="18"
-        ref="menuRef"
-        :mode="props.mode"
-        :accordion="getAccordion"
-      />
+      <VbenMenu v-model:value="activeKey" :options="menuList" :collapsed="getCollapsed" :collapsed-width="48"
+        :collapsed-icon-size="22" :indent="18" :root-indent="18" ref="menuRef" :mode="props.mode"
+        :accordion="getAccordion" />
     </VbenScrollbar>
   </div>
 </template>
