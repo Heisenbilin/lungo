@@ -36,6 +36,7 @@ async function getAsyncMenus() {
   return permissionStore.getFrontMenuList.filter(
     (item) => !item.hideMenu && !item.meta?.hideMenu,
   )
+  
 }
 
 export const getMenus = async (): Promise<Menu[]> => {
@@ -45,6 +46,8 @@ export const getMenus = async (): Promise<Menu[]> => {
     const routes = router.getRoutes()
     return filterTree(menus, basicFilter(routes))
   }
+  console.log(menus);
+  
   return menus
 }
 
@@ -101,6 +104,7 @@ function basicFilter(routes: RouteRecordNormalized[]) {
     if (!matchRoute) return false
     menu.icon = (menu.icon || matchRoute.meta.icon) as string
     menu.meta = matchRoute.meta
+    
     return true
   }
 }

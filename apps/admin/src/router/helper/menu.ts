@@ -65,13 +65,12 @@ export function transformRouteToMenu(
   const list = mapTree(routeList, {
     conversion: (node: RouteRecordItem) => {
       const { meta: { hideMenu = false } = {} } = node
-
       return {
         ...(node.meta || {}),
         meta: node.meta,
         name: node.name,
-        hideMenu,
         path: node.path,
+        hideMenu,
         ...(node.redirect ? { redirect: node.redirect } : {}),
       }
     },

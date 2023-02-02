@@ -1,7 +1,7 @@
 <template>
   <a-tabs v-model:activeKey="activeKey">
     <template #rightExtra>
-      <div class="flex justify-end h-8 gap-3 2xl:gap-2 items-center">
+      <div class="flex justify-end h-8 gap-3 2xl:gap-2 items-center" id="projectList">
         <div class="flex gap-3 2xl:gap-6">
           <a-select v-model:value="projectType" style="min-width: 130px">
             <a-select-option :value="''">所有应用</a-select-option>

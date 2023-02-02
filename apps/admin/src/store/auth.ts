@@ -160,7 +160,7 @@ export const useAuthStore = defineStore({
           menuList.sort((a, b) => {
             return (a.meta?.orderNo || 0) - (b.meta?.orderNo || 0)
           })
-
+          
           this.setFrontMenuList(menuList as Menu[])
 
           // Convert multi-level routing to level 2 routing
