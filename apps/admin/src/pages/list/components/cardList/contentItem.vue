@@ -25,13 +25,13 @@
           <br />
           {{ last }}同比{{ title }}：{{ parseFloat(data.yesterdayRate) }}%
         </div>
-        <div v-if="linkToUrl !== ''">点击可查看本数据详情</div>
+        <div v-if="linkToUrl?.to !== ''">点击可查看本数据详情</div>
         <div v-else>编辑器应用未生成质量周报</div>
       </div>
     </template>
     <router-link v-if="!needGray" :to="linkToUrl" class="w-1/4">
       <div
-        @click="() => useStoreProject(project, 'board', 'list', jumpKey)"
+        @click="() => useStoreProject(project, 'board')"
         class="grid justify-items-center content-center"
       >
         <!-- 正常 -->
@@ -62,7 +62,7 @@
     <router-link v-else :to="linkToUrl" class="w-1/5 opacity-80">
       <!-- 具有一定灰度、字体更小 -->
       <div
-        @click="() => useStoreProject(project, 'board', 'list', jumpKey)"
+        @click="() => useStoreProject(project, 'board')"
         class="grid justify-items-center content-center"
       >
         <div class="text-gray-500 whitespace-nowrap">{{ title }}</div>
@@ -134,11 +134,7 @@ defineProps({
     default: '',
   },
   linkToUrl: {
-    type: String,
-    required: true,
-  },
-  jumpKey: {
-    type: String,
+    type: Object,
     required: true,
   },
   project: {

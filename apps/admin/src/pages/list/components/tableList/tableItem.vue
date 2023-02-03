@@ -2,7 +2,7 @@
   <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
     <template #title>
       <div class="text-gray-800">
-        <div v-if="jumpUrl !== ''">点击可查看本数据详情</div>
+        <div v-if="jumpUrl.to !== ''">点击可查看本数据详情</div>
         <div v-else>编辑器应用未生成质量周报</div>
       </div>
     </template>
@@ -10,7 +10,7 @@
       <!-- 正常 -->
       <div
         class="flex my-1 items-center whitespace-nowrap center"
-        @click="() => useStoreProject(project, 'board', 'list', tabKey)"
+        @click="() => useStoreProject(project, 'board')"
       >
         <div class="text-1xl text-gray-700 font-medium center">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
@@ -25,10 +25,7 @@
     >
       <!-- 具有一定灰度、字体更小 -->
 
-      <div
-        class="flex my-1 items-center center"
-        @click="() => useStoreProject(project, 'board', 'list', tabKey)"
-      >
+      <div class="flex my-1 items-center center" @click="() => useStoreProject(project, 'board')">
         <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
@@ -67,7 +64,7 @@ defineProps({
     default: false,
   },
   jumpUrl: {
-    type: String,
+    type: Object,
     default: '',
   },
   tabKey: {

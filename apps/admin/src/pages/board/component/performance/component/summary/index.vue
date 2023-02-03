@@ -39,7 +39,7 @@
   </div>
   <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
-      <template #tabBarExtraContent>
+      <template #rightExtra>
         <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
       </template>
       <a-tab-pane key="average" tab="性能均值">

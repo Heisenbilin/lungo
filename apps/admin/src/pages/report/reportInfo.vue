@@ -2,7 +2,7 @@
   <div class="project-board-container">
     <div class="grid grid-cols-2 gap-3">
       <div class="chart-container py-0">
-        <InfoCard boardType="report" :platformType="platformType" />
+        <InfoCard boardType="report" />
       </div>
       <div v-if="boardInfoState.id" class="chart-container py-0">
         <ReportFilterCard />

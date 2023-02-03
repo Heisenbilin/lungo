@@ -7,7 +7,7 @@
       <a-tab-pane key="fail" tab="失败请求">
         <ResultTabTable type="fail" v-model:searchUrl="tabSearchValue.failUrl" />
       </a-tab-pane>
-      <template #tabBarExtraContent>
+      <template #rightExtra>
         <div class="box-border w-80">
           <a-input-search
             v-model:value="searchValue"

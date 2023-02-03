@@ -67,8 +67,8 @@
       </InfoTag>
       <InfoTag v-if="boardType !== 'panel'">
         <template #content>
-          <router-link :to="boardDataUrl">
-            <span @click="() => useStoreProject(projectInfo, 'panel', boardType)">
+          <router-link :to="useLinkToUrl(projectInfo.id, 'panel', boardType)">
+            <span @click="() => useStoreProject(projectInfo, 'panel')">
               <PieChartOutlined style="color: #f77f00" key="data" class="mr-2" /> 数据大盘
             </span>
           </router-link>
@@ -76,8 +76,8 @@
       </InfoTag>
       <InfoTag v-if="boardType !== 'board'">
         <template #content>
-          <router-link :to="boardUrl">
-            <span @click="() => useStoreProject(projectInfo, 'board', boardType)">
+          <router-link :to="useLinkToUrl(projectInfo.id, 'board', boardType)">
+            <span @click="() => useStoreProject(projectInfo, 'board')">
               <AreaChartOutlined style="color: #7ed591" key="board" class="mr-2" /> 质量监控
             </span>
           </router-link>
@@ -85,8 +85,8 @@
       </InfoTag>
       <InfoTag v-if="boardType !== 'report' && projectInfo.appid !== '1001970'">
         <template #content>
-          <router-link :to="reportUrl">
-            <span @click="() => useStoreProject(projectInfo, 'report', boardType)">
+          <router-link :to="useLinkToUrl(projectInfo.id, 'report', boardType)">
+            <span @click="() => useStoreProject(projectInfo, 'report')">
               <FundOutlined style="color: #720096" key="report" class="mr-2" /> 质量周报
             </span>
           </router-link>
@@ -99,8 +99,15 @@
 
 <script setup lang="ts">
 // 质量监控页 项目卡片组件
-import { ref, computed, watch, getCurrentInstance, onMounted, h } from 'vue'
-import { message } from 'ant-design-vue'
+import {
+  ref,
+  computed,
+  watch,
+  getCurrentInstance,
+  onMounted,
+  onActivated,
+  onDeactivated,
+} from 'vue'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
 import { useBoardDataStore } from '@/store/modules/panel'
@@ -115,9 +122,10 @@ import { getGroupRoleUsers } from '@/apis/bigfish'
 import { getKibanaTopicId } from '@/apis/board/logCenter'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { MonitorPage } from '@vben/constants'
+import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
+import { BoardInfo } from '@vben/types'
 import { useProjectDeny, useProjectClose } from '@/hooks/board/useAuth'
 import { getProjectList } from '@/apis/list'
-import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { storeToRefs } from 'pinia'
 import dayjs from 'dayjs'
 
@@ -130,9 +138,6 @@ const reportStore = useReportStore()
 const boardDataStore = useBoardDataStore()
 
 const props = defineProps({
-  platformType: {
-    type: String,
-  },
   boardType: {
     type: String as PropType<MonitorPage>,
     required: true,
@@ -148,19 +153,12 @@ const store =
 
 // 当前选中项目信息
 const { boardInfoState: projectInfo } = storeToRefs(store)
-const { projectId: urlProjectId } = getUrlParams()
-const projectId = ref<number | string>(projectInfo.value.id || +urlProjectId || '请选择应用')
-const currentId = computed(() => projectInfo.value.id || +urlProjectId || '请选择应用')
-//项目列表
-const projectList = ref<any[]>([])
+let { projectId: urlProjectId } = getUrlParams()
+urlProjectId = +urlProjectId || 0
+const projectId = ref<number | string>()
 
-watch(
-  () => currentId.value,
-  () => {
-    projectId.value = currentId.value
-  },
-  { immediate: true },
-)
+// 项目列表
+const projectList = ref<BoardInfo[]>([])
 
 // 用于sourcemap详情的topicid信息
 const topicId = ref('')
@@ -170,18 +168,6 @@ const jumpKibanaURL = computed(
   () =>
     `${kibanaHref}/app/kibana#/discover?_g=(filters:!(('$state':(store:globalState),meta:(alias:!n,disabled:!f,index:'${topicId.value}',key:data.eventid.keyword,negate:!f,params:(query:'${projectInfo.value.eventid}',type:phrase),type:phrase,value:'${projectInfo.value.eventid}'),query:(match:(data.eventid.keyword:(query:'${projectInfo.value.eventid}',type:phrase))))),refreshInterval:(pause:!t,value:0),time:(from:now-7d,mode:quick,to:now))&_a=(columns:!(_source),index:'${topicId.value}',interval:auto,query:(language:lucene,query:''),sort:!('@timestamp',desc))`,
 )
-
-let currentInstance: any = ''
-onMounted(() => {
-  currentInstance = getCurrentInstance()
-})
-
-//点击卡片跳转的路由
-const boardUrl = useLinkToUrl(projectInfo.value.id, 'board')
-//点击质量周报按钮跳转的路由
-const reportUrl = useLinkToUrl(projectInfo.value.id, 'report')
-//点击数据大盘按钮跳转的路由
-const boardDataUrl = useLinkToUrl(projectInfo.value.id, 'panel')
 
 //项目管理员信息<
 const admin_uc_group_id = ref<number | undefined>(undefined) // 管理该项目的uc_group_id
@@ -215,58 +201,79 @@ async function getTopicId(appId, isSaas) {
   if (res.stat === 1 && res.data) {
     topicId.value = res.data
     store.commitTopicIdState(res.data)
-  } else {
-    message.error(res.msg)
   }
 }
 
-// 切换项目
-watch(
-  () => [projectId.value, projectList.value],
-  () => {
-    const newId = projectId.value
-    if (!projectList.value.length || !newId) return
-    let permissionFlag = false
-    for (const project of projectList.value) {
-      if (project.id === newId) {
-        permissionFlag = true
-        if (project.close_project === 1) {
-          useProjectClose(project)
-          projectInfo.value.id = 0
-          return
-        }
-        if (newId !== projectInfo.value.id) {
-          // 项目信息存入store供其他组件调用
-          store.initStateValue({ ...project, noInitFilter: true })
-        }
-        addOrUpdateUrlParams({ projectId: newId })
-        getTopicId(project.appid, project.saas)
-        // 重新获取创建者知音楼用户信息
-        freshYachId(undefined, project.uc_group_id)
+watch(projectId, () => {
+  if (projectId.value && projectId.value !== '请选择应用') {
+    addOrUpdateUrlParams({ projectId: projectId.value })
+    if (projectInfo.value.id !== projectId.value) {
+      const info = projectList.value.find(item => item.id === projectId.value)
+      if (info) store.initStateValue({ ...info, noInitFilter: true })
+    }
+  }
+})
+
+const watchList: any[] = []
+function initWatch() {
+  // projectInfo.value.id可能被其他页面改动，影响到当前页面的projectId
+  // 通过注册和销毁该watch来解决
+  const dangerWatch = watch(
+    () => projectInfo.value.id,
+    () => {
+      if (projectInfo.value.id) {
+        projectId.value = projectInfo.value.id
+        getTopicId(projectInfo.value.appid, projectInfo.value.saas)
+        freshYachId(undefined, projectInfo.value.uc_group_id)
+      } else {
+        projectId.value = '请选择应用'
       }
-    }
-    if (!permissionFlag) {
-      useProjectDeny(projectId.value)
-      projectInfo.value.id = 0
-    }
-  },
-  { immediate: true },
-)
+    },
+    { immediate: true },
+  )
+  watchList.push(dangerWatch)
+}
+
+onActivated(initWatch)
+onDeactivated(() => {
+  while (watchList.length) watchList.pop()()
+})
+
+// 预警弹窗
+let currentInstance: any = ''
+onMounted(() => {
+  currentInstance = getCurrentInstance()
+  initWatch()
+})
 
 //获取华佗用户组对应应用列表
-async function getProjectListByGroup(page = 1, page_size = 100000, type = '') {
+const getProjectListByGroup = async (needCommitProjectInfo = false) => {
   // 该请求只在projectList为空的情况下执行
   if (projectList.value.length) return
-  //请求后端数据
-  const result = await getProjectList({ page, page_size, type })
-  if (result.stat === 1 && result.data.projects?.length) {
+  // 请求应用列表数据
+  const result = await getProjectList({ page: 1, page_size: 10000, type: '' })
+  if (result.stat === 1) {
     projectList.value = result.data.projects
-    //若后台传入最新sdk版本号，则更新当前最新sdk版本号value
-    if (result.data.latestSDKVersion) {
-      store.commitLatestSDKVersionState(result.data.latestSDKVersion)
+    // 若后台传入最新sdk版本号，则更新当前最新sdk版本号value
+    store.commitLatestSDKVersionState(result.data.latestSDKVersion)
+    if (needCommitProjectInfo) {
+      const project = result.data.projects.find(item => item.id === urlProjectId)
+      if (!project) {
+        projectInfo.value.id = 0
+        useProjectDeny(projectId.value)
+        return
+      }
+      if (project.close_project === 1) {
+        projectInfo.value.id = 0
+        useProjectClose(project)
+        return
+      } else {
+        projectId.value = project.id
+        store.initStateValue({ ...project, noInitFilter: true })
+      }
     }
   }
 }
 
-getProjectListByGroup()
+getProjectListByGroup(Boolean(!projectInfo.value.id && urlProjectId))
 </script>

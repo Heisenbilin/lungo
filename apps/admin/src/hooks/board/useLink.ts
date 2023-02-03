@@ -13,75 +13,71 @@ const boardDataStore = useBoardDataStore()
 /*
  * 生成跳转链接
  */
-export const useLinkToUrl = (projectId: string | number, page: MonitorPage) => {
+export const useLinkToUrl = (
+  projectId: number,
+  to: MonitorPage,
+  from: MonitorPage,
+  tabKey = 'pageview',
+) => {
+  const query: any = { projectId }
+  switch (from) {
+    case 'list':
+      query.start_time = listStore.startTime
+      query.end_time = listStore.endTime
+      query.dimension = listStore.dimension === 'week' ? 'day' : 'hour'
+      break
+    case 'board':
+      query.start_time = boardStore.filterState.start_time
+      query.end_time = boardStore.filterState.end_time
+      query.dimension = boardStore.filterState.dimension
+      break
+    case 'panel':
+      query.start_time = boardDataStore.filterState.start_time
+      query.end_time = boardDataStore.filterState.end_time
+      query.dimension = boardDataStore.filterState.dimension
+      break
+    case 'report':
+      query.start_time = reportStore.filterState.start_time
+      query.end_time = reportStore.filterState.end_time
+      query.dimension = 'day'
+      break
+  }
+
   const { platform } = listStore
+
   if (platform === '') {
-    switch (page) {
+    switch (to) {
       case 'board':
-        return `/monitor/board`
+        query.tabKey = tabKey
+        return { name: 'Board', query }
       case 'panel':
-        return `/monitor/panel`
+        return { name: 'Panel', query }
       case 'report':
-        return `/monitor/report`
+        return { name: 'Report', query }
     }
   } else if (platform === 'huatuo') {
-    switch (page) {
+    switch (to) {
       case 'board':
-        return `/huatuo/board`
+        query.tabKey = tabKey
+        return { name: 'HuatuoBoard', query }
       case 'panel':
-        return `/huatuo/panel`
+        return { name: 'HuatuoPanel', query }
       case 'report':
-        return `/huatuo/report`
+        return { name: 'HuatuoReport', query }
     }
   }
-  return ''
+  return { to: '' }
 }
 
 /*
  * 将项目信息存入store
  */
-export const useStoreProject = (
-  project: BoardInfo,
-  page: MonitorPage,
-  from: MonitorPage,
-  tabKey = 'pageview',
-) => {
-  // 根据来源页，获取对应的filterState
-  const filters: filter = {
-    start_time: '',
-    end_time: '',
-  }
-  switch (from) {
-    case 'list':
-      filters.start_time = listStore.startTime
-      filters.end_time = listStore.endTime
-      filters.dimension = listStore.dimension === 'week' ? 'day' : 'hour'
-      break
+export const useStoreProject = (project: BoardInfo, to: MonitorPage) => {
+  switch (to) {
     case 'board':
-      filters.start_time = boardStore.filterState.start_time
-      filters.end_time = boardStore.filterState.end_time
-      filters.dimension = boardStore.filterState.dimension
-      break
-    case 'panel':
-      filters.start_time = boardDataStore.filterState.start_time
-      filters.end_time = boardDataStore.filterState.end_time
-      filters.dimension = boardDataStore.filterState.dimension
-      break
-    case 'report':
-      filters.start_time = reportStore.filterState.start_time
-      filters.end_time = reportStore.filterState.end_time
-      filters.dimension = 'day'
-      break
-  }
-
-  switch (page) {
-    case 'board':
-      boardStore.tabState = tabKey
-      Object.assign(boardStore.filterState, filters)
       boardStore.boardInfoState = project
       break
     case 'panel':
-      Object.assign(boardStore.filterState, filters)
       boardDataStore.boardInfoState = project
       break
     case 'report':

@@ -51,7 +51,9 @@
             <img class="lh-thumbnail" :src="text" alt="" />
           </template>
           <template #code="{ text }">
-            <div class="lh-code"  :value="typeof text === 'object' ? text.value : text">{{ (typeof text === 'object') ? text.value : text }}</div>
+            <div class="lh-code" :value="typeof text === 'object' ? text.value : text">
+              {{ typeof text === 'object' ? text.value : text }}
+            </div>
           </template>
           <template #link="{ text }">
             <link-text :text="text" />
@@ -115,11 +117,9 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from 'vue';
-import linkText from '../linkText.vue';
-import { parseURL, bytesToSize, formatDuration, isURL, handleObjectType } from '../util';
-
-
+import { nextTick, ref } from 'vue'
+import linkText from '../linkText.vue'
+import { parseURL, bytesToSize, formatDuration, isURL, handleObjectType } from '../util'
 
 const props = defineProps({
   details: {
@@ -130,100 +130,100 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-});
+})
 //建议框架组件
-    // console.log(props.details)
-    const hasSubItems = ref(false);
+// console.log(props.details)
+const hasSubItems = ref(false)
 
-    // const headings = props.details.headings;
+// const headings = props.details.headings;
 
-    //表格列
-    //TODO:解析headings里面的displayUnit,granularity
-    //解析headings成columns
-    const columns = props.details.headings
-      ? props.details.headings.map(item => ({
-          title: item.label ? item.label : item.text,
-          dataIndex: item.key,
-          key: item.key + (item.valueType ? item.valueType : item.itemType),
-          slots: {
-            customRender:
-              (item.valueType ? item.valueType : item.itemType) +
-              (item.displayUnit ? item.displayUnit : ''),
-          },
-        }))
-      : [];
-    //console.log(columns);
-    // const items = props.details.items;
+//表格列
+//TODO:解析headings里面的displayUnit,granularity
+//解析headings成columns
+const columns = props.details.headings
+  ? props.details.headings.map(item => ({
+      title: item.label ? item.label : item.text,
+      dataIndex: item.key,
+      key: item.key + (item.valueType ? item.valueType : item.itemType),
+      slots: {
+        customRender:
+          (item.valueType ? item.valueType : item.itemType) +
+          (item.displayUnit ? item.displayUnit : ''),
+      },
+    }))
+  : []
+//console.log(columns);
+// const items = props.details.items;
 
-    //表格数据
-    //判断每一行是否有子表格，若有，往每一行record里面加入该表格的配置
-    const dataSource = props.details.items
-      ? props.details.items.map(item => {
-          if (
-            typeof item === 'object' &&
-            Object.keys(item).indexOf('subItems') !== -1 &&
-            item.subItems !== undefined
-          ) {
-            hasSubItems.value = true;
-            item.headings = props.details.headings
-              .map(head => head.subItemsHeading)
-              .map(col => ({
-                dataIndex: col.key,
-                key: col.key + (col.valueType ? col.valueType : col.itemType),
-                slots: {
-                  customRender:
-                    (col.valueType ? col.valueType : col.itemType) +
-                    (col.displayUnit ? col.displayUnit : ''),
-                },
-              }));
-            item.subItems.items.map(subItem => {
-              handleObjectType(subItem);
-            });
-          }
-          handleObjectType(item);
-          return item;
+//表格数据
+//判断每一行是否有子表格，若有，往每一行record里面加入该表格的配置
+const dataSource = props.details.items
+  ? props.details.items.map(item => {
+      if (
+        typeof item === 'object' &&
+        Object.keys(item).indexOf('subItems') !== -1 &&
+        item.subItems !== undefined
+      ) {
+        hasSubItems.value = true
+        item.headings = props.details.headings
+          .map(head => head.subItemsHeading)
+          .map(col => ({
+            dataIndex: col.key,
+            key: col.key + (col.valueType ? col.valueType : col.itemType),
+            slots: {
+              customRender:
+                (col.valueType ? col.valueType : col.itemType) +
+                (col.displayUnit ? col.displayUnit : ''),
+            },
+          }))
+        item.subItems.items.map(subItem => {
+          handleObjectType(subItem)
         })
-      : [];
-    //console.log(hasSubItems.value, dataSource);
-    // .forEach((item)=>{
-    //   if(Object.keys(item).indexOf('subItems')!==-1){
-    //     console.log(item)
-    //     item.headings = headings
-    //   }
-    // }):[]
+      }
+      handleObjectType(item)
+      return item
+    })
+  : []
+//console.log(hasSubItems.value, dataSource);
+// .forEach((item)=>{
+//   if(Object.keys(item).indexOf('subItems')!==-1){
+//     console.log(item)
+//     item.headings = headings
+//   }
+// }):[]
 
-    function renderNode(item) {
-      nextTick(() => renderNodeDiv(item, item.lhId));
-    }
+function renderNode(item) {
+  nextTick(() => renderNodeDiv(item, item.lhId))
+}
 
-    /**
-     * @param {LH.Audit.Details.NodeValue} item
-     * @return {Element}
-     */
-    function renderNodeDiv(item, divName) {
-      const node = document.getElementById(divName + props.index);
-      //console.log(node)
-      const element = document.createElement('span');
-      element.className = 'lh-node';
-      if (item.nodeLabel) {
-        const nodeLabelEl = document.createElement('div');
-        nodeLabelEl.textContent = item.nodeLabel;
-        element.appendChild(nodeLabelEl);
-      }
-      if (item.snippet) {
-        const snippetEl = document.createElement('div');
-        snippetEl.classList.add('lh-node__snippet');
-        snippetEl.textContent = item.snippet;
-        element.appendChild(snippetEl);
-      }
-      if (item.selector) {
-        element.title = item.selector;
-      }
-      if (item.path) element.setAttribute('data-path', item.path);
-      if (item.selector) element.setAttribute('data-selector', item.selector);
-      if (item.snippet) element.setAttribute('data-snippet', item.snippet);
-      node && node.appendChild(element);
-    }
+/**
+ * @param {LH.Audit.Details.NodeValue} item
+ * @return {Element}
+ */
+function renderNodeDiv(item, divName) {
+  const node = document.getElementById(divName + props.index)
+  //console.log(node)
+  const element = document.createElement('span')
+  element.className = 'lh-node'
+  if (item.nodeLabel) {
+    const nodeLabelEl = document.createElement('div')
+    nodeLabelEl.textContent = item.nodeLabel
+    element.appendChild(nodeLabelEl)
+  }
+  if (item.snippet) {
+    const snippetEl = document.createElement('div')
+    snippetEl.classList.add('lh-node__snippet')
+    snippetEl.textContent = item.snippet
+    element.appendChild(snippetEl)
+  }
+  if (item.selector) {
+    element.title = item.selector
+  }
+  if (item.path) element.setAttribute('data-path', item.path)
+  if (item.selector) element.setAttribute('data-selector', item.selector)
+  if (item.snippet) element.setAttribute('data-snippet', item.snippet)
+  node && node.appendChild(element)
+}
 </script>
 
 <style scoped lang="scss">

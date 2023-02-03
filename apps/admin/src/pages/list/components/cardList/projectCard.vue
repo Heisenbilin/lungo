@@ -87,27 +87,19 @@
             </a-button>
           </a-tooltip> -->
           <router-link :to="boardUrl">
-            <a-button
-              type="link"
-              class="!w-full"
-              @click="() => useStoreProject(project, 'board', 'list')"
-            >
+            <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'board')">
               <AreaChartOutlined style="color: #7ed591" class="text-lg mr-1" />
               <span class="text-gray-700">监控</span>
             </a-button>
           </router-link>
           <router-link :to="dataBoardUrl">
-            <a-button
-              type="link"
-              class="!w-full"
-              @click="() => useStoreProject(project, 'panel', 'list')"
-            >
+            <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'panel')">
               <PieChartOutlined style="color: #f77f00" class="text-lg mr-1" />
               <span class="text-gray-700">大盘</span>
             </a-button>
           </router-link>
           <div v-if="!isEditProject">
-            <router-link :to="reportUrl" @click="() => useStoreProject(project, 'report', 'list')">
+            <router-link :to="reportUrl" @click="() => useStoreProject(project, 'report')">
               <a-button v-if="!isEditProject" type="link" class="!w-full">
                 <FundOutlined style="color: #f07d70" class="text-lg mr-1" />
                 <span class="text-gray-700">周报</span>
@@ -179,11 +171,11 @@ const emit = defineEmits(['edit', 'star'])
 //是否为编辑器应用
 const isEditProject = props.project.appid === '1001970'
 //点击卡片跳转的路由
-const boardUrl = useLinkToUrl(props.project.id, 'board')
+const boardUrl = useLinkToUrl(props.project.id, 'board', 'list')
 //点击质量周报按钮跳转的路由
-const reportUrl = useLinkToUrl(props.project.id, 'report')
+const reportUrl = useLinkToUrl(props.project.id, 'report', 'list')
 //点击数据大盘按钮跳转的路由
-const dataBoardUrl = useLinkToUrl(props.project.id, 'panel')
+const dataBoardUrl = useLinkToUrl(props.project.id, 'panel', 'list')
 
 const openFlag = ref(false) //项目开启/关闭标志
 const collectFlag = props.project.collectFlag === '1' ? true : false

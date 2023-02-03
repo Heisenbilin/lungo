@@ -40,7 +40,6 @@ const { boardInfoState } = storeToRefs(boardStore)
     .ant-breadcrumb {
       line-height: 14px;
     }
-
     .breadcrumb {
       padding: 1%;
     }

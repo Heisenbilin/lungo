@@ -2,13 +2,13 @@
   <div class="p-4 bg-gray-100">
     <div class="grid grid-cols-2 gap-3">
       <div class="chart-container">
-        <InfoCard :platformType="props.platformType" boardType="panel" />
+        <InfoCard boardType="panel" />
       </div>
       <div v-if="boardInfoState.id" class="chart-container">
         <FilterCard boardType="data" />
       </div>
     </div>
-    <Content v-if="boardInfoState.id" :platformType="props.platformType" />
+    <Content v-if="boardInfoState.id" :platformType="platformType" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import Content from './component/content.vue'
 
 const boardDataStore = useBoardDataStore()
 
-const props = defineProps({
+defineProps({
   platformType: String,
 })
 

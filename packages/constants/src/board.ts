@@ -20,6 +20,8 @@ export const filterTitleConfig = {
   api_range: '请求耗时范围',
 }
 
+export const allNeedFilters = ['start_time', 'end_time', 'dimension']
+
 export const excludeFilters = ['start_time', 'end_time', 'dimension', 'performance_range']
 
 // tab页作用的筛选条件

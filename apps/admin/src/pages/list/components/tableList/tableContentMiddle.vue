@@ -109,7 +109,7 @@ import { BoardInfo } from '@vben/types'
 
 const props = defineProps({
   linkToUrl: {
-    type: String,
+    type: Object,
     required: true,
   },
   title: String,

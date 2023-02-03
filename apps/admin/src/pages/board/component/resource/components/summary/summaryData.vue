@@ -56,7 +56,7 @@
           :zrFuncs="{ click: addTimeFilter }"
         />
       </a-tab-pane>
-      <template #tabBarExtraContent>
+      <template #rightExtra>
         <div class="!mt-3 leading-3">
           <span v-if="faultTolerantStatus === 'accessed'" :style="'color: #3aa272'">
             资源容错已接入,
@@ -85,24 +85,24 @@
 
 <script setup lang="ts">
 //resource异常数据汇总组件
-import { ref, computed, watch } from "vue";
-import { getSummaryData } from "@/apis/board/resource";
-import { getSummaryChartOption } from "../../../util/errorSummaryChartConfig";
-import { commafy } from "@vben/utils";
-import { useBoardStore } from "@/store/modules/board";
-import { addTimeFilter } from "@/hooks/board/useDate";
-import { QuestionCircleOutlined } from "@ant-design/icons-vue";
-import { BaseChart } from "@vben/components";
-import FaultTolerantTab from "./faultTolerantTab.vue";
+import { ref, computed, watch } from 'vue'
+import { getSummaryData } from '@/apis/board/resource'
+import { getSummaryChartOption } from '../../../util/errorSummaryChartConfig'
+import { commafy } from '@vben/utils'
+import { useBoardStore } from '@/store/modules/board'
+import { addTimeFilter } from '@/hooks/board/useDate'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { BaseChart } from '@vben/components'
+import FaultTolerantTab from './faultTolerantTab.vue'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 const props = defineProps({
   faultTolerantStatus: {
     type: String,
     required: true,
   },
-});
+})
 
 //请求参数
 const requestParams = computed(() => ({
@@ -118,50 +118,50 @@ const requestParams = computed(() => ({
   client: boardStore.filterState.client, //客户端筛选
   os: boardStore.filterState.os, //操作系统筛选
   resource_type: boardStore.filterState.resource_type, //资源类型筛选
-}));
+}))
 
-const loading = ref(true);
-const activeKey = ref("summary");
+const loading = ref(true)
+const activeKey = ref('summary')
 
 const summaryData = ref({
-  summaryCount: "",
-  pvTotal: "",
-  successCount: "",
-  percentage: "",
-});
+  summaryCount: '',
+  pvTotal: '',
+  successCount: '',
+  percentage: '',
+})
 
-const getSummaryOption = (data) => getSummaryChartOption(data, boardStore.getTimeFormatStr);
+const getSummaryOption = data => getSummaryChartOption(data, boardStore.getTimeFormatStr)
 
-const requestSummaryData = async (params) => {
-  loading.value = true;
+const requestSummaryData = async params => {
+  loading.value = true
   //拦截请求结果，存入summaryData中
-  const result = await getSummaryData(params);
-  const data = result.data;
+  const result = await getSummaryData(params)
+  const data = result.data
   // console.log(data, 'getSummaryData');
-  const percent = ((data.errTotal / (data.pvTotal || 0)) * 100).toFixed(2);
+  const percent = ((data.errTotal / (data.pvTotal || 0)) * 100).toFixed(2)
   summaryData.value =
     result.stat === 1
       ? {
           summaryCount: data.errTotal,
           pvTotal: data.pvTotal || 0,
           successCount: data.successCount,
-          percentage: isNaN(+percent) || percent === "Infinity" ? "0" : percent,
+          percentage: isNaN(+percent) || percent === 'Infinity' ? '0' : percent,
         }
-      : { summaryCount: "", pvTotal: "", successCount: "", percentage: "" };
-  loading.value = false;
-  result.data = data?.details ?? [];
-  return result;
-};
+      : { summaryCount: '', pvTotal: '', successCount: '', percentage: '' }
+  loading.value = false
+  result.data = data?.details ?? []
+  return result
+}
 watch(
   () => requestParams,
   () => {
-    if (props.faultTolerantStatus === "accessed") requestSummaryData(requestParams.value);
+    if (props.faultTolerantStatus === 'accessed') requestSummaryData(requestParams.value)
   },
   {
     deep: true,
     immediate: true,
-  }
-);
+  },
+)
 </script>
 
 <style lang="scss" scoped>

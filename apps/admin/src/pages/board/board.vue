@@ -2,7 +2,7 @@
   <div class="p-4 bg-gray-100">
     <div class="grid grid-cols-2 gap-3">
       <div class="chart-container">
-        <InfoCard :platformType="platformType" boardType="board" />
+        <InfoCard boardType="board" />
       </div>
       <div v-if="boardInfoState.id" class="chart-container">
         <FilterCard />

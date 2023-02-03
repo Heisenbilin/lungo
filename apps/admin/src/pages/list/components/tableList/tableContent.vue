@@ -32,7 +32,7 @@ const props = defineProps({
   loading: Boolean,
 })
 
-const linkToUrl = useLinkToUrl(props.projectId, 'board')
+const linkToUrl = useLinkToUrl(props.projectId, 'board', 'list')
 
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>

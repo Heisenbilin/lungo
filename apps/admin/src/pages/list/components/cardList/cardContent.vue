@@ -112,7 +112,7 @@ const listStore = useListStore()
 
 const props = defineProps({
   linkToUrl: {
-    type: String,
+    type: Object,
     required: true,
   },
   project: {

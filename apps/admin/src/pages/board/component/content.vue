@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { watch, onActivated, onDeactivated, onMounted } from 'vue'
 import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useWatermark } from '@vben/hooks'
@@ -52,7 +52,6 @@ const props = defineProps({
 })
 
 const boardStore = useBoardStore()
-
 const username = 'xiongbilin'
 
 //tab页key值
@@ -62,17 +61,12 @@ if (!activeKey.value) {
   const { tabkey } = getUrlParams()
   activeKey.value = tabListEnum[tabkey] ? tabkey : 'pageview'
 }
-console.log(activeKey.value)
-watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), { immediate: true })
-
-//tab页的key值与路由绑定
-
-onMounted(() => {
-  createWatermark()
+watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), {
+  immediate: true,
 })
 
 // 生成水印
-function createWatermark() {
+const createWatermark = () => {
   const projectName = boardStore.boardInfoState.project_name || ''
   useWatermark({
     container: document.getElementById('general-board-container') || undefined,
@@ -83,6 +77,23 @@ function createWatermark() {
     font: '7.5px Microsoft Yahei Light',
   })
 }
+
+const watchFunc: any[] = []
+const initWatch = () => {
+  // 从其他页面返回时，重新生成水印
+  const watermarkWatch = watch(
+    () => [boardStore.boardInfoState.project_name, username],
+    createWatermark,
+    { immediate: true },
+  )
+  watchFunc.push(watermarkWatch)
+}
+
+onMounted(initWatch)
+onActivated(initWatch)
+onDeactivated(() => {
+  while (watchFunc.length) watchFunc.pop()()
+})
 
 const handleStart = () => {
   intro()
