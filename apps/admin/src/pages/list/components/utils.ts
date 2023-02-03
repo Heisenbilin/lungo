@@ -82,7 +82,7 @@ export function handleProjectParams(form, isShutDown) {
     domain: form.basic_info.domain,
     log_version: 1, //ES中日志解析版本默认为1（新版本）
     log_handle: 1, //ES中日志解析默认1（开启日志解析）
-    platforms: 'huatuo.xesv5.com,fedata.xesv5.com', //生效平台默认华佗、小松鼠
+    platforms: 'huatuo.xesv5.com,fedata.xesv5.com', //生效平台默认华佗、Swat Det
     href: form.basic_info.href,
     uc_group_id: form.basic_info.uc_group_id,
     git: form.basic_info.git,

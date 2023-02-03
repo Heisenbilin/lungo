@@ -138,7 +138,6 @@ const initFilterDate = () => {
     .minute(10 * Math.floor(dayjs().minute() / 10))
     .second(0)
   const range: RangeValue = [startTime, endTime]
-  console.log(range)
   return range
 }
 

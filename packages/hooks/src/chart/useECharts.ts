@@ -4,8 +4,7 @@ import { useTimeoutFn } from '../core/useTimeout'
 import { tryOnUnmounted } from '@vueuse/core'
 import { unref, nextTick, watch, computed, ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
-import { useEventListener } from '../event/useEventListener'
-import { useBreakpoint } from '../event/useBreakpoint'
+import { useEventListener, useBreakpoint } from '../event'
 import * as echarts from 'echarts'
 // import { useRootSetting } from './setting/useRootSetting';
 // import { useMenuSetting } from './setting/useMenuSetting';

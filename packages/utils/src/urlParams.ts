@@ -23,7 +23,6 @@ export function getUrlParams() {
  * @returns null
  */
 export function addOrUpdateUrlParams(obj) {
-  console.log(obj)
   try {
     const params = getUrlParams()
     Object.assign(params, obj)
@@ -35,7 +34,6 @@ export function addOrUpdateUrlParams(obj) {
     const urlParams = Object.keys(params)
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
       .join('&')
-    console.log(`${baseUrl}${urlParams.length ? '?' : ''}${urlParams}`)
     window.history.replaceState({}, '', `${baseUrl}${urlParams.length ? '?' : ''}${urlParams}`)
   } catch (e) {
     console.log(e)

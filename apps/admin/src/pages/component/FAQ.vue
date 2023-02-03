@@ -81,7 +81,7 @@
         <blockquote>
           <a-typography-text mark>步骤3.1，检查appid与eventid所处的日志环境：</a-typography-text
           ><br />
-          『生产环境』需在『华佗』上接入，『测试环境』需在测试环境的『小松鼠』进行接入。
+          『生产环境』需在『华佗』上接入，『测试环境』需在测试环境的『Swat Det』进行接入。
         </blockquote>
         <blockquote>
           <a-typography-text mark>步骤3.2，检查日志是否上传成功：</a-typography-text><br />
@@ -93,7 +93,8 @@
             步骤3.3，检查是否配置日志的解析规则并开启kibana查看：
           </a-typography-text>
           <br />
-          在日志中心的系统日志配置中，需要选择『华佗/小松鼠日志解析模版』，或手动录入字段解析规则。配置成功后需要开启kibana查看。
+          在日志中心的系统日志配置中，需要选择『华佗/Swat
+          Det日志解析模版』，或手动录入字段解析规则。配置成功后需要开启kibana查看。
         </blockquote>
       </a-typography-paragraph>
       <a-typography-paragraph>

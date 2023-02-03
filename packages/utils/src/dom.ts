@@ -24,8 +24,7 @@ function trim(string: string) {
 /* istanbul ignore next */
 export function hasClass(el: Element, cls: string) {
   if (!el || !cls) return false
-  if (cls.indexOf(' ') !== -1)
-    throw new Error('className should not contain space.')
+  if (cls.indexOf(' ') !== -1) throw new Error('className should not contain space.')
   if (el.classList) {
     return el.classList.contains(cls)
   } else {
@@ -98,12 +97,7 @@ export function getViewportOffset(element: Element): ViewportOffsetResult {
 
   const box = getBoundingClientRect(element)
 
-  const {
-    left: retLeft,
-    top: rectTop,
-    width: rectWidth,
-    height: rectHeight,
-  } = box as DOMRect
+  const { left: retLeft, top: rectTop, width: rectWidth, height: rectHeight } = box as DOMRect
 
   const scrollLeft = (pageXOffset || docScrollLeft) - (docClientLeft || 0)
   const scrollTop = (pageYOffset || docScrollTop) - (docClientTop || 0)
@@ -129,7 +123,7 @@ export function hackCss(attr: string, value: string) {
   const prefix: string[] = ['webkit', 'Moz', 'ms', 'OT']
 
   const styleObj: any = {}
-  prefix.forEach((item) => {
+  prefix.forEach(item => {
     styleObj[`${item}${upperFirst(attr)}`] = value
   })
   return {
@@ -170,3 +164,17 @@ export function off(
 //   }
 //   on(el, event, listener)
 // }
+
+export function useRafThrottle<T extends FunctionArgs>(fn: T): T {
+  let locked = false
+  // @ts-ignore
+  return function (...args: any[]) {
+    if (locked) return
+    locked = true
+    window.requestAnimationFrame(() => {
+      // @ts-ignore
+      fn.apply(this, args)
+      locked = false
+    })
+  }
+}

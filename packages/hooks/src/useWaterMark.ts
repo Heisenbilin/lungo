@@ -1,98 +1,98 @@
-// 前端生成水印并且检测DOM的修改
-// https://juejin.im/entry/6844903645155164174
-// 修改点：
-// 1.文字的旋转方式为绕中心旋转，避免文字超出边界的问题；
-// 2.允许多次调用该函数，以便动态修改水印内容
-// Tips: 仍有可能通过添加 class/id 等方式，使水印被隐藏
+import { getCurrentInstance, onBeforeUnmount, ref, Ref, shallowRef, unref } from 'vue'
+import { addResizeListener, removeResizeListener, useRafThrottle, isDef } from '@vben/utils'
 
-let mo: MutationObserver | null = null;
+const domSymbol = Symbol('watermark-dom')
 
-/**
- * 绘制水印
- * @param {object} param0 水印配置
- * @param {boolean} protect 是否保证水印存在
- */
 export function useWatermark(
-  {
-    container = document.body,
-    width = "200px",
-    height = "150px",
-    textAlign = "center",
-    textBaseline = "middle",
-    font = "16px Microsoft Yahei",
-    fillStyle = "rgba(166, 166, 166, 0.56)",
-    content = "请勿外传",
-    rotate = 30,
-    zIndex = 1000,
-  } = {},
-  protect = true
+  appendEl: Ref<HTMLElement | null> = ref(document.body) as Ref<HTMLElement>,
 ) {
-  const options = arguments[0];
+  const func = useRafThrottle(function () {
+    const el = unref(appendEl)
+    if (!el) return
+    const { clientHeight: height, clientWidth: width } = el
+    updateWatermark({ height, width })
+  })
+  const id = domSymbol.toString()
+  const watermarkEl = shallowRef<HTMLElement>()
 
-  const __wm = document.querySelector(".__wm");
-  // 已存在水印，本次是更新水印。暂时关闭MutationObserver
-  if (__wm && mo) {
-    mo.disconnect();
-    mo = null;
+  const clear = () => {
+    const domId = unref(watermarkEl)
+    watermarkEl.value = undefined
+    const el = unref(appendEl)
+    if (!el) return
+    domId && el.removeChild(domId)
+    removeResizeListener(el, func)
   }
 
-  const canvas = document.createElement("canvas");
-  canvas.setAttribute("width", width);
-  canvas.setAttribute("height", height);
+  function createBase64(str: string) {
+    const can = document.createElement('canvas')
+    const width = 300
+    const height = 240
+    Object.assign(can, { width, height })
 
-  const ctx: any = canvas.getContext("2d");
-  ctx.textAlign = textAlign;
-  ctx.textBaseline = textBaseline;
-  ctx.font = font;
-  ctx.fillStyle = fillStyle;
-  // 中心放大、绕画布中心旋转
-  ctx.translate(parseFloat(width) / 2, parseFloat(height) / 2);
-  ctx.scale(2, 2);
-  ctx.rotate((Math.PI / 180) * rotate);
-  ctx.translate(-parseFloat(width) / 2, -parseFloat(height) / 2);
-  ctx.fillText(content, parseFloat(width) / 2, parseFloat(height) / 2);
-
-  const base64Url = canvas.toDataURL();
-  const styleStr = `
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    opacity: 0.6;
-    z-index:${zIndex};
-    pointer-events:none;
-    background-repeat:repeat;
-    background-image:url('${base64Url}')`; // pointer-events属性使鼠标事件在水印层不触发
-
-  const watermarkDiv = __wm || document.createElement("div");
-  watermarkDiv.setAttribute("style", styleStr);
-  watermarkDiv.classList.add("__wm");
-
-  if (!__wm) {
-    // 首次添加水印
-    container.style.position = "relative";
-    container.insertBefore(watermarkDiv, container.firstChild);
+    const cans = can.getContext('2d')
+    if (cans) {
+      cans.rotate((-20 * Math.PI) / 120)
+      cans.font = '15px Vedana'
+      cans.fillStyle = 'rgba(0, 0, 0, 0.15)'
+      cans.textAlign = 'left'
+      cans.textBaseline = 'middle'
+      cans.fillText(str, width / 20, height)
+    }
+    return can.toDataURL('image/png')
   }
 
-  // 检测水印DOM是否发生变动，如果变动则重新生成
-  const MutationObserver = window.MutationObserver;
-  if (MutationObserver && protect) {
-    mo = new MutationObserver(function () {
-      const __wm = document.querySelector(".__wm");
-      // 只在__wm元素变动才重新调用 drawWatermark，避免一直触发
-      if ((__wm && __wm.getAttribute("style") !== styleStr) || !__wm) {
-        if (!mo) return;
-        mo.disconnect();
-        mo = null;
-        useWatermark({ ...options });
-      }
-    });
-
-    mo.observe(container, {
-      attributes: true,
-      subtree: true,
-      childList: true,
-    });
+  function updateWatermark(
+    options: {
+      width?: number
+      height?: number
+      str?: string
+    } = {},
+  ) {
+    const el = unref(watermarkEl)
+    if (!el) return
+    if (isDef(options.width)) {
+      el.style.width = `${options.width}px`
+    }
+    if (isDef(options.height)) {
+      el.style.height = `${options.height}px`
+    }
+    if (isDef(options.str)) {
+      el.style.background = `url(${createBase64(options.str)}) left top repeat`
+    }
   }
+
+  const createWatermark = (str: string) => {
+    if (unref(watermarkEl)) {
+      updateWatermark({ str })
+      return id
+    }
+    const div = document.createElement('div')
+    watermarkEl.value = div
+    div.id = id
+    div.style.pointerEvents = 'none'
+    div.style.top = '0px'
+    div.style.left = '0px'
+    div.style.position = 'absolute'
+    div.style.zIndex = '100000'
+    const el = unref(appendEl)
+    if (!el) return id
+    const { clientHeight: height, clientWidth: width } = el
+    updateWatermark({ str, width, height })
+    el.appendChild(div)
+    return id
+  }
+
+  function setWatermark(str: string) {
+    createWatermark(str)
+    addResizeListener(document.documentElement, func)
+    const instance = getCurrentInstance()
+    if (instance) {
+      onBeforeUnmount(() => {
+        clear()
+      })
+    }
+  }
+
+  return { setWatermark, clear }
 }

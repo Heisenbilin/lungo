@@ -1,5 +1,5 @@
 <template>
-  <div class="weekly-main" id="weekly-main-container">
+  <div class="weekly-main" id="weekly-main-container" ref="areaRef">
     <div class="title">质量周报</div>
 
     <url-base :score="score" />
@@ -22,93 +22,88 @@
   </div>
 </template>
 
-<script setup lang = 'ts'>
-import { onMounted, ref } from 'vue';
-// import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
-import { prepareReportResult } from './detail/util';
-import { getLighthouseAudits } from '@/apis/report/apis';
-// import drawWatermark from '/@/utils/watermark';
+<script setup lang="ts">
+import { watch, onMounted, ref, onActivated, onDeactivated } from 'vue'
+import { useRoute } from 'vue-router'
+import { prepareReportResult } from './detail/util'
+import { getLighthouseAudits } from '@/apis/report/apis'
+import { useReportStore } from '@/store/modules/report'
 import { useWatermark } from '@vben/hooks'
 
-import urlBase from './detail/urlBase.vue';
-import urlPerformance from './detail/urlPerformance.vue';
-import urlStability from './detail/urlStability.vue';
+import urlBase from './detail/urlBase.vue'
+import urlPerformance from './detail/urlPerformance.vue'
+import urlStability from './detail/urlStability.vue'
 
-// interface LighthouseType {
-//     categories: {
-//       performance: any;
-//       accessibility: any;
-//     };
-//     categoryGroups: any;
-// }
+const props = defineProps({
+  type: String,
+})
 
-//页面质量周报组件框架
-    const props = defineProps({
-      type: String,
-    });
-    // const store = useStore();
-    const route = useRoute();
-    const username = 'xiongbiling'
-    const score = ref({
-      performanceScore: 0,
-      stabilityScore: 0,
-    });
-    const lighthouseLoading = ref(0);
-    const lighthouseData =<any> ref([]);
+const route = useRoute()
+const reportStore = useReportStore()
+const userName = 'xiongbilin'
 
-    onMounted(() => {
-      initAudits();
-      createWatermark();
-    });
+const watchFunc: any[] = []
+const initWatch = () => {
+  // 从其他页面返回时，重新生成水印
+  const watermarkWatch = watch(
+    () => [reportStore.boardInfoState.project_name, userName],
+    () =>
+      setWatermark(
+        `${userName}-${reportStore.boardInfoState.project_name}-${
+          props.type ? '华佗' : 'Swat Det'
+        }`,
+      ),
+    { immediate: true },
+  )
+  watchFunc.push(watermarkWatch)
+}
 
-    function performanceScoreChange(newScore) {
-      score.value.performanceScore = newScore;
-    }
+const areaRef = ref<Nullable<HTMLElement>>(null)
+const { setWatermark } = useWatermark(areaRef)
 
-    function stabilityScoreChange(newScore) {
-      score.value.stabilityScore = newScore;
-    }
+onActivated(initWatch)
+onDeactivated(() => {
+  while (watchFunc.length) watchFunc.pop()()
+})
+const score = ref({
+  performanceScore: 0,
+  stabilityScore: 0,
+})
+const lighthouseLoading = ref(0)
+const lighthouseData = <any>ref([])
 
-    async function initAudits() {
-      const { start_time, project_id, url: board_url } = route.query;
-      const lighthouseParams = {
-        project_url: decodeURIComponent(board_url as string),
-        start_time: start_time + ' 00:00:00',
-        project_id,
-      };
-      //获取lighthouse建议数据
-      const lighthouse = await getLighthouseAudits(lighthouseParams);
+onMounted(() => {
+  initAudits()
+  initWatch()
+})
 
-      if (lighthouse.stat === 1 && lighthouse.data) {
-        //lighthouse数据预处理
-        lighthouseData.value = prepareReportResult(lighthouse.data);
+function performanceScoreChange(newScore) {
+  score.value.performanceScore = newScore
+}
 
-        lighthouseLoading.value = 2;
-      } else {
-        lighthouseLoading.value = 1;
-      }
-    }
+function stabilityScoreChange(newScore) {
+  score.value.stabilityScore = newScore
+}
 
-    // 生成水印
-    function createWatermark() {
-      const { project_name } = route.query;
-      // const username = store.state.userInfo.name || '';
-      const projectName = decodeURIComponent(project_name as string) || '';
-      const container = document.getElementById('weekly-main-container');
-      if (container) {
-        useWatermark({
-          container: container,
-          content: `${props.type ? '华佗' : '小松鼠'}-${projectName}-${username}`,
-          // rotate默认30度，因此长宽比为1.732:1能最大程度利用空间（容纳最多字符）
-          width: '320px',
-          height: '300px',
-          font: '7.5px Microsoft Yahei Light',
-        });
-      }
-    }
+async function initAudits() {
+  const { start_time, project_id, url: board_url } = route.query
+  const lighthouseParams = {
+    project_url: decodeURIComponent(board_url as string),
+    start_time: start_time + ' 00:00:00',
+    project_id,
+  }
+  //获取lighthouse建议数据
+  const lighthouse = await getLighthouseAudits(lighthouseParams)
 
+  if (lighthouse.stat === 1 && lighthouse.data) {
+    //lighthouse数据预处理
+    lighthouseData.value = prepareReportResult(lighthouse.data)
 
+    lighthouseLoading.value = 2
+  } else {
+    lighthouseLoading.value = 1
+  }
+}
 </script>
 
 <style scoped lang="scss">

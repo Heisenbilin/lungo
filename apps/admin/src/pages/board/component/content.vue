@@ -1,5 +1,5 @@
 <template>
-  <div id="general-board-container" class="p-2 mt-3">
+  <div id="general-board-container" ref="areaRef" class="p-2 mt-3 relative">
     <a-tabs v-model:activeKey="activeKey" size="large">
       <a-tab-pane key="pageview" tab="页面访问">
         <PVBoard v-if="activeKey === 'pageview'" />
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onActivated, onDeactivated, onMounted } from 'vue'
+import { watch, onActivated, onDeactivated, onMounted, ref } from 'vue'
 import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useWatermark } from '@vben/hooks'
@@ -52,6 +52,7 @@ const props = defineProps({
 })
 
 const boardStore = useBoardStore()
+
 const username = 'xiongbilin'
 
 //tab页key值
@@ -65,29 +66,24 @@ watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), {
   immediate: true,
 })
 
-// 生成水印
-const createWatermark = () => {
-  const projectName = boardStore.boardInfoState.project_name || ''
-  useWatermark({
-    container: document.getElementById('general-board-container') || undefined,
-    content: `${props.platformType ? '华佗' : '小松鼠'}-${projectName}-${username}`,
-    // rotate默认30度，因此长宽比为1.732:1能最大程度利用空间（容纳最多字符）
-    width: '400px',
-    height: '300px',
-    font: '7.5px Microsoft Yahei Light',
-  })
-}
-
 const watchFunc: any[] = []
 const initWatch = () => {
   // 从其他页面返回时，重新生成水印
   const watermarkWatch = watch(
     () => [boardStore.boardInfoState.project_name, username],
-    createWatermark,
+    () =>
+      setWatermark(
+        `${username}-${boardStore.boardInfoState.project_name}-${
+          props.platformType ? '华佗' : 'Swat Det'
+        }`,
+      ),
     { immediate: true },
   )
   watchFunc.push(watermarkWatch)
 }
+
+const areaRef = ref<Nullable<HTMLElement>>(null)
+const { setWatermark } = useWatermark(areaRef)
 
 onMounted(initWatch)
 onActivated(initWatch)

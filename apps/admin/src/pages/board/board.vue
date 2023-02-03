@@ -8,7 +8,7 @@
         <FilterCard />
       </div>
     </div>
-    <Content v-if="boardInfoState.id" :platformType="props.platformType" />
+    <Content v-if="boardInfoState.id" :platformType="platformType" />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ import FilterCard from '../component/filterCard/index.vue'
 import Content from './component/content.vue'
 const boardStore = useBoardStore()
 
-const props = defineProps({
+defineProps({
   platformType: String,
 })
 
