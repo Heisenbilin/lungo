@@ -63,9 +63,9 @@ const Monitor: RouteRecordItem = {
     {
       path: 'logs',
       name: 'logs',
-      component: () => import('@/pages/logs/index.vue'),
+      component: () => import('@/pages/logs/log.vue'),
       meta: {
-        title: '操作日志',
+        title: 'routes.monitor.logs',
         icon: 'ion:grid-outline',
         affix: false,
       },

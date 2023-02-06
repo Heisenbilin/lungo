@@ -63,6 +63,16 @@ const Huatuo: RouteRecordItem = {
         hideMenu: true,
       },
     },
+    // {
+    //   path: 'logs',
+    //   name: 'logs',
+    //   component: () => import('@/pages/logs/huatuoLog.vue'),
+    //   meta: {
+    //     title: 'routes.huatuo.logs',
+    //     icon: 'ion:grid-outline',
+    //     affix: false,
+    //   },
+    // },
   ],
 }
 

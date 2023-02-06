@@ -16,7 +16,7 @@ export default {
     report: '质量周报',
     urlReport: '页面质量周报',
     group: '用户组管理',
-    log: '操作日志',
+    logs: '操作日志',
   },
   huatuo: {
     list: '项目列表',
@@ -25,7 +25,7 @@ export default {
     report: '质量周报',
     urlReport: '页面质量周报',
     group: '用户组管理',
-    log: '操作日志',
+    logs: '操作日志',
   },
   demo: {
     demo: '演示',
