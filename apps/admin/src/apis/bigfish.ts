@@ -1,6 +1,6 @@
 import { request } from '@vben/request'
 
-export const BigfishApiPre = 'https://app.xesv5.com/bigfish/v1'
+export const BigfishApiPre = 'http://app.xesv5.com/bigfish/v1'
 const domain = location.hostname
 
 enum Api {

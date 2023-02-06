@@ -1,50 +1,155 @@
-import { reportApis } from '@/apis/report'
 import { cloneDeep } from '@vben/utils'
+import { request } from '@vben/request'
 
-export async function getTwoWeeksAverage(params) {
-  const result = await reportApis.getTwoWeeksAverage(params)
-  return result
+enum TaskType {
+  TOOL_SENDRULENOTICE = '/tool/sendrulenotice',
+  REPORT_GETPROJECTBOARDURL = '/report/getProjectBoardUrl',
+  REPORT_GETPRODAYPERFORMANCE = '/report/getProDayPerformance',
+  REPORT_GETPROJECTRANKING = '/report/getProjectRanking',
+  REPORT_GETERRORTOTALSUMMARY = '/report/getErrorTotalSummary',
+  REPORT_GETTWOWEEKSSUMMARY = '/report/getTwoWeeksSummary',
+  REPORT_GETERRORSUMMARY = '/report/getErrorSummary',
+  REPORT_ERR_SUMMARY = 'report/errSummary',
+  LIGHTHOUSE_GET_REPORT = '/lighthouse/getReport',
+  REPORT_GETAVERAGEPERFORMANCE = '/report/getAveragePerformance',
+  REPORT_GET_TWO_WEEKS_AVERAGE = '/report/getTwoWeeksAverage',
+  REPORT_CHECK_RESOURCE = '/report/checkResource',
+  REPORT_CHECK_CDN = '/report/checkCDN',
+  REPORT_GET_PROJECT_LIGHTHOUSE_STATUS = '/report/getProjectLighthouseStatus',
+  REPORT_RETRY_LIGHTHOUSE = '/report/retryLighthouse',
+  UA_CHARTDATA = '/ua/chartdata',
 }
 
-export async function getProjectRanking(params) {
-  const result = await reportApis.getProjectRanking(params)
-  return result
+//质量周报相关接口
+
+//获得两周平均性能指标
+export const  getTwoWeeksAverage = (params:any) =>{
+  return request.get({
+      url: TaskType.REPORT_GET_TWO_WEEKS_AVERAGE,
+      params,
+  })
+}
+ //获得项目评分与排名
+export const  getProjectRanking=(params) =>{
+      return request.get({
+        url: TaskType.REPORT_GETPROJECTRANKING,
+        params,
+      })
+}
+ //获取项目质量周报页面列表
+export const  getListById =(params) =>{
+    return request.get({
+      url: TaskType.REPORT_GETPROJECTBOARDURL,
+      params,
+    })
+}
+  //获得各类性能日趋指标
+export const getProDayPerformance = (params) =>{
+  return request.get({
+    url: TaskType.REPORT_GETPRODAYPERFORMANCE,
+    params,
+  })
 }
 
-export async function getListById(params) {
-  // params = {
-  //   project_id: 1631,
-  //   start_time: '2021-05-02',
-  //   end_time: '2021-06-09'
-  // }
-  const result = await reportApis.getList(params)
-  return result
+  //获取lighthouse建议
+export const getLighthouseAudits =(params) =>{
+  return request.get({
+    url: TaskType.LIGHTHOUSE_GET_REPORT,
+    params,
+  })
 }
 
-export async function getProDayPerformance(params) {
-  const result = await reportApis.getProDayPerformance(params)
-  return result
-}
 
-export async function getLighthouseAudits(params) {
-  const result = await reportApis.getLighthouseAudits(params)
-  return result
-}
-
+//获得平均项目性能指标
 export async function getAveragePerformance(params) {
-  const result = await reportApis.getAveragePerformance(params)
-  return result
+  return request.get({
+    url: TaskType.REPORT_GETAVERAGEPERFORMANCE,
+    params,
+  })
 }
-
-export async function getErrSummary(params) {
-  const result = await reportApis.getErrSummary(params)
-  return result
+ //获得统计异常信息汇总
+export const  getErrSummary = (params) =>{
+  return request.get({
+    url: TaskType.REPORT_ERR_SUMMARY,
+    params,
+  })
 }
-
+  //获得白屏信息
+  // /proxy
 export async function getWhiteRate(params) {
-  const result = await reportApis.getWhiteRate(params)
-  return result
+  return request.post({
+    url: 'https://app.xesv5.com/fire/v1/white/getWhiteRate',
+    data: {
+      ...params,
+    },
+  })
 }
+
+export const getProjectLighthouseStatus = (params)=> {
+  return request.get({
+    url: TaskType.REPORT_GET_PROJECT_LIGHTHOUSE_STATUS,
+    params,
+  })
+}
+export const  retryLighthouse=(params)=> {
+  return request.get({
+    url: TaskType.REPORT_RETRY_LIGHTHOUSE,
+    params,
+  })
+}
+
+//发送知音楼企业通知
+export const  sendRuleNotice = (data)=> {
+  return request.post({
+    url: TaskType.TOOL_SENDRULENOTICE,
+    data,
+  })
+}
+  //获得项目异常总数
+ export const getErrorTotalSummary=(params) =>{
+    return request.get({
+      url: TaskType.REPORT_GETERRORTOTALSUMMARY,
+      params,
+    })
+  }
+    //获得两周数据 runtime/resource/pv/uv
+export const  getTwoWeeksSummary=(params) =>{
+      return request.get({
+        url: TaskType.REPORT_GETTWOWEEKSSUMMARY,
+        params,
+      })
+    }
+  //获得错误页面top10周报
+export const  getErrorSummary=(params)=> {
+    return request.get({
+      url: TaskType.REPORT_GETERRORSUMMARY,
+      params,
+    })
+  }
+
+  //是否接入容错系统
+ export const  checkResourceStatus =(params)=> {
+    if (params.project_id == '0') return
+
+    return request.get({
+      url: TaskType.REPORT_CHECK_RESOURCE,
+      params,
+    })
+  }
+  //是否接入cdn
+export const  checkCDNStatus=(params)=> {
+    if (params.project_id == '0') return
+    return request.get({
+      url: TaskType.REPORT_CHECK_CDN,
+      params,
+    })
+  }
+/*
+ * @description: 获取ua数据
+ */
+export const getUaChartData = (params: any) =>
+  request.post<any>({ url: TaskType.UA_CHARTDATA, params })
+
 
 export function getPVUVOptions(data, option) {
   const opt = cloneDeep(option)
@@ -79,12 +184,4 @@ export function getCountOptions(data, option) {
   opt.series[0].data = data[0]
   opt.series[1].data = data[1]
   return opt
-}
-
-export async function getProjectLighthouseStatus(data) {
-  return await reportApis.getProjectLighthouseStatus(data)
-}
-
-export async function retryLighthouse(data) {
-  return await reportApis.retryLighthouse(data)
 }

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { reportApis } from '@/apis/report'
+import { getTwoWeeksSummary } from '@/apis/report/apis'
 import { getTwoWeeksOption } from './utils/configs'
 import * as PVApis from '@/apis/board/pv'
 import { useReportStore } from '@/store/modules/report'
@@ -60,11 +60,11 @@ const requestParams = computed(() => ({
   end_time: reportStore.filterState.end_time,
 }))
 //PV
-const getPVTwoWeeksData = params => reportApis.getTwoWeeksSummary({ ...params, board_type: 'pv' })
+const getPVTwoWeeksData = params => getTwoWeeksSummary({ ...params, board_type: 'pv' })
 const getPVTwoWeeksOption = data => getTwoWeeksOption(data, 'pv')
 
 //UV
-const getUVTwoWeeksData = params => reportApis.getTwoWeeksSummary({ ...params, board_type: 'uv' })
+const getUVTwoWeeksData = params => getTwoWeeksSummary({ ...params, board_type: 'uv' })
 const getUVTwoWeeksOption = data => getTwoWeeksOption(data, 'uv')
 </script>
 

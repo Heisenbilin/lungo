@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { getUaChartData } from '@/apis/report'
+import { getUaChartData } from '@/apis/report/apis'
 import { getUAOption, getUAVersionOption } from './uaInfoConfig'
 import { useBoardDataStore } from '@/store/modules/panel'
 import { useReportStore } from '@/store/modules/report'

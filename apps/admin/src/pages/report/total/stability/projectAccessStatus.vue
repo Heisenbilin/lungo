@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons-vue'
-import { reportApis } from '@/apis/report'
+import { checkResourceStatus,checkCDNStatus } from '@/apis/report/apis'
 import { useBoardStore } from '@/store/modules/board'
 const boardStore = useBoardStore()
 //根据项目列表中sourcemap_analysis字段的值判定是否接入sourcemap
@@ -68,7 +68,7 @@ const resourceAccessStatus = ref('noData')
 
 //检查容错是否接入
 async function checkResource() {
-  const resourceResult = await reportApis.checkResourceStatus(params.value)
+  const resourceResult = await checkResourceStatus(params.value)
   if (resourceResult?.stat === 1) {
     resourceAccessStatus.value =
       resourceResult.data.resourceResult === true ? 'accessed' : 'notAccess'
@@ -77,7 +77,7 @@ async function checkResource() {
 
 //检查cdn是否接入
 async function checkCDN() {
-  const cdnResult = await reportApis.checkCDNStatus(params.value)
+  const cdnResult = await checkCDNStatus(params.value)
   if (cdnResult?.stat === 1) {
     cdnAccessStatus.value = cdnResult.data.cdnResult === true ? 'accessed' : 'notAccess'
   }

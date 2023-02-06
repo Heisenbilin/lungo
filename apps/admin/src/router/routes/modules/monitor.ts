@@ -60,6 +60,16 @@ const Monitor: RouteRecordItem = {
         hideMenu: true,
       },
     },
+    {
+      path: 'logs',
+      name: 'logs',
+      component: () => import('@/pages/logs/index.vue'),
+      meta: {
+        title: '操作日志',
+        icon: 'ion:grid-outline',
+        affix: false,
+      },
+    },
   ],
 }
 

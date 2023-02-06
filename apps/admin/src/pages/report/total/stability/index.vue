@@ -15,7 +15,7 @@
         <BaseChart
           :requestParams="chartDataRequestParams"
           :requestFunc="
-            params => reportApis.getTwoWeeksSummary({ ...params, board_type: 'runtime' })
+            params => getTwoWeeksSummary({ ...params, board_type: 'runtime' })
           "
           :getOptionFunc="data => getTwoWeeksOption(data, 'runtime')"
           height="360px"
@@ -29,7 +29,7 @@
         <BaseChart
           :requestParams="chartDataRequestParams"
           :requestFunc="
-            params => reportApis.getTwoWeeksSummary({ ...params, board_type: 'resource' })
+            params => getTwoWeeksSummary({ ...params, board_type: 'resource' })
           "
           :getOptionFunc="data => getTwoWeeksOption(data, 'resource')"
           height="360px"
@@ -60,7 +60,7 @@
           :bindFuncs="{
             click: title => openRuntimeLogDrawer(title.data.name, 'domain'),
           }"
-          :requestFunc="params => reportApis.getErrorSummary({ ...params, board_type: 'runtime' })"
+          :requestFunc="params => getErrorSummary({ ...params, board_type: 'runtime' })"
           :getOptionFunc="data => getTop10UrlOption(data, 'runtime')"
         />
       </div>
@@ -89,7 +89,7 @@
           :bindFuncs="{
             click: title => openResourceLogDrawer(title.data.name, 'domain'),
           }"
-          :requestFunc="params => reportApis.getErrorSummary({ ...params, board_type: 'resource' })"
+          :requestFunc="params => getErrorSummary({ ...params, board_type: 'resource' })"
           :getOptionFunc="data => getTop10UrlOption(data, 'resource')"
         />
       </div>
@@ -120,7 +120,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import * as ApiErrorApis from '@/apis/board/apiError'
-import { reportApis } from '@/apis/report'
+import { getTwoWeeksSummary,getErrorSummary,getErrorTotalSummary } from '@/apis/report/apis'
 import { getChartDataByType } from '@/apis/board/sourceMap'
 import { getTwoWeeksOption } from '../utils/configs'
 import {
@@ -163,7 +163,7 @@ const errorChartDataRequestParams = computed(() => ({
 //后台数据获取与处理
 async function initData() {
   //异常总数 数据获取与处理
-  let result = await reportApis.getErrorTotalSummary(chartDataRequestParams.value)
+  let result = await getErrorTotalSummary(chartDataRequestParams.value)
   if (result.stat === 1 && Object.keys(result.data).length) {
     resourceTotal.value = commafy(result.data.resourceTotal)
     runtimeTotal.value = commafy(result.data.runtimeTotal)
