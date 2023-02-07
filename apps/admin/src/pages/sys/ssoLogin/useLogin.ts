@@ -77,8 +77,8 @@ export function useLogin() {
   onMounted(() => {
     // 如果 url 中携带 env=dev，说明是本地开发环境，跳转 localhost
     if (env.value === 'dev') {
-      const PORT = import.meta.env.VITE_PORT
-      location.href = setObjToUrlParams(`https://localhost:${PORT}/#/login`, {
+      // const PORT = import.meta.env.VITE_PORT
+      location.href = setObjToUrlParams(`https://localhost:3000/#/login`, {
         ...omit(route.query, 'env'),
       })
       return
