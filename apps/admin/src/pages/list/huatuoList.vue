@@ -17,10 +17,14 @@
         </a-button>
       </div>
     </div>
+    <!-- <div>
+      <uc-group-modal />
+    </div> -->
     <div class="box">
       <ProjectList />
     </div>
   </div>
+  
 </template>
 
 <script setup lang="ts">
@@ -28,14 +32,18 @@
 import ProjectList from './components/projectList.vue'
 import { useListStore } from '@/store/modules/list'
 // import { useStore } from 'vuex';
+// import UcGroupModal from './components/ucGroupModal.vue'
+
 const listStore = useListStore()
 listStore.platform = 'huatuo'
 
 // const store = useStore();
 const handleGroupVisible = () => {
   listStore.ucGroupVisible = true
+  
   // store.dispatch('actSetUCGroupVisible', true);
 }
+
 </script>
 
 <style lang="scss" scoped>

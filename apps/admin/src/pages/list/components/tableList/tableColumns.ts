@@ -12,7 +12,7 @@ const columns = [
     dataIndex: 'sdk',
     key: 'sdk',
     // slots: { customRender: 'sdk' },
-    width: '35px',
+    width: '40px',
   },
   {
     title: '实时评分',

@@ -65,7 +65,7 @@ const columns: TableColumnsType = [
 <template>
   <div>
     <LogSearch :query="query" @date-change="onDateChange" @search="handleSearch" />
-    <div class="mt-4 mr-5 ml-5">
+    <div class="mt-4 mr-4 ml-4">
       <a-table :data-source="logs" bordered :loading="loading" :pagination="pagination" rowKey="id" :columns="columns"
         @change="handleTableChange">
         <template #bodyCell="{ column, record }">

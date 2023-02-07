@@ -70,6 +70,16 @@ const Monitor: RouteRecordItem = {
         affix: false,
       },
     },
+    {
+      path: 'groups',
+      name: 'groups',
+      component: () => import('@/pages/groups/groups.vue'),
+      meta: {
+        title: '用户组管理',
+        icon: 'ion:grid-outline',
+        affix: false,
+      },
+    },
   ],
 }
 
