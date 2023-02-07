@@ -17,7 +17,7 @@ const { useUserStore, useLockStore } = context;
 const userStore = useUserStore();
 const lockStore = useLockStore();
 const getUserInfo = computed(() => {
-  const { realName = 'Sway Det', avatar, desc } = userStore.getUserInfo || {}
+  const { realName = 'Sway Det', avatar, desc } = userStore.userInfo || {}
 
   return { realName, avatar: avatar || headerImg, desc };
 });

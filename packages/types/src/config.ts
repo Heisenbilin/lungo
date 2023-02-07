@@ -32,6 +32,10 @@ export interface GlobConfig {
   apiUrl: string
   // Project abbreviation
   shortName: string
+  // SSO APPID
+  ssoAppid: string
+  // DP ENV
+  dpEnv: string
 }
 
 export interface GlobEnvConfig {
@@ -41,4 +45,8 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL: string
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string
+  // SSO APPID
+  VITE_GLOB_SSO_APPID: string
+  // DP ENV
+  VITE_GLOB_DP_ENV: string
 }

@@ -10,6 +10,8 @@
   "scripts": {
     "bootstrap": "pnpm install",
     "build": "pnpm --filter scripts build",
+    "febuild:prod": "pnpm --filter scripts febuild:prod",
+    "febuild:test": "pnpm --filter scripts febuild:test",
     "changeset": "changeset",
     "clean": "pnpm turbo run clean && rimraf node_modules",
     "dev": "pnpm --filter scripts dev",

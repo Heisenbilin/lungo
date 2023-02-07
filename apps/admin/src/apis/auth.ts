@@ -7,8 +7,8 @@ export interface RoleInfo {
 }
 
 export interface LoginParams {
-  username: string
-  password: string
+  token: string
+  host: string
 }
 
 export interface LoginResultModel {
@@ -18,7 +18,6 @@ export interface LoginResultModel {
 }
 
 export interface UserInfoModel {
-  roles: RoleInfo[]
   userId: string | number
   username: string
   realName?: string
@@ -26,26 +25,15 @@ export interface UserInfoModel {
   desc?: string
 }
 
-export function doLoginApi(
-  params: LoginParams,
-  mode: ErrorMessageMode = 'modal',
-) {
-  return request.post<LoginResultModel>(
-    {
-      url: '/basic-api/login',
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  )
+export function doLoginApi(params: LoginParams) {
+  return request.post<any>({
+    url: '/login',
+    params,
+  })
 }
 
 export function getUserInfoApi() {
-  return request.get<UserInfoModel>(
-    { url: '/basic-api/getUserInfo' },
-    { errorMessageMode: 'none' },
-  )
+  return request.get<any>({ url: '/account' }, { errorMessageMode: 'none' })
 }
 
 export function getPermCode() {
@@ -53,9 +41,9 @@ export function getPermCode() {
 }
 
 export function doLogoutApi() {
-  return request.get({ url: '/basic-api/logout' })
+  return request.get({ url: '/logout' })
 }
 
-export const checkLightHouseAuth = ( data: any ) => {
-  return request.post<any>({ url: '/v1/checkAuth', data })
+export const checkLightHouseAuth = (data: any) => {
+  return request.post<any>({ url: '/checkAuth', data })
 }

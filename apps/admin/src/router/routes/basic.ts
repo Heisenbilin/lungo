@@ -66,7 +66,7 @@ const ROOT_ROUTE: RouteRecordItem = {
 const LOGIN_ROUTE: RouteRecordItem = {
   path: '/login',
   name: 'Login',
-  component: () => import('@/pages/sys/login/login.vue'),
+  component: () => import('@/pages/sys/ssoLogin/ssoLogin.vue'),
   meta: {
     title: t('routes.basic.login'),
   },

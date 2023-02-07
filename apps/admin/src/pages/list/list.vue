@@ -9,10 +9,13 @@
 <script setup lang="ts" name="List">
 import ProjectList from './components/projectList.vue'
 import { useListStore } from '@/store/modules/list'
-import {onMounted,onActivated,onDeactivated} from 'vue'
+import { useUserStore } from '@/store/user'
 
 const listStore = useListStore()
 listStore.platform = ''
+
+const userStore = useUserStore()
+console.log(userStore)
 
 // import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 
@@ -22,7 +25,6 @@ listStore.platform = ''
 // if (w < 1536 && !getCollapsed.value) {
 //   toggleCollapsed();
 // }
-
 </script>
 <!-- <script lang="ts">
 import { defineComponent } from 'vue';

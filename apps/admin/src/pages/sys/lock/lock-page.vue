@@ -22,7 +22,7 @@ const { hour, month, minute, meridiem, year, day, week } = useNow(true)
 
 const { t } = useI18n()
 
-const userInfo = computed(() => userStore.getUserInfo || {})
+const userInfo = computed(() => userStore.userInfo || {})
 
 /**
  * @description: unLock

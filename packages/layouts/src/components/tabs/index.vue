@@ -32,7 +32,7 @@ const getTabsState = computed(() => {
 
 listenerRouteChange((route) => {
   const {name} = route
-  if (name === REDIRECT_NAME || !route || !userStore.getAccessToken) {
+  if (name === REDIRECT_NAME || !route || !userStore.accessToken) {
     return
   }
 

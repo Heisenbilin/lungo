@@ -18,6 +18,7 @@ const Huatuo: RouteRecordItem = {
       meta: {
         title: 'routes.huatuo.list',
         icon: 'ion:grid-outline',
+        hideTab: true,
       },
     },
     {
@@ -29,6 +30,7 @@ const Huatuo: RouteRecordItem = {
         icon: 'ion:grid-outline',
         hideBreadcrumb: true,
         hideMenu: true,
+        hideTab: true,
       },
     },
     {
@@ -40,6 +42,7 @@ const Huatuo: RouteRecordItem = {
         icon: 'ion:grid-outline',
         hideBreadcrumb: true,
         hideMenu: true,
+        hideTab: true,
       },
     },
     {
@@ -50,6 +53,7 @@ const Huatuo: RouteRecordItem = {
         title: 'routes.huatuo.urlReport',
         hideBreadcrumb: true,
         hideMenu: true,
+        hideTab: true,
       },
     },
     {
@@ -61,18 +65,9 @@ const Huatuo: RouteRecordItem = {
         hideBreadcrumb: true,
         icon: 'ion:grid-outline',
         hideMenu: true,
+        hideTab: true,
       },
     },
-    // {
-    //   path: 'logs',
-    //   name: 'logs',
-    //   component: () => import('@/pages/logs/huatuoLog.vue'),
-    //   meta: {
-    //     title: 'routes.huatuo.logs',
-    //     icon: 'ion:grid-outline',
-    //     affix: false,
-    //   },
-    // },
   ],
 }
 

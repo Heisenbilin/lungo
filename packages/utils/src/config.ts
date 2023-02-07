@@ -11,17 +11,22 @@ export function getAppConfigFileName(env: Record<string, any>) {
     .replace(/\s/g, '')
 }
 
-export function getGlobalConfig(
-  env: Record<string, any>,
-): Readonly<GlobConfig> {
-  const { VITE_GLOB_APP_TITLE, VITE_GLOB_API_URL, VITE_GLOB_APP_SHORT_NAME } =
-    getAppConfig(env)
+export function getGlobalConfig(env: Record<string, any>): Readonly<GlobConfig> {
+  const {
+    VITE_GLOB_APP_TITLE,
+    VITE_GLOB_API_URL,
+    VITE_GLOB_APP_SHORT_NAME,
+    VITE_GLOB_SSO_APPID,
+    VITE_GLOB_DP_ENV,
+  } = getAppConfig(env)
 
   // Take global configuration
   const glob: Readonly<GlobConfig> = {
     title: VITE_GLOB_APP_TITLE,
     apiUrl: VITE_GLOB_API_URL,
     shortName: VITE_GLOB_APP_SHORT_NAME,
+    ssoAppid: VITE_GLOB_SSO_APPID,
+    dpEnv: VITE_GLOB_DP_ENV,
   }
   return glob as Readonly<GlobConfig>
 }

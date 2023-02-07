@@ -24,13 +24,13 @@ export interface ConfigStoreState {
 
 export const useConfigStore = defineStore({
   id: 'app-config-store',
-  persist: {
-    strategies: [
-      {
-        paths: ['darkMode', 'projectConfig'],
-      },
-    ],
-  },
+  // persist: {
+  //   strategies: [
+  //     {
+  //       paths: ['darkMode', 'projectConfig'],
+  //     },
+  //   ],
+  // },
   state: (): ConfigStoreState => ({
     darkMode: undefined,
     pageLoading: false,

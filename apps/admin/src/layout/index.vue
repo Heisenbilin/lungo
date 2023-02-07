@@ -5,23 +5,19 @@ import { Layout } from '@vben/layouts'
 <template>
   <layout>
     <template #main>
+      <RouterView>
+        <template #default="{ Component, route }">
+          <component :is="Component" v-if="route?.meta?.ignoreKeepAlive"></component>
+          <KeepAlive v-else>
+            <component :is="Component"></component>
+          </KeepAlive>
+        </template>
+      </RouterView>
 
-  <RouterView>
-  <template #default="{ Component, route }">
-      <component :is="Component" v-if="route?.meta?.ignoreKeepAlive"></component>
-      <KeepAlive v-else>
-        <component :is="Component"></component>
-      </KeepAlive>
-  </template>
-</RouterView>
-
-<!-- <KeepAlive include="List">
+      <!-- <KeepAlive include="List">
   <RouterView>
   </RouterView>
 </KeepAlive> -->
-
     </template>
   </layout>
 </template>
-
-

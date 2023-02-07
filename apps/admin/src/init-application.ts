@@ -31,6 +31,7 @@ import { unref } from 'vue'
 import { useLockScreen } from '@/hooks/web/useLockScreen'
 import { siteSetting } from '@/config'
 import { useMultipleTabSetting } from '@/hooks/setting/useMultipleTabSetting'
+import { message, Modal } from 'ant-design-vue'
 // To decouple the modules below `packages/*`, they no longer depend on each other
 // If the modules are heavily dependent on each other, you need to provide a decoupling method, and the caller will pass the parameters
 // Each module needs to provide `bridge` file as a decoupling method
@@ -47,19 +48,19 @@ async function initPackages() {
         apiUrl,
         getTokenFunction: () => {
           const userStore = useUserStoreWithout()
-          return userStore.getAccessToken
+          return userStore.accessToken
         },
         errorFunction: null,
         noticeFunction: null,
         errorModalFunction: null,
         timeoutFunction: () => {
           const userStore = useUserStoreWithout()
-          userStore.setAccessToken(undefined)
+          userStore.accessToken = undefined
           userStore.logout(true)
         },
         unauthorizedFunction: (msg?: string) => {
           const userStore = useUserStoreWithout()
-          userStore.setAccessToken(undefined)
+          userStore.accessToken = undefined
           userStore.logout(true)
           return msg || t('sys.api.errMsg401')
         },

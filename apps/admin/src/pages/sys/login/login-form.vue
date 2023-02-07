@@ -43,19 +43,19 @@ async function handleLogin() {
   // if (!data) return
   try {
     loading.value = true;
-    const userInfo = await userStore.login({
-      password: formData.password,
-      username: formData.account,
-      mode: 'none' //不要默认的错误提示
-    });
+    // const userInfo = await userStore.login({
+    //   password: formData.password,
+    //   username: formData.account,
+    //   mode: 'none' //不要默认的错误提示
+    // });
 
-    if (userInfo) {
-      notice.success({
-        content: t('sys.login.loginSuccessTitle'),
-        meta: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realname}`,
-        duration: 3000
-      });
-    }
+    // if (userInfo) {
+    //   notice.success({
+    //     content: t('sys.login.loginSuccessTitle'),
+    //     meta: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realname}`,
+    //     duration: 3000
+    //   });
+    // }
   } catch (error) {
     // dialog.error({
     //   title: t('sys.api.errorTip'),

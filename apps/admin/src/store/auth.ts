@@ -9,11 +9,7 @@ import { getPermCode } from '@/apis/auth'
 import { toRaw } from 'vue'
 import { projectSetting } from '@/setting'
 import { PermissionModeEnum, PageEnum } from '@vben/constants'
-import {
-  flatMultiLevelRoutes,
-  transformObjToRoute,
-  transformRouteToMenu,
-} from '@/router'
+import { flatMultiLevelRoutes, transformObjToRoute, transformRouteToMenu } from '@/router'
 import { getMenuList } from '@/apis/sys'
 
 interface AuthState {
@@ -95,15 +91,14 @@ export const useAuthStore = defineStore({
       const configStore = useConfigStoreWithOut()
 
       let routes: RouteRecordItem[] = []
-      const roleList = toRaw(userStore.getRoles) || []
-      const { permissionMode = projectSetting.permissionMode } =
-        configStore.getProjectConfig
+      const roleList = [toRaw(userStore.userInfo?.role)] || []
+      const { permissionMode = projectSetting.permissionMode } = configStore.getProjectConfig
 
       const routeFilter = (route: RouteRecordItem) => {
         const { meta } = route
         const { roles } = meta || {}
         if (!roles) return true
-        return roleList.some((role) => roles.includes(role))
+        return roleList.some(role => roles.includes(role))
       }
 
       const routeRemoveIgnoreFilter = (route: RouteRecordItem) => {
@@ -117,8 +112,7 @@ export const useAuthStore = defineStore({
        * */
       const patchHomeAffix = (routes: RouteRecordItem[]) => {
         if (!routes || routes.length === 0) return
-        let homePath: string =
-          userStore.getUserInfo?.homePath || PageEnum.BASE_HOME
+        let homePath: string = PageEnum.BASE_HOME //userStore.userInfo?.homePath ||
         function patcher(routes: RouteRecordItem[], parentPath = '') {
           if (parentPath) parentPath = parentPath + '/'
           routes.forEach((route: RouteRecordItem) => {
@@ -160,7 +154,7 @@ export const useAuthStore = defineStore({
           menuList.sort((a, b) => {
             return (a.meta?.orderNo || 0) - (b.meta?.orderNo || 0)
           })
-          
+
           this.setFrontMenuList(menuList as Menu[])
 
           // Convert multi-level routing to level 2 routing

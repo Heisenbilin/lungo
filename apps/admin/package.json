@@ -7,6 +7,9 @@
   },
   "scripts": {
     "build": "pnpm cross-env NODE_ENV=production vite build",
+    "febuild:prod": "pnpm cross-env NODE_ENV=production vite build --mode production",
+    "febuild:gray": "pnpm cross-env NODE_ENV=production vite build --mode gray",
+    "febuild:test": "pnpm cross-env NODE_ENV=production vite build --mode test",
     "clean": "pnpm rimraf node_modules && pnpm rimraf dist && pnpm rimraf .turbo",
     "dev": "vite",
     "preview": "npm run build && vite preview",

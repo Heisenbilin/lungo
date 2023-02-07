@@ -1,12 +1,7 @@
 import type { Router } from 'vue-router'
 import nProgress from 'nprogress'
 import { config } from '@/config'
-import {
-  BASIC_LOCK_PATH,
-  BASIC_LOGIN_PATH,
-  PageEnum,
-  PermissionModeEnum,
-} from '@vben/constants'
+import { BASIC_LOCK_PATH, BASIC_LOGIN_PATH, PageEnum, PermissionModeEnum } from '@vben/constants'
 import { useUserStoreWithout } from '@/store/user'
 import { useAuthStoreWithout } from '@/store/auth'
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic'
@@ -17,6 +12,7 @@ import type { Menu } from '@vben/types'
 import { useConfigStoreWithOut } from '@/store/config'
 import { projectSetting } from '@/setting'
 import { configureDynamicParamsMenu } from '@/router/helper'
+import { getToken } from '@vben/utils'
 
 const LOADED_PAGE_POOL = new Map<string, boolean>()
 const LOCK_PATH = BASIC_LOCK_PATH
@@ -26,7 +22,7 @@ const ROOT_PATH = ROOT_ROUTE.path
 
 async function setupRouteGuard(router: Router) {
   const { enableProgress } = config
-  router.beforeEach(async (to) => {
+  router.beforeEach(async to => {
     // The page has already been loaded, it will be faster to open it again, you don’t need to do loading and other processing
     to.meta.loaded = !!LOADED_PAGE_POOL.get(to.path)
 
@@ -38,7 +34,7 @@ async function setupRouteGuard(router: Router) {
     return true
   })
 
-  router.afterEach((to) => {
+  router.afterEach(to => {
     // Indicates that the page has been loaded
     // When opening again, you can turn off some progress display interactions
     LOADED_PAGE_POOL.set(to.path, true)
@@ -59,24 +55,27 @@ export function createAuthGuard(router: Router) {
   const lockStore = useLockStore()
   const configStore = useConfigStoreWithOut()
   router.beforeEach(async (to, from, next) => {
-    if (
-      from.path === ROOT_PATH &&
-      to.path === PageEnum.BASE_HOME &&
-      userStore.getUserInfo?.homePath &&
-      userStore.getUserInfo?.homePath !== PageEnum.BASE_HOME
-    ) {
-      next(userStore.getUserInfo?.homePath)
-      return
+    /**
+     * 造物神的回跳地址：// https://fedata.xesv5.com/?new#/login&token=eyJpdiI6I...
+     * 这里的 to.path 是 /login&token=xxxx
+     */
+    if (to.path.startsWith('/login&token')) {
+      // 把 to.path 由 /login&token=xxx 改为 /login?token=xxx
+      return `${to.fullPath.replace('&', '?')}`
     }
+    // if (from.path === ROOT_PATH && to.path === PageEnum.BASE_HOME) {
+    //   // next(userStore.userInfo?.homePath)
+    //   return
+    // }
 
-    const token = userStore.getAccessToken
+    const token = userStore.accessToken || getToken()
 
     // TODO Whitelist can be directly entered
     if (true && whitePathList.includes(to.path as PageEnum)) {
       if (to.path === LOGIN_PATH && token) {
-        const isSessionTimeout = userStore.getSessionTimeout
+        const isSessionTimeout = userStore.sessionTimeout
         try {
-          await userStore.afterLoginAction()
+          await userStore.getUserInfoAction()
           if (!isSessionTimeout) {
             next((to.query?.redirect as string) || '/')
             return
@@ -142,18 +141,14 @@ export function createAuthGuard(router: Router) {
     if (
       from.path === LOGIN_PATH &&
       to.name === PAGE_NOT_FOUND_ROUTE.name &&
-      to.fullPath !== (userStore.getUserInfo?.homePath || PageEnum.BASE_HOME)
+      to.fullPath !== (userStore.userInfo?.homePath || PageEnum.BASE_HOME)
     ) {
-      next(userStore.getUserInfo?.homePath || PageEnum.BASE_HOME)
+      next(userStore.userInfo?.homePath || PageEnum.BASE_HOME)
       return
     }
-    const { permissionMode = projectSetting.permissionMode } =
-      configStore.getProjectConfig
+    const { permissionMode = projectSetting.permissionMode } = configStore.getProjectConfig
     // TODO get userinfo while last fetch time is empty
-    if (
-      userStore.getLastUpdateTime === 0 &&
-      permissionMode == PermissionModeEnum.BACK
-    ) {
+    if (userStore.lastUpdateTime === 0 && permissionMode == PermissionModeEnum.BACK) {
       try {
         await userStore.getUserInfoAction()
       } catch (err) {
@@ -170,7 +165,7 @@ export function createAuthGuard(router: Router) {
     // console.log(to.params)
     const routes = await permissionStore.buildRoutesAction()
 
-    routes.forEach((route) => {
+    routes.forEach(route => {
       router.addRoute(route)
     })
 
@@ -184,8 +179,7 @@ export function createAuthGuard(router: Router) {
     } else {
       const redirectPath = (from.query.redirect || to.path) as string
       const redirect = decodeURIComponent(redirectPath)
-      const nextData =
-        to.path === redirect ? { ...to, replace: true } : { path: redirect }
+      const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect }
       next(nextData)
     }
   })
@@ -193,7 +187,7 @@ export function createAuthGuard(router: Router) {
 
 // 路由守卫：进入路由，增加Tabs
 export function createTabsGuard(router: Router) {
-  router.beforeEach(async (to) => {
+  router.beforeEach(async to => {
     if (whitePathList.includes(to.path)) return
     // Notify routing changes
     setRouteChange(to)
@@ -220,14 +214,13 @@ function createParamMenuGuard(router: Router) {
     } else if (isRouteMappingMode()) {
       menus = authStore.getFrontMenuList
     }
-    menus.forEach((item) => configureDynamicParamsMenu(item, to.params))
+    menus.forEach(item => configureDynamicParamsMenu(item, to.params))
     next()
   })
 }
 const getPermissionMode = () => {
   const configStore = useConfigStoreWithOut()
-  const { permissionMode = projectSetting.permissionMode } =
-    configStore.getProjectConfig
+  const { permissionMode = projectSetting.permissionMode } = configStore.getProjectConfig
   return permissionMode
 }
 const isBackMode = () => {

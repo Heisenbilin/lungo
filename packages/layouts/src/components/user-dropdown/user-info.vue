@@ -9,7 +9,7 @@ const userStore = useUserStore()
 const { getIsMobile } = useAppInject()
 
 const getUserInfo = computed(() => {
-  const { realName = 'Sway Det', avatar, desc } = userStore.getUserInfo || {}
+  const { realName = 'Sway Det', avatar, desc } = userStore.userInfo || {}
 
   return { realName, avatar: avatar || headerImg, desc }
 })

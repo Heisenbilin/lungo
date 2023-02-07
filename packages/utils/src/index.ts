@@ -18,5 +18,6 @@ export * from './checkAuth'
 export * from './chart/index'
 export * from './theme'
 export * from './cookie'
+export * from './localStorage'
 
 // export * from 'lodash-es'

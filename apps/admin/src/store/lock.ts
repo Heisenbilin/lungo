@@ -8,9 +8,9 @@ interface LockState {
 
 export const useLockStore = defineStore({
   id: 'app-lock',
-  persist: {
-    strategies: [{ paths: ['lockInfo'] }],
-  },
+  // persist: {
+  //   strategies: [{ paths: ['lockInfo'] }],
+  // },
   state: (): LockState => ({
     lockInfo: {},
   }),
@@ -32,24 +32,24 @@ export const useLockStore = defineStore({
         this.resetLockInfo()
         return true
       }
-      const tryLogin = async () => {
-        try {
-          const username = userStore.getUserInfo?.username ?? ''
-          const res = await userStore.login({
-            username,
-            password: password!,
-            goHome: false,
-            mode: 'none',
-          })
-          if (res) {
-            this.resetLockInfo()
-          }
-          return res
-        } catch (error) {
-          return false
-        }
-      }
-      return await tryLogin()
+      // const tryLogin = async () => {
+      //   try {
+      //     const username = userStore.userInfo?.username ?? ''
+      //     const res = await userStore.login({
+      //       username,
+      //       password: password!,
+      //       goHome: false,
+      //       mode: 'none',
+      //     })
+      //     if (res) {
+      //       this.resetLockInfo()
+      //     }
+      //     return res
+      //   } catch (error) {
+      //     return false
+      //   }
+      // }
+      // return await tryLogin()
     },
   },
 })
