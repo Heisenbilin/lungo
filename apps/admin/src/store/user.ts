@@ -33,7 +33,8 @@ export const useUserStore = defineStore({
     },
 
     async login(token: string) {
-      const { data } = await doLoginApi({ token, host: 'det.tal.com' })
+      const { ssoHost } = getGlobalConfig(import.meta.env)
+      const { data } = await doLoginApi({ token, host: ssoHost })
       this.accessToken = data.token
       setToken(data.token)
       await this.getUserInfoAction()
