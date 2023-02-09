@@ -8,7 +8,7 @@
         <FilterCard boardType="data" />
       </div>
     </div>
-    <Content v-if="boardInfoState.id">
+    <Content v-if="boardInfoState.id" />
   </div>
 </template>
 

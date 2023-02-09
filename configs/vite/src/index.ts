@@ -38,7 +38,6 @@ export async function createViteConfig(
     VITE_DROP_CONSOLE,
     VITE_USE_HTTPS,
   } = viteEnv
-  console.log(resolveProxy(VITE_PROXY))
   const commonConfig: UserConfig = {
     root,
     base: VITE_PUBLIC_PATH,
