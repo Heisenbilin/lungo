@@ -18,10 +18,12 @@ export function useLogin() {
   console.log('ssoToken', ssoToken.value, env)
 
   const goSSOLoginPage = () => {
+    const { dpEnv } = getGlobalConfig(import.meta.env)
     const ssoPageUrl = `https://sso.100tal.com/portal/login/${ssoAppid}`
     // 携带 redirect 和其他参数跳转造物神
     window.location.href = setObjToUrlParams(ssoPageUrl, {
       ...route.query,
+      env: dpEnv,
     })
   }
 
@@ -37,14 +39,15 @@ export function useLogin() {
       console.log(route.query.redirect, 'redirect')
       console.log(route.query)
       console.log(route)
+      const { dpEnv } = getGlobalConfig(import.meta.env)
       const params = {
         path: decodeURIComponent((route.query.redirect as string) || '/'),
         query: {
-          ...omit(route.query, ['redirect', 'env', 'token']),
+          ...omit(route.query, ['redirect', 'token']),
+          env: dpEnv,
           ...formatQuery(decodeURIComponent(route.query.redirect as string)),
         },
       }
-      console.log(params)
       router.push(params)
     } catch (error) {
       console.log(error)

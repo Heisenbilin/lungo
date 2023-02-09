@@ -1,7 +1,7 @@
 import { initRequest } from '@vben/request'
 import { useUserStoreWithout, useUserStore } from '@/store/user'
 import { useI18n, useLocale } from '@vben/locale'
-import { deepMerge, getGlobalConfig } from '@vben/utils'
+import { deepMerge, getGlobalConfig, getToken } from '@vben/utils'
 import { useConfigStoreWithOut, useConfigStore } from '@/store/config'
 import { projectSetting } from './setting'
 import { initComp } from '@vben/vbencomponents'
@@ -48,7 +48,8 @@ async function initPackages() {
         apiUrl,
         getTokenFunction: () => {
           const userStore = useUserStoreWithout()
-          return userStore.accessToken
+          const token = getToken()
+          return userStore.accessToken || token
         },
         errorFunction: null,
         noticeFunction: null,

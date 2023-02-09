@@ -129,6 +129,10 @@ export const useUserStore = defineStore({
         env: dpEnv === 'dev' ? dpEnv : '',
         redirect: hash.slice(1), // hash => #/projectboard/qcEntry1631/:week  hash.slice(1) => /projectboard/qcEntry1631/:week
       })
+      console.log(
+        'redirect',
+        `https://api.service.100tal.com/sso/logout?path=${encodeURIComponent(path)}`,
+      )
       window.location.href = `https://api.service.100tal.com/sso/logout?path=${encodeURIComponent(
         path,
       )}`
