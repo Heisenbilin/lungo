@@ -1,0 +1,46 @@
+{
+	"runtime": {
+		"rules": [
+			{
+				"url": "static0.xesimg.com",
+				"fallbacks": [
+					"static0.xesimg.com", 
+					"static1.xesimg.com", 
+					"static2.xesimg.com", 
+					"static3.xesimg.com", 
+					"static4.xesimg.com", 
+					"static5.xesimg.com", 
+					"static6.xesimg.com",
+					"static7.xesimg.com", 
+					"static9.xesimg.com", 
+					"static10.xesimg.com" 
+				]
+			},
+			{
+				"url": "static0.saasz.vdyoo.com",
+				"fallbacks": [
+					"static0.saasz.vdyoo.com", 
+					"static1.saasz.vdyoo.com", 
+					"static2.saasz.vdyoo.com",
+					"static3.saasz.vdyoo.com", 
+					"static4.saasz.vdyoo.com", 
+					"static5.saasz.vdyoo.com", 
+					"static6.saasz.vdyoo.com", 
+					"static7.saasz.vdyoo.com", 
+					"static8.saasz.vdyoo.com", 
+					"static9.saasz.vdyoo.com", 
+					"static10.saasz.vdyoo.com" 
+				]
+			}
+		],
+		"log": {
+			"api": "https://dj.xesimg.com/appid/c.gif",
+			"appid": "1005298",
+			"eventid": "web-swaydat"
+		}
+	},
+	"output": {
+		"file": "dist/index.html",
+		"insertAfter": "<script data-url-fallback>"
+	}
+}

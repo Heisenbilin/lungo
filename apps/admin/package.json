@@ -7,9 +7,11 @@
   },
   "scripts": {
     "build": "pnpm cross-env NODE_ENV=production vite build",
-    "febuild:prod": "pnpm cross-env NODE_ENV=production vite build --mode production",
+    "febuild:prod": "pnpm cross-env NODE_ENV=production vite build --mode production && pnpm run uploadprod && insert-url-fallback",
+    "uploadprod": "tal-oss-huatuo upload --projectId=10700",
     "febuild:gray": "pnpm cross-env NODE_ENV=production vite build --mode gray",
-    "febuild:test": "pnpm cross-env NODE_ENV=production vite build --mode test",
+    "febuild:test": "pnpm cross-env NODE_ENV=production vite build --mode test && pnpm run uploadtest",
+    "uploadtest": "tal-oss-huatuo upload --projectId=10702",
     "clean": "pnpm rimraf node_modules && pnpm rimraf dist && pnpm rimraf .turbo",
     "dev": "vite",
     "preview": "npm run build && vite preview",
@@ -35,7 +37,9 @@
     "@vben/vbencomponents": "workspace:*",
     "@xes/duty-aid": "^0.0.13",
     "@xes/fe-utils": "^2.1.4",
+    "@xes/tal-oss-huatuo": "^0.0.9",
     "@xes/uc": "0.0.22",
+    "@xes/xes_fe_log": "^2.4.1",
     "ant-design-vue": "^3.2.14",
     "dayjs": "^1.11.7",
     "echarts": "^5.3.2",
@@ -52,6 +56,7 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@bcc/url-fallback": "^1.1.0",
     "@config/css-preprocess": "workspace:*",
     "@config/vite": "workspace:*",
     "@types/mockjs": "^1.0.7",

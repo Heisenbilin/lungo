@@ -4,7 +4,7 @@ import { getGlobalConfig } from '@vben/utils'
 import { computed, onMounted } from 'vue'
 import { setObjToUrlParams, omit } from '@vben/utils'
 
-const { ssoAppid } = getGlobalConfig(import.meta.env)
+const { ssoAppid, dpEnv } = getGlobalConfig(import.meta.env)
 
 export function useLogin() {
   const router = useRouter()
