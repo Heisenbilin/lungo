@@ -3,7 +3,7 @@ import { useListStore } from '@/store/modules/list'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
 import { useBoardDataStore } from '@/store/modules/panel'
-import { BoardInfo, filter } from '@vben/types'
+import { BoardInfo } from '@vben/types'
 
 const listStore = useListStore()
 const boardStore = useBoardStore()
@@ -43,29 +43,16 @@ export const useLinkToUrl = (
       break
   }
 
-  const { platform } = listStore
-
-  if (platform === '') {
-    switch (to) {
-      case 'board':
-        query.tabKey = tabKey
-        return { name: 'Board', query }
-      case 'panel':
-        return { name: 'Panel', query }
-      case 'report':
-        return { name: 'Report', query }
-    }
-  } else if (platform === 'huatuo') {
-    switch (to) {
-      case 'board':
-        query.tabKey = tabKey
-        return { name: 'HuatuoBoard', query }
-      case 'panel':
-        return { name: 'HuatuoPanel', query }
-      case 'report':
-        return { name: 'HuatuoReport', query }
-    }
+  switch (to) {
+    case 'board':
+      query.tabKey = tabKey
+      return { name: 'Board', query }
+    case 'panel':
+      return { name: 'Panel', query }
+    case 'report':
+      return { name: 'Report', query }
   }
+
   return { to: '' }
 }
 

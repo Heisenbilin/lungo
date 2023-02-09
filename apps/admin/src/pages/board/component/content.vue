@@ -5,7 +5,7 @@
         <PVBoard v-if="activeKey === 'pageview'" />
       </a-tab-pane>
       <a-tab-pane key="performance" tab="性能指标">
-        <PerformanceBoard v-if="activeKey === 'performance'" :platformType="props.platformType" />
+        <PerformanceBoard v-if="activeKey === 'performance'"/>
       </a-tab-pane>
       <a-tab-pane key="runtime" tab="运行时异常">
         <RuntimeErrorBoard v-if="activeKey === 'runtime'" />
@@ -44,13 +44,6 @@ import FAQ from '../../component/FAQ.vue'
 import intro from 'intro.js'
 import 'intro.js/introjs.css'
 
-//数据看板：管理时间、维度与展示tab
-const props = defineProps({
-  platformType: {
-    type: String,
-  },
-})
-
 const boardStore = useBoardStore()
 
 const username = 'xiongbilin'
@@ -71,12 +64,7 @@ const initWatch = () => {
   // 从其他页面返回时，重新生成水印
   const watermarkWatch = watch(
     () => [boardStore.boardInfoState.project_name, username],
-    () =>
-      setWatermark(
-        `${username}-${boardStore.boardInfoState.project_name}-${
-          props.platformType ? '华佗' : 'Swat Det'
-        }`,
-      ),
+    () => setWatermark(`${username}-${boardStore.boardInfoState.project_name}`),
     { immediate: true },
   )
   watchFunc.push(watermarkWatch)

@@ -37,7 +37,12 @@ export const useUserStore = defineStore({
       const { data } = await doLoginApi({ token, host: ssoHost })
       this.accessToken = data.token
       setToken(data.token)
-      await this.getUserInfoAction()
+      this.setUserInfo({
+        account: data.account,
+        name: data.name,
+        role: data.role,
+        workcode: data.workcode,
+      })
     },
     async getUserInfoAction() {
       const { data } = await getUserInfoApi()
@@ -47,6 +52,7 @@ export const useUserStore = defineStore({
         role: data.role,
         workcode: data.workcode,
       })
+      console.log('this.userInfo', this.userInfo)
     },
 
     // async login(

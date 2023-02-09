@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <Content v-if="boardInfoState.id" :platformType="props.platformType" />
+    <Content v-if="boardInfoState.id"/>
   </div>
 </template>
 
@@ -24,10 +24,6 @@ import Content from './totalContent.vue'
 import { storeToRefs } from 'pinia'
 
 const reprotStore = useReportStore()
-
-const props = defineProps({
-  platformType: String,
-})
 
 const { boardInfoState } = storeToRefs(reprotStore)
 </script>

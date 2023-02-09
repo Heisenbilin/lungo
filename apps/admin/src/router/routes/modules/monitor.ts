@@ -60,26 +60,6 @@ const Monitor: RouteRecordItem = {
         hideMenu: true,
       },
     },
-    {
-      path: 'logs',
-      name: 'logs',
-      component: () => import('@/pages/logs/log.vue'),
-      meta: {
-        title: 'routes.monitor.logs',
-        icon: 'ion:grid-outline',
-        affix: false,
-      },
-    },
-    {
-      path: 'groups',
-      name: 'groups',
-      component: () => import('@/pages/groups/groups.vue'),
-      meta: {
-        title: '用户组管理',
-        icon: 'ion:grid-outline',
-        affix: false,
-      },
-    },
   ],
 }
 

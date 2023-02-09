@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { getUserGroups } from '@/apis/list'
 
 interface ListState {
-  platform: '' | 'huatuo'
   startTime: string
   endTime: string
   dimension: 'week' | 'day'
@@ -17,7 +16,6 @@ interface ListState {
 export const useListStore = defineStore({
   id: 'app-list',
   state: (): ListState => ({
-    platform: '',
     startTime: '',
     endTime: '',
     dimension: 'week',

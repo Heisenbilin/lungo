@@ -8,7 +8,7 @@
         <FilterCard boardType="data" />
       </div>
     </div>
-    <Content v-if="boardInfoState.id" :platformType="platformType" />
+    <Content v-if="boardInfoState.id">
   </div>
 </template>
 
@@ -22,10 +22,6 @@ import FilterCard from '../component/filterCard/index.vue'
 import Content from './component/content.vue'
 
 const boardDataStore = useBoardDataStore()
-
-defineProps({
-  platformType: String,
-})
 
 // 项目id
 const { boardInfoState } = storeToRefs(boardDataStore)

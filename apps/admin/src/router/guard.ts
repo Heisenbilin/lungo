@@ -64,7 +64,7 @@ export function createAuthGuard(router: Router) {
       return `${to.fullPath.replace('&', '?')}`
     }
     // if (from.path === ROOT_PATH && to.path === PageEnum.BASE_HOME) {
-    //   // next(userStore.userInfo?.homePath)
+    //   next(PageEnum.BASE_HOME)
     //   return
     // }
 
@@ -80,7 +80,9 @@ export function createAuthGuard(router: Router) {
             next((to.query?.redirect as string) || '/')
             return
           }
-        } catch {}
+        } catch (err) {
+          console.log(err)
+        }
       }
       if (to.path === LOCK_PATH && !lockStore.getLockInfo?.isLock) {
         next({ path: from.path })
@@ -89,6 +91,7 @@ export function createAuthGuard(router: Router) {
       next()
       return
     }
+
     // token does not exist
     if (!token) {
       // You can access without permission. You need to set the routing meta.ignoreAuth to true
@@ -116,6 +119,10 @@ export function createAuthGuard(router: Router) {
       next(redirectData)
       return
     }
+    console.log(userStore.userInfo)
+    if (!userStore.userInfo?.name) {
+      await userStore.getUserInfoAction()
+    }
 
     if (lockStore.getLockInfo?.isLock) {
       // redirect lock page
@@ -141,9 +148,9 @@ export function createAuthGuard(router: Router) {
     if (
       from.path === LOGIN_PATH &&
       to.name === PAGE_NOT_FOUND_ROUTE.name &&
-      to.fullPath !== (userStore.userInfo?.homePath || PageEnum.BASE_HOME)
+      to.fullPath !== PageEnum.BASE_HOME
     ) {
-      next(userStore.userInfo?.homePath || PageEnum.BASE_HOME)
+      next(PageEnum.BASE_HOME)
       return
     }
     const { permissionMode = projectSetting.permissionMode } = configStore.getProjectConfig

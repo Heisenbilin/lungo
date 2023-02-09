@@ -784,7 +784,6 @@ onMounted(() => {
   } else {
     formLoading.value = false
   }
-  // getPlatformList();
 })
 
 watch(activeKey, (val, preVal) => {

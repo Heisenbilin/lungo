@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {h, ref, unref} from 'vue'
+import { h, ref, unref } from 'vue'
 import { context } from '../../../bridge'
 const { useUserStore } = context
 import { useI18n } from '@vben/locale'
@@ -19,24 +19,24 @@ const renderIcon = (props, children?: any) => {
 }
 
 const options = ref([
-  {
-    label: t('文档'),
-    key: 'doc',
-    icon: renderIcon({
-      icon: 'carbon:document',
-    }),
-  },
-  {
-    key: 'header-divider',
-    type: 'divider',
-  },
-  {
-    label: t('锁定屏幕'),
-    key: 'lock',
-    icon: renderIcon({
-      icon: 'ant-design:lock-outlined',
-    }),
-  },
+  // {
+  //   label: t('文档'),
+  //   key: 'doc',
+  //   icon: renderIcon({
+  //     icon: 'carbon:document',
+  //   }),
+  // },
+  // {
+  //   key: 'header-divider',
+  //   type: 'divider',
+  // },
+  // {
+  //   label: t('锁定屏幕'),
+  //   key: 'lock',
+  //   icon: renderIcon({
+  //     icon: 'ant-design:lock-outlined',
+  //   }),
+  // },
   {
     label: t('退出系统'),
     key: 'logout',
@@ -48,7 +48,7 @@ const options = ref([
 
 const showLockModal = ref(false)
 
-const handleSelect = (key) => {
+const handleSelect = key => {
   switch (key) {
     case 'logout':
       handleLoginOut()
@@ -79,5 +79,5 @@ const handleLock = () => {
   <VbenDropdown trigger="hover" :options="options" @select="handleSelect">
     <UserInfo />
   </VbenDropdown>
-  <LockModal v-model:show="showLockModal"/>
+  <LockModal v-model:show="showLockModal" />
 </template>

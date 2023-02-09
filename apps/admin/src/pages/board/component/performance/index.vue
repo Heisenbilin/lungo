@@ -8,7 +8,6 @@
         :projectId="projectId"
         :startTime="startTime"
         :endTime="endTime"
-        :type="props.platformType"
       />
     </template>
     <PerformanceChartsSelect />
@@ -29,16 +28,6 @@ import performanceList from './component/performanceAdvise/performanceList.vue'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
-
-const props = defineProps({
-  platformType: {
-    type: String,
-  },
-  // boardType: {
-  //   type: String,
-  //   default: 'general',
-  // },
-})
 
 const projectId = computed(() => `${boardStore.boardInfoState.id}`)
 // 初始化周报请求时间

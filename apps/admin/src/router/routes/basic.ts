@@ -3,7 +3,6 @@ import { Redirect } from '@vben/components'
 import { t } from '@vben/locale'
 
 const LAYOUT = () => import('@/layout/index.vue')
-const HUATUO_LAYOUT = () => import('@/layout/huatuoLayout/index.vue')
 
 const PARENT_LAYOUT = () => () =>
   new Promise(resolve => {
@@ -83,7 +82,6 @@ const LOCK_SCREEN_ROUTE: RouteRecordItem = {
 
 export {
   LAYOUT,
-  HUATUO_LAYOUT,
   PARENT_LAYOUT,
   PAGE_NOT_FOUND_ROUTE,
   REDIRECT_ROUTE,

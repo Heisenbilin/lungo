@@ -53,7 +53,6 @@ const props = defineProps({
   projectId: String,
   startTime: String,
   endTime: String,
-  type: String,
 })
 const router = useRouter()
 const reportUrl = computed(() => props.successList[0].board_url)
@@ -145,7 +144,7 @@ watch(
 
 //跳转页面详细质量周报处理
 const toReport = url => {
-  const path = props.type ? '/huatuo/reportUrl' : '/projectboard/qcReport'
+  const path = '/projectboard/qcReport'
 
   const query = {
     project_id: props.projectId,

@@ -7,7 +7,7 @@
     <div v-if="warnMessage.length">
       <span class="text-lg text-red-600">{{ warnMessage }}</span>
     </div>
-    <urlTable v-else :type="platformType" />
+    <urlTable v-else />
   </div>
 </template>
 
@@ -27,10 +27,6 @@ import { storeToRefs } from 'pinia'
 const reprotStore = useReportStore()
 const username = 'xiongbilin'
 
-const props = defineProps({
-  platformType: String,
-})
-
 const { boardInfoState } = storeToRefs(reprotStore)
 
 const watchFunc: any[] = []
@@ -39,11 +35,7 @@ const initWatch = () => {
   const watermarkWatch = watch(
     () => [boardInfoState.value.id, username],
     () => {
-      setWatermark(
-        `${username}-${boardInfoState.value.project_name}-${
-          props.platformType ? '华佗' : 'Swat Det'
-        }`,
-      )
+      setWatermark(`${username}-${boardInfoState.value.project_name}`)
     },
     { immediate: true },
   )

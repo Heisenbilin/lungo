@@ -33,7 +33,8 @@ export function doLoginApi(params: LoginParams) {
 }
 
 export function getUserInfoApi() {
-  return request.get<any>({ url: '/account' }, { errorMessageMode: 'none' })
+  console.log('getUserInfoApi')
+  return request.get<any>({ url: '/account' })
 }
 
 export function getPermCode() {

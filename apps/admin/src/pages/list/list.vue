@@ -8,15 +8,6 @@
 
 <script setup lang="ts" name="List">
 import ProjectList from './components/projectList.vue'
-import { useListStore } from '@/store/modules/list'
-import { useUserStore } from '@/store/user'
-
-const listStore = useListStore()
-listStore.platform = ''
-
-const userStore = useUserStore()
-console.log(userStore)
-
 // import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
 
 // const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -26,13 +17,6 @@ console.log(userStore)
 //   toggleCollapsed();
 // }
 </script>
-<!-- <script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
-  // 需要和路由的name一致
-  name:"List"
-});
-</script> -->
 <style scoped>
 .content-list {
   width: 100%;

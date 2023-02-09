@@ -17,25 +17,12 @@ import 'intro.js/introjs.css'
 const panelStore = useBoardDataStore()
 const userName = 'xiongbilin'
 
-//数据看板：管理时间、维度与展示tab
-const props = defineProps({
-  platformType: {
-    type: String,
-    default: '',
-  },
-})
-
 const watchFunc: any[] = []
 const initWatch = () => {
   // 从其他页面返回时，重新生成水印
   const watermarkWatch = watch(
     () => [panelStore.boardInfoState.project_name, userName],
-    () =>
-      setWatermark(
-        `${userName}-${panelStore.boardInfoState.project_name}-${
-          props.platformType ? '华佗' : 'Swat Det'
-        }`,
-      ),
+    () => setWatermark(`${userName}-${panelStore.boardInfoState.project_name}`),
     { immediate: true },
   )
   watchFunc.push(watermarkWatch)
