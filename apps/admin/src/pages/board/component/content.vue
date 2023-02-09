@@ -5,7 +5,7 @@
         <PVBoard v-if="activeKey === 'pageview'" />
       </a-tab-pane>
       <a-tab-pane key="performance" tab="性能指标">
-        <PerformanceBoard v-if="activeKey === 'performance'"/>
+        <PerformanceBoard v-if="activeKey === 'performance'" />
       </a-tab-pane>
       <a-tab-pane key="runtime" tab="运行时异常">
         <RuntimeErrorBoard v-if="activeKey === 'runtime'" />
@@ -29,6 +29,7 @@
 import { watch, onActivated, onDeactivated, onMounted, ref } from 'vue'
 import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
+import { useUserStore } from '@/store/user'
 import { useWatermark } from '@vben/hooks'
 import { tabListEnum } from '@vben/constants'
 import { storeToRefs } from 'pinia'
@@ -45,8 +46,8 @@ import intro from 'intro.js'
 import 'intro.js/introjs.css'
 
 const boardStore = useBoardStore()
-
-const username = 'xiongbilin'
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
 //tab页key值
 const { tabState: activeKey } = storeToRefs(boardStore)
@@ -63,8 +64,8 @@ const watchFunc: any[] = []
 const initWatch = () => {
   // 从其他页面返回时，重新生成水印
   const watermarkWatch = watch(
-    () => [boardStore.boardInfoState.project_name, username],
-    () => setWatermark(`${username}-${boardStore.boardInfoState.project_name}`),
+    () => [boardStore.boardInfoState.project_name, userName],
+    () => setWatermark(`${userName}-${boardStore.boardInfoState.project_name}`),
     { immediate: true },
   )
   watchFunc.push(watermarkWatch)

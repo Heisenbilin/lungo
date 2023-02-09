@@ -14,9 +14,7 @@
         </div>
         <BaseChart
           :requestParams="chartDataRequestParams"
-          :requestFunc="
-            params => getTwoWeeksSummary({ ...params, board_type: 'runtime' })
-          "
+          :requestFunc="params => getTwoWeeksSummary({ ...params, board_type: 'runtime' })"
           :getOptionFunc="data => getTwoWeeksOption(data, 'runtime')"
           height="360px"
         />
@@ -28,9 +26,7 @@
         </div>
         <BaseChart
           :requestParams="chartDataRequestParams"
-          :requestFunc="
-            params => getTwoWeeksSummary({ ...params, board_type: 'resource' })
-          "
+          :requestFunc="params => getTwoWeeksSummary({ ...params, board_type: 'resource' })"
           :getOptionFunc="data => getTwoWeeksOption(data, 'resource')"
           height="360px"
         />
@@ -120,7 +116,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import * as ApiErrorApis from '@/apis/board/apiError'
-import { getTwoWeeksSummary,getErrorSummary,getErrorTotalSummary } from '@/apis/report/apis'
+import { getTwoWeeksSummary, getErrorSummary, getErrorTotalSummary } from '@/apis/report/apis'
 import { getChartDataByType } from '@/apis/board/sourceMap'
 import { getTwoWeeksOption } from '../utils/configs'
 import {
@@ -134,14 +130,12 @@ import projectAccessStatus from './projectAccessStatus.vue'
 import LogDrawer from '@/pages/component/logDetail/logDrawer.vue'
 import { BaseChart } from '@vben/components'
 import { useReportStore } from '@/store/modules/report'
+import { useUserStore } from '@/store/user'
 
 const boardStore = useReportStore()
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
-// const { boardInfoState } = storeToRefs(boardStore)
-// @ts-ignore
-// TODO: 临时解决方案
-// const { account: userid = '' } = store.state.userInfo;
-const userid = 'xiongbilin'
 const resourceTotal = ref('')
 const runtimeTotal = ref('')
 
@@ -158,7 +152,7 @@ const errorChartDataRequestParams = computed(() => ({
     lteTime: boardStore.filterState.end_time,
   },
   projectid: `${boardStore.boardInfoState.id}`,
-  userid: userid,
+  userid: userName,
 }))
 //后台数据获取与处理
 async function initData() {

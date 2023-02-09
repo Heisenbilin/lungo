@@ -16,16 +16,18 @@
 import { ref, onMounted, provide, watch, onActivated, onDeactivated } from 'vue'
 import { useReportStore } from '@/store/modules/report'
 import { useWatermark } from '@vben/hooks'
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/store/user'
 
 import projectScore from '@/pages/report/total/projectScore.vue'
 import projectPerformance from '@/pages/report/total/projectPerformance.vue'
 import projectStability from '@/pages/report/total/stability/index.vue'
 import projectBase from '@/pages/report/total/projectBase.vue'
 import urlTable from '@/pages/report/total/urlTable.vue'
-import { storeToRefs } from 'pinia'
 
 const reprotStore = useReportStore()
-const username = 'xiongbilin'
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
 const { boardInfoState } = storeToRefs(reprotStore)
 
@@ -33,9 +35,9 @@ const watchFunc: any[] = []
 const initWatch = () => {
   // 从其他页面返回时，重新生成水印
   const watermarkWatch = watch(
-    () => [boardInfoState.value.id, username],
+    () => [boardInfoState.value.id, userName],
     () => {
-      setWatermark(`${username}-${boardInfoState.value.project_name}`)
+      setWatermark(`${userName}-${boardInfoState.value.project_name}`)
     },
     { immediate: true },
   )

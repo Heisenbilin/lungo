@@ -33,13 +33,11 @@ import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
+import { useUserStore } from '@/store/user'
 
 const boardStore = useBoardStore()
-
-// 请求参数
-// const store = useStore();
-// const { account: userid = "" } = store.state.userInfo;
-const userid = 'xiongbilin'
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
 const requestParams = ref<any>({
   boardid: '0x000',
@@ -49,7 +47,7 @@ const requestParams = ref<any>({
     boardType: 'dns',
   },
   projectid: `${boardStore.boardInfoState.id}`,
-  userid,
+  userid: userName,
 })
 
 const chartName = ref('dns')

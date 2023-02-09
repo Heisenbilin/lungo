@@ -157,6 +157,7 @@ import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { useAppStore } from '@/store/modules/app'
+import { useUserStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
 import cardList from './cardList/index.vue'
 import tableList from './tableList/index.vue'
@@ -176,9 +177,9 @@ const {
 
 const listStore = useListStore()
 const appStore = useAppStore()
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
-// const store = useStore();
-const userName = 'xiongbilin' //store.state.userInfo.account || '';
 const { forceFlashFlag } = storeToRefs(listStore)
 const isAdminUser = appStore.checkIsAdmin(userName)
 // 项目初始展示形态

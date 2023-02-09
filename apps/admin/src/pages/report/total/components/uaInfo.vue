@@ -22,6 +22,7 @@ import { useBoardDataStore } from '@/store/modules/panel'
 import { useReportStore } from '@/store/modules/report'
 import { BaseChart } from '@vben/components'
 import { BasicChart } from '@vben/components'
+import { useUserStore } from '@/store/user'
 
 const reportStore = useReportStore()
 const boardDataStore = useBoardDataStore()
@@ -38,10 +39,8 @@ const props = defineProps({
 })
 
 const storeBoard = props.boardType === 'data' ? boardDataStore : reportStore
-
-// const store = useStore();
-// const { account: userid = '' } = store.state.userInfo;
-const userid = 'xiongbilin'
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
 // 请求参数
 const requestParams = computed(() => ({
@@ -52,7 +51,7 @@ const requestParams = computed(() => ({
     uaType: 'ua_' + props.type + '_name',
   },
   projectid: `${storeBoard.boardInfoState.id}`,
-  userid,
+  userid: userName,
 }))
 
 const uaName = ref('') //当前选中的ua名

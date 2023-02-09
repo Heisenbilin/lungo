@@ -50,11 +50,13 @@ import { getPVUVChartOption } from './chartsConfig'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getChartData } from '@/apis/board/sourceMap'
 import { useBoardDataStore } from '@/store/modules/panel'
+import { useUserStore } from '@/store/user'
 import { BaseChart } from '@vben/components'
 import uaInfo from '@/pages/report/total/components/uaInfo.vue'
 
 const boardDataStore = useBoardDataStore()
-const userid = 'xiongbilin'
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
 // 请求参数
 const requestParams = computed(() => ({
@@ -64,7 +66,7 @@ const requestParams = computed(() => ({
     lteTime: boardDataStore.filterState.end_time,
   },
   projectid: `${boardDataStore.boardInfoState.id}`,
-  userid,
+  userid: userName,
 }))
 
 // 获取PV图标数据

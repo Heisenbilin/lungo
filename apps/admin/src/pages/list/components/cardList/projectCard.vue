@@ -72,7 +72,7 @@
             </a-tooltip>
           </span>
           <span
-            v-if="appStore.checkIsAdmin('xiongbilin')"
+            v-if="appStore.checkIsAdmin(userName)"
             class="absolute -top-1 right-20 text-gray-200"
           >
             create: {{ dayjs(project.create_time).format('YY.MM.DD-HH:mm') }}
@@ -143,9 +143,12 @@ import CardContent from './cardContent.vue'
 import dayjs from 'dayjs'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
+import { useUserStore } from '@/store/user'
 
 const appStore = useAppStore()
 const listStore = useListStore()
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
 const props = defineProps({
   project: {
@@ -206,7 +209,7 @@ const openProject = async id => {
 const handleProjectStar = async flag => {
   staring.value = true
   const result = await starProject({
-    user: 'xiongbilin',
+    user: userName,
     project_id: `${props.project.id}`,
     isCollect: flag ? 1 : 0,
   })

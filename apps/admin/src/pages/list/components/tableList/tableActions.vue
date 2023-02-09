@@ -21,6 +21,7 @@ import { ref } from 'vue'
 import { SettingOutlined, LoadingOutlined, StarTwoTone, StarFilled } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { starProject } from '@/apis/list'
+import { useUserStore } from '@/store/user'
 
 const props = defineProps({
   projectId: {
@@ -39,9 +40,8 @@ const props = defineProps({
 
 const emit = defineEmits(['edit', 'star'])
 
-// const store = useStore();
-// const userid = store.state?.userInfo?.account ?? '';
-const userid = 'xiongbilin'
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
 // const mapUploadVisible = ref(false);
 const collectFlag = props.collectFlag === '1' ? true : false
@@ -56,7 +56,7 @@ function editProject(projectId) {
 const handleProjectStar = async flag => {
   staring.value = true
   const result = await starProject({
-    user: userid,
+    user: userName,
     project_id: `${props.projectId}`,
     isCollect: flag ? 1 : 0,
   })

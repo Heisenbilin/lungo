@@ -28,6 +28,7 @@ import { useRoute } from 'vue-router'
 import { prepareReportResult } from './detail/util'
 import { getLighthouseAudits } from '@/apis/report/apis'
 import { useReportStore } from '@/store/modules/report'
+import { useUserStore } from '@/store/user'
 import { useWatermark } from '@vben/hooks'
 
 import urlBase from './detail/urlBase.vue'
@@ -40,7 +41,8 @@ const props = defineProps({
 
 const route = useRoute()
 const reportStore = useReportStore()
-const userName = 'xiongbilin'
+const userStore = useUserStore()
+const userName = userStore.userInfo?.account || ''
 
 const watchFunc: any[] = []
 const initWatch = () => {
