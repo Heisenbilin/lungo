@@ -39,7 +39,7 @@ export interface GlobConfig {
   // DP ENV
   dpEnv: string
   //APPID
-  id:string
+  appid:string
 }
 
 export interface GlobEnvConfig {
@@ -56,5 +56,5 @@ export interface GlobEnvConfig {
   // DP ENV
   VITE_GLOB_DP_ENV: string
   //APPID
-  VITE_ID:string
+  VITE_SDK_APPID:string
 }

@@ -19,7 +19,7 @@ export function getGlobalConfig(env: Record<string, any>): Readonly<GlobConfig> 
     VITE_GLOB_SSO_HOST,
     VITE_GLOB_SSO_APPID,
     VITE_GLOB_DP_ENV,
-    VITE_ID
+    VITE_SDK_APPID
   } = getAppConfig(env)
 
   // Take global configuration
@@ -30,7 +30,7 @@ export function getGlobalConfig(env: Record<string, any>): Readonly<GlobConfig> 
     ssoHost: VITE_GLOB_SSO_HOST,
     ssoAppid: VITE_GLOB_SSO_APPID,
     dpEnv: VITE_GLOB_DP_ENV,
-    id:VITE_ID
+    appid:VITE_SDK_APPID
   }
   return glob as Readonly<GlobConfig>
 }
