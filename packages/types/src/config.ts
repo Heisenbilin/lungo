@@ -38,6 +38,8 @@ export interface GlobConfig {
   ssoAppid: string
   // DP ENV
   dpEnv: string
+  //APPID
+  id:string
 }
 
 export interface GlobEnvConfig {
@@ -53,4 +55,6 @@ export interface GlobEnvConfig {
   VITE_GLOB_SSO_APPID: string
   // DP ENV
   VITE_GLOB_DP_ENV: string
+  //APPID
+  VITE_ID:string
 }

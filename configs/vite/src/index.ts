@@ -81,6 +81,7 @@ export async function createViteConfig(
           },
         },
       },
+      sourcemap: 'hidden'
     },
     optimizeDeps: {
       include: ['dayjs/locale/en', 'dayjs/locale/zh-cn', '@iconify/iconify'],
