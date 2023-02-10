@@ -15,12 +15,12 @@ import XesLoggerSDK from '@xes/xes_fe_log'
 import { getGlobalConfig } from '@vben/utils'
 
 
-const {id,ssoAppid} = getGlobalConfig(import.meta.env)
+const {appid,ssoAppid,dpEnv} = getGlobalConfig(import.meta.env)
   const SDKConfig = {
     // *****SDK推荐配置*****
     // 完整配置项及其说明请访问https://app.xesv5.com/doc/pages/fedata/fe-log-sdk/access.html查看
     baseURL: '', // 日志上传使用的接口
-    appid: id, // 日志上传的appid
+    appid: appid, // 日志上传的appid
     common: { eventid: 'web-swaydat' }, // 项目的唯一标识
     disableAgif: true, // 关闭展现日志上传(a.gif)
     clickMsg: { open: false }, // 关闭交互日志上传(b.gif)
@@ -31,7 +31,7 @@ const {id,ssoAppid} = getGlobalConfig(import.meta.env)
   }
   console.log('ssoAppid',ssoAppid);
   
-console.log('id',id);
+console.log('id',appid);
 console.log(11);
 
 
@@ -52,6 +52,7 @@ console.log(11);
 
 ;(async () => {
   const app = createApp(App)
+  // if(!dpEnv)
   app.use(XesLoggerSDK, SDKConfig)
   app.use(pinia)
   await registerComponents(app)
