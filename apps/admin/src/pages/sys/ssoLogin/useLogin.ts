@@ -18,7 +18,6 @@ export function useLogin() {
   console.log('ssoToken', ssoToken.value, env)
 
   const goSSOLoginPage = () => {
-    const { dpEnv } = getGlobalConfig(import.meta.env)
     const ssoPageUrl = `https://sso.100tal.com/portal/login/${ssoAppid}`
     // 携带 redirect 和其他参数跳转造物神
     window.location.href = setObjToUrlParams(ssoPageUrl, {
@@ -79,7 +78,9 @@ export function useLogin() {
   }
   onMounted(() => {
     // 如果 url 中携带 env=dev，说明是本地开发环境，跳转 localhost
-    if (env.value === 'dev') {
+    console.log('env', env.value,dpEnv)
+    if (env.value === 'dev' && dpEnv !== 'dev') {
+      console.log('跳转localhost')
       // const PORT = import.meta.env.VITE_PORT
       location.href = setObjToUrlParams(`https://localhost:3000/#/login`, {
         ...omit(route.query, 'env'),

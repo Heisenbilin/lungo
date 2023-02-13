@@ -123,16 +123,11 @@ export const useUserStore = defineStore({
       this.sessionTimeout = false
       this.setUserInfo(null)
       setToken('')
-      // 华佗页面退出的话，跳转到华佗登录页
       const { hash } = window.location
       const path = setObjToUrlParams(`https://sso.100tal.com/portal/login/${ssoAppid}`, {
-        env: dpEnv === 'dev' ? dpEnv : '',
+        env: dpEnv,
         redirect: hash.slice(1), // hash => #/projectboard/qcEntry1631/:week  hash.slice(1) => /projectboard/qcEntry1631/:week
       })
-      console.log(
-        'redirect',
-        `https://api.service.100tal.com/sso/logout?path=${encodeURIComponent(path)}`,
-      )
       window.location.href = `https://api.service.100tal.com/sso/logout?path=${encodeURIComponent(
         path,
       )}`

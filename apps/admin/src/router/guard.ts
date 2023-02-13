@@ -72,18 +72,18 @@ export function createAuthGuard(router: Router) {
 
     // TODO Whitelist can be directly entered
     if (true && whitePathList.includes(to.path as PageEnum)) {
-      if (to.path === LOGIN_PATH && token) {
-        const isSessionTimeout = userStore.sessionTimeout
-        try {
-          await userStore.getUserInfoAction()
-          if (!isSessionTimeout) {
-            next((to.query?.redirect as string) || '/')
-            return
-          }
-        } catch (err) {
-          console.log(err)
-        }
-      }
+      // if (to.path === LOGIN_PATH && token) {
+      //   const isSessionTimeout = userStore.sessionTimeout
+      //   try {
+      //     await userStore.getUserInfoAction()
+      //     if (!isSessionTimeout) {
+      //       next((to.query?.redirect as string) || '/')
+      //       return
+      //     }
+      //   } catch (err) {
+      //     console.log(err)
+      //   }
+      // }
       if (to.path === LOCK_PATH && !lockStore.getLockInfo?.isLock) {
         next({ path: from.path })
         return
