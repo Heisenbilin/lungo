@@ -4,6 +4,7 @@ import type { RouteRecordItem as IRouteRecordItem } from './router'
 declare  global {
   // define global
   const __VITE_USE_MOCK__: boolean
+  const __VITE_SDK_APPID__: string
   const __APP_INFO__: {
     pkg: {
       name: string
@@ -78,5 +79,6 @@ declare  global {
     VITE_BUILD_COMPRESS: 'gzip' | 'brotli' | 'none'
     VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE: boolean
     VITE_USE_IMAGEMIN: boolean
+    VITE_SDK_APPID:string
   }
 }

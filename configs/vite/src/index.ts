@@ -37,6 +37,7 @@ export async function createViteConfig(
     VITE_USE_MOCK,
     VITE_DROP_CONSOLE,
     VITE_USE_HTTPS,
+    VITE_SDK_APPID
   } = viteEnv
   const commonConfig: UserConfig = {
     root,
@@ -53,6 +54,7 @@ export async function createViteConfig(
     },
     define: {
       __VITE_USE_MOCK__: VITE_USE_MOCK,
+      __VITE_SDK_APPID__: VITE_SDK_APPID,
       // Suppress vue-i18-next warning
       __INTLIFY_PROD_DEVTOOLS__: false,
       __APP_INFO__: JSON.stringify({

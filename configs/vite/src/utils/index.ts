@@ -17,6 +17,7 @@ export interface ViteEnv {
   VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE: boolean
   VITE_LEGACY: boolean
   VITE_USE_IMAGEMIN: boolean
+  VITE_SDK_APPID:string
 }
 
 // Read all environment variable configuration files to process.env
