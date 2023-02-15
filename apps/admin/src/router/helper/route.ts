@@ -1,7 +1,7 @@
 import type { RouteMeta, Router, RouteRecordNormalized } from 'vue-router'
 
 import { omit, cloneDeep } from '@vben/utils'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { LAYOUT, PARENT_LAYOUT } from '../routes'
 
 export type LayoutMapKey = 'LAYOUT'
@@ -125,7 +125,7 @@ function promoteRouteLevel(routeModule: RouteRecordItem) {
   // Use vue-router to splice menus
   let router: Router | null = createRouter({
     routes: [routeModule as unknown as RouteRecordNormalized],
-    history: createWebHashHistory(),
+    history: createWebHistory(),
   })
 
   const routes = router.getRoutes()
