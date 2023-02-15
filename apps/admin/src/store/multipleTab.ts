@@ -89,7 +89,6 @@ export const useMultipleTabStore = defineStore({
       const { currentRoute } = router
       const route = unref(currentRoute)
       const name = route.name
-
       const findTab = this.getCachedTabList.find(item => item === name)
       if (findTab) {
         this.cacheTabList.delete(findTab)

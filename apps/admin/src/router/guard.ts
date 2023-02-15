@@ -119,7 +119,7 @@ export function createAuthGuard(router: Router) {
       next(redirectData)
       return
     }
-    console.log(userStore.userInfo)
+    // console.log(userStore.userInfo)
     if (!userStore.userInfo?.account) {
       await userStore.getUserInfoAction()
     }

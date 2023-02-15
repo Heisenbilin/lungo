@@ -78,7 +78,6 @@ import { ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { Empty } from 'ant-design-vue';
 import CircleProgress from '@vben/components/src/chart/circleProgress.vue';
-import * as echarts from 'echarts';
 import { getErrSummary, getWhiteRate } from '@/apis/report/apis';
 import { getStabilityAudits } from './util';
 import { getScore, getUrlErrorOptions } from './config';
