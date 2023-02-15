@@ -3,7 +3,8 @@ import {
   PAGE_NOT_FOUND_ROUTE,
   REDIRECT_ROUTE,
   ROOT_ROUTE,
-  LOCK_SCREEN_ROUTE
+  LOCK_SCREEN_ROUTE,
+  // LOGIN_ROUTE_WITH
 } from './basic'
 
 export * from './basic'
@@ -27,4 +28,5 @@ export const routes = [
   ROOT_ROUTE,
   REDIRECT_ROUTE,
   PAGE_NOT_FOUND_ROUTE,
+  // LOGIN_ROUTE_WITH
 ]

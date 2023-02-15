@@ -70,6 +70,14 @@ const LOGIN_ROUTE: RouteRecordItem = {
     title: t('routes.basic.login'),
   },
 }
+// const LOGIN_ROUTE_WITH: RouteRecordItem = {
+//   path: '/#/login',
+//   name: 'login',
+//   component: () => import('@/pages/sys/ssoLogin/ssoLogin.vue'),
+//   meta: {
+//     title: t('routes.basic.login'),
+//   },
+// }
 
 const LOCK_SCREEN_ROUTE: RouteRecordItem = {
   path: '/lock',
@@ -88,4 +96,5 @@ export {
   ROOT_ROUTE,
   LOGIN_ROUTE,
   LOCK_SCREEN_ROUTE,
+  // LOGIN_ROUTE_WITH
 }

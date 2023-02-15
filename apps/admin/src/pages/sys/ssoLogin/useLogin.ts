@@ -27,6 +27,7 @@ export function useLogin() {
   }
 
   const login = async () => {
+ 
     // 如果链接上没有造物神 token，说明是第一次登录，不是造物神的回跳
     if (!ssoToken.value) {
       goSSOLoginPage()
@@ -82,7 +83,7 @@ export function useLogin() {
     if (env.value === 'dev' && dpEnv !== 'dev') {
       console.log('跳转localhost')
       // const PORT = import.meta.env.VITE_PORT
-      location.href = setObjToUrlParams(`https://localhost:3000/#/login`, {
+      location.href = setObjToUrlParams(`https://localhost:3000/login`, {
         ...omit(route.query, 'env'),
       })
       return

@@ -63,11 +63,11 @@ export function createAuthGuard(router: Router) {
       // 把 to.path 由 /login&token=xxx 改为 /login?token=xxx
       return `${to.fullPath.replace('&', '?')}`
     }
+
     // if (from.path === ROOT_PATH && to.path === PageEnum.BASE_HOME) {
     //   next(PageEnum.BASE_HOME)
     //   return
     // }
-
     const token = userStore.accessToken || getToken()
 
     // TODO Whitelist can be directly entered
