@@ -44,21 +44,28 @@ import LogDrawer from '../../component/logDetail/logDrawer.vue'
 import FAQ from '../../component/FAQ.vue'
 import intro from 'intro.js'
 import 'intro.js/introjs.css'
+import { useRoute, useRouter } from 'vue-router'
 
 const boardStore = useBoardStore()
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
-
+const route = useRoute()
+  const router = useRouter()
 //tab页key值
 const { tabState: activeKey } = storeToRefs(boardStore)
 if (!activeKey.value) {
   // store中没有值，从url中获取
-  const { tabkey } = getUrlParams()
+  // const { tabkey } = getUrlParams()
+  // console.log('tabkey',tabkey);
+  const tabkey = route.params.tabkey as string
+  console.log(route.params.tabkey);
+  
   activeKey.value = tabListEnum[tabkey] ? tabkey : 'pageview'
 }
 watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), {
   immediate: true,
 })
+
 
 const watchFunc: any[] = []
 const initWatch = () => {
