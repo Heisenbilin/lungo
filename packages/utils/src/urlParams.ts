@@ -1,3 +1,5 @@
+import { useRoute } from "vue-router"
+
 /**
  * 获取地址栏参数
  * @returns Object
@@ -5,7 +7,7 @@
 export function getUrlParams() {
   const params: any = {}
   try {
-    const arr = (window.location.hash.split('?').at(-1) || '').split('&')
+    const arr = (window.location.href.split('?').at(-1) || '').split('&')
     for (let i = 0; i < arr.length; i++) {
       const data = arr[i].split('=')
       if (data.length === 2) {
@@ -27,14 +29,11 @@ export function addOrUpdateUrlParams(obj) {
     const params = getUrlParams()
     Object.assign(params, obj)
     //绑定路由
-    const hrefs = window.location.href.split('#')
-    const mainHref = hrefs.shift()
-    const routers = hrefs.join('#').split('?')[0]
-    const baseUrl = mainHref + '#' + routers
+    const {origin , pathname} = window.location
     const urlParams = Object.keys(params)
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
       .join('&')
-    window.history.replaceState({}, '', `${baseUrl}${urlParams.length ? '?' : ''}${urlParams}`)
+    window.history.replaceState({}, '', `${origin+pathname}${urlParams.length ? '?' : ''}${urlParams}`)
   } catch (e) {
     console.log(e)
   }
@@ -53,14 +52,11 @@ export function delUrlParams(key) {
       // else console.log('路由中无此parameter：', item);
     })
     //绑定路由
-    const hrefs = window.location.href.split('#')
-    const mainHref = hrefs.shift()
-    const routers = hrefs.join('#').split('?')[0]
-    const baseUrl = mainHref + '#' + routers
+    const {origin , pathname} = window.location
     const urlParams = Object.keys(params)
       .map(value => `${encodeURIComponent(value)}=${encodeURIComponent(params[value])}`)
       .join('&')
-    window.history.replaceState({}, '', `${baseUrl}${urlParams.length ? '?' : ''}${urlParams}`)
+    window.history.replaceState({}, '', `${origin+pathname}${urlParams.length ? '?' : ''}${urlParams}`)
   } catch (e) {
     console.log(e)
   }
