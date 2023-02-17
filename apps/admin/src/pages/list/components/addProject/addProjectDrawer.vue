@@ -700,7 +700,7 @@ import yachInputFilter from '../yachInputFilter.vue'
 
 import { useWeeklyReportUserSelect } from '@/hooks/board/useWeeklyReportUserSelect'
 import { useAuth } from '@/hooks/board/useAuth'
-import { cloneDeep, buildUUID, delUrlParams } from '@vben/utils'
+import { cloneDeep, buildUUID } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from 'pinia'
 // import { isEqual } from 'lodash-es';
@@ -708,6 +708,7 @@ import LabelComponent from './labelComponent.vue'
 import { saveAs } from 'file-saver'
 import { getRecommendSDKConfig, getVueRecommendSDKConfig } from './sdkConfig'
 import { CodeArea } from '@vben/components'
+import { useRoute, useRouter } from 'vue-router'
 
 const props = defineProps({
   visible: {
@@ -718,7 +719,22 @@ const props = defineProps({
     type: String,
   },
 })
+const router = useRouter()
+const route = useRoute()
+console.log(router,route);
 
+function delUrlParams(key) {
+    const params = route.query
+    if (!Array.isArray(key)) key = [key]
+    key.forEach(item => {
+      if (item in params) delete params[item]
+      // else console.log('路由中无此parameter：', item);
+    })
+    router.push({
+      path:route.path,
+      query:{...params}
+    })
+  }
 const emit = defineEmits(['update:visible', 'flash'])
 
 // const store = useStore();

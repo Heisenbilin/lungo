@@ -2,12 +2,13 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { getGlobalConfig } from '@vben/utils'
 import { computed, onMounted } from 'vue'
-import { setObjToUrlParams, omit } from '@vben/utils'
+import { omit } from '@vben/utils'
 
 const { ssoAppid, dpEnv } = getGlobalConfig(import.meta.env)
 
 export function useLogin() {
   const router = useRouter()
+  
   const route = useRoute()
   const userStore = useUserStore()
 
@@ -17,6 +18,15 @@ export function useLogin() {
 
   console.log('ssoToken', ssoToken.value, env)
 
+  function setObjToUrlParams(baseUrl: string, obj: any): string {
+    let parameters = ''
+    for (const key in obj) {
+      parameters += key + '=' + encodeURIComponent(obj[key]) + '&'
+    }
+    parameters = parameters.replace(/&$/, '')
+    return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters
+  }
+  
   const goSSOLoginPage = () => {
     const ssoPageUrl = `https://sso.100tal.com/portal/login/${ssoAppid}`
     // 携带 redirect 和其他参数跳转造物神

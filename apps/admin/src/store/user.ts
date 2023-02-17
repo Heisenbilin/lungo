@@ -8,7 +8,7 @@ import { getUserInfoApi, doLoginApi } from '@/apis/auth' //doLogoutApi,
 // import { GetUserInfoModel } from '@/apis/sys/user'
 import { UserInfo, UserState } from '@vben/types' // , ErrorMessageMode
 import { defineStore } from 'pinia'
-import { getGlobalConfig, setObjToUrlParams, setToken } from '@vben/utils'
+import { getGlobalConfig, setToken } from '@vben/utils'
 
 export const useUserStore = defineStore({
   id: 'app-user-store',
@@ -118,7 +118,15 @@ export const useUserStore = defineStore({
     async logout(goLogin = false) {
       // goLogin = false
       const { dpEnv, ssoAppid } = getGlobalConfig(import.meta.env)
-
+      function setObjToUrlParams(baseUrl: string, obj: any): string {
+        let parameters = ''
+        for (const key in obj) {
+          parameters += key + '=' + encodeURIComponent(obj[key]) + '&'
+        }
+        parameters = parameters.replace(/&$/, '')
+        return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters
+      }
+      
       this.accessToken = undefined
       this.sessionTimeout = false
       this.setUserInfo(null)
