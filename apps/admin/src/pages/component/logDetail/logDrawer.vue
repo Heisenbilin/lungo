@@ -21,11 +21,12 @@
 // 日志详情抽屉
 import { computed, ref } from 'vue';
 import { getDataList } from './util';
-import { getUrlParams } from '@vben/utils';
+// import { getUrlParams } from '@vben/utils';
 import { useBoardStore } from '@/store/modules/board';
 import { useReportStore } from '@/store/modules/report';
 import LogContent from './logContent.vue';
 import LogTable from './logTable.vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const boardStore = useBoardStore();
 const reportStore = useReportStore();
@@ -84,16 +85,16 @@ const getRecentData = async () => {
   recentContent.value = result[0];
   recentContentLoading.value = false;
 };
-
+const route = useRoute()
 const initDrawer = () => {
   // 路由中若有log_type参数，打开日志详情
-  const urlParams = getUrlParams();
+  const urlParams = route.query;
   if ('log_type' in urlParams && 'log_params' in urlParams) {
     try {
       store.openLogInfoState({
-        type: urlParams.log_type,
+        type: urlParams.log_type! as any ,
         visible: true,
-        requestParams: JSON.parse(urlParams.log_params),
+        requestParams: JSON.parse(urlParams.log_params as string),
       });
     } catch (e) {
       console.log('路由中的参数非法导致窗口打开错误', e);

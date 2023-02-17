@@ -71,7 +71,7 @@
 <script setup lang="ts">
 // 质量监控页 筛选卡片组件
 import { ref, watch } from 'vue'
-import { getUrlParams, formatDateString } from '@vben/utils'
+import { formatDateString } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useBoardDataStore } from '@/store/modules/panel'
 import { InfoCircleOutlined, ClearOutlined } from '@ant-design/icons-vue'
@@ -83,6 +83,7 @@ import FilterTag from './filterTag.vue'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import localeData from 'dayjs/plugin/localeData'
+import { useRoute, useRouter } from 'vue-router'
 
 dayjs.extend(weekday)
 dayjs.extend(localeData)
@@ -101,9 +102,9 @@ const props = defineProps({
 })
 
 const store = props.boardType === 'general' ? boardStore : boardDataStore
-
+const route = useRoute()
 // 初始筛选条件
-const urlParams = getUrlParams()
+const urlParams = route.query
 Object.keys(urlParams).forEach(key => {
   if (!tabActiveFilters.pageview.includes(key)) {
     delete urlParams[key]

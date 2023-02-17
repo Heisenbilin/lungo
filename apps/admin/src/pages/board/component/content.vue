@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { watch, onActivated, onDeactivated, onMounted, ref } from 'vue'
-import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
+// import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useUserStore } from '@/store/user'
 import { useWatermark } from '@vben/hooks'

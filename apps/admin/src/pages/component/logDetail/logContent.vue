@@ -149,12 +149,13 @@
 import { ref, watch, computed } from 'vue'
 import { Empty, message } from 'ant-design-vue'
 import { InboxOutlined } from '@ant-design/icons-vue'
-import { getUrlParams } from '@vben/utils'
+// import { getUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { uploadSourcemap, getMappingList } from '@/apis/board/sourceMap'
 import { WaterfallChart, CodeArea, SourceCodeArea } from '@vben/components'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
+import { useRoute } from 'vue-router'
 
 const boardStore = useBoardStore()
 
@@ -180,16 +181,18 @@ const openUploadSourcemapModal = () => {
   showUploadSourcemapModal.value = true
 }
 const msg = ref('')
-
+const route = useRoute()
 const handleOk = async () => {
   if (sourcemapFileList.value.length < 1) {
     return
   }
   // uploadApi()
   // console.log(sourcemapFileList.value);
-  const { projectid } = getUrlParams()
+  const { projectid } = route.query 
+  console.log(projectid);
+  
   try {
-    const result = await uploadSourcemap(projectid, sourcemapFileList.value[0])
+    const result = await uploadSourcemap(projectid as string, sourcemapFileList.value[0])
     if (result.msg === 'success') {
       showUploadSourcemapModal.value = false
       message.success('上传成功')
