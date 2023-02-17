@@ -53,7 +53,8 @@ function addOrUpdateUrlParams(newQuery){
     query:{...route.query,...newQuery}
   })
 }
-
+console.log('route.path',route.path);
+console.log('route.query',route.query);
 const listStore = useListStore()
 const props = defineProps({
   requestParams: {
@@ -85,11 +86,11 @@ const latestSDKVersion = ref('2.2.2')
 const closeDays = ref('')
 
 //页码
-const total = ref(Number.isNaN(parseInt(preTotal)) ? 0 : parseInt(preTotal))
+const total = ref(Number.isNaN(parseInt(preTotal as unknown as string)) ? 0 : parseInt(preTotal as unknown as string))
 const currentPage = ref(total.value && total.value > +page! ? +page! : 1) //防止tab切换时page溢出
 const pageSize = ref(+page_size!)
 // 防止页码超出时不显示
-if (page * page_size > preTotal) {
+if (page * page_size! > preTotal) {
   // TODO message alert
   currentPage.value = 1
 }

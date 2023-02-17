@@ -20,7 +20,8 @@ const WHITE_NAME_LIST: string[] = []
 
 // app router
 export const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
+  // history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
+  history: createWebHistory(),
   routes,
   strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 }),
