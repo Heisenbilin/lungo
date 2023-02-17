@@ -43,6 +43,9 @@ const cacheTab = true
 
 export const useMultipleTabStore = defineStore({
   id: 'app-multiple-tab',
+  persist: {
+    paths: ['tabList'],
+  },
   state: (): MultipleTabState => ({
     // Tabs that need to be cached
     cacheTabList: new Set(),
