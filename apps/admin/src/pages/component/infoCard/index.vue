@@ -132,6 +132,7 @@ import dayjs from 'dayjs'
 import SDKVersion from '../sdkVersion.vue'
 import AlarmSetting from '../alarm/alarmSetting.vue'
 import InfoTag from './infoTag.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
@@ -153,8 +154,9 @@ const store =
 
 // 当前选中项目信息
 const { boardInfoState: projectInfo } = storeToRefs(store)
-let { projectId: urlProjectId } = getUrlParams()
-urlProjectId = +urlProjectId || 0
+const route = useRoute()
+const urlProjectId = +route.query.projetId! || 0
+// let { projectId: urlProjectId } = getUrlParams()
 const projectId = ref<number | string>()
 
 // 项目列表
@@ -203,10 +205,15 @@ async function getTopicId(appId, isSaas) {
     store.commitTopicIdState(res.data)
   }
 }
+const router = useRouter()
 
 watch(projectId, () => {
   if (projectId.value && projectId.value !== '请选择应用') {
-    addOrUpdateUrlParams({ projectId: projectId.value })
+    // addOrUpdateUrlParams({ projectId: projectId.value })
+    router.push({
+      path:route.path,
+     query: {...route.query, projectId: projectId.value}
+    })
     if (projectInfo.value.id !== projectId.value) {
       const info = projectList.value.find(item => item.id === projectId.value)
       if (info) store.initStateValue({ ...info, noInitFilter: true })

@@ -141,7 +141,7 @@ import { debounce } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { useBoardStore } from '@/store/modules/board'
 import { storeToRefs } from 'pinia'
-import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
+// import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import columns from './tableColumns'
 import tableActions from './tableActions.vue'
@@ -149,9 +149,21 @@ import tableHeader from './tableHeader.vue'
 import tableScreen from './tableScreen.vue'
 import tableContent from './tableContent.vue'
 import tableSdk from './tableSdk.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const listStore = useListStore()
 const boardStore = useBoardStore()
+const router = useRouter()
+  const route = useRoute()
+function getUrlParams(){
+  return route.query
+}
+function addOrUpdateUrlParams(newQuery){
+  router.push({
+    path:route.path,
+    query:{...route.query,...newQuery}
+  })
+}
 
 const props = defineProps({
   requestParams: {

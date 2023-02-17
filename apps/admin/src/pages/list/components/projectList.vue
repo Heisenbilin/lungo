@@ -154,7 +154,6 @@ import { ref, watch, h, computed, provide } from 'vue'
 import { checkProjectData } from '@/apis/list'
 import { message, Modal } from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
-import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { useAppStore } from '@/store/modules/app'
 import { useUserStore } from '@/store/user'
@@ -164,7 +163,10 @@ import tableList from './tableList/index.vue'
 import addProjectModal from './addProject/addProjectDrawer.vue'
 import UcGroupModal from './ucGroupModal.vue'
 import dayjs from 'dayjs'
+import { useRoute, useRouter } from 'vue-router'
 
+const router = useRouter()
+const route = useRoute()
 const {
   tabKey = 'all',
   name = '',
@@ -174,6 +176,20 @@ const {
   groupid = '',
   show = 'table',
 } = getUrlParams()
+function getUrlParams(){
+  return route.query
+}
+console.log('project',getUrlParams());
+
+function addOrUpdateUrlParams(newQuery){
+  console.log(router);
+  router.push({
+    path:route.path,
+    query:{...route.query,...newQuery}
+  })
+}
+
+
 
 const listStore = useListStore()
 const appStore = useAppStore()
@@ -212,7 +228,7 @@ const forceFlashList = () => {
 // 获取UCGroups
 // store.dispatch('actGetUCGroups');
 listStore.requestUCGroups()
-const groupId = ref(+groupid === 0 ? '' : +groupid)
+const groupId = ref(+groupid! === 0 ? '' : +groupid!)
 const { ucGroups: groups } = storeToRefs(listStore)
 // const groups = computed(() => store.state.ucGroups);
 
@@ -226,6 +242,7 @@ function filterOption(inputValue, options) {
 }
 //tabKey
 const activeKey = ref(tabKey)
+
 //监听tabKey变化，更新url Parameter
 watch(activeKey, val => addOrUpdateUrlParams({ tabKey: val }))
 
@@ -240,7 +257,7 @@ const endTime = dayjs()
 // provide('endTime', endTime)
 
 //对比维度
-const dimension = ref<'week' | 'day'>(dimen)
+const dimension = ref<'week' | 'day'>(dimen as 'week' | 'day' )
 
 // 开始时间与结束时间存入listStore
 listStore.startTime = dimension.value === 'week' ? startWeek : startTime
@@ -262,17 +279,17 @@ const addProjectVisible = ref(false)
 //编辑项目的项目ID
 const editProjectId = ref('')
 //搜索框value
-const searchValue = ref(name)
+const searchValue = ref<string>(name as string)
 
 //应用类型
-const projectType = ref(+type)
+const projectType = ref(+type!)
 //Saas类型
 const saasType = ref(saas)
 
 //处理路由中的项目
 const handleEditParams = () => {
   const { openUpdateDialog, project_id } = getUrlParams()
-  if (+openUpdateDialog === 1 && project_id) {
+  if (+openUpdateDialog! === 1 && project_id) {
     //判断是否有该项目权限、且项目是否是开启中
     // let hasAuthority = false;
     // for (const project of huatuoProjectList.value) {
@@ -294,7 +311,7 @@ const handleEditParams = () => {
 
 const editProjectInfo = project_id => {
   const { openUpdateDialog } = getUrlParams()
-  if (+openUpdateDialog !== 1) {
+  if (+openUpdateDialog! !== 1) {
     addOrUpdateUrlParams({ openUpdateDialog: 1, project_id: project_id })
   }
   editProjectId.value = `${project_id}`

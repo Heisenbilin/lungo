@@ -1,11 +1,13 @@
-import { addOrUpdateUrlParams, delUrlParams } from '@vben/utils'
+// import { addOrUpdateUrlParams, delUrlParams } from '@vben/utils'
 import { logTypeEnum } from '@vben/constants'
 import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
+import { useRoute, useRouter } from 'vue-router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
-
+const router = useRouter()
+const route = useRoute()
 const allFilterKeys = [
   'start_time',
   'end_time',
@@ -24,6 +26,30 @@ const allFilterKeys = [
   'api_status',
   'api_range',
 ]
+function getUrlParams(){
+  return route.query
+}
+function addOrUpdateUrlParams(newQuery){
+  router.push({
+    path:route.path,
+    query:{...route.query,...newQuery}
+  })
+}
+
+ function delUrlParams(key) {
+   const router = useRouter()
+   const route = useRoute()
+    const params = getUrlParams()
+    if (!Array.isArray(key)) key = [key]
+    key.forEach(item => {
+      if (item in params) delete params[item]
+      // else console.log('路由中无此parameter：', item);
+    })
+    router.push({
+      path:route.path,
+      query:{...params}
+    })
+  }
 
 export const useReportStore = defineStore({
   id: 'app-report',

@@ -41,6 +41,7 @@
     "@xes/xes_fe_log": "^2.4.1",
     "ant-design-vue": "^3.2.14",
     "dayjs": "^1.11.7",
+    "fast-glob": "^3.2.12",
     "file-saver": "^2.0.5",
     "intro.js": "^6.0.0",
     "mockjs": "^1.1.0",

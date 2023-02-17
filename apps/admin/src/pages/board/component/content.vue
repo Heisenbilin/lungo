@@ -62,10 +62,18 @@ if (!activeKey.value) {
   
   activeKey.value = tabListEnum[tabkey] ? tabkey : 'pageview'
 }
-watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), {
+// watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), {
+//   immediate: true,
+// })
+
+watch(activeKey, val => router.push({
+  path:route.path,
+  query:{...route.query,tabkey:val}
+}), {
   immediate: true,
 })
 
+console.log(route.query);
 
 const watchFunc: any[] = []
 const initWatch = () => {

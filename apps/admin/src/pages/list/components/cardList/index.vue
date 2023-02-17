@@ -37,9 +37,22 @@ import { Empty } from 'ant-design-vue'
 import { getProjectList } from '@/apis/list'
 import { caculatePageSizeByWidth } from '../utils'
 import { debounce } from '@vben/utils'
-import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
+// import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import ProjectCard from './projectCard.vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const router = useRouter()
+  const route = useRoute()
+function getUrlParams(){
+  return route.query
+}
+function addOrUpdateUrlParams(newQuery){
+  router.push({
+    path:route.path,
+    query:{...route.query,...newQuery}
+  })
+}
 
 const listStore = useListStore()
 const props = defineProps({
@@ -73,8 +86,8 @@ const closeDays = ref('')
 
 //页码
 const total = ref(Number.isNaN(parseInt(preTotal)) ? 0 : parseInt(preTotal))
-const currentPage = ref(total.value && total.value > +page ? +page : 1) //防止tab切换时page溢出
-const pageSize = ref(+page_size)
+const currentPage = ref(total.value && total.value > +page! ? +page! : 1) //防止tab切换时page溢出
+const pageSize = ref(+page_size!)
 // 防止页码超出时不显示
 if (page * page_size > preTotal) {
   // TODO message alert
