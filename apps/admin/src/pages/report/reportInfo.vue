@@ -21,7 +21,7 @@ import InfoCard from '@/pages/component/infoCard/index.vue'
 import ReportFilterCard from '@/pages/component/filterCard/reportFilterCard.vue'
 
 import Content from './totalContent.vue'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from '@vben/stores'
 
 const reprotStore = useReportStore()
 

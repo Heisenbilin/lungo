@@ -32,7 +32,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { useUserStore } from '@/store/user'
 import { useWatermark } from '@vben/hooks'
 import { tabListEnum } from '@vben/constants'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from '@vben/stores'
 
 import PVBoard from './pv/index.vue'
 import PerformanceBoard from './performance/index.vue'

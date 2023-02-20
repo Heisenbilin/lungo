@@ -28,7 +28,7 @@
 import { ref, watch } from 'vue'
 import { formatToDate } from '@vben/utils'
 import { useReportStore } from '@/store/modules/report'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from '@vben/stores'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'

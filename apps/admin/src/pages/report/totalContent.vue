@@ -16,7 +16,7 @@
 import { ref, onMounted, provide, watch, onActivated, onDeactivated } from 'vue'
 import { useReportStore } from '@/store/modules/report'
 import { useWatermark } from '@vben/hooks'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from '@vben/stores'
 import { useUserStore } from '@/store/user'
 
 import projectScore from '@/pages/report/total/projectScore.vue'

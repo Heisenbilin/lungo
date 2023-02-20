@@ -97,7 +97,7 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons-vue'
 import { computed } from 'vue'
 import { commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from '@vben/stores'
 import { BoardInfo } from '@vben/types'
 import { useStoreProject } from '@/hooks/board/useLink'
 

@@ -103,7 +103,7 @@ import { BasicChart } from '@vben/components'
 import { Empty } from 'ant-design-vue'
 import { useBoardStore } from '@/store/modules/board'
 import { useListStore } from '@/store/modules/list'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from '@vben/stores'
 import ContentItem from './contentItem.vue'
 import { BoardInfo } from '@vben/types'
 

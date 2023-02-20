@@ -127,7 +127,7 @@ import { MonitorPage } from '@vben/constants'
 import { BoardInfo } from '@vben/types'
 import { useProjectDeny, useProjectClose } from '@/hooks/board/useAuth'
 import { getProjectList } from '@/apis/list'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from '@vben/stores'
 import dayjs from 'dayjs'
 
 import SDKVersion from '../sdkVersion.vue'

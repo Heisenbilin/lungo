@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { useBoardStore } from '@/store/modules/board';
 import { ExclamationCircleOutlined, CheckCircleOutlined } from '@ant-design/icons-vue';
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from '@vben/stores'
 
 const boardStore = useBoardStore();
 
