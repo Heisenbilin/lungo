@@ -63,7 +63,6 @@ export function createAuthGuard(router: Router) {
       // 把 to.path 由 /login&token=xxx 改为 /login?token=xxx
       return `${to.fullPath.replace('&', '?')}`
     }
-
     // if (from.path === ROOT_PATH && to.path === PageEnum.BASE_HOME) {
     //   next(PageEnum.BASE_HOME)
     //   return
@@ -194,6 +193,7 @@ export function createAuthGuard(router: Router) {
 
 // 路由守卫：进入路由，增加Tabs
 export function createTabsGuard(router: Router) {
+  
   router.beforeEach(async to => {
     if (whitePathList.includes(to.path)) return
     // Notify routing changes

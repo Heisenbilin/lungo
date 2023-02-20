@@ -3,7 +3,7 @@ import { logTypeEnum } from '@vben/constants'
 import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
+import { router } from '@/router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
 
@@ -25,31 +25,37 @@ const allFilterKeys = [
   'api_status',
   'api_range',
 ]
-const router = useRouter()
-const route = useRoute()
-console.log(router,route);
+
 
 function getUrlParams(){
-  return route.query
+  return router.currentRoute.value.query
 }
 function addOrUpdateUrlParams(newQuery){
+
   router.push({
-    path:route.path,
-    query:{...route.query,...newQuery}
+    path:router.currentRoute.value.path,
+    query:{...router.currentRoute.value.query,...newQuery}
   })
+  
 }
+// function addOrUpdateUrlParams(newQuery){
+//   router.push({
+//     path:router.currentRoute.value.path,
+//     query:{...router.currentRoute.value.query,...newQuery}
+//   })
+// }
 
  function delUrlParams(key) {
-   const router = useRouter()
-   const route = useRoute()
+
     const params = getUrlParams()
+     
     if (!Array.isArray(key)) key = [key]
     key.forEach(item => {
       if (item in params) delete params[item]
       // else console.log('路由中无此parameter：', item);
     })
     router.push({
-      path:route.path,
+      path:router.currentRoute.value.path,
       query:{...params}
     })
   }
@@ -91,7 +97,7 @@ export const useBoardStore = defineStore({
     commitFilterState(filter: filter): void {
       this.filterState = filter
       addOrUpdateUrlParams(this.filterState)
-
+      
       // 删除路由中不需要的参数
       const delKeys: string[] = []
       allFilterKeys.map(key => !Object.keys(filter).includes(key) && delKeys.push(key))
@@ -162,7 +168,9 @@ export const useBoardStore = defineStore({
         start_time = this.filterState.start_time,
         end_time = this.filterState.end_time,
       } = getUrlParams()
-      this.commitFilterState({ start_time , end_time, dimension } as any)
+      
+      // this.commitFilterState({ start_time , end_time, dimension } as any)
+      this.commitBoardInfoState(info)
       this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })
     },
   },
