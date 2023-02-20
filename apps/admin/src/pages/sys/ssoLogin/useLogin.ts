@@ -8,7 +8,7 @@ const { ssoAppid, dpEnv } = getGlobalConfig(import.meta.env)
 
 export function useLogin() {
   const router = useRouter()
-  
+
   const route = useRoute()
   const userStore = useUserStore()
 
@@ -26,7 +26,7 @@ export function useLogin() {
     parameters = parameters.replace(/&$/, '')
     return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters
   }
-  
+
   const goSSOLoginPage = () => {
     const ssoPageUrl = `https://sso.100tal.com/portal/login/${ssoAppid}`
     // 携带 redirect 和其他参数跳转造物神
@@ -37,7 +37,6 @@ export function useLogin() {
   }
 
   const login = async () => {
- 
     // 如果链接上没有造物神 token，说明是第一次登录，不是造物神的回跳
     if (!ssoToken.value) {
       goSSOLoginPage()
@@ -89,7 +88,7 @@ export function useLogin() {
   }
   onMounted(() => {
     // 如果 url 中携带 env=dev，说明是本地开发环境，跳转 localhost
-    console.log('env', env.value,dpEnv)
+    console.log('env', env.value, dpEnv)
     if (env.value === 'dev' && dpEnv !== 'dev') {
       console.log('跳转localhost')
       // const PORT = import.meta.env.VITE_PORT

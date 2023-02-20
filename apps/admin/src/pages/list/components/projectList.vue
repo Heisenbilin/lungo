@@ -183,7 +183,7 @@ console.log('project',getUrlParams());
 
 function addOrUpdateUrlParams(newQuery){
   console.log(router);
-  router.push({
+  router.replace({
     path:route.path,
     query:{...route.query,...newQuery}
   })

@@ -30,7 +30,7 @@ function getUrlParams() {
   return router.currentRoute.value.query
 }
 function addOrUpdateUrlParams(newQuery) {
-  router.push({
+  router.replace({
     path: router.currentRoute.value.path,
     query: { ...router.currentRoute.value.query, ...newQuery },
   })
@@ -42,7 +42,7 @@ function delUrlParams(key) {
   key.forEach(item => {
     if (item in params) delete params[item]
   })
-  router.push({
+  router.replace({
     path: router.currentRoute.value.path,
     query: { ...params },
   })

@@ -9,7 +9,6 @@
           style="width: 300px"
           showSearch
           optionFilterProp="label"
-       
         >
           <a-select-option
             v-for="item of projectList"
@@ -123,7 +122,6 @@ import { getGroupRoleUsers } from '@/apis/bigfish'
 import { getKibanaTopicId } from '@/apis/board/logCenter'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { MonitorPage } from '@vben/constants'
-// import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { BoardInfo } from '@vben/types'
 import { useProjectDeny, useProjectClose } from '@/hooks/board/useAuth'
 import { getProjectList } from '@/apis/list'
@@ -156,8 +154,7 @@ const store =
 
 // 当前选中项目信息
 const { boardInfoState: projectInfo } = storeToRefs(store)
-const urlProjectId = +route.query.projetId! || 0
-// let { projectId: urlProjectId } = getUrlParams()
+const { projectId: urlProjectId = 0 } = route.query
 const projectId = ref<number | string>()
 
 // 项目列表
@@ -220,14 +217,11 @@ async function getTopicId(appId, isSaas) {
 //   }
 // }
 
-
 watch(projectId, () => {
   if (projectId.value && projectId.value !== '请选择应用') {
-    // addOrUpdateUrlParams({ projectId: projectId.value })
-    // const queryValue = {...route.query, projectId: projectId.value}
-   router.push({
-      path:route.path,
-      query: {...route.query, projectId: projectId.value}
+    router.replace({
+      path: route.path,
+      query: { ...route.query, projectId: projectId.value },
     })
     if (projectInfo.value.id !== projectId.value) {
       const info = projectList.value.find(item => item.id === projectId.value)
@@ -279,7 +273,7 @@ const getProjectListByGroup = async (needCommitProjectInfo = false) => {
     // 若后台传入最新sdk版本号，则更新当前最新sdk版本号value
     store.commitLatestSDKVersionState(result.data.latestSDKVersion)
     if (needCommitProjectInfo) {
-      const project = result.data.projects.find(item => item.id === urlProjectId)
+      const project = result.data.projects.find(item => item.id === +urlProjectId!)
       if (!project) {
         projectInfo.value.id = 0
         useProjectDeny(projectId.value)
@@ -297,5 +291,5 @@ const getProjectListByGroup = async (needCommitProjectInfo = false) => {
   }
 }
 
-getProjectListByGroup(Boolean(!projectInfo.value.id && urlProjectId))
+getProjectListByGroup(Boolean(!projectInfo.value.id && +urlProjectId!))
 </script>

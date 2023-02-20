@@ -730,7 +730,7 @@ function delUrlParams(key) {
       if (item in params) delete params[item]
       // else console.log('路由中无此parameter：', item);
     })
-    router.push({
+    router.replace({
       path:route.path,
       query:{...params}
     })

@@ -69,7 +69,7 @@ if (!activeKey.value) {
 watch(
   activeKey,
   val =>
-    router.push({
+    router.replace({
       path: route.path,
       query: { ...route.query, tabkey: val },
     }),

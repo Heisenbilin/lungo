@@ -48,7 +48,7 @@ function getUrlParams(){
   return route.query
 }
 function addOrUpdateUrlParams(newQuery){
-  router.push({
+  router.replace({
     path:route.path,
     query:{...route.query,...newQuery}
   })
