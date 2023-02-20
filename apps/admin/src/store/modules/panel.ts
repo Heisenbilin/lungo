@@ -3,7 +3,7 @@ import { logTypeEnum } from '@vben/constants'
 import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
+import { router } from '@/router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
 
@@ -25,15 +25,13 @@ const allFilterKeys = [
   'api_status',
   'api_range',
 ]
-const router = useRouter()
-const route = useRoute()
 function getUrlParams(){
-  return route.query
+  return router.currentRoute.value.query
 }
 function addOrUpdateUrlParams(newQuery){
   router.push({
-    path:route.path,
-    query:{...route.query,...newQuery}
+    path:router.currentRoute.value.path,
+    query:{...router.currentRoute.value.query,...newQuery}
   })
 }
 
@@ -45,7 +43,7 @@ function addOrUpdateUrlParams(newQuery){
       // else console.log('路由中无此parameter：', item);
     })
     router.push({
-      path:route.path,
+      path:router.currentRoute.value.path,
       query:{...params}
     })
   }
@@ -152,14 +150,14 @@ export const useBoardDataStore = defineStore({
     },
 
     initStateValue(info: BoardInfo): void {
-      console.log(info, this.filterState)
       this.commitBoardInfoState(info)
       const {
         dimension = this.filterState.dimension,
         start_time = this.filterState.start_time,
         end_time = this.filterState.end_time,
       } = getUrlParams()
-      this.commitFilterState({ start_time, end_time, dimension })
+      // this.commitFilterState({ start_time, end_time, dimension } as any)
+      this.commitBoardInfoState(info)
       this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })
     },
   },

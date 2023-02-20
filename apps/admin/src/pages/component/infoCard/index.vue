@@ -9,6 +9,7 @@
           style="width: 300px"
           showSearch
           optionFilterProp="label"
+       
         >
           <a-select-option
             v-for="item of projectList"
@@ -144,7 +145,8 @@ const props = defineProps({
     required: true,
   },
 })
-
+const router = useRouter()
+const route = useRoute()
 const store =
   props.boardType === 'board'
     ? boardStore
@@ -154,7 +156,6 @@ const store =
 
 // 当前选中项目信息
 const { boardInfoState: projectInfo } = storeToRefs(store)
-const route = useRoute()
 const urlProjectId = +route.query.projetId! || 0
 // let { projectId: urlProjectId } = getUrlParams()
 const projectId = ref<number | string>()
@@ -205,14 +206,28 @@ async function getTopicId(appId, isSaas) {
     store.commitTopicIdState(res.data)
   }
 }
-const router = useRouter()
+
+// const handleSelectChange = () => {
+//   router.replace({
+//     query: {
+//       projectId: projectId.value
+//     }
+//   })
+
+//   if (projectInfo.value.id !== projectId.value) {
+//     const info = projectList.value.find(item => item.id === projectId.value)
+//     info && store.initStateValue({ ...info, noInitFilter: true })
+//   }
+// }
+
 
 watch(projectId, () => {
   if (projectId.value && projectId.value !== '请选择应用') {
     // addOrUpdateUrlParams({ projectId: projectId.value })
-    router.push({
+    // const queryValue = {...route.query, projectId: projectId.value}
+   router.push({
       path:route.path,
-     query: {...route.query, projectId: projectId.value}
+      query: {...route.query, projectId: projectId.value}
     })
     if (projectInfo.value.id !== projectId.value) {
       const info = projectList.value.find(item => item.id === projectId.value)

@@ -3,11 +3,10 @@ import { logTypeEnum } from '@vben/constants'
 import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
+import { router } from '@/router'
+// import { useRoute, useRouter } from 'vue-router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
-const router = useRouter()
-const route = useRoute()
 const allFilterKeys = [
   'start_time',
   'end_time',
@@ -27,18 +26,18 @@ const allFilterKeys = [
   'api_range',
 ]
 function getUrlParams(){
-  return route.query
+  return router.currentRoute.value.query
 }
 function addOrUpdateUrlParams(newQuery){
+  console.log(window.location.search)
+  console.log(router)
   router.push({
-    path:route.path,
-    query:{...route.query,...newQuery}
+    path:router.currentRoute.value.path,
+    query:{...router.currentRoute.value.query,...newQuery}
   })
 }
 
  function delUrlParams(key) {
-   const router = useRouter()
-   const route = useRoute()
     const params = getUrlParams()
     if (!Array.isArray(key)) key = [key]
     key.forEach(item => {
@@ -46,7 +45,7 @@ function addOrUpdateUrlParams(newQuery){
       // else console.log('路由中无此parameter：', item);
     })
     router.push({
-      path:route.path,
+      path:router.currentRoute.value.path,
       query:{...params}
     })
   }
@@ -83,6 +82,7 @@ export const useReportStore = defineStore({
     },
     commitFilterState(filter: filter): void {
       this.filterState = filter
+      debugger
       addOrUpdateUrlParams(this.filterState)
       // 删除路由中不需要的参数
       const delKeys: string[] = []
