@@ -16,6 +16,7 @@ export function configUnocssPlugin() {
       'filter-tag': 'font-medium !mr-10 float-right !opacity-70',
       'chart-container': 'bg-white rounded-lg p-3 col-span-2 xl:col-span-1',
       'chart-container-full': 'chart-container !col-span-2',
+      'grid-center': 'grid place-content-center',
     },
     theme: {
       colors: {

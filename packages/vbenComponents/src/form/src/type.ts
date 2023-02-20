@@ -1,13 +1,33 @@
-import type { VNode } from 'vue'
+import type { CSSProperties, VNode } from 'vue'
+import { formMethod } from '#/form/src/hooks/useForm'
 export interface VbenFormProps {
-  // api?: Function
-  // params?: Object
   title?: string
-  // afterFetch?: Function
   schemas: VbenFormSchema[]
+  //栅格参数
   gridProps?: GridProps
+  // label布局参数
+  labelProps?: Omit<LabelProps, 'labelStyle'>
   // 表单规则
   rules?: object
+  // 是否显示按钮组
+  actions?: boolean
+  // 按钮组参数
+  actionsProps?: ActionProps
+  // 提交函数
+  submitFunc?: (FormRef?: formMethod) => void
+}
+
+export interface ActionProps extends GridProps {
+  submitText?: String
+  cancelText?: String
+}
+
+// 标签参数
+export interface LabelProps {
+  labelPlacement?: 'left' | 'top'
+  labelAlign?: 'left' | 'right'
+  labelStyle?: CSSProperties | String
+  labelWidth?: number | string | 'auto'
 }
 export interface GridProps {
   // 单行栅格数量
@@ -34,10 +54,13 @@ export interface VbenFormSchema {
   valueField?: string
   // Label name
   label: string | VNode
+  // 标签参数
+  labelProps?: LabelProps
   // Auxiliary text
   subLabel?: string
   // 栅格属性
   gridItemProps?: GridItemProps
+
   // 表单项规则
   rule?: object
   // Help text on the right side of the text

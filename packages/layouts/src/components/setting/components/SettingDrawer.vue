@@ -39,15 +39,19 @@ const onVisible = (show: boolean) => {
     <VbenDrawerContent closable>
       <template #header>{{ t('layout.setting.drawerTitle') }}</template>
       <template v-if="getShowDarkModeToggle">
-        <VbenDivider title-placement="left">{{ t('layout.setting.darkMode') }}</VbenDivider>
+        <VbenDivider title-placement="left">{{
+          t('layout.setting.darkMode')
+        }}</VbenDivider>
         <DarkModeToggle />
       </template>
-      <VbenDivider title-placement="left">{{ t('layout.setting.navMode') }}</VbenDivider>
+      <VbenDivider title-placement="left">{{
+        t('layout.setting.navMode')
+      }}</VbenDivider>
       <NavigationBarPicker
         :def="getMenuType"
         :type-list="navigationBarTypeList"
         @handler="
-          item => {
+          (item) => {
             baseHandler(HandlerSettingEnum.CHANGE_LAYOUT, {
               mode: item.mode,
               type: item.type,
@@ -56,29 +60,41 @@ const onVisible = (show: boolean) => {
           }
         "
       />
-      <VbenDivider title-placement="left">{{ t('layout.setting.sysTheme') }}</VbenDivider>
+      <VbenDivider title-placement="left">{{
+        t('layout.setting.sysTheme')
+      }}</VbenDivider>
       <ThemeColorPicker
         :def="getThemeColor"
         :event="HandlerSettingEnum.CHANGE_THEME_COLOR"
         :color-list="APP_PRESET_COLOR_LIST"
       />
-      <VbenDivider title-placement="left">{{ t('layout.setting.headerTheme') }}</VbenDivider>
+      <VbenDivider title-placement="left">{{
+        t('layout.setting.headerTheme')
+      }}</VbenDivider>
       <ThemeColorPicker
         :def="getHeaderBgColor"
         :event="HandlerSettingEnum.HEADER_THEME"
         :color-list="HEADER_PRESET_BG_COLOR_LIST"
       />
-      <VbenDivider title-placement="left">{{ t('layout.setting.sidebarTheme') }}</VbenDivider>
+      <VbenDivider title-placement="left">{{
+        t('layout.setting.sidebarTheme')
+      }}</VbenDivider>
       <ThemeColorPicker
         :def="getMenuBgColor"
         :event="HandlerSettingEnum.MENU_THEME"
         :color-list="SIDE_BAR_BG_COLOR_LIST"
       />
-      <VbenDivider title-placement="left">{{ t('layout.setting.interfaceFunction') }} </VbenDivider>
+      <VbenDivider title-placement="left"
+        >{{ t('layout.setting.interfaceFunction') }}
+      </VbenDivider>
       <Features />
-      <VbenDivider title-placement="left">{{ t('layout.setting.interfaceDisplay') }}</VbenDivider>
+      <VbenDivider title-placement="left">{{
+        t('layout.setting.interfaceDisplay')
+      }}</VbenDivider>
       <Content />
-      <VbenDivider title-placement="left">{{ t('layout.setting.animation') }}</VbenDivider>
+      <VbenDivider title-placement="left">{{
+        t('layout.setting.animation')
+      }}</VbenDivider>
       <Transitions />
       <VbenDivider />
       <FooterButtons />

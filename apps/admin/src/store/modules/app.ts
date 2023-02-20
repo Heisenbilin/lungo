@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { pinia } from '@/pinia'
-import { resetRouter } from '@/router'
+// import { pinia } from '@/pinia'
+import { resetRouter } from '@vben/router'
 
 interface AppState {
   pageLoading: boolean
@@ -14,7 +14,7 @@ export const useAppStore = defineStore({
   getters: {
     getPageLoading(): boolean {
       return this.pageLoading
-    }
+    },
   },
   actions: {
     setPageLoading(loading: boolean): void {
@@ -44,5 +44,5 @@ export const useAppStore = defineStore({
 
 // Need to be used outside the setup
 export function useAppStoreWithOut() {
-  return useAppStore(pinia)
+  return useAppStore()
 }

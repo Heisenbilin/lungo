@@ -1,20 +1,19 @@
 <script lang="ts" setup>
 import { ref, h, onMounted, unref, nextTick } from 'vue'
 import { createNamespace, mapTree } from '@vben/utils'
-import { VbenIconify } from '@vben/vbencomponents'
 import { context } from '../../../bridge'
 import {
   RouteLocationNormalizedLoaded,
   RouterLink,
   useRouter,
 } from 'vue-router'
-import { MenuTypeEnum } from '@vben/constants'
 import { useI18n } from '@vben/locale'
 import { REDIRECT_NAME } from '@vben/constants'
 import { Menu } from '@vben/types'
+import {renderIcon} from "../index";
 const { Logo, getMenus, listenerRouteChange, useMenuSetting, useAppInject } = context
 
-const { getMenuType, getAccordion } = useMenuSetting()
+const { getAccordion } = useMenuSetting()
 const { getIsMobile } = useAppInject()
 
 const props = defineProps({
@@ -99,10 +98,6 @@ const routerToMenu = (item: RouteRecordItem) => {
     hideMenu: meta.hideMenu,  //加上hidemenu 因为routerToMenu 返回的对象里面做了数据改动将hideMenu丢失了
     icon: renderIcon(icon),
   }
-}
-function renderIcon(icon: string) {
-  if (!icon) return undefined
-  return () => h(VbenIconify, { icon })
 }
 </script>
 

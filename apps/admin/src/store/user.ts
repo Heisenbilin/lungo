@@ -1,6 +1,6 @@
 // import type { LoginParams } from '@/apis/auth'
 // import { BASIC_HOME_PATH, BASIC_LOGIN_PATH, PageEnum } from '@vben/constants'
-import { pinia } from '@/pinia'
+// import { pinia } from '@/pinia'
 // import { router } from '@/router'
 import { getUserInfoApi, doLoginApi } from '@/apis/auth' //doLogoutApi,
 // import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes'
@@ -12,6 +12,9 @@ import { getGlobalConfig, setToken } from '@vben/utils'
 
 export const useUserStore = defineStore({
   id: 'app-user-store',
+  persist: {
+    paths: ['userInfo', 'accessToken'],
+  },
   state: (): UserState => ({
     userInfo: null,
     accessToken: undefined,
@@ -124,9 +127,11 @@ export const useUserStore = defineStore({
           parameters += key + '=' + encodeURIComponent(obj[key]) + '&'
         }
         parameters = parameters.replace(/&$/, '')
-        return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters
+        return /\?$/.test(baseUrl)
+          ? baseUrl + parameters
+          : baseUrl.replace(/\/?$/, '?') + parameters
       }
-      
+
       this.accessToken = undefined
       this.sessionTimeout = false
       this.setUserInfo(null)
@@ -152,5 +157,5 @@ export const useUserStore = defineStore({
 
 // Need to be used outside the setup
 export function useUserStoreWithout() {
-  return useUserStore(pinia)
+  return useUserStore()
 }

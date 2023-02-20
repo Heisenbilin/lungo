@@ -16,7 +16,7 @@ import {
   getCurrentParentPath,
   getMenus,
   getShallowMenus,
-} from '@/router'
+} from '@vben/router'
 import { useDesign } from '@/hooks/web/useDesign'
 import { useAppInject } from '@/hooks/web/use-app-inject'
 import { useTabs } from '@/hooks/useTabs'
@@ -131,6 +131,7 @@ export async function initApplication() {
   // ! Need to pay attention to the timing of execution
   // ! 需要注意调用时机
   await initPackages()
+
   // Initialize internal system configuration
   initAppConfigStore()
 }

@@ -10,15 +10,14 @@ const formRef = ref(null)
 const props = defineProps({
   schemas: [],
   rules: {
-    type: Object,
-    Array,
+    type: Object || Array,
     default: {},
   },
 })
 const attrs = useAttrs()
-const getRules = computed(() => innerProps?.rules || props.rules)
+const getRules = computed(() => innerProps.value?.rules || props.rules)
 const setProps = (prop: Partial<VbenFormProps>) => {
-  prop.schemas.forEach((v) => {
+  prop.schemas?.forEach((v) => {
     if (v.defaultValue) {
       fieldValue.value[v.field] = v.defaultValue
     }
@@ -28,7 +27,9 @@ const setProps = (prop: Partial<VbenFormProps>) => {
       }
     }
   })
+
   innerProps.value = {
+    actions: false,
     ...prop,
     ...unref(innerProps),
   }
@@ -74,6 +75,13 @@ function getFieldValue() {
 const getGridItemProps = (p) => {
   return { span: getGridProps.value.span, ...p }
 }
+
+const getFormItemProps = (p) => {
+  const { labelProps } = p
+
+  return { ...labelProps }
+}
+
 // 默认grid参数
 const getGridProps = computed(() => {
   return {
@@ -85,8 +93,10 @@ const getGridProps = computed(() => {
   }
 })
 
+const FormMethod = ref({})
+
 onMounted(() => {
-  emit('register', {
+  FormMethod.value = {
     setProps,
     getFieldValue,
     validate: formRef.value?.validate,
@@ -94,7 +104,8 @@ onMounted(() => {
     updateSchemas: (schemas) => {
       innerProps.value.schemas = schemas
     },
-  })
+  }
+  emit('register', unref(FormMethod))
 })
 </script>
 <template>
@@ -116,6 +127,7 @@ onMounted(() => {
             :path="schema.field"
             :showRequireMark="schema.required"
             :rule="schema.rule"
+            v-bind="getFormItemProps(schema)"
           >
             <slot
               :name="schema.slot"
@@ -124,7 +136,7 @@ onMounted(() => {
             ></slot>
             <component
               v-if="
-                (schema.componentProps !== 'InputPassword' ||
+                (schema.component !== 'InputPassword' ||
                   schema.component !== 'InputTextArea') &&
                 !schema.slot
               "
@@ -145,6 +157,25 @@ onMounted(() => {
               v-model:value="fieldValue[schema.field]"
             />
           </VbenFormItem>
+        </VbenGridItem>
+        <VbenGridItem
+          v-if="innerProps?.schemas.length > 0 && innerProps.actions"
+          v-bind="innerProps.actionsProps"
+        >
+          <slot name="actions-prefix" v-bind="FormMethod || {}"></slot>
+          <slot name="actions" v-bind="FormMethod || {}">
+            <VbenButtonGroup
+              ><VbenButton type="error" @click="formRef.restoreValidation">{{
+                innerProps.actionsProps.cancelText || '重置'
+              }}</VbenButton>
+              <VbenButton
+                type="primary"
+                @click="innerProps.submitFunc(FormMethod)"
+                >{{ innerProps.actionsProps.submitText || '提交' }}</VbenButton
+              ></VbenButtonGroup
+            >
+          </slot>
+          <slot name="actions-suffix" v-bind="FormMethod || {}"></slot>
         </VbenGridItem>
       </VbenGrid>
     </Form>

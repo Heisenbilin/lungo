@@ -24,6 +24,9 @@
     "reinstall": "pnpm turbo run clean && rimraf pnpm-lock.yaml && rimraf node_modules && npm run bootstrap",
     "stub": "pnpm --filter @config/** prepack",
     "test": "vitest",
+    "turbo:build": "turbo run build --parallel",
+    "turbo:dev": "turbo run dev --parallel",
+    "turbo:preview": "turbo run preview --parallel",
     "version": "pnpm run changeset version"
   },
   "resolutions": {
@@ -31,23 +34,23 @@
   },
   "devDependencies": {
     "@bcc/prettier-config": "^1.0.1",
-    "@changesets/cli": "^2.24.4",
+    "@changesets/cli": "^2.26.0",
     "@config/lint": "workspace:*",
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^18.11.9",
+    "@types/node": "^18.11.18",
     "cross-env": "^7.0.3",
     "esno": "^0.16.3",
     "fs-extra": "^10.1.0",
-    "jsdom": "^20.0.2",
-    "pathe": "^1.0.0",
+    "jsdom": "^20.0.3",
+    "pathe": "^1.1.0",
     "rimraf": "^3.0.2",
-    "rollup": "^3.7.1",
+    "rollup": "^3.12.1",
     "ts-node": "^10.9.1",
     "tsconfig": "workspace:*",
-    "turbo": "^1.6.3",
-    "typescript": "^4.9.4",
-    "unbuild": "^1.0.2",
-    "vitest": "^0.25.6"
+    "turbo": "^1.7.2",
+    "typescript": "^4.9.5",
+    "unbuild": "^1.1.1",
+    "vitest": "^0.25.8"
   },
   "engines": {
     "node": ">=16"

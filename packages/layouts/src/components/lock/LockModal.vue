@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
-import { useI18n } from "@vben/locale";
-import { useForm } from "@vben/vbencomponents";
-import { context } from "../../../bridge";
-import headerImg from "@/assets/images/header.jpg";
+import { computed, ref } from 'vue'
+import { useI18n } from '@vben/locale'
+import { useForm } from '@vben/vbencomponents'
+import { context } from '../../../bridge'
+import headerImg from '@/assets/images/header.jpg'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const props = defineProps({
   show: {
@@ -64,21 +64,30 @@ const handleLock = async () => {
       lockStore.setLockInfo({
         isLock: true,
         pwd: password,
-      });
+      })
     }
   });
 };
 </script>
 
 <template>
-  <VbenModal v-model:show="showModal" :title="t('layout.header.lockScreen')" preset="card">
+  <VbenModal
+    v-model:show="showModal"
+    :title="t('layout.header.lockScreen')"
+    preset="card"
+  >
     <VbenSpace vertical align="center">
       <VbenAvatar round :size="64" :src="getUserInfo.avatar" />
       <VbenH5>{{ getUserInfo.realName }}</VbenH5>
     </VbenSpace>
-    <VbenForm @register="register" ref="formRef" v-model:model="formModel" label-placement="left" />
+    <VbenForm
+      @register="register"
+      ref="formRef"
+      v-model:model="formModel"
+      label-placement="left"
+    />
     <VbenButton type="info" block @click="handleLock">
-      {{ t("layout.header.lockScreenBtn") }}
+      {{ t('layout.header.lockScreenBtn') }}
     </VbenButton>
   </VbenModal>
 </template>
