@@ -7,7 +7,7 @@ import { getUserInfoApi, doLoginApi } from '@/apis/auth' //doLogoutApi,
 // import { useAuthStoreWithout } from './auth'
 // import { GetUserInfoModel } from '@/apis/sys/user'
 import { UserInfo, UserState } from '@vben/types' // , ErrorMessageMode
-import { defineStore } from '@vben/stores'
+import { defineStore } from 'pinia'
 import { getGlobalConfig, setToken } from '@vben/utils'
 
 export const useUserStore = defineStore({

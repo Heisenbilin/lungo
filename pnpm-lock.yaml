@@ -79,9 +79,11 @@ importers:
       dayjs: ^1.11.7
       fast-glob: ^3.2.12
       file-saver: ^2.0.5
+      mockjs: ^1.1.0
       naive-ui: ^2.34.3
       nprogress: ^0.2.0
       path-to-regexp: ^6.2.1
+      pinia: ^2.0.30
       typescript: ^4.9.5
       vite: 4.0.4
       vue: 3.2.47
@@ -114,8 +116,10 @@ importers:
       dayjs: 1.11.7
       fast-glob: registry.npmmirror.com/fast-glob/3.2.12
       file-saver: registry.npmmirror.com/file-saver/2.0.5
+      mockjs: registry.npmmirror.com/mockjs/1.1.0
       nprogress: registry.npmmirror.com/nprogress/0.2.0
       path-to-regexp: registry.npmmirror.com/path-to-regexp/6.2.1
+      pinia: registry.npmmirror.com/pinia/2.0.30_hmuptsblhheur2tugfgucj7gc4
       vue: registry.npmmirror.com/vue/3.2.47
       vue-demi: registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.47
       vue-json-pretty: registry.npmmirror.com/vue-json-pretty/2.2.3_vue@3.2.47
@@ -4048,16 +4052,6 @@ packages:
     dependencies:
       delayed-stream: 1.0.0
 
-  /commander/7.2.0:
-    resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
-    engines: {node: '>= 10'}
-    dev: false
-
-  /commander/8.3.0:
-    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
-    engines: {node: '>= 12'}
-    dev: false
-
   /commander/9.4.1:
     resolution: {integrity: sha512-5EEkTNyHNGFPD2H+c/dXXfQZYa/scCKasxWcXJaWnNJ99pnQN9Vnmqow+p+PlFPE63Q6mThaZws1T+HxfpgtPw==}
     engines: {node: ^12.20.0 || >=14}
@@ -5258,7 +5252,7 @@ packages:
     dependencies:
       camel-case: 4.1.2
       clean-css: 5.3.1
-      commander: 8.3.0
+      commander: registry.npmmirror.com/commander/8.3.0
       he: 1.2.0
       param-case: 3.0.4
       relateurl: 0.2.7
@@ -6203,7 +6197,7 @@ packages:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.10.0
-      semver: 7.3.7
+      semver: registry.npmmirror.com/semver/7.3.8
       validate-npm-package-license: 3.0.4
     dev: false
 
@@ -7205,7 +7199,7 @@ packages:
     hasBin: true
     dependencies:
       '@trysound/sax': 0.2.0
-      commander: 7.2.0
+      commander: registry.npmmirror.com/commander/7.2.0
       css-select: 4.3.0
       css-tree: 1.1.3
       csso: 4.2.0
@@ -8289,7 +8283,7 @@ packages:
     name: axios
     version: 0.21.4
     dependencies:
-      follow-redirects: registry.npmmirror.com/follow-redirects/1.15.1_debug@4.3.4
+      follow-redirects: registry.npmmirror.com/follow-redirects/1.15.1
     transitivePeerDependencies:
       - debug
     dev: false
@@ -9234,6 +9228,20 @@ packages:
     name: commander
     version: 6.2.1
     engines: {node: '>= 6'}
+    dev: false
+
+  registry.npmmirror.com/commander/7.2.0:
+    resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/commander/-/commander-7.2.0.tgz}
+    name: commander
+    version: 7.2.0
+    engines: {node: '>= 10'}
+    dev: false
+
+  registry.npmmirror.com/commander/8.3.0:
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/commander/-/commander-8.3.0.tgz}
+    name: commander
+    version: 8.3.0
+    engines: {node: '>= 12'}
     dev: false
 
   registry.npmmirror.com/commander/9.1.0:
@@ -11637,6 +11645,18 @@ packages:
     dependencies:
       inherits: registry.npmmirror.com/inherits/2.0.4
       readable-stream: registry.npmmirror.com/readable-stream/2.3.7
+    dev: false
+
+  registry.npmmirror.com/follow-redirects/1.15.1:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.1.tgz}
+    name: follow-redirects
+    version: 1.15.1
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
     dev: false
 
   registry.npmmirror.com/follow-redirects/1.15.1_debug@4.3.4:
@@ -14226,6 +14246,15 @@ packages:
       ufo: registry.npmmirror.com/ufo/1.1.0
     dev: true
 
+  registry.npmmirror.com/mockjs/1.1.0:
+    resolution: {integrity: sha512-eQsKcWzIaZzEZ07NuEyO4Nw65g0hdWAyurVol1IPl1gahRwY+svqzfgfey8U8dahLwG44d6/RwEzuK52rSa/JQ==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/mockjs/-/mockjs-1.1.0.tgz}
+    name: mockjs
+    version: 1.1.0
+    hasBin: true
+    dependencies:
+      commander: registry.npmmirror.com/commander/9.4.1
+    dev: false
+
   registry.npmmirror.com/moment/2.29.4:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/moment/-/moment-2.29.4.tgz}
     name: moment
@@ -15257,6 +15286,27 @@ packages:
       pinia: ^2.0.0
     dependencies:
       pinia: registry.npmmirror.com/pinia/2.0.30_vue@3.2.47
+    dev: false
+
+  registry.npmmirror.com/pinia/2.0.30_hmuptsblhheur2tugfgucj7gc4:
+    resolution: {integrity: sha512-q6DUmxWwe/mQgg+55QQjykpKC+aGeGdaJV3niminl19V08dE+LRTvSEuqi6/NLSGCKHI49KGL6tMNEOssFiMyA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/pinia/-/pinia-2.0.30.tgz}
+    id: registry.npmmirror.com/pinia/2.0.30
+    name: pinia
+    version: 2.0.30
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.4.5
+      typescript: registry.npmmirror.com/typescript/4.9.5
+      vue: registry.npmmirror.com/vue/3.2.47
+      vue-demi: registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.47
     dev: false
 
   registry.npmmirror.com/pinia/2.0.30_vue@3.2.47:

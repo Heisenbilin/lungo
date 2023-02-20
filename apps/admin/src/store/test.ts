@@ -1,4 +1,4 @@
-import { defineStore } from '@vben/stores'
+import { defineStore } from 'pinia'
 
 export const useTest = defineStore({
   id: 'use--test',
