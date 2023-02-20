@@ -5,6 +5,8 @@ import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
 import { router } from '@/router'
 // import { useRoute, useRouter } from 'vue-router'
+import { router } from '@/router'
+// import { useRoute, useRouter } from 'vue-router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
 const allFilterKeys = [
@@ -90,10 +92,10 @@ export const useReportStore = defineStore({
     commitLogInfoState(logInfo: logInfo): void {
       this.logInfoState = logInfo
     },
-    // commitTabState(tabkey: string): void {
-    //   this.tabState = tabkey;
-    //   addOrUpdateUrlParams({ tabkey });
-    // },
+    commitTabState(tabkey: string): void {
+      this.tabState = tabkey;
+      addOrUpdateUrlParams({ tabkey });
+    },
     openLogInfoState(logInfo: logInfo): void {
       // 只有进入的新状态为true打开状态、且state中为false关闭状态才生效
       if (!logInfo.visible || this.logInfoState.visible) return
@@ -146,6 +148,7 @@ export const useReportStore = defineStore({
     },
 
     initStateValue(info: BoardInfo & { noInitFilter: boolean }): void {
+      console.log('report',info, this.filterState)
       if (!info.noInitFilter) {
         this.commitFilterState({ start_time: '', end_time: '' })
       }

@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
 import { router } from '@/router'
+import { router } from '@/router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
 
@@ -26,6 +27,7 @@ const allFilterKeys = [
   'api_range',
 ]
 function getUrlParams(){
+  return router.currentRoute.value.query
   return router.currentRoute.value.query
 }
 function addOrUpdateUrlParams(newQuery){

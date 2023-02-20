@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
 import { router } from '@/router'
+import { router } from '@/router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
 
@@ -35,6 +36,12 @@ function addOrUpdateUrlParams(newQuery) {
     query: { ...router.currentRoute.value.query, ...newQuery },
   })
 }
+// function addOrUpdateUrlParams(newQuery){
+//   router.push({
+//     path:router.currentRoute.value.path,
+//     query:{...router.currentRoute.value.query,...newQuery}
+//   })
+// }
 
 function delUrlParams(key) {
   const params = getUrlParams()
@@ -86,7 +93,7 @@ export const useBoardStore = defineStore({
     commitFilterState(filter: filter): void {
       this.filterState = filter
       addOrUpdateUrlParams(this.filterState)
-
+      
       // 删除路由中不需要的参数
       const delKeys: string[] = []
       allFilterKeys.map(key => !Object.keys(filter).includes(key) && delKeys.push(key))
@@ -152,6 +159,7 @@ export const useBoardStore = defineStore({
 
     initStateValue(info: BoardInfo): void {
       this.commitBoardInfoState(info)
+      console.log('boradroute',router.currentRoute.value.query,'1',router.currentRoute.value.path);
       const {
         dimension = this.filterState.dimension,
         start_time = this.filterState.start_time,
@@ -162,5 +170,13 @@ export const useBoardStore = defineStore({
       this.commitBoardInfoState(info)
       this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })
     },
+    // initStateValue(info: BoardInfo & { noInitFilter: boolean }): void {
+    //   console.log('report',info, this.filterState)
+    //   if (!info.noInitFilter) {
+    //     this.commitFilterState({ start_time: '', end_time: '' })
+    //   }
+    //   this.commitBoardInfoState(info)
+    //   this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })
+    // },
   },
 })

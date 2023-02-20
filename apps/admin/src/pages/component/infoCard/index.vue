@@ -145,6 +145,8 @@ const props = defineProps({
 })
 const router = useRouter()
 const route = useRoute()
+const router = useRouter()
+const route = useRoute()
 const store =
   props.boardType === 'board'
     ? boardStore
@@ -223,6 +225,8 @@ watch(projectId, () => {
       path: route.path,
       query: { ...route.query, projectId: projectId.value },
     })
+    console.log(route.query);
+    
     if (projectInfo.value.id !== projectId.value) {
       const info = projectList.value.find(item => item.id === projectId.value)
       if (info) store.initStateValue({ ...info, noInitFilter: true })
