@@ -1,21 +1,17 @@
-import { defineStore } from 'pinia'
+import { defineStore } from '@vben/stores'
 import { layoutRoutes, PAGE_NOT_FOUND_ROUTE } from '@vben/router'
 import { filterTree } from '@vben/utils'
 import { Menu } from '@vben/types'
-import { useConfigStoreWithOut } from './config'
+// import { useConfigStoreWithOut } from './config'
 import { useUserStore } from './user'
 import { getPermCode } from '@/apis/auth'
 import { toRaw, unref } from 'vue'
-import { projectSetting } from '@/setting'
+// import { projectSetting } from '@/setting'
 import { PermissionModeEnum, PageEnum } from '@vben/constants'
-import {
-  flatMultiLevelRoutes,
-  transformObjToRoute,
-  transformRouteToMenu,
-} from '@vben/router'
+import { flatMultiLevelRoutes, transformObjToRoute, transformRouteToMenu } from '@vben/router'
 import { getMenuList } from '@/apis/sys'
 import { useAppConfig } from '@vben/hooks'
-import { asyncRoutes } from '@/router/routes'
+import { asyncRoutes } from '@/router/routes/index'
 
 interface AuthState {
   // Permission code list

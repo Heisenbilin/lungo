@@ -42,15 +42,15 @@ import ApiErrorBoard from './apiError/index.vue'
 import GatewayBoard from './gateway/index.vue'
 import LogDrawer from '../../component/logDetail/logDrawer.vue'
 import FAQ from '../../component/FAQ.vue'
-import intro from 'intro.js'
-import 'intro.js/introjs.css'
+// import intro from 'intro.js'
+// import 'intro.js/introjs.css'
 import { useRoute, useRouter } from 'vue-router'
 
 const boardStore = useBoardStore()
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
 const route = useRoute()
-  const router = useRouter()
+const router = useRouter()
 //tab页key值
 const { tabState: activeKey } = storeToRefs(boardStore)
 if (!activeKey.value) {
@@ -58,22 +58,27 @@ if (!activeKey.value) {
   // const { tabkey } = getUrlParams()
   // console.log('tabkey',tabkey);
   const tabkey = route.params.tabkey as string
-  console.log(route.params.tabkey);
-  
+  console.log(route.params.tabkey)
+
   activeKey.value = tabListEnum[tabkey] ? tabkey : 'pageview'
 }
 // watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), {
 //   immediate: true,
 // })
 
-watch(activeKey, val => router.push({
-  path:route.path,
-  query:{...route.query,tabkey:val}
-}), {
-  immediate: true,
-})
+watch(
+  activeKey,
+  val =>
+    router.push({
+      path: route.path,
+      query: { ...route.query, tabkey: val },
+    }),
+  {
+    immediate: true,
+  },
+)
 
-console.log(route.query);
+console.log(route.query)
 
 const watchFunc: any[] = []
 const initWatch = () => {
@@ -95,21 +100,21 @@ onDeactivated(() => {
   while (watchFunc.length) watchFunc.pop()()
 })
 
-const handleStart = () => {
-  intro()
-    .setOptions({
-      steps: [
-        {
-          title: '提示',
-          intro: '您的项目没有任何数据！',
-        },
-        {
-          title: '问题排查',
-          element: document.getElementById('faq-icon'),
-          intro: '点击此处可以帮助您排查常见问题、查看操作手册.',
-        },
-      ],
-    })
-    .start()
-}
+// const handleStart = () => {
+//   intro()
+//     .setOptions({
+//       steps: [
+//         {
+//           title: '提示',
+//           intro: '您的项目没有任何数据！',
+//         },
+//         {
+//           title: '问题排查',
+//           element: document.getElementById('faq-icon'),
+//           intro: '点击此处可以帮助您排查常见问题、查看操作手册.',
+//         },
+//       ],
+//     })
+//     .start()
+// }
 </script>
