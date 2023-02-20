@@ -1,4 +1,4 @@
-import {  computeTimeFormatStr } from '@vben/utils'
+import { computeTimeFormatStr } from '@vben/utils'
 import { logTypeEnum } from '@vben/constants'
 import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
@@ -26,39 +26,28 @@ const allFilterKeys = [
   'api_range',
 ]
 
-
-function getUrlParams(){
+function getUrlParams() {
   return router.currentRoute.value.query
 }
-function addOrUpdateUrlParams(newQuery){
-
+function addOrUpdateUrlParams(newQuery) {
   router.push({
-    path:router.currentRoute.value.path,
-    query:{...router.currentRoute.value.query,...newQuery}
+    path: router.currentRoute.value.path,
+    query: { ...router.currentRoute.value.query, ...newQuery },
   })
-  
 }
-// function addOrUpdateUrlParams(newQuery){
-//   router.push({
-//     path:router.currentRoute.value.path,
-//     query:{...router.currentRoute.value.query,...newQuery}
-//   })
-// }
 
- function delUrlParams(key) {
+function delUrlParams(key) {
+  const params = getUrlParams()
+  if (!Array.isArray(key)) key = [key]
+  key.forEach(item => {
+    if (item in params) delete params[item]
+  })
+  router.push({
+    path: router.currentRoute.value.path,
+    query: { ...params },
+  })
+}
 
-    const params = getUrlParams()
-     
-    if (!Array.isArray(key)) key = [key]
-    key.forEach(item => {
-      if (item in params) delete params[item]
-      // else console.log('路由中无此parameter：', item);
-    })
-    router.push({
-      path:router.currentRoute.value.path,
-      query:{...params}
-    })
-  }
 export const useBoardStore = defineStore({
   id: 'app-board',
   state: (): BoardState => ({
@@ -97,7 +86,7 @@ export const useBoardStore = defineStore({
     commitFilterState(filter: filter): void {
       this.filterState = filter
       addOrUpdateUrlParams(this.filterState)
-      
+
       // 删除路由中不需要的参数
       const delKeys: string[] = []
       allFilterKeys.map(key => !Object.keys(filter).includes(key) && delKeys.push(key))
@@ -168,7 +157,7 @@ export const useBoardStore = defineStore({
         start_time = this.filterState.start_time,
         end_time = this.filterState.end_time,
       } = getUrlParams()
-      
+
       // this.commitFilterState({ start_time , end_time, dimension } as any)
       this.commitBoardInfoState(info)
       this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })

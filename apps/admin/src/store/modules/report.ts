@@ -2,7 +2,7 @@
 import { logTypeEnum } from '@vben/constants'
 import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
-import { defineStore } from 'pinia'
+import { defineStore } from '@vben/stores'
 import { router } from '@/router'
 // import { useRoute, useRouter } from 'vue-router'
 
@@ -25,30 +25,28 @@ const allFilterKeys = [
   'api_status',
   'api_range',
 ]
-function getUrlParams(){
+function getUrlParams() {
   return router.currentRoute.value.query
 }
-function addOrUpdateUrlParams(newQuery){
-  console.log(window.location.search)
-  console.log(router)
+function addOrUpdateUrlParams(newQuery) {
   router.push({
-    path:router.currentRoute.value.path,
-    query:{...router.currentRoute.value.query,...newQuery}
+    path: router.currentRoute.value.path,
+    query: { ...router.currentRoute.value.query, ...newQuery },
   })
 }
 
- function delUrlParams(key) {
-    const params = getUrlParams()
-    if (!Array.isArray(key)) key = [key]
-    key.forEach(item => {
-      if (item in params) delete params[item]
-      // else console.log('路由中无此parameter：', item);
-    })
-    router.push({
-      path:router.currentRoute.value.path,
-      query:{...params}
-    })
-  }
+function delUrlParams(key) {
+  const params = getUrlParams()
+  if (!Array.isArray(key)) key = [key]
+  key.forEach(item => {
+    if (item in params) delete params[item]
+    // else console.log('路由中无此parameter：', item);
+  })
+  router.push({
+    path: router.currentRoute.value.path,
+    query: { ...params },
+  })
+}
 
 export const useReportStore = defineStore({
   id: 'app-report',
