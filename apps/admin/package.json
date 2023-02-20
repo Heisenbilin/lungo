@@ -6,7 +6,7 @@
     "email": "xiongbilin@tal.com"
   },
   "scripts": {
-    "build": "pnpm cross-env NODE_ENV=production vite build",
+    "build": "pnpm cross-env NODE_ENV=production vite NODE_OPTIONS=--max-old-space-size=8192 build",
     "febuild:prod": "pnpm cross-env NODE_ENV=production vite build --mode production && pnpm run upload && insert-url-fallback",
     "upload": "tal-oss-huatuo upload --projectId=10700",
     "febuild:gray": "pnpm cross-env NODE_ENV=production vite build --mode gray",
