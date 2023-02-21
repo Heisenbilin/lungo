@@ -1,6 +1,5 @@
 // import type { LoginParams } from '@/apis/auth'
 // import { BASIC_HOME_PATH, BASIC_LOGIN_PATH, PageEnum } from '@vben/constants'
-// import { pinia } from '@/pinia'
 // import { router } from '@/router'
 import { getUserInfoApi, doLoginApi } from '@/apis/auth' //doLogoutApi,
 // import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes'

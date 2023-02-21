@@ -10,7 +10,7 @@
   "dependencies": {
     "@types/echarts": "^4.9.16",
     "@vben/constants": "workspace:*",
-    "pinia": "2.0.30",
+    "pinia": "2.0.31",
     "vue": "3.2.47",
     "vue-router": "^4.1.6"
   }
