@@ -122,6 +122,7 @@ export interface DefineAppConfigOptions {
 }
 
 export interface SidebarConfigOptions {
+  theme: ThemeEnum
   show: boolean
   visible: boolean
   fixed: boolean
@@ -137,10 +138,12 @@ export interface MenuConfigOptions {
   split: boolean
   mode: MenuModeEnum
   accordion: boolean
-  collapsedShowLabel: boolean
+  collapsedShowTitle: boolean
   mixSideTrigger: MixSidebarTriggerEnum
   mixSideFixed: boolean
   topMenuAlign: 'start' | 'center' | 'end'
+
+  subMenuWidth: number
   dropdownPlacement:
     | 'top-start'
     | 'top'
@@ -157,6 +160,7 @@ export interface MenuConfigOptions {
 }
 
 export interface HeaderConfigOptions {
+  theme: ThemeEnum
   show: boolean
   visible: boolean
   bgColor: string
@@ -211,4 +215,25 @@ export interface TransitionConfigOptions {
   openPageLoading: boolean
   // Whether to open the top progress bar
   openNProgress: boolean
+}
+
+export interface FooterLinkOptions {
+  label?: string
+  icon?: string
+  target?: '_self' | '_blank'
+  url: string
+}
+export interface DefineSiteGeneralOptions {
+  // Logo url
+  logo: string
+  // Site title
+  title: string
+  // Copyright Information
+  copyright: string
+  // Footer link
+  links: FooterLinkOptions[]
+  // Avatar url
+  avatar: string
+  // username
+  username: string
 }
