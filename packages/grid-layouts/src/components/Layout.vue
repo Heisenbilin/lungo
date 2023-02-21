@@ -4,7 +4,7 @@ import LayoutSidebar from './composables/LayoutSidebar.vue'
 import LayoutContent from './composables/LayoutContent.vue'
 import LayoutTab from './composables/LayoutTab.vue'
 import Feature from './feature/index.vue'
-import { StoreGeneric, storeToRefs } from 'pinia'
+import { StoreGeneric, storeToRefs } from '@vben/stores'
 import {
   useLayoutHeader,
   useLayoutSidebar,

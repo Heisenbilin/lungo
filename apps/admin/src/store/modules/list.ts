@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from '@vben/stores'
 import { getUserGroups } from '@/apis/list'
 
 interface ListState {

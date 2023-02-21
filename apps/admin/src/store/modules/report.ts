@@ -2,7 +2,7 @@
 import { logTypeEnum } from '@vben/constants'
 import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
-import { defineStore } from 'pinia'
+import { defineStore } from '@vben/stores'
 import { router } from '@/router'
 // import { useRoute, useRouter } from 'vue-router'
 

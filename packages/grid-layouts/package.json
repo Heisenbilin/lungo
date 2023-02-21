@@ -16,7 +16,6 @@
     "@vben/router": "workspace:*",
     "@vben/utils": "workspace:*",
     "@vben/vbencomponents": "workspace:*",
-    "pinia": "^2.0.31",
     "vue": "3.2.45",
     "vue-router": "^4.1.6"
   },
