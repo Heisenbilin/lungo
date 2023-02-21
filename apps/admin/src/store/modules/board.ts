@@ -35,6 +35,12 @@ function addOrUpdateUrlParams(newQuery) {
     query: { ...router.currentRoute.value.query, ...newQuery },
   })
 }
+// function addOrUpdateUrlParams(newQuery){
+//   router.push({
+//     path:router.currentRoute.value.path,
+//     query:{...router.currentRoute.value.query,...newQuery}
+//   })
+// }
 
 function delUrlParams(key) {
   const params = getUrlParams()
@@ -151,6 +157,7 @@ export const useBoardStore = defineStore({
 
     initStateValue(info: BoardInfo): void {
       this.commitBoardInfoState(info)
+      console.log('boradroute',router.currentRoute.value.query,'1',router.currentRoute.value.path);
       const {
         dimension = this.filterState.dimension,
         start_time = this.filterState.start_time,
@@ -161,5 +168,13 @@ export const useBoardStore = defineStore({
       this.commitBoardInfoState(info)
       this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })
     },
+    // initStateValue(info: BoardInfo & { noInitFilter: boolean }): void {
+    //   console.log('report',info, this.filterState)
+    //   if (!info.noInitFilter) {
+    //     this.commitFilterState({ start_time: '', end_time: '' })
+    //   }
+    //   this.commitBoardInfoState(info)
+    //   this.commitLogInfoState({ type: logTypeEnum.DEFAULT, visible: false, requestParams: {} })
+    // },
   },
 })
