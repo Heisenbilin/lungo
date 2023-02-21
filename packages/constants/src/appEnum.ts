@@ -99,3 +99,25 @@ export enum logTypeEnum {
   GATEWAY = "gateway",
   DEFAULT = "",
 }
+
+
+export const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
+
+export const allFilterKeys = [
+  'start_time',
+  'end_time',
+  'dimension',
+  'url',
+  'string',
+  'browser',
+  'device',
+  'region',
+  'network',
+  'client',
+  'os',
+  'performance_key',
+  'performance_range',
+  'resource_type',
+  'api_status',
+  'api_range',
+]

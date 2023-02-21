@@ -33,7 +33,7 @@
         </a-tooltip>
       </template>
       <template #operation="{ record }">
-        <span> <a @click="toReport(record.board_url)">查看页面质量周报</a><br /> </span>
+        <router-link :to="toReport(record.board_url)">查看页面质量周报</router-link>
       </template>
     </a-table>
   </div>
@@ -213,23 +213,16 @@ watch(
   { immediate: true, deep: true },
 )
 
-//跳转页面详细质量周报处理
-const toReport = url => {
-  const path = '/monitor/qcReport'
-  const query = {
+const toReport = url => ({
+  name: 'qcReport',
+  query: {
     project_id: projectId.value,
     project_name: encodeURIComponent(reportStore.boardInfoState.project_name),
     url: encodeURIComponent(url),
     start_time: startTime.value,
     end_time: endTime.value,
-  }
-  router.push({ path, query })
-  //切换到页面顶部
-  setTimeout(() => {
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
-  })
-}
+  },
+})
 </script>
 
 <style lang="scss" scoped>

@@ -53,7 +53,12 @@
             <a-radio-button value="day">天</a-radio-button>
           </a-radio-group>
         </div>
-        <a-button type="primary" @click="checkProject" v-if="isAdminUser" :loading="checking">
+        <a-button
+          type="primary"
+          @click="checkProject"
+          v-if="userStore.isAdminUser()"
+          :loading="checking"
+        >
           巡检
         </a-button>
         <a-button type="primary" @click="addProject">创建应用</a-button>
@@ -155,7 +160,6 @@ import { checkProjectData } from '@/apis/list'
 import { message, Modal } from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 import { useListStore } from '@/store/modules/list'
-import { useAppStore } from '@/store/modules/app'
 import { useUserStore } from '@/store/user'
 import { storeToRefs } from '@vben/stores'
 import cardList from './cardList/index.vue'
@@ -176,28 +180,23 @@ const {
   groupid = '',
   show = 'table',
 } = getUrlParams()
-function getUrlParams(){
+function getUrlParams() {
   return route.query
 }
-console.log('project',getUrlParams());
+console.log('project', getUrlParams())
 
-function addOrUpdateUrlParams(newQuery){
-  console.log(router);
+function addOrUpdateUrlParams(newQuery) {
+  console.log(router)
   router.replace({
-    path:route.path,
-    query:{...route.query,...newQuery}
+    path: route.path,
+    query: { ...route.query, ...newQuery },
   })
 }
 
-
-
 const listStore = useListStore()
-const appStore = useAppStore()
 const userStore = useUserStore()
-const userName = userStore.userInfo?.account || ''
 
 const { forceFlashFlag } = storeToRefs(listStore)
-const isAdminUser = appStore.checkIsAdmin(userName)
 // 项目初始展示形态
 let state = ref(show)
 // 切换颜色以及展示组件
@@ -257,7 +256,7 @@ const endTime = dayjs()
 // provide('endTime', endTime)
 
 //对比维度
-const dimension = ref<'week' | 'day'>(dimen as 'week' | 'day' )
+const dimension = ref<'week' | 'day'>(dimen as 'week' | 'day')
 
 // 开始时间与结束时间存入listStore
 listStore.startTime = dimension.value === 'week' ? startWeek : startTime

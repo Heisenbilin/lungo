@@ -13,7 +13,6 @@
       unit=""
       :needCommafy="true"
       jumpKey="pageview"
-      :linkToUrl="linkToUrl"
     />
     <div class="w-2/4 mt-1 px-2">
       <div class="text-gray-500 pl-2">
@@ -30,7 +29,6 @@
       unit=""
       :needCommafy="true"
       jumpKey="pageview"
-      :linkToUrl="linkToUrl"
     />
     <div class="flex w-full mt-4">
       <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
@@ -57,7 +55,6 @@
         :reverseColor="true"
         :needGray="true"
         jumpKey="performance"
-        :linkToUrl="linkToUrl"
       />
       <ContentItem
         :data="itemsData.runtimeData"
@@ -68,7 +65,6 @@
         :reverseColor="true"
         :needGray="true"
         jumpKey="runtime"
-        :linkToUrl="linkToUrl"
       />
       <ContentItem
         :data="itemsData.resourceData"
@@ -79,7 +75,6 @@
         :reverseColor="true"
         :needGray="true"
         jumpKey="resource"
-        :linkToUrl="linkToUrl"
       />
       <ContentItem
         :data="itemsData.ajaxData"
@@ -89,7 +84,6 @@
         numName="成功请求量"
         :needGray="true"
         jumpKey="api"
-        :linkToUrl="linkToUrl"
       />
     </div>
   </div>
@@ -111,10 +105,6 @@ const boardStore = useBoardStore()
 const listStore = useListStore()
 
 const props = defineProps({
-  linkToUrl: {
-    type: Object,
-    required: true,
-  },
   project: {
     type: Object as PropType<BoardInfo>,
     required: true,

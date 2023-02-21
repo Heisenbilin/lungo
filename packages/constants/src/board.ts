@@ -52,7 +52,7 @@ export type tabNameType =
   | tabListEnum.GATEWAY
 
 export const tabNameConfig = {
-  [tabListEnum.PAGE_VIEW]: '页面浏览',
+  [tabListEnum.PAGE_VIEW]: '页面访问',
   [tabListEnum.PERFORMANCE]: '性能监控',
   [tabListEnum.RUNTIME]: '运行时监控',
   [tabListEnum.RESOURCE]: '资源监控',

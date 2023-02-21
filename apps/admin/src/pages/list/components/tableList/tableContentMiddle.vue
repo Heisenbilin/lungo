@@ -7,7 +7,6 @@
         title="PV量"
         unit=""
         :needCommafy="true"
-        :jumpUrl="linkToUrl"
         tabKey="pageview"
       />
     </div>
@@ -18,7 +17,6 @@
         title="UV量"
         unit=""
         :needCommafy="true"
-        :jumpUrl="linkToUrl"
         tabKey="pageview"
       />
     </div>
@@ -31,7 +29,6 @@
         :needCommafy="true"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="linkToUrl"
         tabKey="performance"
       />
     </div>
@@ -44,7 +41,6 @@
         numName="运行时异常量"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="linkToUrl"
         tabKey="runtime"
       />
     </div>
@@ -57,7 +53,6 @@
         numName="资源异常量"
         :reverseColor="true"
         :needGray="true"
-        :jumpUrl="linkToUrl"
         tabKey="resource"
       />
     </div>
@@ -69,7 +64,6 @@
         unit="%"
         numName="成功请求量"
         :needGray="true"
-        :jumpUrl="linkToUrl"
         tabKey="api"
       />
     </div>
@@ -84,17 +78,6 @@
     >
       {{ itemsData.score }}
     </div>
-    <!-- <div v-else-if="title == '页面加载'">
-      <TableTtem
-        :data="itemsData.pageloadData"
-        title="页面加载"
-        unit="ms"
-        :needCommafy="true"
-        :reverseColor="true"
-        :needGray="true"
-        :jumpUrl="getJumpUrl('performance')"
-      />
-    </div> -->
     <div v-else>
       <BasicChart :chartOption="chartOption" height="3.25rem" />
     </div>
@@ -108,10 +91,6 @@ import TableTtem from './tableItem.vue'
 import { BoardInfo } from '@vben/types'
 
 const props = defineProps({
-  linkToUrl: {
-    type: Object,
-    required: true,
-  },
   title: String,
   itemsData: {
     type: Object,

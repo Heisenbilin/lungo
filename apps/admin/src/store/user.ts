@@ -7,7 +7,18 @@ import { getUserInfoApi, doLoginApi } from '@/apis/auth' //doLogoutApi,
 // import { GetUserInfoModel } from '@/apis/sys/user'
 import { UserInfo, UserState } from '@vben/types' // , ErrorMessageMode
 import { defineStore } from '@vben/stores'
-import { getGlobalConfig, setToken } from '@vben/utils'
+import { getGlobalConfig } from '@vben/utils'
+
+export const adminUsers = [
+  'liguojing',
+  'gengxiaofei',
+  'tianfeng1',
+  'liming20',
+  'chenjian11',
+  'xiongbilin',
+  'botao',
+  'hehongyan3',
+]
 
 export const useUserStore = defineStore({
   id: 'app-user-store',
@@ -33,12 +44,13 @@ export const useUserStore = defineStore({
       this.accessToken = undefined
       this.sessionTimeout = false
     },
-
+    isAdminUser(): boolean {
+      return adminUsers.includes(this.userInfo?.account)
+    },
     async login(token: string) {
       const { ssoHost } = getGlobalConfig(import.meta.env)
       const { data } = await doLoginApi({ token, host: ssoHost })
       this.accessToken = data.token
-      setToken(data.token)
       this.setUserInfo({
         account: data.account,
         name: data.name,
@@ -134,7 +146,6 @@ export const useUserStore = defineStore({
       this.accessToken = undefined
       this.sessionTimeout = false
       this.setUserInfo(null)
-      setToken('')
       const { hash } = window.location
       const path = setObjToUrlParams(`https://sso.100tal.com/portal/login/${ssoAppid}`, {
         env: dpEnv,

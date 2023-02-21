@@ -13,7 +13,9 @@
           </a-select-option>
         </a-select>
       </div>
-      <span class="!mt-2"> <a @click="toReport(currentUrl)">跳转该页面详细质量周报</a><br /> </span>
+      <router-link :to="detailReport">
+        <span class="!mt-2">跳转该页面详细质量周报</span>
+      </router-link>
     </div>
     <div class="flex items-center justify-center min-h-80 pt-5 px-2">
       <a-spin size="large" v-if="lighthouseLoading === 0" />
@@ -62,13 +64,7 @@ const currentUrl = ref(props.successList[0].board_url)
 //空数据图片
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 
-watch(
-  () => reportUrl.value,
-  () => {
-    currentUrl.value = reportUrl.value
-  },
-  { immediate: true },
-)
+watch(reportUrl, () => (currentUrl.value = reportUrl.value), { immediate: true })
 
 const lighthouseLoading = ref(0)
 const lighthouseData = ref<any>([])
@@ -82,12 +78,12 @@ const opportunityAudits = ref([])
 const diagnosticAudits = ref([])
 
 async function initAudits() {
+  lighthouseLoading.value = 0
   const lighthouseParams = {
     project_url: currentUrl.value,
     start_time: props.startTime + ' 00:00:00',
     project_id: props.projectId,
   }
-
   //获取lighthouse建议数据
   const lighthouse = await getLighthouseAudits(lighthouseParams)
   if (lighthouse.stat === 1 && lighthouse.data) {
@@ -122,42 +118,24 @@ async function initAuditsShow() {
     })
 }
 //监听lighthouse数据加载标识，解析lighthouse数据
-watch(
-  () => currentUrl.value,
-  () => {
-    // 清除上一次渲染副作用
-    lighthouseLoading.value = 0
-    initAudits()
-  },
-  { immediate: true, deep: true },
-)
-watch(
-  () => lighthouseLoading.value,
-  () => {
-    if (lighthouseLoading.value === 2) {
-      initAuditsShow()
-    } else {
-      // loading.value = lighthouseLoading;
-    }
-  },
-)
+watch(currentUrl, initAudits, { immediate: true })
+watch(lighthouseLoading, () => {
+  if (lighthouseLoading.value === 2) {
+    initAuditsShow()
+  } else {
+    opportunityAudits.value = diagnosticAudits.value = []
+  }
+})
 
 //跳转页面详细质量周报处理
-const toReport = url => {
-  const path = '/projectboard/qcReport'
-
-  const query = {
+const detailReport = computed(() => ({
+  name: 'qcReport',
+  query: {
     project_id: props.projectId,
     project_name: encodeURIComponent(reportStore.boardInfoState.project_name),
-    url: encodeURIComponent(url),
+    url: encodeURIComponent(currentUrl.value),
     start_time: props.startTime,
     end_time: props.endTime,
-  }
-  router.push({ path, query })
-  //切换到页面顶部
-  setTimeout(() => {
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
-  })
-}
+  },
+}))
 </script>

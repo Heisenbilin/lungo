@@ -7,7 +7,6 @@
   </div>
   <template v-else>
     <tableContentMiddle
-      :linkToUrl="linkToUrl"
       :title="title"
       :project="data"
       :itemsData="data.itemsData"
@@ -15,11 +14,10 @@
   </template>
 </template>
 <script setup lang="ts">
-import { useLinkToUrl } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
 import { Empty } from 'ant-design-vue'
 import tableContentMiddle from './tableContentMiddle.vue'
-const props = defineProps({
+defineProps({
   projectId: {
     type: Number,
     required: true,
@@ -32,7 +30,6 @@ const props = defineProps({
   loading: Boolean,
 })
 
-const linkToUrl = useLinkToUrl(props.projectId, 'board', 'list')
 
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>

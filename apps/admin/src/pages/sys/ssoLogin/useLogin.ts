@@ -8,15 +8,10 @@ const { ssoAppid, dpEnv } = getGlobalConfig(import.meta.env)
 
 export function useLogin() {
   const router = useRouter()
-
   const route = useRoute()
   const userStore = useUserStore()
-
   const ssoToken = computed<string>(() => String(route.query?.token ?? ''))
-
   const env = computed(() => route.query?.env) // 本地环境为 dev，其他环境 undefined
-
-  console.log('ssoToken', ssoToken.value, env)
 
   function setObjToUrlParams(baseUrl: string, obj: any): string {
     let parameters = ''
@@ -45,9 +40,6 @@ export function useLogin() {
     // 链接上有 token，说明是造物神的回跳地址
     try {
       await userStore.login(ssoToken.value)
-      console.log(route.query.redirect, 'redirect')
-      console.log(route.query)
-      console.log(route)
       const { dpEnv } = getGlobalConfig(import.meta.env)
       const params = {
         path: decodeURIComponent((route.query.redirect as string) || '/'),
@@ -63,11 +55,6 @@ export function useLogin() {
       userStore.logout()
     }
   }
-
-  // const logout = () => {
-  //   store.commit('setToken', '');
-  //   window.location.href = `https://api.service.100tal.com/sso/logout?path=https://sso.100tal.com/portal/login/${APPID}`;
-  // };
 
   /**
    * 解析路由中的参数

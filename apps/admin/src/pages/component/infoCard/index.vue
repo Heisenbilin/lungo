@@ -131,7 +131,7 @@ import dayjs from 'dayjs'
 import SDKVersion from '../sdkVersion.vue'
 import AlarmSetting from '../alarm/alarmSetting.vue'
 import InfoTag from './infoTag.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { router } from '@vben/router'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
@@ -143,8 +143,6 @@ const props = defineProps({
     required: true,
   },
 })
-const router = useRouter()
-const route = useRoute()
 const store =
   props.boardType === 'board'
     ? boardStore
@@ -154,7 +152,7 @@ const store =
 
 // 当前选中项目信息
 const { boardInfoState: projectInfo } = storeToRefs(store)
-const { projectId: urlProjectId = 0 } = route.query
+const { projectId: urlProjectId = 0 } = router.currentRoute.value.query
 const projectId = ref<number | string>()
 
 // 项目列表
@@ -204,30 +202,11 @@ async function getTopicId(appId, isSaas) {
   }
 }
 
-// const handleSelectChange = () => {
-//   router.replace({
-//     query: {
-//       projectId: projectId.value
-//     }
-//   })
-
-//   if (projectInfo.value.id !== projectId.value) {
-//     const info = projectList.value.find(item => item.id === projectId.value)
-//     info && store.initStateValue({ ...info, noInitFilter: true })
-//   }
-// }
-
 watch(projectId, () => {
   if (projectId.value && projectId.value !== '请选择应用') {
-    router.replace({
-      path: route.path,
-      query: { ...route.query, projectId: projectId.value },
-    })
-    console.log(route.query);
-    
     if (projectInfo.value.id !== projectId.value) {
       const info = projectList.value.find(item => item.id === projectId.value)
-      if (info) store.initStateValue({ ...info, noInitFilter: true })
+      if (info) store.initStateValue(info, true)
     }
   }
 })
@@ -287,7 +266,7 @@ const getProjectListByGroup = async (needCommitProjectInfo = false) => {
         return
       } else {
         projectId.value = project.id
-        store.initStateValue({ ...project, noInitFilter: true })
+        store.initStateValue(project, false)
       }
     }
   }

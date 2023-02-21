@@ -1,22 +1,22 @@
 <template>
   <div id="general-board-container" ref="areaRef" class="p-2 mt-3 relative">
     <a-tabs v-model:activeKey="activeKey" size="large">
-      <a-tab-pane key="pageview" tab="页面访问">
+      <a-tab-pane key="pageview" :tab="tabNameConfig.pageview">
         <PVBoard v-if="activeKey === 'pageview'" />
       </a-tab-pane>
-      <a-tab-pane key="performance" tab="性能指标">
+      <a-tab-pane key="performance" :tab="tabNameConfig.performance">
         <PerformanceBoard v-if="activeKey === 'performance'" />
       </a-tab-pane>
-      <a-tab-pane key="runtime" tab="运行时异常">
+      <a-tab-pane key="runtime" :tab="tabNameConfig.runtime">
         <RuntimeErrorBoard v-if="activeKey === 'runtime'" />
       </a-tab-pane>
-      <a-tab-pane key="resource" tab="资源异常">
+      <a-tab-pane key="resource" :tab="tabNameConfig.resource">
         <ResourceErrorBoard v-if="activeKey === 'resource'" />
       </a-tab-pane>
-      <a-tab-pane key="api" tab="接口异常">
+      <a-tab-pane key="api" :tab="tabNameConfig.api">
         <ApiErrorBoard v-if="activeKey === 'api'" />
       </a-tab-pane>
-      <a-tab-pane key="gateway" tab="网关监控">
+      <a-tab-pane key="gateway" :tab="tabNameConfig.gateway">
         <GatewayBoard v-if="activeKey === 'gateway'" />
       </a-tab-pane>
     </a-tabs>
@@ -27,11 +27,10 @@
 
 <script setup lang="ts">
 import { watch, onActivated, onDeactivated, onMounted, ref } from 'vue'
-// import { getUrlParams, addOrUpdateUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useUserStore } from '@/store/user'
 import { useWatermark } from '@vben/hooks'
-import { tabListEnum } from '@vben/constants'
+import { tabNameConfig } from '@vben/constants'
 import { storeToRefs } from '@vben/stores'
 
 import PVBoard from './pv/index.vue'
@@ -44,27 +43,21 @@ import LogDrawer from '../../component/logDetail/logDrawer.vue'
 import FAQ from '../../component/FAQ.vue'
 // import intro from 'intro.js'
 // import 'intro.js/introjs.css'
-import { useRoute, useRouter } from 'vue-router'
+import { router } from '@vben/router'
 
 const boardStore = useBoardStore()
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
-const route = useRoute()
-const router = useRouter()
 //tab页key值
 const { tabState: activeKey } = storeToRefs(boardStore)
 if (!activeKey.value) {
   // store中没有值，从url中获取
-  const { tabKey = '' } = route.query as any
-  activeKey.value = tabListEnum[tabKey] ?? 'pageview'
+  const { tabKey = '' } = router.currentRoute.value.query as any
+  console.log(tabKey)
+  activeKey.value = tabNameConfig[tabKey] ? tabKey : 'pageview'
 }
 
-watch(activeKey, val =>
-  router.replace({
-    path: route.path,
-    query: { ...route.query, tabkey: val },
-  }),
-)
+watch(activeKey, val => boardStore.commitTabState(val))
 
 const watchFunc: any[] = []
 const initWatch = () => {
