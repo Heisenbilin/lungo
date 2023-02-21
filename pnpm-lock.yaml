@@ -58,6 +58,7 @@ importers:
       '@vben/constants': workspace:*
       '@vben/demo': workspace:*
       '@vben/directives': workspace:*
+      '@vben/grid-layouts': workspace:*
       '@vben/hooks': workspace:*
       '@vben/layouts': workspace:*
       '@vben/locale': workspace:*
@@ -98,6 +99,7 @@ importers:
       '@vben/constants': link:../../packages/constants
       '@vben/demo': link:../../packages/demo
       '@vben/directives': link:../../packages/directives
+      '@vben/grid-layouts': link:../../packages/grid-layouts
       '@vben/hooks': link:../../packages/hooks
       '@vben/layouts': link:../../packages/layouts
       '@vben/locale': link:../../packages/locale
@@ -318,6 +320,35 @@ importers:
       '@vben/utils': link:../utils
       vue: registry.npmmirror.com/vue/3.2.47
 
+  packages/grid-layouts:
+    specifiers:
+      '@vben/constants': workspace:*
+      '@vben/directives': workspace:*
+      '@vben/hooks': workspace:*
+      '@vben/locale': workspace:*
+      '@vben/router': workspace:*
+      '@vben/stores': workspace:*
+      '@vben/types': workspace:*
+      '@vben/utils': workspace:*
+      '@vben/vbencomponents': workspace:*
+      pinia: ^2.0.30
+      vue: 3.2.45
+      vue-router: ^4.1.6
+    dependencies:
+      '@vben/constants': link:../constants
+      '@vben/directives': link:../directives
+      '@vben/hooks': link:../hooks
+      '@vben/locale': link:../locale
+      '@vben/router': link:../router
+      '@vben/stores': link:../stores
+      '@vben/utils': link:../utils
+      '@vben/vbencomponents': link:../vbenComponents
+      pinia: registry.npmmirror.com/pinia/2.0.31_vue@3.2.45
+      vue: registry.npmmirror.com/vue/3.2.45
+      vue-router: registry.npmmirror.com/vue-router/4.1.6_vue@3.2.45
+    devDependencies:
+      '@vben/types': link:../types
+
   packages/hooks:
     specifiers:
       '@types/lodash-es': ^4.17.6
@@ -426,17 +457,21 @@ importers:
   packages/stores:
     specifiers:
       '@vben/constants': workspace:*
+      '@vben/locale': workspace:*
       '@vben/types': workspace:*
       '@vben/utils': workspace:*
       pinia: ^2.0.30
       pinia-plugin-persistedstate: ^3.0.2
       vue: ^3.2.47
+      vue-router: ^4.1.6
     dependencies:
       '@vben/constants': link:../constants
+      '@vben/locale': link:../locale
       '@vben/utils': link:../utils
       pinia: registry.npmmirror.com/pinia/2.0.31_vue@3.2.47
       pinia-plugin-persistedstate: registry.npmmirror.com/pinia-plugin-persistedstate/3.1.0_pinia@2.0.31
       vue: registry.npmmirror.com/vue/3.2.47
+      vue-router: registry.npmmirror.com/vue-router/4.1.6_vue@3.2.47
     devDependencies:
       '@vben/types': link:../types
 
@@ -3080,6 +3115,15 @@ packages:
       source-map: registry.npmmirror.com/source-map/0.6.1
     dev: false
 
+  /@vue/compiler-core/3.2.45:
+    resolution: {integrity: sha512-rcMj7H+PYe5wBV3iYeUgbCglC+pbpN8hBLTJvRiK2eKQiWqu+fG9F+8sW99JdL4LQi7Re178UOxn09puSXvn4A==}
+    dependencies:
+      '@babel/parser': 7.21.1
+      '@vue/shared': 3.2.45
+      estree-walker: registry.npmmirror.com/estree-walker/2.0.2
+      source-map: registry.npmmirror.com/source-map/0.6.1
+    dev: false
+
   /@vue/compiler-core/3.2.47:
     resolution: {integrity: sha512-p4D7FDnQb7+YJmO2iPEv0SQNeNzcbHdGByJDsT4lynf63AFkOTFN07HsiRSvjGo0QrxR/o3d0hUyNCUnBU2Tig==}
     dependencies:
@@ -3095,11 +3139,33 @@ packages:
       '@vue/shared': 3.1.0
     dev: false
 
+  /@vue/compiler-dom/3.2.45:
+    resolution: {integrity: sha512-tyYeUEuKqqZO137WrZkpwfPCdiiIeXYCcJ8L4gWz9vqaxzIQRccTSwSWZ/Axx5YR2z+LvpUbmPNXxuBU45lyRw==}
+    dependencies:
+      '@vue/compiler-core': 3.2.45
+      '@vue/shared': 3.2.45
+    dev: false
+
   /@vue/compiler-dom/3.2.47:
     resolution: {integrity: sha512-dBBnEHEPoftUiS03a4ggEig74J2YBZ2UIeyfpcRM2tavgMWo4bsEfgCGsu+uJIL/vax9S+JztH8NmQerUo7shQ==}
     dependencies:
       '@vue/compiler-core': 3.2.47
       '@vue/shared': 3.2.47
+
+  /@vue/compiler-sfc/3.2.45:
+    resolution: {integrity: sha512-1jXDuWah1ggsnSAOGsec8cFjT/K6TMZ0sPL3o3d84Ft2AYZi2jWJgRMjw4iaK0rBfA89L5gw427H4n1RZQBu6Q==}
+    dependencies:
+      '@babel/parser': 7.21.1
+      '@vue/compiler-core': 3.2.45
+      '@vue/compiler-dom': 3.2.45
+      '@vue/compiler-ssr': 3.2.45
+      '@vue/reactivity-transform': 3.2.45
+      '@vue/shared': 3.2.45
+      estree-walker: registry.npmmirror.com/estree-walker/2.0.2
+      magic-string: registry.npmmirror.com/magic-string/0.25.9
+      postcss: registry.npmmirror.com/postcss/8.4.21
+      source-map: registry.npmmirror.com/source-map/0.6.1
+    dev: false
 
   /@vue/compiler-sfc/3.2.47:
     resolution: {integrity: sha512-rog05W+2IFfxjMcFw10tM9+f7i/+FFpZJJ5XHX72NP9eC2uRD+42M3pYcQqDXVYoj74kHMSEdQ/WmCjt8JFksQ==}
@@ -3115,6 +3181,13 @@ packages:
       postcss: registry.npmmirror.com/postcss/8.4.21
       source-map: registry.npmmirror.com/source-map/0.6.1
 
+  /@vue/compiler-ssr/3.2.45:
+    resolution: {integrity: sha512-6BRaggEGqhWht3lt24CrIbQSRD5O07MTmd+LjAn5fJj568+R9eUD2F7wMQJjX859seSlrYog7sUtrZSd7feqrQ==}
+    dependencies:
+      '@vue/compiler-dom': 3.2.45
+      '@vue/shared': 3.2.45
+    dev: false
+
   /@vue/compiler-ssr/3.2.47:
     resolution: {integrity: sha512-wVXC+gszhulcMD8wpxMsqSOpvDZ6xKXSVWkf50Guf/S+28hTAXPDYRTbLQ3EDkOP5Xz/+SY37YiwDquKbJOgZw==}
     dependencies:
@@ -3123,6 +3196,16 @@ packages:
 
   /@vue/devtools-api/6.5.0:
     resolution: {integrity: sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==}
+    dev: false
+
+  /@vue/reactivity-transform/3.2.45:
+    resolution: {integrity: sha512-BHVmzYAvM7vcU5WmuYqXpwaBHjsS8T63jlKGWVtHxAHIoMIlmaMyurUSEs1Zcg46M4AYT5MtB1U274/2aNzjJQ==}
+    dependencies:
+      '@babel/parser': 7.21.1
+      '@vue/compiler-core': 3.2.45
+      '@vue/shared': 3.2.45
+      estree-walker: registry.npmmirror.com/estree-walker/2.0.2
+      magic-string: registry.npmmirror.com/magic-string/0.25.9
     dev: false
 
   /@vue/reactivity-transform/3.2.47:
@@ -3140,6 +3223,12 @@ packages:
       '@vue/shared': 3.1.0
     dev: false
 
+  /@vue/reactivity/3.2.45:
+    resolution: {integrity: sha512-PRvhCcQcyEVohW0P8iQ7HDcIOXRjZfAsOds3N99X/Dzewy8TVhTCT4uXpAHfoKjVTJRA0O0K+6QNkDIZAxNi3A==}
+    dependencies:
+      '@vue/shared': 3.2.45
+    dev: false
+
   /@vue/reactivity/3.2.47:
     resolution: {integrity: sha512-7khqQ/75oyyg+N/e+iwV6lpy1f5wq759NdlS1fpAhFXa8VeAIKGgk2E/C4VF59lx5b+Ezs5fpp/5WsRYXQiKxQ==}
     dependencies:
@@ -3150,6 +3239,13 @@ packages:
     dependencies:
       '@vue/reactivity': 3.1.0
       '@vue/shared': 3.1.0
+    dev: false
+
+  /@vue/runtime-core/3.2.45:
+    resolution: {integrity: sha512-gzJiTA3f74cgARptqzYswmoQx0fIA+gGYBfokYVhF8YSXjWTUA2SngRzZRku2HbGbjzB6LBYSbKGIaK8IW+s0A==}
+    dependencies:
+      '@vue/reactivity': 3.2.45
+      '@vue/shared': 3.2.45
     dev: false
 
   /@vue/runtime-core/3.2.47:
@@ -3166,12 +3262,30 @@ packages:
       csstype: registry.npmmirror.com/csstype/2.6.21
     dev: false
 
+  /@vue/runtime-dom/3.2.45:
+    resolution: {integrity: sha512-cy88YpfP5Ue2bDBbj75Cb4bIEZUMM/mAkDMfqDTpUYVgTf/kuQ2VQ8LebuZ8k6EudgH8pYhsGWHlY0lcxlvTwA==}
+    dependencies:
+      '@vue/runtime-core': 3.2.45
+      '@vue/shared': 3.2.45
+      csstype: registry.npmmirror.com/csstype/2.6.21
+    dev: false
+
   /@vue/runtime-dom/3.2.47:
     resolution: {integrity: sha512-ArXrFTjS6TsDei4qwNvgrdmHtD930KgSKGhS5M+j8QxXrDJYLqYw4RRcDy1bz1m1wMmb6j+zGLifdVHtkXA7gA==}
     dependencies:
       '@vue/runtime-core': 3.2.47
       '@vue/shared': 3.2.47
       csstype: registry.npmmirror.com/csstype/2.6.21
+
+  /@vue/server-renderer/3.2.45_vue@3.2.45:
+    resolution: {integrity: sha512-ebiMq7q24WBU1D6uhPK//2OTR1iRIyxjF5iVq/1a5I1SDMDyDu4Ts6fJaMnjrvD3MqnaiFkKQj+LKAgz5WIK3g==}
+    peerDependencies:
+      vue: 3.2.45
+    dependencies:
+      '@vue/compiler-ssr': 3.2.45
+      '@vue/shared': 3.2.45
+      vue: registry.npmmirror.com/vue/3.2.45
+    dev: false
 
   /@vue/server-renderer/3.2.47_vue@3.2.47:
     resolution: {integrity: sha512-dN9gc1i8EvmP9RCzvneONXsKfBRgqFeFZLurmHOveL7oH6HiFXJw5OGu294n1nHc/HMgTy6LulU/tv5/A7f/LA==}
@@ -3184,6 +3298,10 @@ packages:
 
   /@vue/shared/3.1.0:
     resolution: {integrity: sha1-WYSIPTHw2KTufbjiBquATmA5M6Y=}
+    dev: false
+
+  /@vue/shared/3.2.45:
+    resolution: {integrity: sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==}
     dev: false
 
   /@vue/shared/3.2.47:
@@ -12465,6 +12583,26 @@ packages:
       vue-demi: registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.47
     dev: false
 
+  registry.npmmirror.com/pinia/2.0.31_vue@3.2.45:
+    resolution: {integrity: sha512-6OOKZGX79jm3q0xAu+X/PaRjfyOcFnPXcHFAA8HHa+wbJeSi5xc/nYqO8Ff7XLvwV8mKGYXcUfZUHbqUmw6P0w==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/pinia/-/pinia-2.0.31.tgz}
+    id: registry.npmmirror.com/pinia/2.0.31
+    name: pinia
+    version: 2.0.31
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.5.0
+      vue: registry.npmmirror.com/vue/3.2.45
+      vue-demi: registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.45
+    dev: false
+
   registry.npmmirror.com/pinia/2.0.31_vue@3.2.47:
     resolution: {integrity: sha512-6OOKZGX79jm3q0xAu+X/PaRjfyOcFnPXcHFAA8HHa+wbJeSi5xc/nYqO8Ff7XLvwV8mKGYXcUfZUHbqUmw6P0w==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/pinia/-/pinia-2.0.31.tgz}
     id: registry.npmmirror.com/pinia/2.0.31
@@ -16499,6 +16637,24 @@ packages:
       vue: registry.npmmirror.com/vue/3.2.47
     dev: true
 
+  registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.45:
+    resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/vue-demi/-/vue-demi-0.13.11.tgz}
+    id: registry.npmmirror.com/vue-demi/0.13.11
+    name: vue-demi
+    version: 0.13.11
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: registry.npmmirror.com/vue/3.2.45
+    dev: false
+
   registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.47:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/vue-demi/-/vue-demi-0.13.11.tgz}
     id: registry.npmmirror.com/vue-demi/0.13.11
@@ -16578,6 +16734,18 @@ packages:
       vue: registry.npmmirror.com/vue/3.1.0
     dev: false
 
+  registry.npmmirror.com/vue-router/4.1.6_vue@3.2.45:
+    resolution: {integrity: sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/vue-router/-/vue-router-4.1.6.tgz}
+    id: registry.npmmirror.com/vue-router/4.1.6
+    name: vue-router
+    version: 4.1.6
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.5.0
+      vue: registry.npmmirror.com/vue/3.2.45
+    dev: false
+
   registry.npmmirror.com/vue-router/4.1.6_vue@3.2.47:
     resolution: {integrity: sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/vue-router/-/vue-router-4.1.6.tgz}
     id: registry.npmmirror.com/vue-router/4.1.6
@@ -16647,6 +16815,18 @@ packages:
       '@vue/compiler-dom': 3.1.0
       '@vue/runtime-dom': 3.1.0
       '@vue/shared': 3.1.0
+    dev: false
+
+  registry.npmmirror.com/vue/3.2.45:
+    resolution: {integrity: sha512-9Nx/Mg2b2xWlXykmCwiTUCWHbWIj53bnkizBxKai1g61f2Xit700A1ljowpTIM11e3uipOeiPcSqnmBg6gyiaA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/vue/-/vue-3.2.45.tgz}
+    name: vue
+    version: 3.2.45
+    dependencies:
+      '@vue/compiler-dom': 3.2.45
+      '@vue/compiler-sfc': 3.2.45
+      '@vue/runtime-dom': 3.2.45
+      '@vue/server-renderer': 3.2.45_vue@3.2.45
+      '@vue/shared': 3.2.45
     dev: false
 
   registry.npmmirror.com/vue/3.2.47:
