@@ -7,7 +7,7 @@ import {
   createTabsGuard,
   createParamMenuGuard,
 } from '@vben/router'
-import { setRouteChange } from '@vben/router'
+import { setRouteChange } from '@/logics/mitt/routeChange'
 import { useLockStore } from '@/store/lock'
 
 async function setupRouteGuard() {
