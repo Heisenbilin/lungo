@@ -145,8 +145,6 @@ const props = defineProps({
 })
 const router = useRouter()
 const route = useRoute()
-const router = useRouter()
-const route = useRoute()
 const store =
   props.boardType === 'board'
     ? boardStore
