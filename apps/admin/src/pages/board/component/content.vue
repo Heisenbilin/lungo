@@ -32,7 +32,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { useUserStore } from '@/store/user'
 import { useWatermark } from '@vben/hooks'
 import { tabListEnum } from '@vben/constants'
-import { storeToRefs } from '@vben/stores'
+import { storeToRefs } from 'pinia'
 
 import PVBoard from './pv/index.vue'
 import PerformanceBoard from './performance/index.vue'
@@ -55,30 +55,16 @@ const router = useRouter()
 const { tabState: activeKey } = storeToRefs(boardStore)
 if (!activeKey.value) {
   // store中没有值，从url中获取
-  // const { tabkey } = getUrlParams()
-  // console.log('tabkey',tabkey);
-  const tabkey = route.params.tabkey as string
-  console.log(route.params.tabkey)
-
-  activeKey.value = tabListEnum[tabkey] ? tabkey : 'pageview'
+  const { tabKey = '' } = route.query as any
+  activeKey.value = tabListEnum[tabKey] ?? 'pageview'
 }
-// watch(activeKey, val => addOrUpdateUrlParams({ tabkey: val }), {
-//   immediate: true,
-// })
 
-watch(
-  activeKey,
-  val =>
-    router.replace({
-      path: route.path,
-      query: { ...route.query, tabkey: val },
-    }),
-  {
-    immediate: true,
-  },
+watch(activeKey, val =>
+  router.replace({
+    path: route.path,
+    query: { ...route.query, tabkey: val },
+  }),
 )
-
-console.log(route.query)
 
 const watchFunc: any[] = []
 const initWatch = () => {

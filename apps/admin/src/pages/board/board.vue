@@ -15,7 +15,7 @@
 <script setup lang="ts">
 //新版性能监测详情页Index
 import { useBoardStore } from '@/store/modules/board'
-import { storeToRefs } from '@vben/stores'
+import { storeToRefs } from 'pinia'
 
 import InfoCard from '../component/infoCard/index.vue'
 import FilterCard from '../component/filterCard/index.vue'
