@@ -5,8 +5,6 @@ import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
 import { router } from '@/router'
 // import { useRoute, useRouter } from 'vue-router'
-import { router } from '@/router'
-// import { useRoute, useRouter } from 'vue-router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
 const allFilterKeys = [

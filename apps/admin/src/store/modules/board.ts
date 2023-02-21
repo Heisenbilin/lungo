@@ -4,7 +4,6 @@ import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from 'pinia'
 import { router } from '@/router'
-import { router } from '@/router'
 
 const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
 
@@ -93,7 +92,6 @@ export const useBoardStore = defineStore({
     commitFilterState(filter: filter): void {
       this.filterState = filter
       addOrUpdateUrlParams(this.filterState)
-      
       // 删除路由中不需要的参数
       const delKeys: string[] = []
       allFilterKeys.map(key => !Object.keys(filter).includes(key) && delKeys.push(key))

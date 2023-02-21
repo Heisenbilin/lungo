@@ -702,7 +702,7 @@ import { useWeeklyReportUserSelect } from '@/hooks/board/useWeeklyReportUserSele
 import { useAuth } from '@/hooks/board/useAuth'
 import { cloneDeep, buildUUID } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
-import { storeToRefs } from '@vben/stores'
+import { storeToRefs } from 'pinia'
 // import { isEqual } from 'lodash-es';
 import LabelComponent from './labelComponent.vue'
 import { saveAs } from 'file-saver'
