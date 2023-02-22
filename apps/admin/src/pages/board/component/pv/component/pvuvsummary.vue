@@ -67,7 +67,6 @@ const totalCount = reactive({ PVCount: '', UVCount: '' })
 const requestPageViewData = async params => {
   loading.pv = true
   const result = await getPageViewData(params)
-    console.log('查看范围',result);
     
   totalCount.PVCount =
     result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : ''

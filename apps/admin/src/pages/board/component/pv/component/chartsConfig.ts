@@ -1,8 +1,5 @@
 import { cloneDeep, commafy, formatDateString } from '@vben/utils'
-import dayjs from 'dayjs';
-import { useBoardStore } from '@/store/modules/board'
 
-const boardStore = useBoardStore()
 
 
 
@@ -28,7 +25,7 @@ const PVUVChartConfig: any = {
         type: 'cross',
       },
       formatter: item => {
-        return `<font style="color:green">${item[0]?.data.name}${boardStore.filterState.dimension == 'day' ? ' ~ ' + dayjs(item[0]?.data.name).add(1,"day").format("YYYY-MM-DD"):""}</font><br/>
+        return `<font style="color:green">${item[0]?.data.name}</font><br/>
                 数量：${commafy(item[0].value)}<br/>
                 单击添加<font style="color:green">${item?.[0].data.name}</font>为筛选条件`
       },

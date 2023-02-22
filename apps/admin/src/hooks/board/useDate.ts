@@ -50,27 +50,56 @@ export const addTimeFilter = (params, chart) => {
       const dimension = boardStore.filterState.dimension || 'day' // 维度
       const start_time = time.format('YYYY-MM-DD HH:mm:ss') // 开始时间
       let end_time = '' // 结束时间
-      switch (dimension) {
-        case 'day':
-          time.add(1, 'd')
-          break
-        case 'hour':
-          time.add(1, 'h')
-          break
-        case 'halfHour':
-          time.add(30, 'm')
-          break
-        default:
-          return
-      }
-      if (time.isAfter(dayjs())) {
+
+      // switch (dimension) {
+      //   case 'day':
+      //     time.add(1, 'day')
+      //     break
+      //   case 'hour':
+      //     time.add(1, 'h')
+      //     break
+      //   case 'halfHour':
+      //     time.add(30, 'm')
+      //     break
+      //   default:
+      //     return
+      // }
+      if(dimension == 'day'){
+        time.add(1,'d').isAfter(dayjs())?
+          end_time = dayjs()
+              .minute(10 * Math.floor(dayjs().minute() / 10))
+              .second(0)
+              .format('YYYY-MM-DD HH:mm:ss')
+        :end_time = time.add(1,'day').format('YYYY-MM-DD HH:mm:ss')
+      }else if(dimension == 'hour'){
+        time.add(1,'h').isAfter(dayjs())?
         end_time = dayjs()
-          .minute(10 * Math.floor(dayjs().minute() / 10))
-          .second(0)
-          .format('YYYY-MM-DD HH:mm:ss')
-      } else {
-        end_time = time.format('YYYY-MM-DD HH:mm:ss')
+            .minute(10 * Math.floor(dayjs().minute() / 10))
+            .second(0)
+            .format('YYYY-MM-DD HH:mm:ss') 
+      : end_time =  time.add(1,'h').format('YYYY-MM-DD HH:mm:ss')
+      }else {
+        time.add(30,'m').isAfter(dayjs())?
+        end_time = dayjs()
+            .minute(10 * Math.floor(dayjs().minute() / 10))
+            .second(0)
+            .format('YYYY-MM-DD HH:mm:ss') 
+      :end_time =  time.add(30,'m').format('YYYY-MM-DD HH:mm:ss')
       }
+     
+      
+      // if (time.isAfter(dayjs())) {
+      //   debugger
+      //   end_time = dayjs()
+      //     .minute(10 * Math.floor(dayjs().minute() / 10))
+      //     .second(0)
+      //     .format('YYYY-MM-DD HH:mm:ss')
+      // } else {
+      //   debugger
+      //   end_time = time.format('YYYY-MM-DD HH:mm:ss')
+      // }
+      // end_time = time.format('YYYY-MM-DD HH:mm:ss')
+      // console.log('开始结束时间',start_time, end_time );
       boardStore.addFilterValue({ start_time, end_time })
     } catch (e) {
       console.log(e)
