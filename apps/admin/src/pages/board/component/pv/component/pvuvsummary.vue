@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 // pv与uv图表
-import { computed, reactive } from 'vue'
+import { computed, reactive} from 'vue'
 import { getPVUVChartOption } from './chartsConfig'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getPageViewData, getUserViewData } from '@/apis/board/pv'
@@ -67,6 +67,8 @@ const totalCount = reactive({ PVCount: '', UVCount: '' })
 const requestPageViewData = async params => {
   loading.pv = true
   const result = await getPageViewData(params)
+    console.log('查看范围',result);
+    
   totalCount.PVCount =
     result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.count, 0) : ''
   loading.pv = false
@@ -101,4 +103,5 @@ const requestParams = computed(() => ({
 
 // 获取图表option(PV、UV图表共用)
 const getChartOption = data => getPVUVChartOption(data, boardStore.getTimeFormatStr)
+
 </script>

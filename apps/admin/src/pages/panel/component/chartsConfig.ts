@@ -22,7 +22,7 @@ const PVUVChartConfig: any = {
       type: 'cross',
     },
     formatter: item => {
-      return `${item[0].data.name}<br/>
+      return `${item[0].data.name} <br/>
               数量：${commafy(item[0].value)}<br/>`
     },
   },
