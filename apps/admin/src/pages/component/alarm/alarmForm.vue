@@ -1,6 +1,12 @@
 <template>
   <div>
-    <a-modal v-model:visible="visible" :title="modelTitle" :footer="null" width="50%">
+    <a-modal
+      v-model:visible="visible"
+      :title="modelTitle"
+      :footer="null"
+      width="50%"
+      @cancel="closeModal"
+    >
       <a-form ref="formRef" :model="alarmForm" v-bind="formItemLayout" :rules="rules">
         <a-form-item label="告警名称" name="alarmName">
           <a-input v-model:value="alarmForm.alarmName" placeholder="输入告警名称" />
@@ -63,7 +69,7 @@
         </div>
         <a-form-item label="选择告警人员">
           <GroupUsersCheckbox
-            :base-url="baseURL"
+            base-url="/v1/ht"
             :uc-group-id="ucGroupId"
             field="workcode"
             :span="6"
@@ -86,7 +92,7 @@
                 <a-input v-model:value="item.yachToken" placeholder="密钥"
               /></a-col>
               <a-col :span="4">
-                <a-button type="primary" shape="circle" @click="removeRobot(index)">
+                <a-button type="primary" shape="circle" @click="() => removeRobot(index)">
                   <template #icon>
                     <MinusOutlined />
                   </template>
@@ -105,7 +111,7 @@
             >修改</a-button
           >
           <a-button type="primary" @click="onSubmit" v-else>创建</a-button>
-          <a-button style="margin-left: 50px" @click="visible = false">取消</a-button>
+          <a-button style="margin-left: 50px" @click="closeModal">取消</a-button>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -113,22 +119,37 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, inject, watch } from 'vue'
+import { reactive, ref, watch, PropType } from 'vue'
 import { GroupUsersCheckbox } from '@xes/uc'
 import { requestErrorTypeList, requestAddAlarmRule, requestUpdateAlarmRule } from '@/apis/alarm'
-// import { useGetHuatuoGroups } from '@/hooks/board/useGetHuatuoGroups';
-import { useWeeklyReportUserSelect } from '@/hooks/board/useWeeklyReportUserSelect'
 import { message } from 'ant-design-vue'
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons-vue'
 import { useUserStore } from '@/store/user'
+
+const props = defineProps({
+  modalVisible: {
+    type: Boolean,
+    default: false,
+  },
+  recordData: {
+    type: [Object, null] as PropType<any | null>,
+    default: () => null,
+  },
+  projectId: {
+    type: Number,
+    required: true,
+  },
+  ucGroupId: {
+    type: Number,
+    default: 0,
+  },
+})
 
 const emit = defineEmits(['close'])
 // 任务表单 ref
 const formRef = ref()
 const modelTitle = ref('新增告警规则')
 const updateAlarmRuleId = ref(0)
-const projectId = inject<any>('projectId')
-const ucGroupId = inject<any>('ucGroupId')
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
 
@@ -138,7 +159,7 @@ const ignoreErrorIdList = ref<any>([])
 const alarmForm = reactive({
   alarmName: '',
   projectTag: 'xiaosongshu',
-  projectId: projectId.value,
+  projectId: props.projectId,
   errorIds: '',
   interval: 10,
   value: 10,
@@ -158,61 +179,66 @@ const settingObj = reactive({
   ],
   alarmUsers: [],
 })
-const showModal = record => {
-  visible.value = true
-  if (record) {
-    modelTitle.value = '修改告警规则'
-    console.log(record)
-    const {
-      id = 0,
-      alarmName,
-      projectId,
-      projectTag,
-      errorIds,
-      interval,
-      value,
-      upgradeCondition,
-      upgradeNum,
-      AlarmSetting,
-      ignoreErrorIds,
-    } = record
-    updateAlarmRuleId.value = id
-    // 设置复选框不能被编辑的ID
-    ignoreErrorIdList.value = ignoreErrorIds.split(',').map(Number)
-    const { id: settingId, userId, yachIds, alarmUsers } = AlarmSetting
-    alarmForm.alarmName = alarmName
-    alarmForm.projectId = projectId
-    alarmForm.projectTag = projectTag
-    alarmForm.errorIds = errorIds
-    alarmForm.interval = interval
-    alarmForm.value = value
-    alarmForm.upgradeCondition = upgradeCondition
-    alarmForm.upgradeNum = upgradeNum
-    settingObj.id = settingId
-    settingObj.userId = userId
-    settingObj.alarmUsers = alarmUsers
-    settingObj.yachIds = yachIds === '' ? [] : yachIds.split(',').map(Number)
-    settingObj.robot = record.AlarmSetting.robot
-    settingObj.errorIds = errorIds.split(',').map(Number)
-    return
-  }
-  ignoreErrorIdList.value = []
-  updateAlarmRuleId.value = 0
-  alarmForm.alarmName = ''
-  alarmForm.projectId = projectId
-  alarmForm.projectTag = 'xiaosongshu'
-  alarmForm.errorIds = ''
-  alarmForm.interval = 10
-  alarmForm.value = 10
-  alarmForm.upgradeCondition = 10
-  alarmForm.upgradeNum = 10
-  settingObj.userId = userName
-  settingObj.alarmUsers = []
-  settingObj.yachIds = []
-  settingObj.robot = []
-  settingObj.errorIds = []
-  modelTitle.value = '新增告警规则'
-}
+
+watch(
+  () => props.modalVisible,
+  val => {
+    visible.value = val
+    const record = props.recordData
+    if (record) {
+      modelTitle.value = '修改告警规则'
+      const {
+        id = 0,
+        alarmName,
+        projectId,
+        projectTag,
+        errorIds,
+        interval,
+        value,
+        upgradeCondition,
+        upgradeNum,
+        AlarmSetting,
+        ignoreErrorIds,
+      } = record
+      updateAlarmRuleId.value = id
+      // 设置复选框不能被编辑的ID
+      ignoreErrorIdList.value = ignoreErrorIds.split(',').map(Number)
+      const { id: settingId, userId, yachIds, alarmUsers } = AlarmSetting
+      alarmForm.alarmName = alarmName
+      alarmForm.projectId = projectId
+      alarmForm.projectTag = projectTag
+      alarmForm.errorIds = errorIds
+      alarmForm.interval = interval
+      alarmForm.value = value
+      alarmForm.upgradeCondition = upgradeCondition
+      alarmForm.upgradeNum = upgradeNum
+      settingObj.id = settingId
+      settingObj.userId = userId
+      settingObj.alarmUsers = alarmUsers
+      settingObj.yachIds = yachIds === '' ? [] : yachIds.split(',').map(Number)
+      settingObj.robot = record.AlarmSetting.robot
+      settingObj.errorIds = errorIds.split(',').map(Number)
+      return
+    }
+    ignoreErrorIdList.value = []
+    updateAlarmRuleId.value = 0
+    alarmForm.alarmName = ''
+    alarmForm.projectId = props.projectId
+    alarmForm.projectTag = 'xiaosongshu'
+    alarmForm.errorIds = ''
+    alarmForm.interval = 10
+    alarmForm.value = 10
+    alarmForm.upgradeCondition = 10
+    alarmForm.upgradeNum = 10
+    settingObj.userId = userName
+    settingObj.alarmUsers = []
+    settingObj.yachIds = []
+    settingObj.robot = []
+    settingObj.errorIds = []
+    modelTitle.value = '新增告警规则'
+  },
+)
+
 const closeModal = () => {
   visible.value = false
   emit('close')
@@ -263,7 +289,7 @@ const onSubmit = async () => {
     userId: settingObj.userId,
     alarmUsers: settingObj.alarmUsers,
     // 这里的 groupIds 为项目的 groupId
-    groupIds: ucGroupId.value,
+    groupIds: props.ucGroupId,
     yachIds: settingObj.yachIds.join(','),
     robot: JSON.stringify(settingObj.robot),
   }
@@ -282,7 +308,7 @@ const onUpdateSubmit = async () => {
     id: settingObj.id,
     userId: settingObj.userId,
     // 这里的 groupIds 为项目的 groupId
-    groupIds: ucGroupId.value,
+    groupIds: props.ucGroupId,
     alarmUsers: settingObj.alarmUsers,
     yachIds: settingObj.yachIds.join(','),
     robot: JSON.stringify(settingObj.robot),
@@ -306,11 +332,6 @@ const addRobot = () => {
 const removeRobot = index => {
   settingObj.robot.splice(index, 1)
 }
-
-/**
- * 告警用户选择逻辑
- */
-const { baseURL } = useWeeklyReportUserSelect()
 </script>
 
 <style scoped>

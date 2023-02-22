@@ -299,13 +299,13 @@ const openProject = async (id, index) => {
   if (result.stat === 1) {
     message.success('开启成功！')
     //请求项目数据
-    const boardData = await getProjectBoard({
+    const result = await getProjectBoard({
       start_time: listStore.startTime,
       end_time: listStore.endTime,
       time_dimension: filterState.value.dimension === 'hour' ? 'day' : 'week',
       project_id: id,
     })
-    huatuoProjectList.value[index].itemsData = boardData.data || {}
+    huatuoProjectList.value[index].itemsData = result.data || {}
     huatuoProjectList.value[index].close_project = 0
     //刷新另一Tab
     const tabName = props.isStar ? 'all' : 'star'

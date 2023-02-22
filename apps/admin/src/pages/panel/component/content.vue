@@ -8,13 +8,13 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, onActivated, onDeactivated } from 'vue'
 import { useWatermark } from '@vben/hooks'
-import { useBoardDataStore } from '@/store/modules/panel'
+import { usePanelStore } from '@/store/modules/panel'
 import FAQ from '@/pages/component/FAQ.vue'
 import Charts from './charts.vue'
 // import intro from 'intro.js'
 // import 'intro.js/introjs.css'
 
-const panelStore = useBoardDataStore()
+const panelStore = usePanelStore()
 const userName = 'xiongbilin'
 
 const watchFunc: any[] = []

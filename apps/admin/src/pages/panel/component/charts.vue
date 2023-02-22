@@ -49,12 +49,12 @@ import { computed } from 'vue'
 import { getPVUVChartOption } from './chartsConfig'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getChartData } from '@/apis/board/sourceMap'
-import { useBoardDataStore } from '@/store/modules/panel'
+import { usePanelStore } from '@/store/modules/panel'
 import { useUserStore } from '@/store/user'
 import { BaseChart } from '@vben/components'
 import uaInfo from '@/pages/report/total/components/uaInfo.vue'
 
-const boardDataStore = useBoardDataStore()
+const panelStore = usePanelStore()
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
 
@@ -62,10 +62,10 @@ const userName = userStore.userInfo?.account || ''
 const requestParams = computed(() => ({
   boardid: '0x000',
   filter: {
-    gteTime: boardDataStore.filterState.start_time,
-    lteTime: boardDataStore.filterState.end_time,
+    gteTime: panelStore.filterState.start_time,
+    lteTime: panelStore.filterState.end_time,
   },
-  projectid: `${boardDataStore.boardInfoState.id}`,
+  projectid: `${panelStore.boardInfoState.id}`,
   userid: userName,
 }))
 
@@ -82,5 +82,5 @@ const getUVChartData = params => {
 }
 
 // 获取图表option(PV、UV图表共用)
-const getChartOption = data => getPVUVChartOption(data, boardDataStore.getTimeFormatStr)
+const getChartOption = data => getPVUVChartOption(data, panelStore.getTimeFormatStr)
 </script>

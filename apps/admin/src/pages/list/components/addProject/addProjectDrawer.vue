@@ -230,7 +230,7 @@
                   </template>
                 </a-alert>
                 <GroupUsersCheckbox
-                  :base-url="baseURL"
+                  base-url="/v1/ht"
                   popover
                   :uc-group-id="formState.basic_info.uc_group_id"
                   v-model="formState.basic_info.weekly_report_receivers"
@@ -389,7 +389,7 @@
                   danger
                   type="primary"
                   class="w-20 h-5 flex justify-center items-center !text-xl !p-0"
-                  @click="addOrDelUA(index)"
+                  @click="() => addOrDelUA(index)"
                 >
                   -
                 </a-button>
@@ -397,7 +397,7 @@
                   v-else
                   class="w-20 h-5 flex justify-center items-center !text-xl !p-0"
                   type="primary"
-                  @click="addOrDelUA(index)"
+                  @click="() => addOrDelUA(index)"
                 >
                   +
                 </a-button>
@@ -420,7 +420,7 @@
                   </a-form-item>
                 </a-col>
                 <a-col :span="4">
-                  <a-button @click="parseUA(index)" type="primary" class="mb-6 ml-6">
+                  <a-button @click="() => parseUA(index)" type="primary" class="mb-6 ml-6">
                     -解析-
                   </a-button>
                 </a-col>
@@ -533,7 +533,7 @@
                     </template>
                   </a-alert>
                   <GroupUsersCheckbox
-                    :base-url="baseURL"
+                    base-url="/v1/ht"
                     popover
                     :uc-group-id="formState.basic_info.uc_group_id"
                     v-model="formState.auth_info.notice_users"
@@ -573,7 +573,7 @@
                 <a-col :span="1" class="mt-2">
                   <i
                     v-if="i === 0"
-                    @click="addAuthField(formState.auth_info.authForm)"
+                    @click="() => addAuthField(formState.auth_info.authForm)"
                     class="mt-2 cursor-pointer"
                   >
                     <PlusCircleTwoTone />
@@ -620,7 +620,7 @@
                   <i
                     v-if="i !== 0"
                     class="cursor-pointer"
-                    @click="removeAuthField(formState.auth_info.authForm, item.index)"
+                    @click="() => removeAuthField(formState.auth_info.authForm, item.index)"
                   >
                     <CloseCircleTwoTone />
                   </i>
@@ -640,12 +640,13 @@
                 type="primary"
                 :loading="formState.auth_info.checkLoading"
                 @click="
-                  checkAuth(
-                    formRef,
-                    formState.auth_info,
-                    formState.auth_info.project_url,
-                    formState,
-                  )
+                  () =>
+                    checkAuth(
+                      formRef,
+                      formState.auth_info,
+                      formState.auth_info.project_url,
+                      formState,
+                    )
                 "
               >
                 检测参数
@@ -667,10 +668,10 @@
   </a-drawer>
   <a-modal v-model:visible="modalVisible" title="SDK推荐配置" width="800px">
     <template #footer>
-      <a-button v-if="recommendMode === 'normal'" @click="changeMode('vue')">
+      <a-button v-if="recommendMode === 'normal'" @click="() => changeMode('vue')">
         查看Vue引入方式
       </a-button>
-      <a-button v-else @click="changeMode('normal')"> 切换简要配置 </a-button>
+      <a-button v-else @click="() => changeMode('normal')"> 切换简要配置 </a-button>
       <a-button type="primary" @click="downloadSDKConfig">保存成文件</a-button>
     </template>
     <a-typography-paragraph copyable class="json-parse">
@@ -697,8 +698,6 @@ import {
 import { handleUaParse, handleProjectParams, initEditFormData } from '../utils'
 import UANoteIMG from '@/assets/images/huatuo/ua_note.jpg'
 import yachInputFilter from '../yachInputFilter.vue'
-
-import { useWeeklyReportUserSelect } from '@/hooks/board/useWeeklyReportUserSelect'
 import { useAuth } from '@/hooks/board/useAuth'
 import { cloneDeep, buildUUID } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
@@ -997,11 +996,6 @@ async function parseUA(index) {
     console.log(e)
   }
 }
-
-/**
- * 可接收质量周报用户逻辑
- */
-const { baseURL } = useWeeklyReportUserSelect()
 
 /**
  * alert 显示隐藏逻辑

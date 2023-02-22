@@ -22,7 +22,6 @@ import { clientUserAgent } from '@vben/constants'
 
 // 环境判断
 const { dpEnv } = getGlobalConfig(import.meta.env)
-console.log(dpEnv, 'dpEnv')
 const isTest = dpEnv === 'dev' || dpEnv === 'test'
 export const kibanaHref = isTest ? 'https://basiclog-test.xev5.com' : 'http://basiclog.xesv5.com'
 

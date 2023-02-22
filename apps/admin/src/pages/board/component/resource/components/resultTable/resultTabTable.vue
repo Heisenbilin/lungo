@@ -19,14 +19,14 @@
       <template v-if="column.key === 'operation'">
         <template v-if="record.resource_currenthref">
           <span class="mr-2" v-if="!requestParams.url">
-            <a @click="changeSearchUrl(record.resource_currenthref || '未知')">设为筛选</a>
+            <a @click="() => changeSearchUrl(record.resource_currenthref || '未知')">设为筛选</a>
           </span>
           <span class="mr-2" v-else>
-            <a @click="cancelSearchUrl()">取消筛选</a>
+            <a @click="() => cancelSearchUrl()">取消筛选</a>
           </span>
         </template>
         <span>
-          <a @click="openLog(record)">查看日志</a>
+          <a @click="() => openLog(record)">查看日志</a>
         </span>
       </template>
       <template v-if="column.key === 'count'"> {{ commafy(record.count) }} </template>

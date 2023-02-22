@@ -5,7 +5,6 @@
       :columns="columns"
       :data-source="dataSource"
       :pagination="false"
-      :row-key="(_, index) => index"
       size="middle"
       :defaultExpandAllRows="true"
       :expandIconAsCell="false"
@@ -104,7 +103,7 @@
         <link-text :text="text" />
       </template>
       <template #node="{ text }">
-        <div v-if="text && text.lhId" :id="text.lhId + index">{{ renderNode(text) }}</div>
+        <div v-if="text && text.lhId" :id="text.lhId">{{ renderNode(text) }}</div>
       </template>
       <template #source-location="{ text }">
         {{ text.url }}
@@ -124,10 +123,6 @@ import { parseURL, bytesToSize, formatDuration, isURL, handleObjectType } from '
 const props = defineProps({
   details: {
     type: Object,
-    required: true,
-  },
-  index: {
-    type: Number,
     required: true,
   },
 })

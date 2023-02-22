@@ -50,7 +50,7 @@ async function initPackages() {
           const userStore = useUserStoreWithout()
           return userStore.accessToken
         },
-        errorFunction: null,
+        errorFunction: () => {},
         noticeFunction: null,
         errorModalFunction: null,
         timeoutFunction: () => {

@@ -25,15 +25,17 @@
       @change="handleTableChange"
       tableLayout="fixed"
     >
-      <template #URL="{ record }">
-        <a-tooltip title="点击进入原始页面">
-          <span>
-            <a :href="record.board_url" target="_blank">{{ record.board_url }}</a>
-          </span>
-        </a-tooltip>
-      </template>
-      <template #operation="{ record }">
-        <router-link :to="toReport(record.board_url)">查看页面质量周报</router-link>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'URL'">
+          <a-tooltip title="点击进入原始页面">
+            <span>
+              <a :href="record.board_url" target="_blank">{{ record.board_url }}</a>
+            </span>
+          </a-tooltip>
+        </template>
+        <template v-if="column.key === 'operation'">
+          <router-link :to="toReport(record.board_url)">查看页面质量周报</router-link>
+        </template>
       </template>
     </a-table>
   </div>

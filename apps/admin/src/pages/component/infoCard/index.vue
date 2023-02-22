@@ -51,16 +51,12 @@
           <a v-for="(user, i) in adminUsers" :key="i" :href="user.href">
             {{ user.user_name }}{{ i !== adminUsers.length - 1 ? '、' : '' }}
           </a>
-          <a v-if="adminUsers.length < totalAdmins" @click="freshYachId(1000)">...</a>
+          <a v-if="adminUsers.length < totalAdmins" @click="() => freshYachId(1000)">...</a>
         </template>
       </InfoTag>
       <InfoTag>
         <template #content>
-          <a
-            class="link"
-            @click="currentInstance.ctx.$refs.alarmSetting.showModal()"
-            color="warning"
-          >
+          <a class="link" @click="() => (store.alarmModalVisible = true)" color="warning">
             <AlertTwoTone twoToneColor="#d4542d" key="alarm" class="mr-2" /> 预警设置
           </a>
         </template>
@@ -94,23 +90,15 @@
       </InfoTag>
     </div>
   </a-card>
-  <AlarmSetting ref="alarmSetting" :projectId="projectInfo.id" :ucGroupId="admin_uc_group_id" />
+  <AlarmModal :page="boardType" :projectId="projectInfo.id" :ucGroupId="admin_uc_group_id" />
 </template>
 
 <script setup lang="ts">
 // 质量监控页 项目卡片组件
-import {
-  ref,
-  computed,
-  watch,
-  getCurrentInstance,
-  onMounted,
-  onActivated,
-  onDeactivated,
-} from 'vue'
+import { ref, computed, watch, onMounted, onActivated, onDeactivated } from 'vue'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
-import { useBoardDataStore } from '@/store/modules/panel'
+import { usePanelStore } from '@/store/modules/panel'
 import {
   AlertTwoTone,
   FundOutlined,
@@ -130,12 +118,12 @@ import { getQuery } from '@vben/router'
 import dayjs from 'dayjs'
 
 import SDKVersion from '../sdkVersion.vue'
-import AlarmSetting from '../alarm/alarmSetting.vue'
+import AlarmModal from '../alarm/alarmModal.vue'
 import InfoTag from './infoTag.vue'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
-const boardDataStore = useBoardDataStore()
+const panelStore = usePanelStore()
 
 const props = defineProps({
   boardType: {
@@ -144,11 +132,7 @@ const props = defineProps({
   },
 })
 const store =
-  props.boardType === 'board'
-    ? boardStore
-    : props.boardType === 'panel'
-    ? boardDataStore
-    : reportStore
+  props.boardType === 'board' ? boardStore : props.boardType === 'panel' ? panelStore : reportStore
 
 // 当前选中项目信息
 const { boardInfoState: projectInfo } = storeToRefs(store)
@@ -236,10 +220,7 @@ onDeactivated(() => {
   while (watchList.length) watchList.pop()()
 })
 
-// 预警弹窗
-let currentInstance: any = ''
 onMounted(() => {
-  currentInstance = getCurrentInstance()
   initWatch()
 })
 

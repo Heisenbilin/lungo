@@ -69,7 +69,7 @@
                 color: state === 'table' ? 'rgba(43, 96, 179)' : 'gray',
                 fontSize: '20px',
               }"
-              @click="handleToggleShow('table')"
+              @click="() => handleToggleShow('table')"
             />
           </a-tooltip>
           <a-tooltip title="卡片展示">
@@ -79,7 +79,7 @@
                 fontSize: '20px',
                 padding: '10px',
               }"
-              @click="handleToggleShow('card')"
+              @click="() => handleToggleShow('card')"
             />
           </a-tooltip>
         </div>

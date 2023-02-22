@@ -16,6 +16,8 @@ export const useBoardStore = defineStore({
     logInfoState: { type: logTypeEnum.DEFAULT, visible: false, requestParams: {} },
     // 项目topicId
     topicIdState: '',
+    // 预警弹窗展示状态
+    alarmModalVisible: false,
     // 最新sdk版本号
     latestSDKVersionState: '',
     // tab页
