@@ -33,7 +33,7 @@ export function useLogin() {
   onMounted(() => {
     if (env === 'dev') {
       console.log('url 中携带 env=dev ,跳转localhost')
-      location.href = setObjToUrlParams(`https://localhost:3000/login`, { query })
+      location.href = setObjToUrlParams(`https://localhost:3000/login`, query)
       return
     }
     login()
