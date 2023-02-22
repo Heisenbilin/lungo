@@ -37,22 +37,9 @@ import { Empty } from 'ant-design-vue'
 import { getProjectList } from '@/apis/list'
 import { caculatePageSizeByWidth } from '../utils'
 import { debounce } from '@vben/utils'
-// import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
+import { getQuery, addOrUpdateQuery } from '@vben/router'
 import ProjectCard from './projectCard.vue'
-import { useRoute, useRouter } from 'vue-router'
-
-const router = useRouter()
-const route = useRoute()
-function getUrlParams() {
-  return route.query
-}
-function addOrUpdateUrlParams(newQuery) {
-  router.replace({
-    path: route.path,
-    query: { ...route.query, ...newQuery },
-  })
-}
 
 const listStore = useListStore()
 const props = defineProps({
@@ -72,7 +59,7 @@ const emit = defineEmits(['edit'])
 const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
 const screenPageSize = caculatePageSizeByWidth(w)
 
-const { page = 1, page_size = screenPageSize, total: preTotal } = getUrlParams()
+const { page = 1, page_size = screenPageSize, total: preTotal } = getQuery() as any
 //loading
 const loading = ref('loading')
 //空数据图片
@@ -134,7 +121,7 @@ const getHuatuoProjectList = debounce((page = currentPage.value) => {
       huatuoProjectList.value = []
       loading.value = 'empty'
     }
-    addOrUpdateUrlParams({ ...params, total: total.value })
+    addOrUpdateQuery({ ...params, total: total.value })
   })
 }, 500)
 

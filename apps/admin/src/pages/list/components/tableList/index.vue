@@ -142,27 +142,16 @@ import { useListStore } from '@/store/modules/list'
 import { useBoardStore } from '@/store/modules/board'
 import { storeToRefs } from '@vben/stores'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { getQuery, addOrUpdateQuery } from '@vben/router'
 import columns from './tableColumns'
 import tableActions from './tableActions.vue'
 import tableHeader from './tableHeader.vue'
 import tableScreen from './tableScreen.vue'
 import tableContent from './tableContent.vue'
 import tableSdk from './tableSdk.vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const listStore = useListStore()
 const boardStore = useBoardStore()
-const router = useRouter()
-const route = useRoute()
-function getUrlParams() {
-  return route.query
-}
-function addOrUpdateUrlParams(newQuery) {
-  router.replace({
-    path: route.path,
-    query: { ...route.query, ...newQuery },
-  })
-}
 
 const props = defineProps({
   requestParams: {
@@ -191,13 +180,13 @@ const show = closeNum => {
 const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
 const screenPageSize = caculatePageSizeByWidth(w)
 
-const { page = 1, page_size = screenPageSize, total: preTotal } = getUrlParams()
+const { page = 1, page_size = screenPageSize, total: preTotal } = getQuery() as any
 //页码
 const total = ref(Number.isNaN(parseInt(preTotal)) ? 0 : parseInt(preTotal))
 const pageSize = ref(+page_size)
 const currentPage = ref(total.value && total.value > +page ? +page : 1) //防止tab切换时page溢出
 // 防止页码超出时不显示
-if (page * page_size > preTotal) {
+if (+page * page_size > preTotal) {
   // TODO message alert
   currentPage.value = 1
 }
@@ -222,7 +211,6 @@ const getHuatuoProjectList = debounce(async (page = currentPage.value) => {
   const params = {
     name: props.requestParams.name,
     page,
-    // total: total.value,
     groupid: props.requestParams.groupid,
     page_size: pageSize.value,
     type: props.requestParams.projectType,
@@ -252,7 +240,7 @@ const getHuatuoProjectList = debounce(async (page = currentPage.value) => {
       huatuoProjectList.value = []
       loading.value = 'empty'
     }
-    addOrUpdateUrlParams({ ...params, total: total.value })
+    addOrUpdateQuery({ ...params, total: total.value })
   })
 }, 500)
 // 请求详细数据的初始状态
@@ -354,13 +342,6 @@ watch(() => listStore.startTime, initTableContentData)
 </script>
 
 <style lang="scss" scoped>
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 20vh;
-}
-
 :deep(.table-row-red) {
   background: rgba(253, 247, 247);
 

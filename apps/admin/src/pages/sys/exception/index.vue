@@ -1,11 +1,11 @@
 <script lang="tsx">
 import { defineComponent, ref, computed, unref } from 'vue'
 import { BASIC_LOGIN_PATH } from '@vben/constants'
-import { useRoute } from 'vue-router'
 import { useI18n } from '@vben/locale'
 import { createNamespace } from '@vben/utils/src/bem'
 import notDataSvg from '@/assets/svg/no-data.svg'
 import netWorkSvg from '@/assets/svg/net-error.svg'
+import { getQuery } from '@vben/router'
 
 /**
  * Exception related enumeration
@@ -63,7 +63,7 @@ export default defineComponent({
   setup(props) {
     const statusMapRef = ref(new Map<string | number, MapValue>())
 
-    const { query } = useRoute()
+    const query = getQuery()
     const go = function (_arg?: any) {}
     const redo = function (_arg?: any) {}
     const { t } = useI18n()

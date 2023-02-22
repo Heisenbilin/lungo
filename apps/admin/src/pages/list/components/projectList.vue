@@ -167,10 +167,8 @@ import tableList from './tableList/index.vue'
 import addProjectModal from './addProject/addProjectDrawer.vue'
 import UcGroupModal from './ucGroupModal.vue'
 import dayjs from 'dayjs'
-import { useRoute, useRouter } from 'vue-router'
+import { addOrUpdateQuery, getQuery } from '@vben/router'
 
-const router = useRouter()
-const route = useRoute()
 const {
   tabKey = 'all',
   name = '',
@@ -179,19 +177,7 @@ const {
   dimen = 'week',
   groupid = '',
   show = 'table',
-} = getUrlParams()
-function getUrlParams() {
-  return route.query
-}
-console.log('project', getUrlParams())
-
-function addOrUpdateUrlParams(newQuery) {
-  console.log(router)
-  router.replace({
-    path: route.path,
-    query: { ...route.query, ...newQuery },
-  })
-}
+} = getQuery()
 
 const listStore = useListStore()
 const userStore = useUserStore()
@@ -243,7 +229,7 @@ function filterOption(inputValue, options) {
 const activeKey = ref(tabKey)
 
 //监听tabKey变化，更新url Parameter
-watch(activeKey, val => addOrUpdateUrlParams({ tabKey: val }))
+watch(activeKey, val => addOrUpdateQuery({ tabKey: val }))
 
 //时间范围
 const startTime = dayjs().startOf('day').format('YYYY-MM-DD HH:mm:ss')
@@ -268,7 +254,7 @@ watch(
   val => {
     listStore.dimension = val
     listStore.startTime = val === 'week' ? startWeek : startTime
-    addOrUpdateUrlParams({ dimen: val })
+    addOrUpdateQuery({ dimen: val })
   },
   { immediate: true },
 )
@@ -287,7 +273,7 @@ const saasType = ref(saas)
 
 //处理路由中的项目
 const handleEditParams = () => {
-  const { openUpdateDialog, project_id } = getUrlParams()
+  const { openUpdateDialog, project_id } = getQuery()
   if (+openUpdateDialog! === 1 && project_id) {
     //判断是否有该项目权限、且项目是否是开启中
     // let hasAuthority = false;
@@ -309,9 +295,9 @@ const handleEditParams = () => {
 }
 
 const editProjectInfo = project_id => {
-  const { openUpdateDialog } = getUrlParams()
+  const { openUpdateDialog } = getQuery()
   if (+openUpdateDialog! !== 1) {
-    addOrUpdateUrlParams({ openUpdateDialog: 1, project_id: project_id })
+    addOrUpdateQuery({ openUpdateDialog: 1, project_id: project_id })
   }
   editProjectId.value = `${project_id}`
   addProjectVisible.value = true

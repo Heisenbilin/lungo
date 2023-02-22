@@ -20,7 +20,7 @@ export interface Stores {
 const WHITE_NAME_LIST: string[] = []
 ;(() => {
   const getRouteNames = (routeRecords: RouteRecordItem[]) =>
-    routeRecords.forEach((item) => {
+    routeRecords.forEach(item => {
       WHITE_NAME_LIST.push(item.name)
       if (item?.children?.length) {
         getRouteNames(item.children)
@@ -43,12 +43,39 @@ export function InitRouter(path: string): Router {
 
 // reset router
 export function resetRouter() {
-  router.getRoutes().forEach((route) => {
+  router.getRoutes().forEach(route => {
     const { name } = route
     if (name && !WHITE_NAME_LIST.includes(name as string)) {
       router.hasRoute(name) && router.removeRoute(name)
     }
   })
+}
+
+// get query
+export function getQuery() {
+  if (!router) return {}
+  return router.currentRoute.value.query
+}
+
+// 增加或者更新路由query
+export function addOrUpdateQuery(query) {
+  if (!router) return
+  const { path, query: oldQuery } = router.currentRoute.value
+  router.replace({ path, query: { ...oldQuery, ...query } })
+}
+
+// 删除路由query
+export function removeQuery(keys: string[] | string) {
+  if (!router) return
+  const { path, query } = router.currentRoute.value
+  if (Array.isArray(keys)) {
+    keys.forEach(key => {
+      delete query[key]
+    })
+  } else {
+    delete query[keys]
+  }
+  router.replace({ path, query })
 }
 
 export function initGuard(s: Stores) {

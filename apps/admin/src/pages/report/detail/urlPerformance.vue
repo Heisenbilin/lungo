@@ -79,120 +79,115 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
-import { getProDayPerformance, getAveragePerformance } from '@/apis/report/apis';
-import { showAsPassed, _getWastedMs } from './util';
-import { INDEX_LIST, getAvgOptions, getProOptions } from './config';
-import { useRoute } from 'vue-router';
-import  CircleProgress  from '@vben/components/src/chart/circleProgress.vue';
-import { Empty } from 'ant-design-vue';
-import auditLayout from './audit/auditLayout.vue';
-// @ts-ignore
+import { ref, onMounted, watch } from 'vue'
+import { getProDayPerformance, getAveragePerformance } from '@/apis/report/apis'
+import { showAsPassed, _getWastedMs } from './util'
+import { INDEX_LIST, getAvgOptions, getProOptions } from './config'
+import { getQuery } from '@vben/router'
+import { Empty } from 'ant-design-vue'
+import CircleProgress from '@vben/components/src/chart/circleProgress.vue'
+import auditLayout from './audit/auditLayout.vue'
 import chart from './chart.vue'
 
 //页面质量周报性能组件
-  // props: ['preparedLighthouse', 'groups', 'lighthouseLoading'],
-  // emits: ['performanceScoreChange'],
-  const emit = defineEmits(["performanceScoreChange"]);
-  const props = defineProps({
-    preparedLighthouse: {
-      type: Object,
-      default: () => {},
-    },
-    groups: {
-      type: Object,
-      default: () => {},
-    },
-    lighthouseLoading: {
-      type: Number,
-      default: 0,
-    },
-  });
-    const route = useRoute();
-    const performanceScore :any = ref(0);
-    const averagePerformanceOption = ref({});
-    const proDayPerformanceOption = ref({});
-    const indexList = ref(INDEX_LIST);
-    const loading = ref({
-      avgLoading: 0,
-      tendencyLoading: 0,
-      auditsLoading: 0,
-    });
-    const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE);
-    const opportunityAudits = ref([]);
-    const diagnosticAudits = ref([]);
+const emit = defineEmits(['performanceScoreChange'])
+const props = defineProps({
+  preparedLighthouse: {
+    type: Object,
+    default: () => {},
+  },
+  groups: {
+    type: Object,
+    default: () => {},
+  },
+  lighthouseLoading: {
+    type: Number,
+    default: 0,
+  },
+})
+const performanceScore: any = ref(0)
+const averagePerformanceOption = ref({})
+const proDayPerformanceOption = ref({})
+const indexList = ref(INDEX_LIST)
+const loading = ref({
+  avgLoading: 0,
+  tendencyLoading: 0,
+  auditsLoading: 0,
+})
+const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE)
+const opportunityAudits = ref([])
+const diagnosticAudits = ref([])
 
-    onMounted(() => {
-      initData();
-    });
+onMounted(() => {
+  initData()
+})
 
-    //监听父组件lighthouse数据加载标识，解析lighthouse数据
-    watch(
-      () => props.lighthouseLoading,
-      () => {
-        if (props.lighthouseLoading === 2) {
-          // console.log(props.preparedLighthouse)
-          initAudits();
-        } else {
-          loading.value.auditsLoading = props.lighthouseLoading;
-        }
-      }
-    );
-
-    async function initData() {
-      const { start_time, end_time, project_id, url: board_url } = route.query;
-      const params = {
-        start_time,
-        end_time,
-        project_id,
-        board_url: decodeURIComponent(board_url as string ) ,
-        board_type: 'tti,fcp,fp,dns,tcp,ttfb',
-      };
-
-      //获取性能平均值数据
-      const avgData = await getAveragePerformance(params);
-      if (avgData.data) {
-        averagePerformanceOption.value = getAvgOptions(avgData.data.list);
-        performanceScore.value  = avgData.data.score;
-        emit('performanceScoreChange', parseFloat(performanceScore.value ));
-        loading.value.avgLoading = 2;
-      } else {
-        loading.value.avgLoading = 1;
-      }
-
-      //获取日趋性能数据
-      const proDayData = await getProDayPerformance(params);
-      if (proDayData.data) {
-        proDayPerformanceOption.value = getProOptions(proDayData.data);
-        loading.value.tendencyLoading = 2;
-      } else {
-        loading.value.tendencyLoading = 1;
-      }
+//监听父组件lighthouse数据加载标识，解析lighthouse数据
+watch(
+  () => props.lighthouseLoading,
+  () => {
+    if (props.lighthouseLoading === 2) {
+      // console.log(props.preparedLighthouse)
+      initAudits()
+    } else {
+      loading.value.auditsLoading = props.lighthouseLoading
     }
+  },
+)
 
-    async function initAudits() {
-      //性能建议数据预处理
-      // Opportunities
-      opportunityAudits.value = props.preparedLighthouse.auditRefs
-        .filter(audit => {
-          return audit.group === 'load-opportunities' && !showAsPassed(audit.result);
-        })
-        .sort((auditA, auditB) => {
-          return _getWastedMs(auditB) - _getWastedMs(auditA);
-        });
-      // Diagnostics
-      diagnosticAudits.value = props.preparedLighthouse.auditRefs
-        .filter(audit => {
-          return audit.group === 'diagnostics' && !showAsPassed(audit.result);
-        })
-        .sort((a, b) => {
-          const scoreA = a.result.scoreDisplayMode === 'informative' ? 100 : Number(a.result.score);
-          const scoreB = b.result.scoreDisplayMode === 'informative' ? 100 : Number(b.result.score);
-          return scoreA - scoreB;
-        });
-      loading.value.auditsLoading = 2;
-    }
+async function initData() {
+  const { start_time, end_time, project_id, url: board_url } = getQuery()
+  const params = {
+    start_time,
+    end_time,
+    project_id,
+    board_url: decodeURIComponent(board_url as string),
+    board_type: 'tti,fcp,fp,dns,tcp,ttfb',
+  }
 
+  //获取性能平均值数据
+  const avgData = await getAveragePerformance(params)
+  if (avgData.data) {
+    averagePerformanceOption.value = getAvgOptions(avgData.data.list)
+    performanceScore.value = avgData.data.score
+    emit('performanceScoreChange', parseFloat(performanceScore.value))
+    loading.value.avgLoading = 2
+  } else {
+    loading.value.avgLoading = 1
+  }
+
+  //获取日趋性能数据
+  const proDayData = await getProDayPerformance(params)
+  if (proDayData.data) {
+    proDayPerformanceOption.value = getProOptions(proDayData.data)
+    loading.value.tendencyLoading = 2
+  } else {
+    loading.value.tendencyLoading = 1
+  }
+}
+
+async function initAudits() {
+  //性能建议数据预处理
+  // Opportunities
+  opportunityAudits.value = props.preparedLighthouse.auditRefs
+    .filter(audit => {
+      return audit.group === 'load-opportunities' && !showAsPassed(audit.result)
+    })
+    .sort((auditA, auditB) => {
+      return _getWastedMs(auditB) - _getWastedMs(auditA)
+    })
+  // Diagnostics
+  diagnosticAudits.value = props.preparedLighthouse.auditRefs
+    .filter(audit => {
+      return audit.group === 'diagnostics' && !showAsPassed(audit.result)
+    })
+    .sort((a, b) => {
+      const scoreA = a.result.scoreDisplayMode === 'informative' ? 100 : Number(a.result.score)
+      const scoreB = b.result.scoreDisplayMode === 'informative' ? 100 : Number(b.result.score)
+      return scoreA - scoreB
+    })
+  loading.value.auditsLoading = 2
+}
 </script>
 
 <style scoped lang="scss">

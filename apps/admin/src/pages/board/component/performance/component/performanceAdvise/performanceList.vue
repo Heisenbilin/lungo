@@ -41,7 +41,6 @@ import { ref, computed, watch } from 'vue'
 import { prepareReportResult, showAsPassed, _getWastedMs } from '@/pages/report/detail/util'
 import { getLighthouseAudits } from '@/apis/report/apis'
 import auditLayout from '@/pages/report//detail/audit/auditLayout.vue'
-import { useRouter } from 'vue-router'
 import { useReportStore } from '@/store/modules/report'
 import { Empty } from 'ant-design-vue'
 
@@ -56,7 +55,6 @@ const props = defineProps({
   startTime: String,
   endTime: String,
 })
-const router = useRouter()
 const reportUrl = computed(() => props.successList[0].board_url)
 const currentUrl = ref(props.successList[0].board_url)
 // console.log(props.successList[0].board_url);

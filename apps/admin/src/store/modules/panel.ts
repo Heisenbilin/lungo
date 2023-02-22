@@ -106,7 +106,6 @@ export const useBoardDataStore = defineStore({
       if (Object.keys(this.filterState).includes(name)) {
         delete this.filterState[name]
         this.setUrlQuery()
-        // addOrUpdateUrlParams(this.filterState);
         if (!noNeedMessageKeys.includes(name)) {
           message.warning(`已删除筛选条件`)
         }

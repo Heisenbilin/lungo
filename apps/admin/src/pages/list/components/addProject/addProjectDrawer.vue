@@ -708,7 +708,7 @@ import LabelComponent from './labelComponent.vue'
 import { saveAs } from 'file-saver'
 import { getRecommendSDKConfig, getVueRecommendSDKConfig } from './sdkConfig'
 import { CodeArea } from '@vben/components'
-import { useRoute, useRouter } from 'vue-router'
+import { removeQuery } from '@vben/router'
 
 const props = defineProps({
   visible: {
@@ -719,22 +719,7 @@ const props = defineProps({
     type: String,
   },
 })
-const router = useRouter()
-const route = useRoute()
-console.log(router,route);
 
-function delUrlParams(key) {
-    const params = route.query
-    if (!Array.isArray(key)) key = [key]
-    key.forEach(item => {
-      if (item in params) delete params[item]
-      // else console.log('路由中无此parameter：', item);
-    })
-    router.replace({
-      path:route.path,
-      query:{...params}
-    })
-  }
 const emit = defineEmits(['update:visible', 'flash'])
 
 // const store = useStore();
@@ -941,14 +926,14 @@ async function addOrModifyProject(isShutDown) {
     message.success('提交成功！')
     //提交表单后，更新项目列表
     emit('flash')
-    delUrlParams(['openUpdateDialog, project_id'])
+    removeQuery(['openUpdateDialog, project_id'])
     emit('update:visible', false)
   }
   loading.value = false
 }
 
 function handleCancel() {
-  delUrlParams(['openUpdateDialog', 'project_id'])
+  removeQuery(['openUpdateDialog', 'project_id'])
   emit('update:visible', false)
 }
 

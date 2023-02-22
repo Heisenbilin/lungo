@@ -24,12 +24,12 @@
 
 <script setup lang="ts">
 import { watch, onMounted, ref, onActivated, onDeactivated } from 'vue'
-import { useRoute } from 'vue-router'
 import { prepareReportResult } from './detail/util'
 import { getLighthouseAudits } from '@/apis/report/apis'
 import { useReportStore } from '@/store/modules/report'
 import { useUserStore } from '@/store/user'
 import { useWatermark } from '@vben/hooks'
+import { getQuery } from '@vben/router'
 
 import urlBase from './detail/urlBase.vue'
 import urlPerformance from './detail/urlPerformance.vue'
@@ -39,7 +39,6 @@ const props = defineProps({
   type: String,
 })
 
-const route = useRoute()
 const reportStore = useReportStore()
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
@@ -88,7 +87,7 @@ function stabilityScoreChange(newScore) {
 }
 
 async function initAudits() {
-  const { start_time, project_id, url: board_url } = route.query
+  const { start_time, project_id, url: board_url } = getQuery()
   const lighthouseParams = {
     project_url: decodeURIComponent(board_url as string),
     start_time: start_time + ' 00:00:00',

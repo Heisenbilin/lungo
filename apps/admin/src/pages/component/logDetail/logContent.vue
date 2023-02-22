@@ -155,7 +155,7 @@ import { uploadSourcemap, getMappingList } from '@/apis/board/sourceMap'
 import { WaterfallChart, CodeArea, SourceCodeArea } from '@vben/components'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
-import { useRoute } from 'vue-router'
+import { getQuery } from '@vben/router'
 
 const boardStore = useBoardStore()
 
@@ -181,16 +181,12 @@ const openUploadSourcemapModal = () => {
   showUploadSourcemapModal.value = true
 }
 const msg = ref('')
-const route = useRoute()
 const handleOk = async () => {
   if (sourcemapFileList.value.length < 1) {
     return
   }
-  // uploadApi()
-  // console.log(sourcemapFileList.value);
-  const { projectid } = route.query 
-  console.log(projectid);
-  
+  const { projectid } = getQuery()
+
   try {
     const result = await uploadSourcemap(projectid as string, sourcemapFileList.value[0])
     if (result.msg === 'success') {

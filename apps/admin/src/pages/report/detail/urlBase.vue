@@ -68,49 +68,45 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
-import  CircleProgress  from '@vben/components/src/chart/circleProgress.vue';
-// import { formatToDate } from '@vben/utils';
-// import moment from 'moment';
-import  dayjs  from 'dayjs';
+import { ref, onMounted, computed } from 'vue'
+import { getQuery } from '@vben/router'
+import CircleProgress from '@vben/components/src/chart/circleProgress.vue'
+import dayjs from 'dayjs'
 
 //页面质量周报总评组件
 const props = defineProps({
-  score:{
+  score: {
     type: Object,
     default: () => {
       return {
         performanceScore: 0,
         stabilityScore: 0,
-      };
+      }
     },
-  }
+  },
 })
 
-  // props: ['score'],
+const urlInfo = ref({
+  //基本信息
+  projectName: '',
+  boardURL: '',
+  reportTime: '',
+})
+const avgScore = computed(() => {
+  const avg = (props.score.stabilityScore + props.score.performanceScore) / 2
+  return avg.toFixed(0)
+})
 
-    const route = useRoute();
-    const urlInfo = ref({
-      //基本信息
-      projectName: '',
-      boardURL: '',
-      reportTime: '',
-    });
-    const avgScore = computed(() => {
-      const avg = (props.score.stabilityScore + props.score.performanceScore) / 2;
-      return avg.toFixed(0);
-    });
-
-    onMounted(() => {
-      const { start_time, end_time, url: board_url, project_name } = route.query;
-      urlInfo.value = {
-        projectName: decodeURIComponent(project_name as string), 
-        boardURL: decodeURIComponent(board_url  as string),
-        reportTime: `${start_time}至${dayjs(end_time as string).subtract(1, 'd').format('YYYY-MM-DD')}`,
-      };
-    });
-
+onMounted(() => {
+  const { start_time, end_time, url: board_url, project_name } = getQuery()
+  urlInfo.value = {
+    projectName: decodeURIComponent(project_name as string),
+    boardURL: decodeURIComponent(board_url as string),
+    reportTime: `${start_time}至${dayjs(end_time as string)
+      .subtract(1, 'd')
+      .format('YYYY-MM-DD')}`,
+  }
+})
 </script>
 
 <style scoped lang="scss">

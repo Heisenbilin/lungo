@@ -14,7 +14,12 @@
         </div>
       </a-col>
       <a-col :span="8">
-        <circle-progress ref="$circle" class="progress" key="duration-model" :progress="stabilityScore" />
+        <circle-progress
+          ref="$circle"
+          class="progress"
+          key="duration-model"
+          :progress="stabilityScore"
+        />
       </a-col>
     </a-row>
 
@@ -42,8 +47,8 @@
       <div>
         <span class="rule">计算规则：Resource / PV</span><span class="rule">权重：34%</span>
         <div class="rule">
-          分值计算：<span class="top">0~1% 75~100分</span><span class="mid">1~3% 50~75分</span><span class="bot">3%以上
-            0~50分</span>
+          分值计算：<span class="top">0~1% 75~100分</span><span class="mid">1~3% 50~75分</span
+          ><span class="bot">3%以上 0~50分</span>
         </div>
       </div>
     </div>
@@ -57,8 +62,8 @@
       <div>
         <span class="rule">计算规则：白屏次数 / 检测次数</span><span class="rule">权重：33%</span>
         <div class="rule">
-          分值计算：<span class="top">0~1% 75~100分</span><span class="mid">1~3% 50~75分</span><span class="bot">3%以上
-            0~50分</span>
+          分值计算：<span class="top">0~1% 75~100分</span><span class="mid">1~3% 50~75分</span
+          ><span class="bot">3%以上 0~50分</span>
         </div>
       </div>
     </div>
@@ -74,116 +79,114 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { Empty } from 'ant-design-vue';
-import CircleProgress from '@vben/components/src/chart/circleProgress.vue';
-import { getErrSummary, getWhiteRate } from '@/apis/report/apis';
-import { getStabilityAudits } from './util';
-import { getScore, getUrlErrorOptions } from './config';
-// import { message } from 'ant-design-vue';
-import chart from './chart.vue';
-import linkText from './linkText.vue';
-import AuditLayout from './audit/auditLayout.vue';
+import { ref, watch, onMounted } from 'vue'
+import { Empty } from 'ant-design-vue'
+import { getErrSummary } from '@/apis/report/apis'
+import { getStabilityAudits } from './util'
+import { getScore, getUrlErrorOptions } from './config'
+import { getQuery } from '@vben/router'
+import CircleProgress from '@vben/components/src/chart/circleProgress.vue'
+import chart from './chart.vue'
+import linkText from './linkText.vue'
+import AuditLayout from './audit/auditLayout.vue'
 
 //页面质量周报稳定性组件
 type Props = {
-  preparedLighthouse: any;
-  groups: any;
-  lighthouseLoading: number;
-};
-const props = defineProps<Props>();
-const route = useRoute();
-const stabilityScore: any = ref(0);
-const runtimeScore: any = ref(0);
-const resourceScore: any = ref(0);
-const whiteScore: any = ref(0);
-const runtimeData = ref([]);
-const runtimeRate: any = ref(0);
-const resourceData = ref([]);
-const resourceRate = ref(0);
-const whiteRate = ref(0);
-const noWhite = ref(false);
+  preparedLighthouse: any
+  groups: any
+  lighthouseLoading: number
+}
+const props = defineProps<Props>()
+const stabilityScore: any = ref(0)
+const runtimeScore: any = ref(0)
+const resourceScore: any = ref(0)
+const whiteScore: any = ref(0)
+const runtimeData = ref([])
+const runtimeRate: any = ref(0)
+const resourceData = ref([])
+const resourceRate = ref(0)
+const whiteRate = ref(0)
+const noWhite = ref(false)
 // const performanceScore = ref(0);
-const runtimeErrorOption = ref({});
-const resourceErrorOption = ref({});
+const runtimeErrorOption = ref({})
+const resourceErrorOption = ref({})
 
 const loading = ref({
   runtimeLoading: 0,
   resourceLoading: 0,
   whiteLoading: 0,
   auditsLoading: 0,
-});
-const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE);
+})
+const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE)
 
-const stabilityAudits: any = ref([]);
-type Emits = {(e:'stabilityScoreChange',score: number):void; }
-const emit = defineEmits<Emits>();
+const stabilityAudits: any = ref([])
+type Emits = { (e: 'stabilityScoreChange', score: number): void }
+const emit = defineEmits<Emits>()
 onMounted(() => {
-  initData();
-});
+  initData()
+})
 
 //监听父组件lighthouse数据加载标识，解析lighthouse数据
 watch(
   () => props.lighthouseLoading,
   () => {
     if (props.lighthouseLoading === 2) {
-      stabilityAudits.value = getStabilityAudits(props.preparedLighthouse);
-      loading.value.auditsLoading = 2;
+      stabilityAudits.value = getStabilityAudits(props.preparedLighthouse)
+      loading.value.auditsLoading = 2
     } else {
-      loading.value.auditsLoading = props.lighthouseLoading;
+      loading.value.auditsLoading = props.lighthouseLoading
     }
-  }
-);
+  },
+)
 
 async function initData() {
-  const { start_time, end_time, project_id, url: board_url } = route.query;
+  const { start_time, end_time, project_id, url: board_url } = getQuery()
   const params = {
     start_time,
     end_time,
     project_id,
     board_url: decodeURIComponent(board_url as string),
     board_type: 'runtime,resource',
-  };
+  }
   // await initWhite(params);
 
   //获取resource&runtime异常的总数统计
-  const result = await getErrSummary(params);
+  const result = await getErrSummary(params)
   //runtime数据清洗
   if (result.data.runtime.length) {
     runtimeData.value = result.data.runtime.map(e => ({
       value: e.board_count,
       name: e.board_key,
-    }));
-    runtimeRate.value = result.data.runtimeerrorRate;
-    let runtimeNum = parseFloat(runtimeRate.value);
-    runtimeScore.value = getScore(runtimeNum);
-    runtimeErrorOption.value = getUrlErrorOptions(runtimeData.value, runtimeScore.value);
-    loading.value.runtimeLoading = 2;
+    }))
+    runtimeRate.value = result.data.runtimeerrorRate
+    let runtimeNum = parseFloat(runtimeRate.value)
+    runtimeScore.value = getScore(runtimeNum)
+    runtimeErrorOption.value = getUrlErrorOptions(runtimeData.value, runtimeScore.value)
+    loading.value.runtimeLoading = 2
   } else {
-    loading.value.runtimeLoading = 1;
+    loading.value.runtimeLoading = 1
   }
   //resource数据清洗
   if (result.data.resource.length) {
     resourceData.value = result.data.resource.map(e => ({
       value: e.board_count,
       name: e.board_key,
-    }));
-    resourceRate.value = result.data.resourceerrorRate;
-    let resourceNum = parseFloat(resourceRate.value + '');
-    resourceScore.value = getScore(resourceNum);
-    resourceErrorOption.value = getUrlErrorOptions(resourceData.value, resourceScore.value);
-    loading.value.resourceLoading = 2;
+    }))
+    resourceRate.value = result.data.resourceerrorRate
+    let resourceNum = parseFloat(resourceRate.value + '')
+    resourceScore.value = getScore(resourceNum)
+    resourceErrorOption.value = getUrlErrorOptions(resourceData.value, resourceScore.value)
+    loading.value.resourceLoading = 2
   } else {
-    loading.value.resourceLoading = 1;
+    loading.value.resourceLoading = 1
   }
-  let whiteNum = parseFloat(whiteRate.value + '');
-  whiteScore.value = getScore(whiteNum);
+  let whiteNum = parseFloat(whiteRate.value + '')
+  whiteScore.value = getScore(whiteNum)
   stabilityScore.value = (
     (runtimeScore.value + resourceScore.value + whiteScore.value) /
     3
-  ).toFixed(0);
-  emit('stabilityScoreChange', parseFloat(stabilityScore.value));
+  ).toFixed(0)
+  emit('stabilityScoreChange', parseFloat(stabilityScore.value))
 }
 
 // async function initWhite(params) {
@@ -202,8 +205,6 @@ async function initData() {
 //     noWhite.value = false;
 //   }
 // }
-
-
 </script>
 
 <style scoped lang="scss">

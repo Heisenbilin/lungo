@@ -3,12 +3,9 @@ import { RouteParams } from 'vue-router'
 import { toRaw } from 'vue'
 import { Menu, MenuModule } from '@vben/types'
 
-export function getAllParentPath<T = Recordable<any>>(
-  treeData: T[],
-  path: string,
-) {
-  const menuList = findParentPath(treeData, (n) => n.path === path) as Menu[]
-  return (menuList || []).map((item) => item.path)
+export function getAllParentPath<T = Recordable<any>>(treeData: T[], path: string) {
+  const menuList = findParentPath(treeData, n => n.path === path) as Menu[]
+  return (menuList || []).map(item => item.path)
 }
 
 function joinParentPath(menus: RouteRecordItem[], parentPath = '') {
@@ -22,10 +19,7 @@ function joinParentPath(menus: RouteRecordItem[], parentPath = '') {
       menu.path = `${parentPath}/${menu.path}`
     }
     if (menu?.children?.length) {
-      joinParentPath(
-        menu.children,
-        menu.meta?.hidePathForChildren ? parentPath : menu.path,
-      )
+      joinParentPath(menu.children, menu.meta?.hidePathForChildren ? parentPath : menu.path)
     }
   }
 }
@@ -40,19 +34,12 @@ export function transformMenuModule(menuModule: MenuModule): Menu {
   return menuList[0]
 }
 
-export function transformRouteToMenu(
-  routeModList: RouteRecordItem[],
-  routerMapping = false,
-) {
+export function transformRouteToMenu(routeModList: RouteRecordItem[], routerMapping = false) {
   const cloneRouteModList = cloneDeep(routeModList)
   const routeList: RouteRecordItem[] = []
 
-  cloneRouteModList.forEach((item) => {
-    if (
-      routerMapping &&
-      item.meta?.hideChildrenInMenu &&
-      typeof item.redirect === 'string'
-    ) {
+  cloneRouteModList.forEach(item => {
+    if (routerMapping && item.meta?.hideChildrenInMenu && typeof item.redirect === 'string') {
       item.path = item.redirect
     }
     if (item.meta?.single) {
@@ -89,7 +76,7 @@ export function configureDynamicParamsMenu(menu: Menu, params: RouteParams) {
   let realPath = paramPath ? paramPath : path
   const matchArr = realPath.match(menuParamRegex)
 
-  matchArr?.forEach((it) => {
+  matchArr?.forEach(it => {
     const realIt = it.substr(1)
     if (params[realIt]) {
       realPath = realPath.replace(`:${realIt}`, params[realIt] as string)
@@ -101,5 +88,17 @@ export function configureDynamicParamsMenu(menu: Menu, params: RouteParams) {
   }
   menu.path = realPath
   // children
-  menu.children?.forEach((item) => configureDynamicParamsMenu(item, params))
+  menu.children?.forEach(item => configureDynamicParamsMenu(item, params))
+}
+
+/*
+ * object to url params
+ */
+export function setObjToUrlParams(baseUrl: string, obj: any): string {
+  let parameters = ''
+  for (const key in obj) {
+    parameters += key + '=' + encodeURIComponent(obj[key]) + '&'
+  }
+  parameters = parameters.replace(/&$/, '')
+  return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters
 }

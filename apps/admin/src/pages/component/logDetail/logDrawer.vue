@@ -1,6 +1,13 @@
 <template>
-  <a-drawer :visible="logVisible" width="1000px" :bodyStyle="{ paddingTop: '10px' }"
-    :headerStyle="{ padding: '0px 20px' }" @close="handleCancel" :footer="null" :closable="false">
+  <a-drawer
+    :visible="logVisible"
+    width="1000px"
+    :bodyStyle="{ paddingTop: '10px' }"
+    :headerStyle="{ padding: '0px 20px' }"
+    @close="handleCancel"
+    :footer="null"
+    :closable="false"
+  >
     <template #title>
       <div class="flex justify-between">
         <div class="self-center">{{ drawerName }}</div>
@@ -12,99 +19,102 @@
         </div>
       </div>
     </template>
-    <LogContent v-if="activeName === 'recent'" :loading="recentContentLoading" :content="recentContent" />
+    <LogContent
+      v-if="activeName === 'recent'"
+      :loading="recentContentLoading"
+      :content="recentContent"
+    />
     <LogTable v-if="activeName === 'more'" :boardType="boardType" />
   </a-drawer>
 </template>
 
 <script setup lang="ts">
 // 日志详情抽屉
-import { computed, ref } from 'vue';
-import { getDataList } from './util';
-// import { getUrlParams } from '@vben/utils';
-import { useBoardStore } from '@/store/modules/board';
-import { useReportStore } from '@/store/modules/report';
-import LogContent from './logContent.vue';
-import LogTable from './logTable.vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, ref } from 'vue'
+import { getDataList } from './util'
+import { useBoardStore } from '@/store/modules/board'
+import { useReportStore } from '@/store/modules/report'
+import { getQuery } from '@vben/router'
+import { logTypeEnum } from '@vben/constants'
+import LogContent from './logContent.vue'
+import LogTable from './logTable.vue'
 
-const boardStore = useBoardStore();
-const reportStore = useReportStore();
+const boardStore = useBoardStore()
+const reportStore = useReportStore()
 
 const props = defineProps({
   boardType: {
     type: String,
     default: 'general',
   },
-});
+})
 
-const store = props.boardType === 'general' ? boardStore : reportStore;
+const store = props.boardType === 'general' ? boardStore : reportStore
 
 // 抽屉可视
 const logVisible = computed(() => {
-  const visible = store.logInfoState.visible;
-  if (visible) getRecentData(); // 打开抽屉时请求最近一次日志数据
-  return visible;
-});
-const type = computed(() => store.logInfoState.type); // 抽屉类型
-const params = computed(() => store.logRequestParams); //请求参数
-const ua_flag = computed(() => store.boardInfoState.ua_flag); //ua关键字
+  const visible = store.logInfoState.visible
+  if (visible) getRecentData() // 打开抽屉时请求最近一次日志数据
+  return visible
+})
+const type = computed(() => store.logInfoState.type) // 抽屉类型
+const params = computed(() => store.logRequestParams) //请求参数
+const ua_flag = computed(() => store.boardInfoState.ua_flag) //ua关键字
 
 //抽屉名称
 const drawerName = computed(() => {
   switch (type.value) {
     case 'performance':
-      return '页面性能日志详情';
+      return '页面性能日志详情'
     case 'runtime':
-      return '运行时异常日志详情';
+      return '运行时异常日志详情'
     case 'resource':
-      return '资源异常日志详情';
+      return '资源异常日志详情'
     case 'faultTolerant':
-      return '资源容错日志详情';
+      return '资源容错日志详情'
     case 'api':
-      return '接口异常日志详情';
+      return '接口异常日志详情'
     case 'gateway':
-      return '网关监控日志详情';
+      return '网关监控日志详情'
     default:
-      return '日志详情';
+      return '日志详情'
   }
-});
+})
 
-let activeName = ref('recent');
+let activeName = ref('recent')
 
 //最近一次
-const recentContent = ref({});
-const recentContentLoading = ref(true);
+const recentContent = ref({})
+const recentContentLoading = ref(true)
 
 //为最近1次日志请求数据
 const getRecentData = async () => {
-  activeName.value = 'recent';
-  recentContentLoading.value = true;
-  const data: any = await getDataList(type.value, params.value, 1, 1, ua_flag.value);
-  const { result } = data;
-  recentContent.value = result[0];
-  recentContentLoading.value = false;
-};
-const route = useRoute()
+  activeName.value = 'recent'
+  recentContentLoading.value = true
+  const data: any = await getDataList(type.value, params.value, 1, 1, ua_flag.value)
+  const { result } = data
+  recentContent.value = result[0]
+  recentContentLoading.value = false
+}
 const initDrawer = () => {
   // 路由中若有log_type参数，打开日志详情
-  const urlParams = route.query;
+  const urlParams = getQuery()
   if ('log_type' in urlParams && 'log_params' in urlParams) {
     try {
       store.openLogInfoState({
-        type: urlParams.log_type! as any ,
+        type: urlParams.log_type as logTypeEnum,
         visible: true,
         requestParams: JSON.parse(urlParams.log_params as string),
-      });
+      })
     } catch (e) {
-      console.log('路由中的参数非法导致窗口打开错误', e);
+      console.log('路由中的参数非法导致窗口打开错误', e)
     }
   }
-};
-initDrawer();
+}
+initDrawer()
 
 //关闭抽屉逻辑
 function handleCancel() {
-  store.closeLogInfoState();
+  store.closeLogInfoState()
 }
 </script>

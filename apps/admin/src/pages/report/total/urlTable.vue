@@ -44,22 +44,16 @@
 import { ref, watch, computed, reactive } from 'vue'
 import { getListById, retryLighthouse, getProjectLighthouseStatus } from '@/apis/report/apis'
 import { defaultColumns } from './config'
-// import { commafy } from '/@/utils/math/formatMumber';
 import { commafy } from '@vben/utils'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useReportStore } from '@/store/modules/report'
 import { cloneDeep } from '@vben/utils'
-import { useRouter } from 'vue-router'
+
 const reportStore = useReportStore()
-
 const projectId = computed(() => reportStore.boardInfoState.id)
-
 const startTime = computed(() => reportStore.filterState.start_time)
-
 const endTime = computed(() => reportStore.filterState.end_time)
-
-const router = useRouter()
 
 const pagination = reactive({
   total: 0,
