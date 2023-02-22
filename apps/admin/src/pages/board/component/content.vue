@@ -43,7 +43,7 @@ import LogDrawer from '../../component/logDetail/logDrawer.vue'
 import FAQ from '../../component/FAQ.vue'
 // import intro from 'intro.js'
 // import 'intro.js/introjs.css'
-import { router } from '@vben/router'
+import { getQuery } from '@vben/router'
 
 const boardStore = useBoardStore()
 const userStore = useUserStore()
@@ -52,7 +52,7 @@ const userName = userStore.userInfo?.account || ''
 const { tabState: activeKey } = storeToRefs(boardStore)
 if (!activeKey.value) {
   // store中没有值，从url中获取
-  const { tabKey = '' } = router.currentRoute.value.query as any
+  const { tabKey = '' } = getQuery()
   console.log(tabKey)
   activeKey.value = tabNameConfig[tabKey] ? tabKey : 'pageview'
 }

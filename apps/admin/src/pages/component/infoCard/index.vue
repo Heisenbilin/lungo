@@ -126,12 +126,12 @@ import { BoardInfo } from '@vben/types'
 import { useProjectDeny, useProjectClose } from '@/hooks/board/useAuth'
 import { getProjectList } from '@/apis/list'
 import { storeToRefs } from '@vben/stores'
+import { getQuery } from '@vben/router'
 import dayjs from 'dayjs'
 
 import SDKVersion from '../sdkVersion.vue'
 import AlarmSetting from '../alarm/alarmSetting.vue'
 import InfoTag from './infoTag.vue'
-import { router } from '@vben/router'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
@@ -152,7 +152,7 @@ const store =
 
 // 当前选中项目信息
 const { boardInfoState: projectInfo } = storeToRefs(store)
-const { projectId: urlProjectId = 0 } = router.currentRoute.value.query
+const { projectId: urlProjectId = 0 } = getQuery()
 const projectId = ref<number | string>()
 
 // 项目列表

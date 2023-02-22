@@ -4,6 +4,7 @@ import { useAppConfig } from '@vben/stores'
 import { _assign } from '@vben/utils'
 import { createRouter, createWebHistory, Router } from 'vue-router'
 import { BasicRoutes } from './routes'
+import { unref } from 'vue'
 export * from './routes'
 export * from './helper'
 export * from './guard'
@@ -52,9 +53,9 @@ export function resetRouter() {
 }
 
 // get query
-export function getQuery() {
+export function getQuery(): any {
   if (!router) return {}
-  return router.currentRoute.value.query
+  return unref(router.currentRoute).query
 }
 
 // 增加或者更新路由query

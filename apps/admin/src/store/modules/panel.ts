@@ -3,7 +3,7 @@ import { logTypeEnum, noNeedMessageKeys, allFilterKeys } from '@vben/constants'
 import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from '@vben/stores'
-import { router } from '@/router'
+import { getQuery, router } from '@vben/router'
 
 export const useBoardDataStore = defineStore({
   id: 'app-board-data',
@@ -118,7 +118,7 @@ export const useBoardDataStore = defineStore({
         end_time: this.filterState.end_time,
       }
       if (!isUpdateFilter) {
-        const urlParams = router.currentRoute.value.query
+        const urlParams = getQuery()
         Object.keys(urlParams).forEach(
           key => allFilterKeys.includes(key) && (newFilters[key] = urlParams[key]),
         )
