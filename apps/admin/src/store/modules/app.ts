@@ -35,9 +35,6 @@ export const useAppStore = defineStore({
         clearTimeout(timeId)
       }
     },
-    checkIsAdmin(userName: string):boolean {
-      return true
-    }
   },
 })
 

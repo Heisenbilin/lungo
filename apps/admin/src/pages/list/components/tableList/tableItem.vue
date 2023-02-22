@@ -2,11 +2,11 @@
   <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
     <template #title>
       <div class="text-gray-800">
-        <div v-if="jumpUrl.to !== ''">点击可查看本数据详情</div>
+        <div v-if="linkToUrl.name !== ''">点击可查看本数据详情</div>
         <div v-else>编辑器应用未生成质量周报</div>
       </div>
     </template>
-    <router-link v-if="!needGray" class="grid justify-items-center center w-full" :to="jumpUrl">
+    <router-link v-if="!needGray" class="grid justify-items-center center w-full" :to="linkToUrl">
       <!-- 正常 -->
       <div
         class="flex my-1 items-center whitespace-nowrap center"
@@ -21,7 +21,7 @@
     <router-link
       v-else
       class="grid justify-items-center content-center w-full opacity-80"
-      :to="jumpUrl"
+      :to="linkToUrl"
     >
       <!-- 具有一定灰度、字体更小 -->
 
@@ -35,13 +35,11 @@
   </a-tooltip>
 </template>
 <script setup lang="ts">
-// import { computed } from 'vue';
 import { commafy } from '@vben/utils'
-import { useStoreProject } from '@/hooks/board/useLink'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
-// import { boardStore } from '/@/store/modules/board';
 
-defineProps({
+const props = defineProps({
   data: {
     type: Object,
     required: false,
@@ -63,10 +61,6 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  jumpUrl: {
-    type: Object,
-    default: '',
-  },
   tabKey: {
     type: String,
     default: 'pageview',
@@ -76,6 +70,8 @@ defineProps({
     required: true,
   },
 })
+
+const linkToUrl = useLinkToUrl(props.project.id, 'board', 'list', props.tabKey)
 </script>
 
 <style lang="less" scoped>

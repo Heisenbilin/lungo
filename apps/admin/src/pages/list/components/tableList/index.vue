@@ -141,7 +141,6 @@ import { debounce } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { useBoardStore } from '@/store/modules/board'
 import { storeToRefs } from '@vben/stores'
-// import { addOrUpdateUrlParams, getUrlParams } from '@vben/utils'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import columns from './tableColumns'
 import tableActions from './tableActions.vue'
@@ -154,14 +153,14 @@ import { useRoute, useRouter } from 'vue-router'
 const listStore = useListStore()
 const boardStore = useBoardStore()
 const router = useRouter()
-  const route = useRoute()
-function getUrlParams(){
+const route = useRoute()
+function getUrlParams() {
   return route.query
 }
-function addOrUpdateUrlParams(newQuery){
+function addOrUpdateUrlParams(newQuery) {
   router.replace({
-    path:route.path,
-    query:{...route.query,...newQuery}
+    path: route.path,
+    query: { ...route.query, ...newQuery },
   })
 }
 

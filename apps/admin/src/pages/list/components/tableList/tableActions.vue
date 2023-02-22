@@ -9,7 +9,7 @@
         <StarTwoTone twoToneColor="#b1b1b1" @click="() => handleProjectStar(true)" />
       </a-tooltip>
       <a-tooltip title="修改配置">
-        <SettingOutlined style="color: gray" class="ml-2" @click="editProject(projectId)" />
+        <SettingOutlined style="color: gray" class="ml-2" @click="() => editProject(projectId)" />
       </a-tooltip>
     </span>
   </div>

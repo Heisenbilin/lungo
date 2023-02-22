@@ -14,7 +14,7 @@
         <a-card-meta>
           <template #description>
             <div v-if="project.close_project !== 1 || openFlag" class="h-52">
-              <CardContent :project="project" :linkToUrl="boardUrl" />
+              <CardContent :project="project" />
             </div>
             <div v-else class="h-52 bg-gray-900 bg-opacity-50 flex justify-center items-center">
               <a-popconfirm
@@ -71,21 +71,11 @@
               />
             </a-tooltip>
           </span>
-          <span
-            v-if="appStore.checkIsAdmin(userName)"
-            class="absolute -top-1 right-20 text-gray-200"
-          >
+          <span v-if="userStore.isAdminUser()" class="absolute -top-1 right-20 text-gray-200">
             create: {{ dayjs(project.create_time).format('YY.MM.DD-HH:mm') }}
           </span>
         </template>
         <template v-if="project.close_project !== 1 || openFlag" #actions>
-          <!-- <a-tooltip v-if="!isEditProject" title="预警设置">
-            <a-button type="link" @click="$refs.alarmSetting.showModal()" class="!w-full">
-              <template #icon>
-                <AlertTwoTone twoToneColor="#d4542d" key="alarm" />
-              </template>
-            </a-button>
-          </a-tooltip> -->
           <router-link :to="boardUrl">
             <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'board')">
               <AreaChartOutlined style="color: #7ed591" class="text-lg mr-1" />
@@ -135,7 +125,6 @@ import {
   StarTwoTone,
   StarFilled,
 } from '@ant-design/icons-vue'
-import { useAppStore } from '@/store/modules/app'
 import { useListStore } from '@/store/modules/list'
 import { message } from 'ant-design-vue'
 import { modifyProjectParams, starProject } from '@/apis/list'
@@ -145,7 +134,6 @@ import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
 import { useUserStore } from '@/store/user'
 
-const appStore = useAppStore()
 const listStore = useListStore()
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''

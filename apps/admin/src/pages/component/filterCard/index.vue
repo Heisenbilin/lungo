@@ -83,7 +83,6 @@ import FilterTag from './filterTag.vue'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import localeData from 'dayjs/plugin/localeData'
-import { useRoute, useRouter } from 'vue-router'
 
 dayjs.extend(weekday)
 dayjs.extend(localeData)
@@ -102,23 +101,13 @@ const props = defineProps({
 })
 
 const store = props.boardType === 'general' ? boardStore : boardDataStore
-const route = useRoute()
-// 初始筛选条件
-const urlParams = route.query
-Object.keys(urlParams).forEach(key => {
-  if (!tabActiveFilters.pageview.includes(key)) {
-    delete urlParams[key]
-  }
-})
-
-store.addFilterValue(urlParams)
 
 const { filterState: filters } = storeToRefs(store)
 const { tabState } = storeToRefs(store)
 
 //日期纬度: 1 -> 1天; 2 -> 1小时; 3 -> 30分钟
 const filterDimension = ref(filters.value.dimension)
-watch(filterDimension, val => store.addFilterValue({ dimension: val }), { immediate: true })
+watch(filterDimension, val => store.addFilterValue({ dimension: val }))
 
 //初始化时间范围
 const initFilterDate = () => {

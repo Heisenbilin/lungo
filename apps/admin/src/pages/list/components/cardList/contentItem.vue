@@ -25,7 +25,7 @@
           <br />
           {{ last }}同比{{ title }}：{{ parseFloat(data.yesterdayRate) }}%
         </div>
-        <div v-if="linkToUrl?.to !== ''">点击可查看本数据详情</div>
+        <div v-if="linkToUrl?.name !== ''">点击可查看本数据详情</div>
         <div v-else>编辑器应用未生成质量周报</div>
       </div>
     </template>
@@ -96,14 +96,12 @@
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons-vue'
 import { computed } from 'vue'
 import { commafy } from '@vben/utils'
-import { useBoardStore } from '@/store/modules/board'
+import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from '@vben/stores'
 import { BoardInfo } from '@vben/types'
-import { useStoreProject } from '@/hooks/board/useLink'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 
-const boardStore = useBoardStore()
-
-defineProps({
+const props = defineProps({
   data: {
     type: Object,
     required: false,
@@ -133,19 +131,21 @@ defineProps({
     type: String,
     default: '',
   },
-  linkToUrl: {
-    type: Object,
-    required: true,
-  },
   project: {
     type: Object as PropType<BoardInfo>,
     required: true,
   },
+  jumpKey: {
+    type: String,
+  },
 })
 
-const { filterState } = storeToRefs(boardStore)
-const last = computed(() => (filterState.value.dimension === 'hour' ? '昨日' : '上周'))
-const current = computed(() => (filterState.value.dimension === 'hour' ? '今日' : '本周'))
+const listStore = useListStore()
+const { dimension } = storeToRefs(listStore)
+const last = computed(() => (dimension.value === 'week' ? '上周' : '昨日'))
+const current = computed(() => (dimension.value === 'week' ? '本周' : '今日'))
+
+const linkToUrl = useLinkToUrl(props.project.id, 'board', 'list', props.jumpKey)
 </script>
 
 <style lang="less" scoped>
