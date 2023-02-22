@@ -99,7 +99,7 @@ export const addTimeFilter = (params, chart) => {
       //   end_time = time.format('YYYY-MM-DD HH:mm:ss')
       // }
       // end_time = time.format('YYYY-MM-DD HH:mm:ss')
-      // console.log('开始结束时间',start_time, end_time );
+      console.log('开始结束时间',start_time, end_time );
       boardStore.addFilterValue({ start_time, end_time })
     } catch (e) {
       console.log(e)
