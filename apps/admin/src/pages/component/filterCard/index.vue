@@ -113,6 +113,7 @@ watch(filterDimension, val => store.addFilterValue({ dimension: val }))
 const initFilterDate = () => {
   // 如果store中存在filter_date参数，直接拿出来赋值
   if (filters.value.start_time && filters.value.end_time) {
+    //  debugger
     const startTime = dayjs(filters.value.start_time)
     const endTime = dayjs(filters.value.end_time)
     if (startTime.isValid() && endTime.isValid()) {
@@ -138,13 +139,21 @@ const filterDate = ref<RangeValue>(initDate)
 watch(
   () => [store.filterState.start_time, store.filterState.end_time],
   val => {
-    const [gteTime, lteTime] = filterDate.value
-    const start_time = gteTime.format('YYYY-MM-DD HH:mm:ss')
-    const end_time = lteTime.format('YYYY-MM-DD HH:mm:ss')
-    if (val[0] !== start_time && val[1] !== end_time) {
-      filterDate.value = [dayjs(val[0]), dayjs(val[1])]
-    }
+    // debugger
+    // console.log(val)
+    // const [gteTime, lteTime] = filterDate.value
+    // const startTime = gteTime.format('YYYY-MM-DD HH:mm:ss')
+    // const endTime = lteTime.format('YYYY-MM-DD HH:mm:ss')
+    const start_time = dayjs(store.filterState.start_time,'YYYY-MM-DD HH:mm:ss')
+    const end_time = dayjs(store.filterState.end_time,'YYYY-MM-DD HH:mm:ss')
+
+      // console.log('筛选框起始时间',start_time,end_time);
+    // if (val[0] !== start_time && val[1] !== end_time) {
+      if(start_time.isValid()&&end_time.isValid())
+      filterDate.value = [start_time, end_time]
+    // }
   },
+  { immediate: true },
 )
 
 // 处理时间范围变化

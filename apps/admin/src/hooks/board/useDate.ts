@@ -86,8 +86,6 @@ export const addTimeFilter = (params, chart) => {
             .format('YYYY-MM-DD HH:mm:ss') 
       :end_time =  time.add(30,'m').format('YYYY-MM-DD HH:mm:ss')
       }
-     
-      
       // if (time.isAfter(dayjs())) {
       //   debugger
       //   end_time = dayjs()
