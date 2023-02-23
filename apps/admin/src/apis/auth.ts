@@ -1,4 +1,3 @@
-import type { ErrorMessageMode } from '@vben/types'
 import { request } from '@vben/request'
 
 export interface RoleInfo {

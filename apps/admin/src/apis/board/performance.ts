@@ -3,7 +3,7 @@ enum Api {
   GET_AVERAGE_DATA = '/performance/average',
   GET_URL_LIST_DATA = '/performance/list',
   GET_CHART_SUMMARY_DATA = '/performance/chartSummary',
-  GET_LOG_DETAILS = 'performance/details',
+  GET_LOG_DETAILS = '/performance/details',
 }
 
 /**

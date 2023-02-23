@@ -37,7 +37,6 @@ export const useReportStore = defineStore({
       // 根据store的内容设置url参数
       const query: any = {
         projectId: this.boardInfoState.id,
-        tabKey: this.tabState,
         ...this.filterState,
       }
       if (this.logInfoState.visible) {
@@ -55,10 +54,6 @@ export const useReportStore = defineStore({
     },
     commitFilterState(filter: filter): void {
       this.filterState = filter
-      this.setUrlQuery()
-    },
-    commitTabState(tabkey: string): void {
-      this.tabState = tabkey
       this.setUrlQuery()
     },
     openLogInfoState(logInfo: logInfo): void {

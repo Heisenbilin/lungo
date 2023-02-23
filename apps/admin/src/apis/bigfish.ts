@@ -81,7 +81,7 @@ export const checkReportAuth = (uc_group_id: any, user_account: any) =>
   request.post<any>({
     url: Api.PROXY_GET,
     data: {
-      url: `https://app.xesv5.com/bigfish/v1/interface/weeklyReportAuth`,
+      url: `${BigfishApiPre}/interface/weeklyReportAuth`,
       data: {
         uc_group_id,
         user_account,
@@ -97,7 +97,7 @@ export const removeReportAuth = (uc_group_id: any, user_account: any) =>
   request.post<any>({
     url: Api.PROXY,
     data: {
-      url: `https://app.xesv5.com/bigfish/v1/interface/weeklyReportAuth`,
+      url: `${BigfishApiPre}/interface/weeklyReportAuth`,
       data: {
         uc_group_id,
         user_account,
@@ -113,7 +113,7 @@ export const getGroupRoleUsers = (group_id: any, role: any, limit: any) =>
   request.post<any>({
     url: Api.PROXY_GET,
     data: {
-      url: `https://uc.xesv5.com/api/auth/groups/${group_id}/role_users`,
+      url: `http://uc.xesv5.com/api/auth/groups/${group_id}/role_users`,
       data: {
         role,
         limit,

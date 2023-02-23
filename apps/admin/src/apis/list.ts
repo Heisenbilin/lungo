@@ -8,7 +8,6 @@ enum Api {
   CHECK_PROJECT = '/project/checkProjectData',
   CHECK_PROJECT_AUTH = '/huatuo/checkAuth',
   GET_GROUPS = '/huatuo/groups',
-  GET_HUATUO_MENU_TREE = '/api/v1/user/tree',
 }
 
 /**
@@ -75,10 +74,3 @@ export const checkProjectAuth = (project_id: any) =>
  */
 
 export const getUserGroups = () => request.get<any>({ url: Api.GET_GROUPS })
-
-/**
- * @description: 获取华佗菜单服务
- */
-
-export const getHuatuoMenuList = (params: any) =>
-  request.get<any>({ url: Api.GET_HUATUO_MENU_TREE, params })

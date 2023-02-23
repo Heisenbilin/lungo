@@ -6,7 +6,7 @@ enum Api {
   STATUS_SUMMARY = '/interface/statusSummary',
   CHART_SUMMARY = '/interface/chartSummary',
   TOP_10 = '/interface/top10',
-  API_DETAILS = 'interface/apiDetails',
+  API_DETAILS = '/interface/apiDetails',
 }
 
 /**
