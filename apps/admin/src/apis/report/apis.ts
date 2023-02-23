@@ -9,7 +9,7 @@ enum TaskType {
   REPORT_GETERRORTOTALSUMMARY = '/report/getErrorTotalSummary',
   REPORT_GETTWOWEEKSSUMMARY = '/report/getTwoWeeksSummary',
   REPORT_GETERRORSUMMARY = '/report/getErrorSummary',
-  REPORT_ERR_SUMMARY = 'report/errSummary',
+  REPORT_ERR_SUMMARY = '/report/errSummary',
   LIGHTHOUSE_GET_REPORT = '/lighthouse/getReport',
   REPORT_GETAVERAGEPERFORMANCE = '/report/getAveragePerformance',
   REPORT_GET_TWO_WEEKS_AVERAGE = '/report/getTwoWeeksAverage',
