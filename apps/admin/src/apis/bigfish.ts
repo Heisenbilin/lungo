@@ -113,7 +113,7 @@ export const getGroupRoleUsers = (group_id: any, role: any, limit: any) =>
   request.post<any>({
     url: Api.PROXY_GET,
     data: {
-      url: `http://uc.xesv5.com/api/auth/groups/${group_id}/role_users`,
+      url: `https://uc.xesv5.com/api/auth/groups/${group_id}/role_users`,
       data: {
         role,
         limit,
