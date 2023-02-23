@@ -2,13 +2,13 @@ import { MonitorPage } from '@vben/constants'
 import { useListStore } from '@/store/modules/list'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
-import { useBoardDataStore } from '@/store/modules/panel'
+import { usePanelStore } from '@/store/modules/panel'
 import { BoardInfo } from '@vben/types'
 
 const listStore = useListStore()
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
-const boardDataStore = useBoardDataStore()
+const panelStore = usePanelStore()
 
 /*
  * 生成跳转链接
@@ -32,9 +32,9 @@ export const useLinkToUrl = (
       query.dimension = boardStore.filterState.dimension
       break
     case 'panel':
-      query.start_time = boardDataStore.filterState.start_time
-      query.end_time = boardDataStore.filterState.end_time
-      query.dimension = boardDataStore.filterState.dimension
+      query.start_time = panelStore.filterState.start_time
+      query.end_time = panelStore.filterState.end_time
+      query.dimension = panelStore.filterState.dimension
       break
     case 'report':
       query.start_time = reportStore.filterState.start_time
@@ -65,7 +65,7 @@ export const useStoreProject = (project: BoardInfo, to: MonitorPage) => {
       boardStore.boardInfoState = project
       break
     case 'panel':
-      boardDataStore.boardInfoState = project
+      panelStore.boardInfoState = project
       break
     case 'report':
       reportStore.boardInfoState = project

@@ -26,14 +26,14 @@
       <template v-if="column.key === 'operation'">
         <template v-if="record.err_currenthref">
           <span class="mr-2" v-if="!requestParams.url">
-            <a @click="addFilter(record.err_currenthref || '未知')">设为筛选</a>
+            <a @click="() => addFilter(record.err_currenthref || '未知')">设为筛选</a>
           </span>
           <span class="mr-2" v-else>
-            <a @click="delFilter()">取消筛选</a>
+            <a @click="delFilter">取消筛选</a>
           </span>
         </template>
         <span>
-          <a @click="openLog(record.error_content || record.err_currenthref)">查看日志</a>
+          <a @click="() => openLog(record.error_content || record.err_currenthref)">查看日志</a>
         </span>
       </template>
       <template v-if="column.key === 'count'"> {{ commafy(record.count) }} </template>

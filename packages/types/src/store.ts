@@ -82,6 +82,7 @@ export interface BoardState {
   filterState: filter
   logInfoState: logInfo
   topicIdState: string
+  alarmModalVisible: boolean
   latestSDKVersionState: string
   tabState: string
 }

@@ -53,7 +53,6 @@ const { tabState: activeKey } = storeToRefs(boardStore)
 if (!activeKey.value) {
   // store中没有值，从url中获取
   const { tabKey = '' } = getQuery()
-  console.log(tabKey)
   activeKey.value = tabNameConfig[tabKey] ? tabKey : 'pageview'
 }
 

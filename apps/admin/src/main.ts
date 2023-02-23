@@ -29,8 +29,9 @@ const SDKConfig = {
 
 ;(async () => {
   const app = createApp(App)
-  // if(!dpEnv)
-  app.use(XesLoggerSDK, SDKConfig)
+  if (__VITE_SDK_APPID__) {
+    app.use(XesLoggerSDK, SDKConfig)
+  }
   // app.use(pinia)
 
   setupPinia(app)

@@ -14,13 +14,13 @@
       </template>
       <template v-if="column.key === 'operation'">
         <span v-if="record.url !== searchUrl">
-          <a @click="changeSearchUrl(record.url)">设为筛选</a>
+          <a @click="() => changeSearchUrl(record.url)">设为筛选</a>
         </span>
         <span v-else>
-          <a @click="cancelSearchUrl()">取消筛选</a>
+          <a @click="cancelSearchUrl">取消筛选</a>
         </span>
         <span class="ml-2">
-          <a @click="openLog(record.url)">查看日志</a>
+          <a @click="() => openLog(record.url)">查看日志</a>
         </span>
       </template>
       <template v-if="column.key === 'count'"> {{ commafy(record.count) }} </template>

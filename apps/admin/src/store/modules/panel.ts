@@ -5,7 +5,7 @@ import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from '@vben/stores'
 import { getQuery, router } from '@vben/router'
 
-export const useBoardDataStore = defineStore({
+export const usePanelStore = defineStore({
   id: 'app-board-data',
   state: (): BoardState => ({
     // 项目信息
@@ -16,6 +16,8 @@ export const useBoardDataStore = defineStore({
     logInfoState: { type: logTypeEnum.DEFAULT, visible: false, requestParams: {} },
     // 项目topicId
     topicIdState: '',
+    // 预警弹窗展示状态
+    alarmModalVisible: false,
     // 最新sdk版本号
     latestSDKVersionState: '',
     // tab页

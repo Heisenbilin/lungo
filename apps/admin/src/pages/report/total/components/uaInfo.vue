@@ -18,14 +18,14 @@
 import { ref, computed, watch } from 'vue'
 import { getUaChartData } from '@/apis/report/apis'
 import { getUAOption, getUAVersionOption } from './uaInfoConfig'
-import { useBoardDataStore } from '@/store/modules/panel'
+import { usePanelStore } from '@/store/modules/panel'
 import { useReportStore } from '@/store/modules/report'
 import { BaseChart } from '@vben/components'
 import { BasicChart } from '@vben/components'
 import { useUserStore } from '@/store/user'
 
 const reportStore = useReportStore()
-const boardDataStore = useBoardDataStore()
+const panelStore = usePanelStore()
 
 const props = defineProps({
   type: {
@@ -38,7 +38,7 @@ const props = defineProps({
   },
 })
 
-const storeBoard = props.boardType === 'data' ? boardDataStore : reportStore
+const storeBoard = props.boardType === 'data' ? panelStore : reportStore
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
 

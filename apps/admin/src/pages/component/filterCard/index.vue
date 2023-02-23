@@ -73,7 +73,7 @@
 import { ref, watch } from 'vue'
 import { formatDateString } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
-import { useBoardDataStore } from '@/store/modules/panel'
+import { usePanelStore } from '@/store/modules/panel'
 import { InfoCircleOutlined, ClearOutlined } from '@ant-design/icons-vue'
 import { clientUserAgent } from '@vben/constants'
 import { datePickerRanges } from '@/hooks/board/useDate'
@@ -90,7 +90,7 @@ dayjs.extend(localeData)
 type RangeValue = [dayjs.Dayjs, dayjs.Dayjs]
 
 const boardStore = useBoardStore()
-const boardDataStore = useBoardDataStore()
+const panelStore = usePanelStore()
 
 const type = 'YY-MM-DD HH-mm-ss'
 const props = defineProps({
@@ -100,7 +100,7 @@ const props = defineProps({
   },
 })
 
-const store = props.boardType === 'general' ? boardStore : boardDataStore
+const store = props.boardType === 'general' ? boardStore : panelStore
 
 const { filterState: filters } = storeToRefs(store)
 const { tabState } = storeToRefs(store)
