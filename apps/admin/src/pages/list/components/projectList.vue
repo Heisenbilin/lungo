@@ -16,7 +16,7 @@
 
           <a-tooltip placement="top">
             <template v-if="currentGroup" #title>
-              {{ currentGroup.group_name.length > 10 ? currentGroup.group_name : '' }}
+              {{  currentGroup.group_name }}
             </template>
             <a-select
               v-model:value="groupId"
@@ -28,7 +28,6 @@
               <a-select-option value="" key="全部用户组" title="全部用户组">
                 全部用户组
               </a-select-option>
-
               <a-select-option
                 v-for="item in groups"
                 :value="item.group_id"
@@ -223,7 +222,9 @@ const currentGroup = computed(
 
 //选择用户组时，用户自己输入时的搜索关键字
 function filterOption(inputValue, options) {
-  return options.children[0].children.includes(inputValue)
+
+  // return options.children[0].children.includes(inputValue)
+  return options.title.includes(inputValue)
 }
 //tabKey
 const activeKey = ref(tabKey)
