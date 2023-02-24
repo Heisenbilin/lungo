@@ -62,7 +62,6 @@ const initWatch = () => {
 const areaRef = ref<Nullable<HTMLElement>>(null)
 const { setWatermark } = useWatermark(areaRef)
 
-onActivated(initWatch)
 onDeactivated(() => {
   while (watchFunc.length) watchFunc.pop()()
 })
@@ -72,9 +71,23 @@ const score = ref({
 })
 const lighthouseLoading = ref(0)
 const lighthouseData = <any>ref([])
-
+const preQuery = ref<{
+  start_time:string, project_id:string, url:string
+}>(getQuery())
 onMounted(() => {
   initAudits()
+  initWatch()
+})
+
+onActivated(()=>{
+  const clearScrollElement = ([].slice.call(document.querySelectorAll('.n-layout .n-layout-scroll-container')) as HTMLDivElement[]).find(el=>el.style.height === 'calc(100vh - 87px)')
+  if(clearScrollElement) clearScrollElement.scrollTop = 0
+  
+  if(JSON.stringify(getQuery()) !== JSON.stringify(preQuery.value) ){
+    preQuery.value = getQuery()
+    initAudits()
+  }
+  
   initWatch()
 })
 
@@ -87,7 +100,7 @@ function stabilityScoreChange(newScore) {
 }
 
 async function initAudits() {
-  const { start_time, project_id, url: board_url } = getQuery()
+  const { start_time, project_id, url: board_url } = preQuery.value
   const lighthouseParams = {
     project_url: decodeURIComponent(board_url as string),
     start_time: start_time + ' 00:00:00',

@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed,onActivated,  } from 'vue'
 import { getQuery } from '@vben/router'
 import CircleProgress from '@vben/components/src/chart/circleProgress.vue'
 import dayjs from 'dayjs'
@@ -107,8 +107,18 @@ onMounted(() => {
       .format('YYYY-MM-DD')}`,
   }
 })
+onActivated(()=>{
+  const {url} = getQuery()
+  urlInfo.value.boardURL = decodeURIComponent(url as string)
+  // window.scrollTo(0, 0)
+  // document.body.scrollTop = 0
+  // document.documentElement.scrollTop = 0
+  // document.scrollingElement.scrollTop = 0
+  // console.log(document.body.scrollTop, document.documentElement.scrollTop);
+})
 </script>
 
 <style scoped lang="scss">
+html, body { scroll-behavior:smooth; }
 @import './weekly.scss';
 </style>

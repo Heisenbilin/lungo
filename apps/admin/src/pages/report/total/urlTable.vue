@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 //页面详细质量周报表格
-import { ref, watch, computed, reactive } from 'vue'
+import { ref, watch, computed, reactive, onActivated } from 'vue'
 import { getListById, retryLighthouse, getProjectLighthouseStatus } from '@/apis/report/apis'
 import { defaultColumns } from './config'
 import { commafy } from '@vben/utils'
@@ -219,6 +219,16 @@ const toReport = url => ({
     end_time: endTime.value,
   },
 })
+// onActivated(()=>{
+//       document.body.scrollTop = 0;
+//     document.documentElement.scrollTop = 0;
+// })
+  // //切换到页面顶部
+  // setTimeout(() => {
+  //   debugger
+  //   document.body.scrollTop = 0;
+  //   document.documentElement.scrollTop = 0;
+  // });
 </script>
 
 <style lang="scss" scoped>

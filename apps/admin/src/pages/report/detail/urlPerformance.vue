@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, onActivated } from 'vue'
 import { getProDayPerformance, getAveragePerformance } from '@/apis/report/apis'
 import { showAsPassed, _getWastedMs } from './util'
 import { INDEX_LIST, getAvgOptions, getProOptions } from './config'
@@ -117,7 +117,16 @@ const loading = ref({
 const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE)
 const opportunityAudits = ref([])
 const diagnosticAudits = ref([])
+const preQuery = ref<{
+  start_time:string, project_id:string, url:string
+}>(getQuery())
 
+onActivated(()=>{
+  if(JSON.stringify(getQuery()) !== JSON.stringify(preQuery.value)){
+    preQuery.value = getQuery()
+    initData()
+  }
+})
 onMounted(() => {
   initData()
 })
