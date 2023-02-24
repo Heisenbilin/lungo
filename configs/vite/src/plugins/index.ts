@@ -14,6 +14,9 @@ import { configUnocssPlugin } from './unocss'
 import { createConfigPlugin } from './config'
 import { configHttpsPlugin } from './https'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
+// import Components from 'unplugin-vue-components/vite';
+// import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+
 export async function configVitePlugins(
   root: string,
   viteEnv: ViteEnv,
@@ -32,6 +35,10 @@ export async function configVitePlugins(
     vue(),
     // have to
     vueJsx(),
+    // Components({
+    //   dts: true, 
+    //   resolvers: [AntDesignVueResolver()]
+    // }),
   ]
 
   // @vitejs/plugin-legacy

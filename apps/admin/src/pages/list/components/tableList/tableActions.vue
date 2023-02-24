@@ -2,15 +2,15 @@
   <div class="relative">
     <span class="px-1 text-lg">
       <LoadingOutlined v-if="staring" />
-      <a-tooltip :style="{ color: '#b1b1b1' }" title="取消收藏" v-else-if="starFlag">
+      <Tooltip :style="{ color: '#b1b1b1' }" title="取消收藏" v-else-if="starFlag">
         <StarFilled :style="{ color: '#f78d2c' }" @click="() => handleProjectStar(false)" />
-      </a-tooltip>
-      <a-tooltip title="收藏" v-else>
+      </Tooltip>
+      <Tooltip title="收藏" v-else>
         <StarTwoTone twoToneColor="#b1b1b1" @click="() => handleProjectStar(true)" />
-      </a-tooltip>
-      <a-tooltip title="修改配置">
+      </Tooltip>
+      <Tooltip title="修改配置">
         <SettingOutlined style="color: gray" class="ml-2" @click="() => editProject(projectId)" />
-      </a-tooltip>
+      </Tooltip>
     </span>
   </div>
 </template>
@@ -19,7 +19,7 @@
 import { ref } from 'vue'
 // import { useStore } from 'vuex';
 import { SettingOutlined, LoadingOutlined, StarTwoTone, StarFilled } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { message,Tooltip } from 'ant-design-vue'
 import { starProject } from '@/apis/list'
 import { useUserStore } from '@/store/user'
 

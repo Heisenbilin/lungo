@@ -9,8 +9,9 @@ import { setupI18n } from '@vben/locale'
 import { setupPinia } from '@vben/stores'
 import { initApplication } from './init-application'
 import { registerComponents } from '../init-components'
-import Antd from 'ant-design-vue'
+// import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
+
 import XesLoggerSDK from '@xes/xes_fe_log'
 
 const SDKConfig = {
@@ -47,7 +48,7 @@ const SDKConfig = {
   // Init Router
   const router = InitRouter(import.meta.env.VITE_PUBLIC_PATH)
   app.use(router)
-  app.use(Antd)
+  // app.use(Antd)
   await setupRouteGuard()
   await router.isReady()
   app.mount('#app')

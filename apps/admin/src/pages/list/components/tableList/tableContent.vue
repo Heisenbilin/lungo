@@ -1,9 +1,9 @@
 <template>
   <div v-if="loading" class="flex justify-center items-center h-full">
-    <a-spin size="small" />
+    <Spin size="small" />
   </div>
   <div v-else-if="!data.itemsData && !loading" class="flex justify-center items-center h-full">
-    <a-empty :image="simpleImage" />
+    <Empty :image="simpleImage" />
   </div>
   <template v-else>
     <tableContentMiddle
@@ -15,7 +15,7 @@
 </template>
 <script setup lang="ts">
 import { BoardInfo } from '@vben/types'
-import { Empty } from 'ant-design-vue'
+import { Empty,Spin } from 'ant-design-vue'
 import tableContentMiddle from './tableContentMiddle.vue'
 defineProps({
   projectId: {

@@ -9,6 +9,8 @@ import { configVitePlugins } from './plugins'
 import type { PresetType } from './presets'
 import { createPreset } from './presets'
 import { resolveProxy, wrapperEnv } from './utils'
+import Components from 'unplugin-vue-components/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
 export * from './constants'
 
@@ -89,7 +91,15 @@ export async function createViteConfig(
       include: ['dayjs/locale/en', 'dayjs/locale/zh-cn', '@iconify/iconify'],
       // exclude: ['vue-demi'],
     },
-    plugins: await configVitePlugins(root, viteEnv, command === 'build'),
+    // plugins:await configVitePlugins(root, viteEnv, command === 'build'),
+    
+    plugins:[
+      ...await configVitePlugins(root, viteEnv, command === 'build'),
+      Components({
+        resolvers: [AntDesignVueResolver()],
+      }),
+    ]
+  
   }
 
   return mergeConfig(commonConfig, await createPreset(preset)())
