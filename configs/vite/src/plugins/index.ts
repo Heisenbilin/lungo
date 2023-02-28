@@ -13,7 +13,9 @@ import { configSvgIconsPlugin } from './svg-icons'
 import { configUnocssPlugin } from './unocss'
 import { createConfigPlugin } from './config'
 import { configHttpsPlugin } from './https'
+import {configAntdPlugin} from './antd'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
+
 // import Components from 'unplugin-vue-components/vite';
 // import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
@@ -35,21 +37,24 @@ export async function configVitePlugins(
     vue(),
     // have to
     vueJsx(),
-    // Components({
-    //   dts: true, 
-    //   resolvers: [AntDesignVueResolver()]
-    // }),
   ]
 
   // @vitejs/plugin-legacy
   VITE_LEGACY && isBuild && vitePlugins.push(legacy())
 
+  // vitePlugins.push(Components({
+  //   resolvers: [AntDesignVueResolver()],
+  // }))
+
+  vitePlugins.push(configAntdPlugin())
+
   // vite-plugin-html
   vitePlugins.push(await configHtmlPlugin(root, viteEnv, isBuild))
 
   // unocss
-  vitePlugins.push(configUnocssPlugin())
+  vitePlugins.push(configUnocssPlugin() as PluginOption)
 
+  
   vitePlugins.push(createConfigPlugin())
 
   // vite-plugin-svg-icons
@@ -67,7 +72,7 @@ export async function configVitePlugins(
   // http2
   vitePlugins.push(configHttpsPlugin(viteEnv))
   // monacoEditorPlugin
-  vitePlugins.push(monacoEditorPlugin({}))
+  vitePlugins.push(monacoEditorPlugin({}) as PluginOption)
 
   // The following plugins only work in the production environment
   if (isBuild) {

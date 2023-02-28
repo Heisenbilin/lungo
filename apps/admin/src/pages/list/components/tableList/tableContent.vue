@@ -12,6 +12,7 @@
       :itemsData="data.itemsData"
     />
   </template>
+  
 </template>
 <script setup lang="ts">
 import { BoardInfo } from '@vben/types'

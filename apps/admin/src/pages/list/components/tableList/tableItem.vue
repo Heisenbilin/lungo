@@ -1,5 +1,5 @@
 <template>
-  <Tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
+  <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
     <template #title>
       <div class="text-gray-800">
         <div v-if="linkToUrl.name !== ''">点击可查看本数据详情</div>
@@ -32,11 +32,11 @@
         <div class="text-gray-500 center" v-if="unit.length">{{ unit }}</div>
       </div>
     </router-link>
-  </Tooltip>
+  </a-tooltip>
 </template>
 <script setup lang="ts">
 import { commafy } from '@vben/utils'
-import {Tooltip} from 'ant-design-vue'
+// import {a-tooltip} from 'ant-design-vue'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
 

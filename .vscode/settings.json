@@ -1,4 +1,3 @@
 {
-  "prettier.configPath": ".prettierrc.js",
-  "testing.automaticallyOpenPeekView": "never"
+  "prettier.configPath": ".prettierrc.js"
 }

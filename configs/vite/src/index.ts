@@ -93,13 +93,13 @@ export async function createViteConfig(
     },
     // plugins:await configVitePlugins(root, viteEnv, command === 'build'),
     
-    plugins:[
-      ...await configVitePlugins(root, viteEnv, command === 'build'),
-      Components({
-        resolvers: [AntDesignVueResolver()],
-      }),
-    ]
-  
+    // plugins:[
+    //   ...await configVitePlugins(root, viteEnv, command === 'build'),
+    //   Components({
+    //     resolvers: [AntDesignVueResolver()],
+    //   }),
+    // ]
+    plugins: await configVitePlugins(root, viteEnv, command === 'build'),
   }
 
   return mergeConfig(commonConfig, await createPreset(preset)())

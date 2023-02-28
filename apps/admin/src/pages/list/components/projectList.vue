@@ -51,15 +51,15 @@
             <RadioButton value="day">天</RadioButton>
           </RadioGroup>
         </div>
-        <Button
+        <a-button
           type="primary"
           @click="checkProject"
           v-if="userStore.isAdminUser()"
           :loading="checking"
         >
           巡检
-        </Button>
-        <Button type="primary" @click="addProject">创建应用</Button>
+        </a-button>
+        <a-button type="primary" @click="addProject">创建应用</a-button>
         <div>
           <Tooltip title="列表展示">
             <UnorderedListOutlined
@@ -155,7 +155,7 @@
 <script setup lang="ts">
 import { ref, watch, h, computed, provide } from 'vue'
 import { checkProjectData } from '@/apis/list'
-import { message, Modal,Tabs,Select,SelectOption,Tooltip,InputSearch,RadioGroup,RadioButton,Button,TabPane } from 'ant-design-vue'
+import { message, Modal,Tabs,Select,SelectOption,Tooltip,InputSearch,RadioGroup,RadioButton,TabPane } from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 import { useListStore } from '@/store/modules/list'
 import { useUserStore } from '@/store/user'

@@ -6,10 +6,10 @@
           class="ml-2 text-gray-800 text-lg truncate trun-cate w-64"
           @click="() => useStoreProject(project, 'board')"
         >
-          <Tag v-if="project.saas === 'yes'" color="red">学科</Tag>
-          <Tag v-else color="blue">素质</Tag>
+          <a-tag v-if="project.saas === 'yes'" color="red">学科</a-tag>
+          <a-tag v-else color="blue">素质</a-tag>
           {{ project.project_name }}
-          <Tag v-if="project.appid === '1001970'" color="cyan">编辑器</Tag>
+          <a-tag v-if="project.appid === '1001970'" color="cyan">编辑器</a-tag>
         </span>
       </router-link>
     </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import {Tag} from 'ant-design-vue'
+// import {a-tag} from 'ant-design-vue'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
 

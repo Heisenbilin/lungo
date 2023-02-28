@@ -1,8 +1,8 @@
 <template>
-  <Table
+  <a-table
     :loading="loading === 'loading'"
     :columns="columns"
-    :datsource="huatuoProjectList"
+    :dataSource="huatuoProjectList"
     :pagination="false"
     :scroll="{ x: 1600 }"
     :customRow="customRowWithScore"
@@ -92,14 +92,14 @@
       </template>
       <template v-if="column.key === 'screen'">
         <div v-if="record.close_project === 1">
-          <Popconfirm
+          <a-popconfirm
             :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
             ok-text="是"
             cancel-text="否"
             @confirm="openProject(record.id, index)"
           >
-            <Button type="primary"> <InfoCircleOutlined /> 开启项目 </Button>
-          </Popconfirm>
+            <a-button type="primary"> <InfoCircleOutlined /> 开启项目 </a-button>
+          </a-popconfirm>
         </div>
         <div v-else>
           <tableScreen :project="record" />
@@ -115,7 +115,7 @@
         />
       </template>
     </template>
-  </Table>
+  </a-table>
   <div class="text-right mt-4">
     <Pagination
       @change="getHuatuoProjectList"
@@ -134,7 +134,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { message,Table ,Popconfirm,Pagination,Button} from 'ant-design-vue'
+import { message,Pagination} from 'ant-design-vue'
 import { getProjectList, getProjectBoard, modifyProjectParams } from '@/apis/list'
 import { caculatePageSizeByWidth } from '../utils'
 import { debounce } from '@vben/utils'
