@@ -57,6 +57,7 @@
   },
   "packageManager": "pnpm@7.1.0",
   "dependencies": {
+    "@xes/duty-aid": "^0.0.13",
     "unplugin-vue-components": "^0.24.0"
   }
 }

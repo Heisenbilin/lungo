@@ -54,6 +54,8 @@ export interface GlobConfig {
   dpEnv: string
   //APPID
   appid:string
+  DUTY_GROUP_ID: string;
+  DUTY_M_GROUP_ID: string;
 }
 
 export interface GlobEnvConfig {
@@ -71,6 +73,8 @@ export interface GlobEnvConfig {
   VITE_GLOB_DP_ENV: string
   //APPID
   VITE_SDK_APPID:string
+  VITE_GLOB_DUTY_GROUP_ID:string,
+  VITE_GLOB_DUTY_M_GROUP_ID:string
 }
 
 export interface DefineAppConfigOptions {

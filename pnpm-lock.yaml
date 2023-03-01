@@ -12,6 +12,7 @@ importers:
       '@config/lint': workspace:*
       '@types/fs-extra': ^9.0.13
       '@types/node': ^18.14.0
+      '@xes/duty-aid': ^0.0.13
       cross-env: ^7.0.3
       esno: ^0.16.3
       fs-extra: ^10.1.0
@@ -27,6 +28,7 @@ importers:
       unplugin-vue-components: ^0.24.0
       vitest: ^0.25.8
     dependencies:
+      '@xes/duty-aid': 0.0.13
       unplugin-vue-components: registry.npmmirror.com/unplugin-vue-components/0.24.0_rollup@3.17.2
     devDependencies:
       '@bcc/prettier-config': 1.0.2
@@ -6093,7 +6095,7 @@ packages:
     dev: true
 
   registry.npmmirror.com/debug/2.6.9:
-    resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/debug/-/debug-2.6.9.tgz}
+    resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/debug/-/debug-2.6.9.tgz}
     name: debug
     version: 2.6.9
     peerDependencies:
@@ -10450,7 +10452,7 @@ packages:
       graceful-fs: registry.npmmirror.com/graceful-fs/4.2.10
 
   registry.npmmirror.com/jsonp/0.2.1:
-    resolution: {integrity: sha512-pfog5gdDxPdV4eP7Kg87M8/bHgshlZ5pybl+yKxAnCZ5O7lCIn7Ixydj03wOlnDQesky2BPyA91SQ+5Y/mNwzw==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/jsonp/-/jsonp-0.2.1.tgz}
+    resolution: {integrity: sha512-pfog5gdDxPdV4eP7Kg87M8/bHgshlZ5pybl+yKxAnCZ5O7lCIn7Ixydj03wOlnDQesky2BPyA91SQ+5Y/mNwzw==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/jsonp/-/jsonp-0.2.1.tgz}
     name: jsonp
     version: 0.2.1
     dependencies:
@@ -11614,7 +11616,7 @@ packages:
     dev: false
 
   registry.npmmirror.com/ms/2.0.0:
-    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz}
+    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz}
     name: ms
     version: 2.0.0
     dev: false

@@ -22,7 +22,9 @@
     "resolveJsonModule": true,
     "removeComments": true,
     "noImplicitAny": false,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "lib": ["Esnext"]
   },
   "exclude": ["**/node_modules/**", "**/dist/**"]
+  
 }
