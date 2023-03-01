@@ -58,6 +58,8 @@
   "packageManager": "pnpm@7.1.0",
   "dependencies": {
     "@xes/duty-aid": "^0.0.13",
+    "ant-design-vue": "^3.2.15",
+    "ni": "^0.0.2",
     "unplugin-vue-components": "^0.24.0"
   }
 }
