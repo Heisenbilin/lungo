@@ -24,31 +24,31 @@
 </template>
 
 <script setup lang="ts">
-import { editor, Range } from 'monaco-editor';
+import { editor, Range } from 'monaco-editor'
 // import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution';
-import { ref, unref, onMounted, nextTick } from 'vue';
+import { ref, unref, onMounted, nextTick } from 'vue'
 
 const props = defineProps({
   source: {
     type: Object,
     default: () => ({}),
   },
-});
+})
 
-const monacoRef:any = ref(null);
-let monacoInstance:any = null;
+const monacoRef: any = ref(null)
+let monacoInstance: any = null
 
 onMounted(() => {
-  initData();
-});
+  initData()
+})
 
 function initData() {
   if (props.source) {
     if (monacoInstance) {
-      monacoInstance.setValue(props.source.sourceCode);
-      setLineHighlight(props.source.line);
-      monacoInstance.revealLineInCenter(props.source.line);
-      return;
+      monacoInstance.setValue(props.source.sourceCode)
+      setLineHighlight(props.source.line)
+      monacoInstance.revealLineInCenter(props.source.line)
+      return
     }
     monacoInstance = editor.create(unref(monacoRef), {
       value: props.source.sourceCode,
@@ -65,9 +65,9 @@ function initData() {
       readOnly: true,
       height: 300,
       // occurrencesHighlight: 8,
-    });
-    nextTick(() => setLineHighlight(props.source.line));
-    monacoInstance.revealLineInCenter(props.source.line);
+    })
+    nextTick(() => setLineHighlight(props.source.line))
+    monacoInstance.revealLineInCenter(props.source.line)
   }
 }
 
@@ -83,9 +83,9 @@ const setLineHighlight = line => {
           className: 'code-bg',
         },
       },
-    ]
-  );
-};
+    ],
+  )
+}
 </script>
 <style lang="less">
 .codemirror {

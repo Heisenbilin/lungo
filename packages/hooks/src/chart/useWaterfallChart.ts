@@ -131,7 +131,7 @@ export const useWaterfallChartOption = data => {
   chartOption.series[0].data = arr[0]
   chartOption.series[1].data = arr[1]
   chartOption.yAxis[1].data = arr[2]
-  if (data.firstbyte && data.ready && data.pageload) {
+  if (data.firstbyte && data.ready && data.load) {
     chartOption.series[1].markLine = {
       data: [
         {
@@ -145,7 +145,7 @@ export const useWaterfallChartOption = data => {
         },
         {
           name: `完全加载`,
-          xAxis: data.pageload,
+          xAxis: data.load,
         },
       ],
       symbol: ['none', 'none'],
@@ -154,7 +154,7 @@ export const useWaterfallChartOption = data => {
       },
     }
   }
-  chartOption.xAxis.max = data.pageload
+  chartOption.xAxis.max = data.load
   return chartOption
 }
 
@@ -170,8 +170,8 @@ const getColor = (standard, value) => {
 }
 
 export const useDataToWaterfallChartOption = data => {
-  if (!(typeof data?.details === 'object' && Object.keys(data?.details).length)) {
+  if (!(typeof data === 'object' && Object.keys(data).length)) {
     return null
   }
-  return useWaterfallChartOption(data.details)
+  return useWaterfallChartOption(data)
 }

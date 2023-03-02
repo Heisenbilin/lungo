@@ -1,83 +1,90 @@
 import { cloneDeep, commafy, formatDateString } from '@vben/utils'
 
-
-
-
 //“PV”与“UV”图表基础配置
 const PVUVChartConfig: any = {
-    xAxis: {
-      boundaryGap: false,
-      axisTick: {
-        show: false,
-      },
-      data: [],
+  xAxis: {
+    boundaryGap: false,
+    axisTick: {
+      show: false,
     },
-    grid: {
-      top: 10,
-      left: '2%',
-      right: '3%',
-      bottom: '3%',
-      containLabel: true,
+    data: [],
+  },
+  grid: {
+    top: 20,
+    left: '2%',
+    right: '3%',
+    bottom: '3%',
+    containLabel: true,
+  },
+  legend: {},
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
     },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-      },
-      formatter: item => {
-        return `<font style="color:green">${item[0]?.data.name}</font><br/>
-                数量：${commafy(item[0].value)}<br/>
+    formatter: item => {
+      return `<font style="color:green">${item[0]?.data.name}</font><br/>
+                访问次数-PV：${commafy(item[0].value)}<br/>
+                访问用户数-UV：${commafy(item[1].value)}<br/>
                 单击添加<font style="color:green">${item?.[0].data.name}</font>为筛选条件`
-      },
     },
-    yAxis: {
-      axisTick: {
-        show: false,
-      },
-      type: 'value',
+  },
+  yAxis: {
+    axisTick: {
+      show: false,
     },
-    dataZoom: [
-      {
-        type: 'slider',
-        start: 0,
-        end: 100,
-        show: false,
-      },
-    ],
-    series: [
-      {
-        data: [],
-        type: 'line',
-        animation: false,
-      },
-    ],
-  }
+    type: 'value',
+  },
+  dataZoom: [
+    {
+      type: 'slider',
+      start: 0,
+      end: 100,
+      show: false,
+    },
+  ],
+  series: [
+    {
+      name: '访问次数-PV',
+      data: [],
+      type: 'line',
+      animation: false,
+    },
+    {
+      name: '访问用户数-UV',
+      data: [],
+      type: 'line',
+      animation: false,
+    },
+  ],
+}
 
 //将接口返回值处理成“状态码”图表数据
 export function getPVUVChartOption(data, timeFormatStr) {
   if (!Array.isArray(data) || data.length === 0) {
     return null
   }
-  console.log('图表数据',data);
-  
+
   const chartOption = cloneDeep(PVUVChartConfig)
   let timeList: any[] = [] //时间数据
-  let countList: any[] = [] //异常数
+  let pvList: any[] = [] //异常数
+  let uvList: any[] = [] //异常数
   data.forEach(item => {
     timeList.push({ value: formatDateString(item.time, timeFormatStr), name: item.time })
-    countList.push({
-      value: item.count,
+    pvList.push({
+      value: item.pv,
       name: formatDateString(item.time, timeFormatStr),
     })
+    uvList.push({ value: item.uv })
   })
   chartOption.xAxis.data = timeList
-  chartOption.series[0].data = countList
+  chartOption.series[0].data = pvList
+  chartOption.series[1].data = uvList
 
   if (timeList.length > 20) {
     chartOption.dataZoom[0].show = true
     chartOption.grid.bottom = '15%'
   }
- console.log("chartOption",chartOption);
- 
+
   return chartOption
 }

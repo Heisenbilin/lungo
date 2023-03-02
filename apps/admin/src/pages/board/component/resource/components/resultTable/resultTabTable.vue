@@ -10,10 +10,11 @@
   >
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'url'">
-        <a-tooltip title="点击跳转该页面">
-          <a :href="record.resource_currenthref" target="_blank">
-            {{ record.resource_currenthref || '未知' }}
+        <a-tooltip title="点击跳转">
+          <a v-if="record.url || record.currenthref" :href="record.url" target="_blank">
+            {{ record.url || record.currenthref }}
           </a>
+          <template v-else> {{ record }}未知</template>
         </a-tooltip>
       </template>
       <template v-if="column.key === 'operation'">
@@ -30,6 +31,7 @@
         </span>
       </template>
       <template v-if="column.key === 'count'"> {{ commafy(record.count) }} </template>
+      <template v-if="column.key === 'user'"> {{ commafy(record.userCount) }} </template>
     </template>
   </a-table>
 </template>

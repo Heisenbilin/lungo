@@ -4,8 +4,8 @@ export const BigfishApiPre = 'http://app.xesv5.com/bigfish/v1'
 const domain = location.hostname
 
 enum Api {
-  PROXY = '/proxy',
-  PROXY_GET = '/proxyGet',
+  PROXY = '/v1/proxy',
+  PROXY_GET = '/v1/proxyGet',
 }
 
 /**

@@ -9,7 +9,7 @@ const defaultColumns = [
   },
   {
     title: '页面URL',
-    dataIndex: 'current_href',
+    dataIndex: 'url',
     key: 'url',
     width: '40%',
     // slots: { customRender: "url" },
@@ -37,8 +37,8 @@ const defaultColumns = [
   },
   {
     title: '页面完全加载',
-    dataIndex: 'pageload',
-    key: 'pageload',
+    dataIndex: 'load',
+    key: 'load',
     align: 'center',
     customRender: item => commafy(item.text) + ' ms',
   },

@@ -1,6 +1,7 @@
 <template>
   <div class="grid grid-cols-2 gap-3">
     <SummaryData :faultTolerantStatus="faultTolerantStatus" />
+    <summaryChartTab :faultTolerantStatus="faultTolerantStatus" />
     <ResultTabs :faultTolerantStatus="faultTolerantStatus" />
     <ResourcePieCharts />
     <FaultTolerantPieCharts :faultTolerantStatus="faultTolerantStatus" />
@@ -11,9 +12,9 @@
 //resource异常Tab页
 import { ref, watch } from 'vue'
 import { checkResourceStatus } from '@/apis/report/apis'
-// import { ResourceApis } from '/@/api/board/resource';
 import { useBoardStore } from '@/store/modules/board'
 import SummaryData from './components/summary/summaryData.vue'
+import summaryChartTab from './components/summary/summaryChartTab.vue'
 import ResultTabs from './components/resultTable/resultTabs.vue'
 import ResourcePieCharts from './components/detailPieCharts/resourcePieCharts.vue'
 import FaultTolerantPieCharts from './components/detailPieCharts/faultTolerantPieCharts.vue'

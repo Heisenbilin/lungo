@@ -91,9 +91,13 @@ const recentContentLoading = ref(true)
 const getRecentData = async () => {
   activeName.value = 'recent'
   recentContentLoading.value = true
-  const data: any = await getDataList(type.value, params.value, 1, 1, ua_flag.value)
-  const { result } = data
-  recentContent.value = result[0]
+  try {
+    const data: any = await getDataList(type.value, params.value, 1, 1, ua_flag.value)
+    const { result } = data
+    recentContent.value = result[0]
+  } catch (e) {
+    console.log('获取最近一次日志数据失败', e)
+  }
   recentContentLoading.value = false
 }
 const initDrawer = () => {

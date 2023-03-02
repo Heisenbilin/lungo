@@ -14,7 +14,7 @@
 
 import { getApiDetailsData } from '@/apis/board/apiError'
 import { getApiDetails as getGatewayApiDetails } from '@/apis/board/gateway'
-import { getErrList } from '@/apis/board/sourceMap'
+import { getRuntimeErrorDetails } from '@/apis/board/runtime'
 import { getErrorDetails, getFErrorDetails } from '@/apis/board/resource'
 import { getLogDetails } from '@/apis/board/performance'
 import { commafy, getGlobalConfig } from '@vben/utils'
@@ -67,7 +67,7 @@ const getPerformanceDetails = async (params, page, pageSize, ua_flag) => {
     ...params,
     limit: pageSize,
     page: page,
-    ua_flag,
+    // ua_flag,
   })
   const uaList = ua_flag.length ? ua_flag.split(',') : []
   return clearPerformanceData(data, uaList)
@@ -75,7 +75,7 @@ const getPerformanceDetails = async (params, page, pageSize, ua_flag) => {
 
 // 请求运行时异常日志
 const getRuntimeDetails = async (params, page, pageSize, ua_flag) => {
-  const data = await getErrList({
+  const data = await getRuntimeErrorDetails({
     ...params,
     limit: pageSize,
     page: page,
@@ -328,9 +328,9 @@ const clearRuntimeData = (data, uaList) => {
 const clearResourceData = (data, uaList) => {
   let result = [{}] // resource异常日志数组，每一个元素代表一条日志
   let total = 0
-  if (data.stat === 1 && data.data?.list?.length) {
+  if (data.stat === 1 && data.list?.length) {
     // 日志数据清洗成符合antd Descrpition组件配置的格式
-    result = data.data.list.map(item => ({
+    result = data.list.map(item => ({
       // 跳转kibana方法
       jumpKibana: topicId => {
         try {
@@ -371,9 +371,8 @@ const clearResourceData = (data, uaList) => {
       upload_time: item.upload_time,
       err_content: item.resource_url,
     }))
-    total = data.data.total
+    total = data.total
   }
-
   return { result, total }
 }
 
@@ -381,9 +380,9 @@ const clearResourceData = (data, uaList) => {
 const clearFaultTolerantData = data => {
   let result = [{}] //资源日志数组，每一个元素代表一条日志
   let total = 0
-  if (data.stat === 1 && data.data?.list?.length) {
+  if (data.stat === 1 && data?.list?.length) {
     //日志数据清洗成符合antd Descrpition组件配置的格式
-    result = data.data.list.map(item => ({
+    result = data.list.map(item => ({
       //跳转kibana方法
       // jumpKibana: (topicId) => {
       //   const msg = item.resource_url
@@ -417,7 +416,7 @@ const clearFaultTolerantData = data => {
       upload_time: item.upload_time,
       failsource: item.failsource,
     }))
-    total = data.data.total
+    total = data.total
   }
   return { result, total }
 }

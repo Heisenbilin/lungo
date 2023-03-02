@@ -1,12 +1,12 @@
 import { request } from '@vben/request'
 enum Api {
-  SUMMARY = '/interface/summary',
-  COSTTIME = '/interface/costTime',
-  API_RESULT_LIST = '/interface/apiResultList',
-  STATUS_SUMMARY = '/interface/statusSummary',
-  CHART_SUMMARY = '/interface/chartSummary',
-  TOP_10 = '/interface/top10',
-  API_DETAILS = '/interface/apiDetails',
+  SUMMARY = '/v2/interface/summary',
+  COSTTIME = '/v2/interface/costTime',
+  API_RESULT_LIST = '/v2/interface/apiResultList',
+  STATUS_SUMMARY = '/v2/interface/statusSummary',
+  CHART_SUMMARY = '/v2/interface/chartSummary',
+  TOP_10 = '/v2/interface/top10',
+  API_DETAILS = '/v2/interface/apiDetails',
 }
 
 /**

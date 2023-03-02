@@ -56,7 +56,7 @@ if (!activeKey.value) {
   activeKey.value = tabNameConfig[tabKey] ? tabKey : 'pageview'
 }
 
-watch(activeKey, val => boardStore.commitTabState(val))
+watch(activeKey, val => boardStore.commitTabState(val), { immediate: true })
 
 const watchFunc: any[] = []
 const initWatch = () => {

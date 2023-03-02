@@ -2,15 +2,19 @@
   <div class="flex h-20 flex-row justify-center chart-container-full">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
-      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">总异常数</div>
-        <div class="text-3xl font-medium">{{ commafy(summaryData.summaryCount) }}</div>
+        <div class="text-3xl font-medium">{{ commafy(summaryData.errorCount) }}</div>
       </div>
-      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">总PV数</div>
         <div class="text-3xl font-medium">{{ commafy(summaryData.pvTotal) }}</div>
       </div>
-      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
+        <div class="text-gray-500">总UV数</div>
+        <div class="text-3xl font-medium">{{ commafy(summaryData.userCount) }}</div>
+      </div>
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
           <a-tooltip title="计算规则：总异常数/总PV数">
             总异常率 <QuestionCircleOutlined />
@@ -23,10 +27,10 @@
           <div class="text-gray-500">%</div>
         </div>
       </div>
-      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">异常类型</div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ commafy(summaryData.errorType) }}</div>
+          <div class="text-3xl font-medium">{{ commafy(summaryData.errorTypeCount) }}</div>
         </div>
       </div>
     </template>
@@ -55,7 +59,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { getSummaryChartOption } from '../../../util/errorSummaryChartConfig'
 import { commafy } from '@vben/utils'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
-import { getSummaryData } from '@/apis/board/runtime'
+import { getSummaryData, getChartData } from '@/apis/board/runtime'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { BaseChart } from '@vben/components'
 
@@ -80,31 +84,31 @@ const requestParams = computed(() => ({
 }))
 
 const summaryData = ref({
-  summaryCount: '',
-  errorType: '',
+  errorCount: '',
+  errorTypeCount: '',
   errorRate: '',
   pvTotal: '',
+  userCount: '',
 })
 
-const getSummaryOption = data => getSummaryChartOption(data, boardStore.getTimeFormatStr)
-
-//从后端获取均值瀑布图数据方法
 const requestSummaryData = async params => {
   loading.value = true
   //拦截请求结果，存入summaryData中
-  const result = await getSummaryData(params)
-  const data = result.data
-  const percent = ((data.errorTotal / data.pvTotal) * 100).toFixed(2)
-  summaryData.value = Object.keys(data).length
-    ? {
-        summaryCount: data.errorTotal,
-        errorType: data.errorType,
-        pvTotal: data.pvTotal,
-        errorRate: isNaN(+percent) || percent === 'Infinity' ? '0' : percent,
-      }
-    : { summaryCount: '', errorType: '', errorRate: '', pvTotal: '' }
-  loading.value = false
-  result.data = data?.list ?? []
-  return result
+  getSummaryData(params)
+    .then(result => (summaryData.value = result.data))
+    .catch(
+      () =>
+        (summaryData.value = {
+          errorCount: '',
+          errorTypeCount: '',
+          errorRate: '',
+          pvTotal: '',
+          userCount: '',
+        }),
+    )
+    .finally(() => (loading.value = false))
+  return getChartData(params)
 }
+
+const getSummaryOption = data => getSummaryChartOption(data, boardStore.getTimeFormatStr)
 </script>

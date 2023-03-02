@@ -1,15 +1,15 @@
 import { request } from '@vben/request'
 enum Api {
-  GET_ERR_TYPE_LIST = '/tool/geterrortypelist',
-  ADD_ALARM_RULE = '/tool/addalarmrule',
-  UPDATE_ALARM_RULE = '/tool/updatealarmrule',
-  CHANGE_ALARM_RULE_STATUS = '/tool/changealarmrulestatus',
-  GET_ALARM_RULE_LIST = '/tool/getalarmrulelist',
-  GET_ALARM_LOG_LIST = '/tool/getalarmloglist',
-  GET_ALARM_ACTION_LOG_LIST = '/tool/getalarmactionloglist',
-  REMOVE_ALARM_RULE = '/tool/removealarmrule',
-  IGNORE_ALARM_TYPE = '/tool/ignorealarmtype',
-  ALARM_AUTH = '/tool/alarmAuth',
+  GET_ERR_TYPE_LIST = '/v1/tool/geterrortypelist',
+  ADD_ALARM_RULE = '/v1/tool/addalarmrule',
+  UPDATE_ALARM_RULE = '/v1/tool/updatealarmrule',
+  CHANGE_ALARM_RULE_STATUS = '/v1/tool/changealarmrulestatus',
+  GET_ALARM_RULE_LIST = '/v1/tool/getalarmrulelist',
+  GET_ALARM_LOG_LIST = '/v1/tool/getalarmloglist',
+  GET_ALARM_ACTION_LOG_LIST = '/v1/tool/getalarmactionloglist',
+  REMOVE_ALARM_RULE = '/v1/tool/removealarmrule',
+  IGNORE_ALARM_TYPE = '/v1/tool/ignorealarmtype',
+  ALARM_AUTH = '/v1/tool/alarmAuth',
 }
 
 /**

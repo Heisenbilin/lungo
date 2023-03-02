@@ -14,20 +14,20 @@
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'url'">
               <a-tooltip title="点击跳转至该页面">
-                <a :href="record.current_href" target="_blank">
-                  {{ record.current_href || '未知' }}
+                <a :href="record.url" target="_blank">
+                  {{ record.url || '未知' }}
                 </a>
               </a-tooltip>
             </template>
             <template v-if="column.key === 'count'"> {{ commafy(record.count) }} </template>
             <template v-if="column.key === 'operation'">
               <span class="mr-2" v-if="!requestParams.url">
-                <a @click="() => addFilter(record.current_href || '未知')">设为筛选</a>
+                <a @click="() => addFilter(record.url || '未知')">设为筛选</a>
               </span>
               <span class="mr-2" v-else>
                 <a @click="delFilter">取消筛选</a>
               </span>
-              <a @click="() => openLog(record.current_href)">查看日志</a>
+              <a @click="() => openLog(record.url)">查看日志</a>
             </template>
           </template>
         </a-table>

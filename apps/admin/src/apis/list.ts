@@ -1,13 +1,13 @@
 import { request } from '@vben/request'
 
 enum Api {
-  PROJECT = '/huatuo/projects',
-  GET_PROJECT_DATA = '/huatuo/projectboard',
-  MODIFY_PROJECT = '/huatuo/modify/projects',
-  STAR_PROJECT = '/huatuo/collectProject',
-  CHECK_PROJECT = '/project/checkProjectData',
-  CHECK_PROJECT_AUTH = '/huatuo/checkAuth',
-  GET_GROUPS = '/huatuo/groups',
+  PROJECT = '/v1/huatuo/projects',
+  GET_PROJECT_DATA = '/v1/huatuo/projectboard',
+  MODIFY_PROJECT = '/v1/huatuo/modify/projects',
+  STAR_PROJECT = '/v1/huatuo/collectProject',
+  CHECK_PROJECT = '/v1/project/checkProjectData',
+  CHECK_PROJECT_AUTH = '/v1/huatuo/checkAuth',
+  GET_GROUPS = '/v1/huatuo/groups',
 }
 
 /**

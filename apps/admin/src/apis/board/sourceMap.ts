@@ -1,15 +1,15 @@
 import { request } from '@vben/request'
 enum Api {
-  GET_BOARD_DATA = '/board/chartdata',
-  GET_BOARD_DATA_BY_TYPE = '/board/chartdata/getByType',
-  GET_TIME_SOLT_DATA_BY_TYPE = '/board/chartdata/getTimeSlotDataByType',
-  GET_ERR_SUMMARY = '/sourcemap/errSummary',
-  GET_ERR_TYPE_SUMMARY = '/sourcemap/errTypeSummary',
-  GET_RUNTIME_LIST = '/sourcemap/runtimeList',
-  GET_ERR_LIST = '/sourcemap/runtimeDetails',
-  GET_SMFINDER_INFO = '/sourcemap/smfinder',
-  GET_MAPPING_LIST = '/sourcemap/mappinglist',
-  UPLOAD_SOURCEMAP = '/sourcemap/uploadSourcemapFile',
+  GET_BOARD_DATA = '/v1/board/chartdata',
+  GET_BOARD_DATA_BY_TYPE = '/v1/board/chartdata/getByType',
+  GET_TIME_SOLT_DATA_BY_TYPE = '/v1/board/chartdata/getTimeSlotDataByType',
+  GET_ERR_SUMMARY = '/v1/sourcemap/errSummary',
+  GET_ERR_TYPE_SUMMARY = '/v1/sourcemap/errTypeSummary',
+  GET_RUNTIME_LIST = '/v1/sourcemap/runtimeList',
+  GET_ERR_LIST = '/v1/sourcemap/runtimeDetails',
+  GET_SMFINDER_INFO = '/v1/sourcemap/smfinder',
+  GET_MAPPING_LIST = '/v1/sourcemap/mappinglist',
+  UPLOAD_SOURCEMAP = '/v1/sourcemap/uploadSourcemapFile',
   GET_CONFIG_INFO = 'http://app.xesv5.com/bigfish/v1/interface/isProjectUseSourceMap',
 }
 

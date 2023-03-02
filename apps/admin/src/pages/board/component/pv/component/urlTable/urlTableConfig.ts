@@ -12,7 +12,6 @@ const defaultColumns = [
     dataIndex: 'url',
     key: 'url',
     width: '40%',
-    // slots: { customRender: "url" },
   },
   {
     title: 'PV',
@@ -29,18 +28,10 @@ const defaultColumns = [
     customRender: item => commafy(item.text),
   },
   {
-    title: '平均加载时间',
-    dataIndex: 'pageload',
-    key: 'pageload',
-    align: 'center',
-    customRender: item => commafy(item.text) + ' ms',
-  },
-  {
     title: '操作',
     align: 'center',
     width: '15%',
     key: 'operation',
-    // slots: { customRender: "operation" },
   },
 ]
 

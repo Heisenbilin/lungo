@@ -1,6 +1,6 @@
 import { request } from '@vben/request'
 enum Api {
-  GET_TOPIC_ID = '/getTopicId',
+  GET_TOPIC_ID = '/v1/getTopicId',
 }
 
 /**

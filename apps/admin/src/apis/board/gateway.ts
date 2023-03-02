@@ -1,13 +1,13 @@
 import { request } from '@vben/request'
 
 enum Api {
-  GET_SUMMARY = '/gateway/summary',
-  GET_API_RESUT_LIST = '/gateway/apiResultList',
-  GET_STATUS_SUMMARY = '/gateway/statusSummary',
-  GET_COST_TIME = '/gateway/costTime',
-  GET_API_DETAILS = '/gateway/apiDetails',
-  GET_CHART_SUMMARY = '/gateway/chartSummary',
-  CHECK_VALID_GATEWAY = '/gateway/checkValidGateway',
+  GET_SUMMARY = '/v1/gateway/summary',
+  GET_API_RESUT_LIST = '/v1/gateway/apiResultList',
+  GET_STATUS_SUMMARY = '/v1/gateway/statusSummary',
+  GET_COST_TIME = '/v1/gateway/costTime',
+  GET_API_DETAILS = '/v1/gateway/apiDetails',
+  GET_CHART_SUMMARY = '/v1/gateway/chartSummary',
+  CHECK_VALID_GATEWAY = '/v1/gateway/checkValidGateway',
 }
 
 /**

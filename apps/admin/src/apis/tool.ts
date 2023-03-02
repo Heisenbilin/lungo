@@ -1,8 +1,8 @@
-import { request } from "@vben/request";
+import { request } from '@vben/request'
 
 enum Api {
-  SEARCH_WORKER_INFO = "/tool/searchworkerinfo",
-  GET_YACH_ID = "/tool/getyachid",
+  SEARCH_WORKER_INFO = '/v1/tool/searchworkerinfo',
+  GET_YACH_ID = '/v1/tool/getyachid',
 }
 
 /**
@@ -10,10 +10,10 @@ enum Api {
  */
 
 export const searchWorkerInfo = (data: any) =>
-  request.post<any>({ url: Api.SEARCH_WORKER_INFO, data });
+  request.post<any>({ url: Api.SEARCH_WORKER_INFO, data })
 
 /**
  * @description: 查询知音楼ID
  */
 
-export const requestYachId = (data: any) => request.post<any>({ url: Api.GET_YACH_ID, data });
+export const requestYachId = (data: any) => request.post<any>({ url: Api.GET_YACH_ID, data })

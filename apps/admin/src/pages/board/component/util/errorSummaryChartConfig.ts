@@ -21,11 +21,14 @@ const summaryChartConfig: any = {
       return [pt[0], '10%']
     },
     formatter: item => {
-      return `${item[0].data.name.holeTime}<br/>
+      return `${item[0].data.name.wholeTime}<br/>
               异常数量：${commafy(item[0].value)}<br/>
               ${item[0].data.name.isApi ? '请求总数' : 'PV数'}：
               ${commafy(item[0].data.name.total)}<br/>
-              异常率：${item[0].data.name.rate ? item[0].data.name.rate + '%' : ''}`
+              异常率：${item[0].data.name.rate ? item[0].data.name.rate + '%' : ''}<br/>
+              单击添加<font style="color:green">${JSON.stringify(
+                item[0].data.name.time,
+              )}</font>为筛选条件`
     },
   },
   legend: {},
@@ -92,7 +95,7 @@ export function getSummaryChartOption(data, timeFormatStr, isApi = '') {
   let countList: any[] = [] //异常数
   let rateList: any[] = [] //异常率
   data.forEach(item => {
-    const count = isApi ? item.failCount : item.count
+    const count = isApi ? item.failCount : item.errorCount
     const totalCount = isApi ? item.count : item.pvCount
     const rate = totalCount ? ((count * 100) / totalCount).toFixed(2) : null //防止totalCount为0
     timeList.push({ value: formatDateString(item.time, timeFormatStr), name: item.time })
@@ -101,7 +104,8 @@ export function getSummaryChartOption(data, timeFormatStr, isApi = '') {
       name: {
         total: totalCount,
         isApi,
-        holeTime: item.time + ' ' + getDateWeekday(item.time),
+        time: item.time,
+        wholeTime: item.time + ' ' + getDateWeekday(item.time),
         rate: rate,
       },
       value: count,

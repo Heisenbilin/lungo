@@ -102,7 +102,9 @@ export function getSummaryChartOption(data, selectedLegend) {
   //3.1 数据转换，存入valueArrs
   try {
     data.forEach(item => {
-      Object.keys(item).forEach(key => valueArrs[key].value.push(item[key]))
+      Object.keys(item).forEach(key => {
+        if (valueArrs[key]) valueArrs[key].value.push(item[key])
+      })
     })
   } catch (e) {
     console.log(e)

@@ -4,34 +4,37 @@
     <template v-else>
       <div class="w-1/5 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
-          <a-tooltip title="均值"> 首字节
+          <a-tooltip title="均值">
+            首字节
             <QuestionCircleOutlined />
           </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ commafy(averageData.firstbyte || "") }}</div>
+          <div class="text-3xl font-medium">{{ commafy(averageData.firstbyte || '') }}</div>
           <div class="text-gray-500">ms</div>
         </div>
       </div>
       <div class="w-1/5 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
-          <a-tooltip title="均值"> DOM Ready
+          <a-tooltip title="均值">
+            DOM Ready
             <QuestionCircleOutlined />
           </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ commafy(averageData.ready || "") }}</div>
+          <div class="text-3xl font-medium">{{ commafy(averageData.ready || '') }}</div>
           <div class="text-gray-500">ms</div>
         </div>
       </div>
       <div class="w-1/5 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
-          <a-tooltip title="均值"> 页面完全加载
+          <a-tooltip title="均值">
+            页面完全加载
             <QuestionCircleOutlined />
           </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ commafy(averageData.pageload || "") }}</div>
+          <div class="text-3xl font-medium">{{ commafy(averageData.load || '') }}</div>
           <div class="text-gray-500">ms</div>
         </div>
       </div>
@@ -43,33 +46,41 @@
         <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
       </template>
       <a-tab-pane key="average" tab="性能均值">
-        <BaseChart :requestParams="requestParams2" :requestFunc="getChartSummaryData" :getOptionFunc="getSummaryOption"
-          :bindFuncs="{ legendselectchanged: handleLegendChange }" :zrFuncs="{ click: addTimeFilter }" />
+        <BaseChart
+          :requestParams="requestParams2"
+          :requestFunc="getChartSummaryData"
+          :getOptionFunc="getSummaryOption"
+          :bindFuncs="{ legendselectchanged: handleLegendChange }"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
       </a-tab-pane>
     </a-tabs>
   </div>
   <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey2" class="box-border w-full">
       <a-tab-pane key="waterfall" tab="页面加载均值瀑布图">
-        <BaseChart :requestParams="requestParams" :requestFunc="requestAverageData"
-          :getOptionFunc="useDataToWaterfallChartOption" />
+        <BaseChart
+          :requestParams="requestParams"
+          :requestFunc="requestAverageData"
+          :getOptionFunc="useDataToWaterfallChartOption"
+        />
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { useDataToWaterfallChartOption } from "@vben/hooks";
-import { getSummaryChartOption } from "./chartConfig";
-import { getChartSummaryData, getAverageData } from "@/apis/board/performance";
-import { QuestionCircleOutlined } from "@ant-design/icons-vue";
-import { commafy } from "@vben/utils";
-import { useBoardStore } from "@/store/modules/board";
-import { BaseChart } from "@vben/components";
-import { addTimeFilter } from "@/hooks/board/useDate";
+import { ref, computed } from 'vue'
+import { useDataToWaterfallChartOption } from '@vben/hooks'
+import { getSummaryChartOption } from './chartConfig'
+import { getChartSummaryData, getAverageData } from '@/apis/board/performance'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { commafy } from '@vben/utils'
+import { useBoardStore } from '@/store/modules/board'
+import { BaseChart } from '@vben/components'
+import { addTimeFilter } from '@/hooks/board/useDate'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 //请求参数
 const requestParams = computed(() => ({
@@ -85,23 +96,23 @@ const requestParams = computed(() => ({
   os: boardStore.filterState.os, //操作系统筛选
   performance_key: boardStore.filterState.performance_key, //性能筛选
   performance_range: boardStore.filterState.performance_range, //性能筛选
-}));
+}))
 
 const requestParams2 = computed(() => ({
   ...requestParams.value,
   dimension: boardStore.filterState.dimension, //维度
-}));
+}))
 
-const activeKey = ref("average");
-const activeKey2 = ref("waterfall");
+const activeKey = ref('average')
+const activeKey2 = ref('waterfall')
 
-const loading = ref(true);
+const loading = ref(true)
 const averageData = ref({
-  firstbyte: "",
-  dom: "",
-  pageload: "",
-  ready: "",
-});
+  firstbyte: '',
+  dom: '',
+  load: '',
+  ready: '',
+})
 
 const selectedLegend = ref({
   selected: {
@@ -118,23 +129,23 @@ const selectedLegend = ref({
     RD: false,
     TTI: false,
   },
-});
+})
 
 //从后端获取均值瀑布图数据方法
-const getSummaryOption = (data) => getSummaryChartOption(data, selectedLegend.value);
+const getSummaryOption = data => getSummaryChartOption(data, selectedLegend.value)
 
 //从后端获取均值瀑布图数据方法
-const requestAverageData = async (params) => {
-  loading.value = true;
+const requestAverageData = async params => {
+  loading.value = true
   //拦截请求结果，存入averageData中
-  const result = await getAverageData(params);
-  averageData.value = result?.data?.details ?? { firstbyte: "", dom: "", pageload: "", ready: "" };
-  loading.value = false;
-  return result;
-};
+  const result = await getAverageData(params)
+  averageData.value = result?.data ?? { firstbyte: '', dom: '', load: '', ready: '' }
+  loading.value = false
+  return result
+}
 
 //监听筛选项的变化
-const handleLegendChange = (params) => {
-  selectedLegend.value = params;
-};
+const handleLegendChange = params => {
+  selectedLegend.value = params
+}
 </script>
