@@ -2,16 +2,18 @@
 export default {name: 'LayoutFooter'}
 </script>
 <script lang="ts" setup>
-import type {CSSProperties} from 'vue'
+import {CSSProperties, onMounted} from 'vue'
 import {computed} from 'vue'
 import {createNamespace} from '@vben/utils'
-import {context} from '../../bridge'
+// import {context} from '../../bridge'
+import DutyAid from '@xes/duty-aid';
+import {getGlobalConfig} from '@vben/utils';
 import { useI18n} from '@vben/locale'
 
 const { t } = useI18n()
-const { siteSetting } = context
+// const { siteSetting } = context
 
-const { DOC_URL, GITHUB_URL, SITE_URL } = siteSetting
+// const { DOC_URL, GITHUB_URL, SITE_URL } = siteSetting
 
 const props = defineProps({
   height: {
@@ -26,52 +28,64 @@ const style = computed(
       ? cssVarBlock({height: props.height})
       : {}) as CSSProperties,
 )
+// @ts-ignore
+const { DUTY_GROUP_ID, DUTY_M_GROUP_ID } =  getGlobalConfig(import.meta.env)
+onMounted(() => {
+      let dutyId;
+      if (window.location.host.indexOf('saasz.vdyoo') > -1) {
+        dutyId = DUTY_M_GROUP_ID;
+      } else {
+        dutyId = DUTY_GROUP_ID;
+      }
+      const dutyobj = new DutyAid({
+        groupId: dutyId,
+        ele: {
+          // ele参数可选，不需要自动生成a标签可以不传ele对象
+          eleid: 'connectme', // a标签插入的元素ID
+          name: true, //  a标签text 是否显示 人名，默认： true
+          workcode: false, //  a标签text 是否显示 工号，默认： true
+          separator: ',', // 多个a标签的分隔符 默认： ","逗号
+        },
+      });
+      // 生成A标签列表
+      dutyobj.initLinkBox();
+    });
+
+const curYear = computed(() => new Date().getFullYear());
 </script>
 <template>
   <footer :class="bem()" :style="style">
     <div class="lh-32px">
-      <VbenButton
-        text
-        tag="a"
-        :href="SITE_URL"
-        target="_blank"
-      >
-        <VbenText depth="3">{{ t('layout.footer.onlinePreview') }}</VbenText>
-      </VbenButton>
-
-      <VbenButton
-        text
-        tag="a"
-        :href="GITHUB_URL"
-        target="_blank"
-        class="mx-10"
-      >
-        <VbenText depth="3">
-          <VbenIconify icon="ant-design:github-outlined" />
-        </VbenText>
-      </VbenButton>
-
-      <VbenButton
-        text
-        tag="a"
-        :href="DOC_URL"
-        target="_blank"
-      >
-        <VbenText depth="3" style="">{{ t('layout.footer.onlineDocument') }}</VbenText>
-      </VbenButton>
+    <VbenText depth="3" class="lh-32px">Copyright &copy;©{{ curYear }} 美校事业部-大班云-前端研发部 All Rights Reserved，由
+      <a class="link" href="https://cloud.xesv5.com/#/index">未来云</a> 提供计算服务 | 联系我们：
+      <span id="connectme" class="mr-3"></span>
+      <a-tooltip class="tooltip" placement="topLeft">
+        <template #title>
+          <img class="feedbackImg" src="../../../../apps/admin/src/assets/images/feedback.png" />
+        </template>
+        <a class="link" >问题反馈群</a>
+      </a-tooltip>
+    </VbenText>
     </div>
-    <VbenText depth="3">Copyright &copy;2023 大班云-前端研发部（Sway） </VbenText>
   </footer>
 </template>
 
 <style lang="less" scoped>
-.footer {
-  --footer-padding: 0 20px;
-  --footer-height: 60px;
-  padding: var(--footer-padding);
+footer {
+  position: fixed;
+  width:calc(100% - 210px);
+  bottom:0px;
+  background-color:#fff;
+  padding:5px 0px;
+  
+  // padding: var(--footer-padding);
   box-sizing: border-box;
   flex-shrink: 0;
-  height: var(--footer-height);
+  // height: var(--footer-height);
   text-align: center;
+  z-index: 100;
+}
+.feedbackImg {
+  width: 180px;
 }
 </style>

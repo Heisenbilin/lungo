@@ -37,7 +37,7 @@ const { getShowFooter } = useRootSetting();
             <slot name="main"></slot>
           </LayoutMain>
         </VbenLayoutContent>
-        <VbenLayoutFooter v-if="getShowFooter" ref="footerRef">
+        <VbenLayoutFooter  ref="footerRef">
           <slot name="footer">
             <LayoutFooter />
           </slot>
