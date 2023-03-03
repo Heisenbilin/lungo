@@ -11,7 +11,7 @@ export const filterTitleConfig = {
   url: '页面',
   browser: '浏览器',
   device: '设备',
-  region: '地域',
+  province: '地域',
   network: '网络',
   client: '客户端',
   os: '操作系统',
@@ -26,11 +26,30 @@ export const excludeFilters = ['start_time', 'end_time', 'dimension', 'performan
 
 // tab页作用的筛选条件
 export const tabActiveFilters = {
-  pageview: ['url', 'browser', 'device', 'region', 'network', 'client', 'os', 'performance_key'],
-  performance: ['url', 'browser', 'device', 'region', 'network', 'client', 'os', 'performance_key'],
-  runtime: ['url', 'browser', 'device', 'region', 'network', 'client', 'os'],
-  resource: ['url', 'browser', 'device', 'region', 'network', 'client', 'os', 'resource_type'],
-  api: ['url', 'browser', 'device', 'region', 'network', 'client', 'os', 'api_status', 'api_range'],
+  pageview: ['url', 'browser', 'device', 'province', 'network', 'client', 'os', 'performance_key'],
+  performance: [
+    'url',
+    'browser',
+    'device',
+    'province',
+    'network',
+    'client',
+    'os',
+    'performance_key',
+  ],
+  runtime: ['url', 'browser', 'device', 'province', 'network', 'client', 'os'],
+  resource: ['url', 'browser', 'device', 'province', 'network', 'client', 'os', 'resource_type'],
+  api: [
+    'url',
+    'browser',
+    'device',
+    'province',
+    'network',
+    'client',
+    'os',
+    'api_status',
+    'api_range',
+  ],
   gateway: [],
 }
 

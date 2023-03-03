@@ -91,6 +91,7 @@ const recentContentLoading = ref(true)
 const getRecentData = async () => {
   activeName.value = 'recent'
   recentContentLoading.value = true
+  recentContent.value = {}
   try {
     const data: any = await getDataList(type.value, params.value, 1, 1, ua_flag.value)
     const { result } = data

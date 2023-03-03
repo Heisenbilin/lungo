@@ -56,10 +56,9 @@ if (!activeKey.value) {
   activeKey.value = tabNameConfig[tabKey] ? tabKey : 'pageview'
 }
 
-watch(activeKey, val => boardStore.commitTabState(val), { immediate: true })
-
 const watchFunc: any[] = []
 const initWatch = () => {
+  const tabKeyWatch = watch(activeKey, val => boardStore.commitTabState(val), { immediate: true })
   // 从其他页面返回时，重新生成水印
   const watermarkWatch = watch(
     () => [boardStore.boardInfoState.project_name, userName],
@@ -67,6 +66,7 @@ const initWatch = () => {
     { immediate: true },
   )
   watchFunc.push(watermarkWatch)
+  watchFunc.push(tabKeyWatch)
 }
 
 const areaRef = ref<Nullable<HTMLElement>>(null)

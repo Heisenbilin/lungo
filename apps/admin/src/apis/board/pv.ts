@@ -20,13 +20,6 @@ export const getPageViewData = (params: any) =>
   request.post<any>({ url: Api.GET_PAGE_VIEW_DATA, params })
 
 /**
- * @description: 获取uv数据
- */
-
-export const getUserViewData = (params: any) =>
-  request.post<any>({ url: Api.GET_USER_VIEW_DATA, params })
-
-/**
  * @description: 获取页面列表
  */
 

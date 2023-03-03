@@ -60,7 +60,7 @@ export interface filter {
   url?: string
   browser?: string
   device?: string
-  region?: string
+  province?: string
   network?: string
   client?: string
   os?: string

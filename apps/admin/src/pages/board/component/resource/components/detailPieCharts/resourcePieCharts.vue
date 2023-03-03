@@ -39,15 +39,15 @@
 
 <script setup lang="ts">
 //api异常详情相关饼图组件
-import { computed } from "vue";
-import { getTop10Data, getFileTypeData } from "@/apis/board/resource";
-import { getTop10Option, getErrorTypeOption } from "../../../util/pieChartConfig";
-import { QuestionCircleOutlined } from "@ant-design/icons-vue";
-import { logTypeEnum } from "@vben/constants";
-import { useBoardStore } from "@/store/modules/board";
-import { BaseChart } from "@vben/components";
+import { computed } from 'vue'
+import { getTop10Data, getFileTypeData } from '@/apis/board/resource'
+import { getTop10Option, getErrorTypeOption } from '../../../util/pieChartConfig'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { logTypeEnum } from '@vben/constants'
+import { useBoardStore } from '@/store/modules/board'
+import { BaseChart } from '@vben/components'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 //请求参数
 const requestParams = computed(() => ({
@@ -57,27 +57,27 @@ const requestParams = computed(() => ({
   url: boardStore.filterState.url, //路由筛选
   browser: boardStore.filterState.browser, //浏览器筛选
   device: boardStore.filterState.device, //设备筛选
-  region: boardStore.filterState.region, //地区筛选
+  province: boardStore.filterState.province, //地区筛选
   network: boardStore.filterState.network, //网络类型筛选
   client: boardStore.filterState.client, //客户端筛选
   os: boardStore.filterState.os, //操作系统筛选
   resource_type: boardStore.filterState.resource_type, //资源类型筛选
-}));
+}))
 
 // 资源类型设为筛选
-const addFilter = (title) => {
-  boardStore.addFilterValue({ resource_type: title.data.name });
-};
+const addFilter = title => {
+  boardStore.addFilterValue({ resource_type: title.data.name })
+}
 
 //打开日志详情
-const openLog = (title) => {
+const openLog = title => {
   boardStore.openLogInfoState({
     type: logTypeEnum.RESOURCE,
     visible: true,
     requestParams: {
-      error_type: "href",
+      error_type: 'href',
       err_content: title.data.name,
     },
-  });
-};
+  })
+}
 </script>

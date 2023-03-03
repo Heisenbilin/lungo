@@ -40,7 +40,7 @@ export const getDefaultColumns = type => {
     columns[1].dataIndex = 'url'
   } else if (type === 'domain') {
     columns[1].title = '页面URL'
-    columns[1].dataIndex = 'currenthref'
+    columns[1].dataIndex = 'current_href'
   } else {
     columns[1].title = '容错成功资源'
     columns[1].dataIndex = 'successsource'

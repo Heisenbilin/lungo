@@ -1,4 +1,5 @@
-import { cloneDeep, commafy, formatDateString } from '@vben/utils'
+import { cloneDeep, commafy } from '@vben/utils'
+import dayjs from 'dayjs'
 
 //“PV”与“UV”图表基础配置
 const PVUVChartConfig: any = {
@@ -70,10 +71,11 @@ export function getPVUVChartOption(data, timeFormatStr) {
   let pvList: any[] = [] //异常数
   let uvList: any[] = [] //异常数
   data.forEach(item => {
-    timeList.push({ value: formatDateString(item.time, timeFormatStr), name: item.time })
+    const formatTime = dayjs(item.time).format(timeFormatStr)
+    timeList.push({ value: formatTime, name: item.time })
     pvList.push({
       value: item.pv,
-      name: formatDateString(item.time, timeFormatStr),
+      name: formatTime,
     })
     uvList.push({ value: item.uv })
   })

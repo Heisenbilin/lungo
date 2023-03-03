@@ -1,4 +1,4 @@
-import { formatDateString } from '../date'
+import dayjs from 'dayjs'
 // 按照用户选择的统计维度聚合数据（按时间间隔求和），用于横坐标是时间的图表。
 // 要求chartData数组中的board_type一致，仅保留第一项的type。聚合数据项为board_count，会清除board_data
 export function dataAggregate(chartData, dimension = 1) {
@@ -9,13 +9,13 @@ export function dataAggregate(chartData, dimension = 1) {
   const mapDimension = {
     1: 'YY-MM-DD',
     2: 'YY-MM-DD HH',
-    3: 'YY-MM-DD HH2',
+    3: 'YY-MM-DD HH:mm',
   }
   const dateType = mapDimension[+dimension]
   const aggregatedData = {}
   const tempTime: any[] = [] // 保存格式化后的时间列表
   for (const item of chartData) {
-    const time = formatDateString(item.end_time, dateType)
+    const time = dayjs(item.end_time).format(dateType)
     if (tempTime.includes(time)) {
       aggregatedData[time] += item.board_count
     } else {
@@ -45,14 +45,14 @@ export function dataAggregateAvg(chartData, dimension = 1) {
   const mapDimension = {
     1: 'YY-MM-DD',
     2: 'YY-MM-DD HH',
-    3: 'YY-MM-DD HH2',
+    3: 'YY-MM-DD HH:mm',
   }
   const dateType = mapDimension[+dimension]
   const aggregatedData = {}
   const recordCount = {}
   for (const item of chartData) {
     const boardData = JSON.parse(item.board_data)
-    const time = formatDateString(item.end_time, dateType)
+    const time = dayjs(item.end_time).format(dateType)
     if (recordCount[time]) {
       recordCount[time]++
       for (const subIndex in boardData) {
@@ -80,7 +80,7 @@ export function dataAggregateByTime(chartData, timeFormatStr) {
   const aggregatedData = {}
   for (const item of chartData) {
     // const boardData = JSON.parse(item.board_data);
-    const time = formatDateString(item.end_time, timeFormatStr)
+    const time = dayjs(item.end_time).format(timeFormatStr)
     if (aggregatedData[time]) {
       aggregatedData[time].boardCount += item.board_count
     } else {
@@ -102,7 +102,7 @@ export function dataAggregateBoardDataByTime(chartData, timeFormatStr) {
   const aggregatedData = {}
   for (const item of chartData) {
     const boardData = JSON.parse(item.board_data)
-    const time = formatDateString(item.end_time, timeFormatStr)
+    const time = dayjs(item.end_time).format(timeFormatStr)
     if (aggregatedData[time]) {
       Object.keys(boardData).forEach(key => {
         aggregatedData[time].boardData[key] += boardData[key]
@@ -132,7 +132,7 @@ export function dataAggregateBoard2DataByTime(chartData, timeFormatStr, type) {
   }
   const aggregatedData = {}
   for (const item of chartData) {
-    const time = formatDateString(item.end_time, timeFormatStr)
+    const time = dayjs(item.end_time).format(timeFormatStr)
     if (aggregatedData[time]) {
       aggregatedData[time].boardData[item.board_key] += item.board_count
     } else {

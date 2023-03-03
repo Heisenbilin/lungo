@@ -16,9 +16,9 @@ const defaultColumns = [
   },
   // {
   //   title: '页面URL',
-  //   dataIndex: 'error_currenthref',
-  //   key: 'error_currenthref',
-  //   rowKey: 'error_currenthref',
+  //   dataIndex: 'current_href',
+  //   key: 'current_href',
+  //   rowKey: 'current_href',
   //   width: '25%',
   //   slots: { customRender: 'url' },
   // },
@@ -51,7 +51,7 @@ export const getDefaultColumns = type => {
   if (type === 'domain')
     columns[1] = {
       title: '页面URL',
-      dataIndex: 'err_currenthref',
+      dataIndex: 'err_current_href',
       key: 'url',
       width: '70%',
       // slots: { customRender: "url" },

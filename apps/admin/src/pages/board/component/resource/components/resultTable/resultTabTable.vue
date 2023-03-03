@@ -11,10 +11,10 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'url'">
         <a-tooltip title="点击跳转">
-          <a v-if="record.url || record.currenthref" :href="record.url" target="_blank">
-            {{ record.url || record.currenthref }}
+          <a v-if="record.url || record.resource_currenthref" :href="record.url" target="_blank">
+            {{ record.url || record.resource_currenthref }}
           </a>
-          <template v-else> {{ record }}未知</template>
+          <template v-else>未知</template>
         </a-tooltip>
       </template>
       <template v-if="column.key === 'operation'">
@@ -92,7 +92,7 @@ const requestParams = computed(() => {
       url: boardStore.filterState.url, //路由筛选
       browser: boardStore.filterState.browser, //浏览器筛选
       device: boardStore.filterState.device, //设备筛选
-      region: boardStore.filterState.region, //地区筛选
+      province: boardStore.filterState.province, //地区筛选
       network: boardStore.filterState.network, //网络类型筛选
       client: boardStore.filterState.client, //客户端筛选
       os: boardStore.filterState.os, //操作系统筛选
@@ -181,7 +181,7 @@ const openLog = record => {
       visible: true,
       requestParams: {
         error_type: props.type,
-        err_content: props.type === 'href' ? record.resource_url : record.resource_currenthref,
+        err_content: props.type === 'href' ? record.resource_url : record.current_href,
       },
     })
   }

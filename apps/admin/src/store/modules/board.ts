@@ -90,7 +90,6 @@ export const useBoardStore = defineStore({
       this.latestSDKVersionState = latestSDKVersion
     },
     addFilterValue(values: object): void {
-      console.log(JSON.stringify(values))
       const oldFilter = JSON.stringify(this.filterState)
       Object.assign(this.filterState, values)
       const newFilter = JSON.stringify(this.filterState)

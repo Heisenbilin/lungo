@@ -16,7 +16,7 @@
             <div v-if="project.close_project !== 1 || openFlag" class="h-52">
               <CardContent :project="project" />
             </div>
-            <div v-else class="h-52 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+            <div v-else class="h-52 bg-gray-900 bg-opacity-50 flex-center">
               <a-popconfirm
                 :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
                 ok-text="是"

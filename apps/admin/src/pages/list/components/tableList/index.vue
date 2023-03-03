@@ -134,7 +134,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { message,Pagination} from 'ant-design-vue'
+import { message, Pagination } from 'ant-design-vue'
 import { getProjectList, getProjectBoard, modifyProjectParams } from '@/apis/list'
 import { caculatePageSizeByWidth } from '../utils'
 import { debounce } from '@vben/utils'

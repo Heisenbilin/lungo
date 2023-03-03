@@ -3,11 +3,12 @@ import { cloneDeep, commafy, accSub, getDateWeekday } from '@vben/utils'
 //图表基础配置
 //柱状图与曲线图结合，支持时间范围选择
 const summaryChartConfig: any = {
+  color: ['#5c7bd8', '#ee6666', '#92CC76'], // 蓝绿
   //热力线
   visualMap: {
     show: false,
     type: 'continuous',
-    seriesIndex: 2,
+    seriesIndex: 1,
     min: 0,
     max: 100,
   },
@@ -116,7 +117,6 @@ export const getFaultTolerantChartOption = (data, hasSuccessData = false) => {
   const successCountList: any[] = [] //异常容错数
   const beforeRateList: any[] = [] //容错前异常率
   data.forEach(item => {
-    if (!item) return
     const count = item.resource_num
     const successCount = item.resource_success_num
     const pvCount = item.pv

@@ -11,22 +11,22 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'url'">
         <a-tooltip title="点击跳转至该页面">
-          <a :href="record.currenthref" target="_blank">
-            {{ record.currenthref || '未知' }}
+          <a :href="record.current_href" target="_blank">
+            {{ record.current_href || '未知' }}
           </a>
         </a-tooltip>
       </template>
       <template v-if="column.key === 'operation'">
-        <template v-if="record.currenthref">
+        <template v-if="record.current_href">
           <span class="mr-2" v-if="!requestParams.url">
-            <a @click="() => changeSearchUrl(record.currenthref || '未知')">设为筛选</a>
+            <a @click="() => changeSearchUrl(record.current_href || '未知')">设为筛选</a>
           </span>
           <span class="mr-2" v-else>
             <a @click="cancelSearchUrl">取消筛选</a>
           </span>
         </template>
         <span class="ml-2">
-          <a @click="() => openLog(record.resource_url || record.currenthref)">查看日志</a>
+          <a @click="() => openLog(record.resource_url || record.current_href)">查看日志</a>
         </span>
       </template>
       <template v-if="column.key === 'count'"> {{ commafy(record.count) }} </template>
@@ -64,7 +64,7 @@ const requestParams = computed(() => ({
   url: boardStore.filterState.url, //路由筛选
   browser: boardStore.filterState.browser, //浏览器筛选
   device: boardStore.filterState.device, //设备筛选
-  region: boardStore.filterState.region, //地区筛选
+  province: boardStore.filterState.province, //地区筛选
   network: boardStore.filterState.network, //网络类型筛选
   client: boardStore.filterState.client, //客户端筛选
   os: boardStore.filterState.os, //操作系统筛选
@@ -86,7 +86,7 @@ const pagination = reactive({
 })
 // 生成表格序号
 const tableColumns = computed(() => {
-  const columns: any[] = getDefaultColumns(interfaceType.value)
+  const columns: any[] = getDefaultColumns(interfaceType.value, responseType.value === 'fail')
   columns[0].customRender = item => (pagination.current - 1) * pagination.pageSize + item.index + 1
   return columns
 })

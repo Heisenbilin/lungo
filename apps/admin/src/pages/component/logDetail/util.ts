@@ -143,7 +143,7 @@ const performanceTableColumns = [
     title: '页面URL',
     key: 'url',
     width: '70%',
-    dataIndex: 'currenthref',
+    dataIndex: 'current_href',
   },
 ]
 
@@ -246,12 +246,12 @@ const clearPerformanceData = (data, uaList) => {
         { name: '生成时间', value: item.upload_time },
         {
           name: '页面URL',
-          value: item.currenthref,
+          value: item.current_href,
           isHref: true,
           title: '点击跳转至该页面',
-          href: item.currenthref,
+          href: item.current_href,
         },
-        { name: '访问来源', value: item.referrer },
+        { name: 'referrer', value: item.referrer },
       ],
       performance: {
         dns: item.dns,
@@ -271,7 +271,7 @@ const clearPerformanceData = (data, uaList) => {
       // 用户信息
       userInfo: getUserInfo(item, uaList, 'performance'),
       upload_time: item.upload_time,
-      currenthref: item.currenthref,
+      current_href: item.current_href,
     }))
     total = data.data.total
   }
@@ -328,9 +328,9 @@ const clearRuntimeData = (data, uaList) => {
 const clearResourceData = (data, uaList) => {
   let result = [{}] // resource异常日志数组，每一个元素代表一条日志
   let total = 0
-  if (data.stat === 1 && data.list?.length) {
+  if (data.stat === 1 && data.data.list?.length) {
     // 日志数据清洗成符合antd Descrpition组件配置的格式
-    result = data.list.map(item => ({
+    result = data.data.list.map(item => ({
       // 跳转kibana方法
       jumpKibana: topicId => {
         try {
@@ -342,29 +342,33 @@ const clearResourceData = (data, uaList) => {
       },
       abstract: [
         { name: '生成时间', value: item.upload_time },
-        { name: '异常内容', value: item.resource_url, copyable: true },
+        {
+          name: '异常内容',
+          value: item.url,
+          copyable: true,
+          isHref: true,
+          href: item.url,
+          title: '点击跳转至该文件',
+        },
         {
           name: '页面URL',
-          value: item.resource_currenthref,
+          value: item.current_href,
           isHref: true,
           title: '点击跳转至该页面',
-          href: item.resource_currenthref,
+          href: item.current_href,
         },
-        {
-          name: '容错列表',
-          value: item.error_list.split(','),
-          arrayParse: true,
-          copyable: item.error_list.length !== 0,
-        },
-        {
-          name: '容错次数',
-          value: item.fault_tolerant_count,
-          span: 1,
-        },
-        { name: 'tagName', value: item.resource_tagName, span: 1 },
-        { name: 'xPath', value: item.resource_xPath },
-        { name: 'outerHTML', value: item.resource_outerHTML },
-        { name: 'selector', value: item.resource_selector },
+        // {
+        //   name: '容错列表',
+        //   value: item.error_list?.split(','),
+        //   arrayParse: true,
+        //   copyable: item.error_list?.length !== 0,
+        // },
+        { name: '容错次数', value: item.fault_tolerant, span: 1 },
+        { name: '容错资源', value: item.successsource || '无', span: 1 },
+        { name: 'tagName', value: item.tagName, span: 1 },
+        { name: 'xPath', value: item.XPath },
+        { name: 'outerHTML', value: item.outerHTML },
+        { name: 'selector', value: item.selector },
       ],
       //用户信息
       userInfo: getUserInfo(item, uaList),
@@ -380,9 +384,9 @@ const clearResourceData = (data, uaList) => {
 const clearFaultTolerantData = data => {
   let result = [{}] //资源日志数组，每一个元素代表一条日志
   let total = 0
-  if (data.stat === 1 && data?.list?.length) {
+  if (data.stat === 1 && data.data?.list?.length) {
     //日志数据清洗成符合antd Descrpition组件配置的格式
-    result = data.list.map(item => ({
+    result = data.data.list.map(item => ({
       //跳转kibana方法
       // jumpKibana: (topicId) => {
       //   const msg = item.resource_url
@@ -395,10 +399,10 @@ const clearFaultTolerantData = data => {
         { name: '生成时间', value: item.upload_time },
         {
           name: '页面URL',
-          value: item.resource_currenthref,
+          value: item.current_href,
           isHref: true,
           title: '点击跳转至该页面',
-          href: item.resource_currenthref,
+          href: item.current_href,
         },
         { name: '异常资源', value: item.failsource, copyable: true },
         { name: '容错成功资源', value: item.successsource, copyable: true },
@@ -442,10 +446,10 @@ const clearApiData = (data, uaList) => {
         { name: '请求URL', value: item.resource_url, copyable: true },
         {
           name: '请求页面',
-          value: item.currenthref,
+          value: item.current_href,
           isHref: true,
           title: '点击跳转至该页面',
-          href: item.currenthref,
+          href: item.current_href,
         },
         { name: '请求方法', value: item.method, span: 1 },
         { name: '请求耗时', value: commafy(item.elapsed_time) + ' ms', span: 1 },
@@ -460,7 +464,9 @@ const clearApiData = (data, uaList) => {
             '点击查看traceid链路详情\n注：采用sso登录方式跳转日志中心查看详情。（不通过sso登录可能会造成重复登录/无法重定向的问题）',
           href: getTraceidURL(item.traceid),
         },
-        { name: '访问来源', value: item.referrer },
+        { name: 'referrer', value: item.referrer, span: 1 },
+        { name: '重试次数', value: item.retrying_times, span: 1 },
+        { name: '重试次数', value: item.retrying_times, span: 1 },
         // { name: '接口返回', ...parseJson(item.response) },
       ],
       //用户信息
@@ -531,78 +537,37 @@ const clearGatewayData = (data, uaList) => {
   return { result, total }
 }
 
-//将能JSON解析的字符串解析，否则返回原字符串
-// const parseJson = (str) => {
-//   try {
-//     return { value: JSON.parse(str), jsonParse: true };
-//   } catch {
-//     return { value: str };
-//   }
-// };
-
 //解析用户信息配置
 const getUserInfo = (item, uaList, type = 'normal') => {
   const userInfo = [
-    {
-      name: 'UA',
-      value: item.ua,
-    },
+    { name: 'UA', value: item.ua },
+    { name: '位置', value: [item.country, item.province, item.city].join(' '), span: 1 },
     {
       name: 'IP地址',
       value: item.cip || (item.visit_ip ? JSON.parse(item.visit_ip).cip : ''),
       span: 1,
     },
-    {
-      name: 'ID',
-      value: item.cid || (item.visit_ip ? JSON.parse(item.visit_ip).cid : ''),
-      span: 1,
-    },
-    {
-      name: '浏览器',
-      value: connectValue(item.uaDetails.browser.name, item.uaDetails.browser.version),
-      span: 1,
-    },
-    {
-      name: '内核',
-      value: connectValue(item.uaDetails.engine.name, item.uaDetails.engine.version),
-      span: 1,
-    },
-    {
-      name: '操作系统',
-      value: connectValue(item.uaDetails.os.name, item.uaDetails.os.version),
-      span: 1,
-    },
-    {
-      name: 'CPU',
-      value: item.uaDetails.cpu.architecture,
-      span: 1,
-    },
+    { name: 'UVID', value: item.uv, span: 1 },
+    { name: '浏览器', value: [item.browser, item.browser_version].join(' '), span: 1 },
+    // { name: '内核', value: [item.engine, item.engine_version), span: 1 },
+    { name: '操作系统', value: [item.os.name, item.os_version].join(' '), span: 1 },
+    // { name: 'CPU', value: item.cpu, span: 1 },
     {
       name: '设备',
-      value: connectValue(item.uaDetails.device.vendor, item.uaDetails.device.model),
+      value: [item.device, item.device_type, item.device_vendor].join(' '),
       span: 1,
     },
+    { name: '分辨率', value: item.resolution, span: 1 },
+    { name: '网络', value: [item.operator, item.effective_type].join(' '), span: 1 },
     // { name: 'CPU', value: item.visit_ip && JSON.parse(item.visit_ip).cname, span: 1 },
   ]
   if (type === 'performance') {
-    userInfo.push({ name: '客户端', value: clientUserAgent[item.clientid] })
+    userInfo.push({ name: '客户端', value: clientUserAgent[item.client_id], span: 1 })
     userInfo.push({ name: '设备类型', value: item.effective_type, span: 1 })
     userInfo.push({ name: '网速', value: item.downlink ? item.downlink + ' mb/s' : '', span: 1 })
   }
-  for (const ua of uaList) {
-    userInfo.push({ name: ua, value: item.uaDetails[ua], span: 1 })
-  }
+  uaList.forEach(ua => userInfo.push({ name: ua, value: item[ua], span: 1 }))
   return userInfo
-}
-
-const connectValue = (str1, str2) => {
-  if (!str1) {
-    return ''
-  }
-  if (!str2) {
-    return str1
-  }
-  return str1 + ' ' + str2
 }
 
 const getTraceidURL = traceid => {

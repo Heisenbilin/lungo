@@ -83,23 +83,22 @@ export enum ComponentSizeValueEnum {
 }
 
 export enum ErrorTypeEnum {
-  VUE = "vue",
-  SCRIPT = "script",
-  RESOURCE = "resource",
-  AJAX = "ajax",
-  PROMISE = "promise",
+  VUE = 'vue',
+  SCRIPT = 'script',
+  RESOURCE = 'resource',
+  AJAX = 'ajax',
+  PROMISE = 'promise',
 }
 
 export enum logTypeEnum {
-  PERFORMANCE = "performance",
-  RUNTIME = "runtime",
-  RESOURCE = "resource",
-  FAULTTOLERANT = "faultTolerant",
-  API = "api",
-  GATEWAY = "gateway",
-  DEFAULT = "",
+  PERFORMANCE = 'performance',
+  RUNTIME = 'runtime',
+  RESOURCE = 'resource',
+  FAULTTOLERANT = 'faultTolerant',
+  API = 'api',
+  GATEWAY = 'gateway',
+  DEFAULT = '',
 }
-
 
 export const noNeedMessageKeys = ['start_time', 'end_time', 'dimension']
 
@@ -111,7 +110,7 @@ export const allFilterKeys = [
   'string',
   'browser',
   'device',
-  'region',
+  'province',
   'network',
   'client',
   'os',

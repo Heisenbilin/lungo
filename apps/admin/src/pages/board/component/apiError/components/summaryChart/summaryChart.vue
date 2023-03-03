@@ -12,9 +12,17 @@
           :zrFuncs="{ click: addTimeFilter }"
         />
       </a-tab-pane>
-      <a-tab-pane key="2" tab="请求耗时统计">
+      <a-tab-pane key="2" tab="成功耗时">
         <BaseChart
           :requestParams="requestParams2"
+          :requestFunc="getChartSummaryData"
+          :getOptionFunc="getTimeConsumingChartOption"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
+      </a-tab-pane>
+      <a-tab-pane key="3" tab="失败耗时">
+        <BaseChart
+          :requestParams="requestParams3"
           :requestFunc="getChartSummaryData"
           :getOptionFunc="getTimeConsumingChartOption"
           :zrFuncs="{ click: addTimeFilter }"
@@ -44,7 +52,7 @@ const params = computed(() => ({
   url: boardStore.filterState.url, //路由筛选
   browser: boardStore.filterState.browser, //浏览器筛选
   device: boardStore.filterState.device, //设备筛选
-  region: boardStore.filterState.region, //地区筛选
+  province: boardStore.filterState.province, //地区筛选
   network: boardStore.filterState.network, //网络类型筛选
   client: boardStore.filterState.client, //客户端筛选
   os: boardStore.filterState.os, //操作系统筛选
@@ -57,8 +65,11 @@ const activeKey = ref('1')
 // 成功率请求参数
 const requestParams1 = computed(() => ({ ...params.value, summary_type: 'apiAmount' }))
 
-// 耗时请求参数
-const requestParams2 = computed(() => ({ ...params.value, summary_type: 'timeConsuming' }))
+// 成功请求耗时参数
+const requestParams2 = computed(() => ({ ...params.value, summary_type: 'successTimeConsuming' }))
+
+// 异常请求耗时参数
+const requestParams3 = computed(() => ({ ...params.value, summary_type: 'errorTimeConsuming' }))
 
 const getAmountChartOption = data => getApiAmountChartOption(data, boardStore.getTimeFormatStr)
 </script>

@@ -2,7 +2,7 @@
   <div v-if="loading" class="flex justify-center items-center h-52">
     <a-spin size="large" />
   </div>
-  <div v-else-if="!Object.keys(itemsData).length" class="flex justify-center items-center h-52">
+  <div v-else-if="!Object.keys(itemsData).length" class="flex-center h-52">
     <a-empty :image="simpleImage" />
   </div>
   <div v-else class="flex flex-wrap h-52">

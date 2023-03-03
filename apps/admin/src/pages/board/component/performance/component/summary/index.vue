@@ -50,7 +50,6 @@
           :requestParams="requestParams2"
           :requestFunc="getChartSummaryData"
           :getOptionFunc="getSummaryOption"
-          :bindFuncs="{ legendselectchanged: handleLegendChange }"
           :zrFuncs="{ click: addTimeFilter }"
         />
       </a-tab-pane>
@@ -90,7 +89,7 @@ const requestParams = computed(() => ({
   url: boardStore.filterState.url, //路由筛选
   browser: boardStore.filterState.browser, //浏览器筛选
   device: boardStore.filterState.device, //设备筛选
-  region: boardStore.filterState.region, //地区筛选
+  province: boardStore.filterState.province, //地区筛选
   network: boardStore.filterState.network, //网络类型筛选
   client: boardStore.filterState.client, //客户端筛选
   os: boardStore.filterState.os, //操作系统筛选
@@ -114,25 +113,8 @@ const averageData = ref({
   ready: '',
 })
 
-const selectedLegend = ref({
-  selected: {
-    DNS: false,
-    TCP: false,
-    SSL: false,
-    请求响应: false,
-    内容传输: false,
-    DOM解析: false,
-    资源加载: false,
-    RTT: false,
-    FCP: false,
-    FP: false,
-    RD: false,
-    TTI: false,
-  },
-})
-
 //从后端获取均值瀑布图数据方法
-const getSummaryOption = data => getSummaryChartOption(data, selectedLegend.value)
+const getSummaryOption = data => getSummaryChartOption(data)
 
 //从后端获取均值瀑布图数据方法
 const requestAverageData = async params => {
@@ -142,10 +124,5 @@ const requestAverageData = async params => {
   averageData.value = result?.data ?? { firstbyte: '', dom: '', load: '', ready: '' }
   loading.value = false
   return result
-}
-
-//监听筛选项的变化
-const handleLegendChange = params => {
-  selectedLegend.value = params
 }
 </script>

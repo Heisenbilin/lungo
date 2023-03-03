@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import { computed, watch, ref } from 'vue'
-import { formatDateString } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
 import { getListById } from '@/apis/report/apis'
@@ -30,19 +29,15 @@ const boardStore = useBoardStore()
 const reportStore = useReportStore()
 
 const projectId = computed(() => `${boardStore.boardInfoState.id}`)
+
 // 初始化周报请求时间
-const start_time = formatDateString(
-  dayjs()
-    .subtract(new Date().getDay() + 6, 'days')
-    .valueOf(),
-  'YY-MM-DD',
-)
-const end_time = formatDateString(
-  dayjs()
-    .subtract(new Date().getDay() - 1, 'days')
-    .valueOf(),
-  'YY-MM-DD',
-)
+const start_time = dayjs()
+  .subtract(new Date().getDay() + 6, 'days')
+  .format('YYYY-MM-DD')
+const end_time = dayjs()
+  .subtract(new Date().getDay() - 1, 'days')
+  .format('YYYY-MM-DD')
+
 const startTime = computed(() => reportStore.filterState.start_time || start_time)
 const endTime = computed(() => reportStore.filterState.end_time || end_time)
 

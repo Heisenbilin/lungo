@@ -64,7 +64,7 @@ const requestParams = computed(() => ({
   url: boardStore.filterState.url, //路由筛选
   browser: boardStore.filterState.browser, //浏览器筛选
   device: boardStore.filterState.device, //设备筛选
-  region: boardStore.filterState.region, //地区筛选
+  province: boardStore.filterState.province, //地区筛选
   network: boardStore.filterState.network, //网络类型筛选
   client: boardStore.filterState.client, //客户端筛选
   os: boardStore.filterState.os, //操作系统筛选
@@ -100,7 +100,7 @@ const getTableData = debounce((page = pagination.current) => {
   //开始请求
   getUrlListData({
     ...requestParams.value,
-    // currenthref: searchValue.value,
+    // current_href: searchValue.value,
     limit: `${pagination.pageSize}`,
     page: `${page}`,
   })
@@ -176,7 +176,7 @@ const openLog = url => {
     type: logTypeEnum.PERFORMANCE,
     visible: true,
     requestParams: {
-      currenthref: url,
+      current_href: url,
     },
   })
 }

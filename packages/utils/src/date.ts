@@ -117,15 +117,15 @@ export function formatDateString(time, type) {
     dateTime = `${monthName}-${dayName}`
   } else if (type === 'YY-MM-DD HH') {
     dateTime = `${year}-${monthName}-${dayName} ${hourName}:00`
-  } else if (type === 'YY-MM-DD HH2') {
+  } else if (type === 'YY-MM-DD HH:mm') {
     dateTime = `${year}-${monthName}-${dayName} ${hourName}:${tenMinute}`
   } else if (type === 'mm-dd HH') {
     dateTime = `${monthName}-${dayName} ${hourName}:00`
-  } else if (type === 'mm-dd HH2') {
+  } else if (type === 'mm-dd HH:mm') {
     dateTime = `${monthName}-${dayName} ${hourName}:${tenMinute}`
   } else if (type === 'HH') {
     dateTime = `${hourName}:00`
-  } else if (type === 'HH2') {
+  } else if (type === 'HH:mm') {
     dateTime = `${hourName}:${tenMinute}`
   }
   return dateTime
@@ -196,19 +196,19 @@ export const computeTimeFormatStr = (
   dimension: string | undefined,
 ) => {
   let result = ''
-  if (!(start_time && start_time)) return result
+  if (!(start_time && end_time)) return result
   const duraDays = dayjs(end_time).diff(dayjs(start_time), 'day')
-  const duraYears = dayjs(end_time).diff(dayjs(start_time), 'day')
+  const duraYears = dayjs(end_time).diff(dayjs(start_time), 'year')
   const dime = dimension
   if (duraYears > 0) {
     //当跨度超过1年时，展示年份
-    result = dime === 'day' ? 'YY-MM-DD' : dime === 'hour' ? 'YY-MM-DD HH' : 'YY-MM-DD 2'
+    result = dime === 'day' ? 'YY-MM-DD' : dime === 'hour' ? 'YY-MM-DD hh' : 'YY-MM-DD hh:mm'
   } else if (duraDays > 0 || dime === 'day') {
     //当跨度不超过一年或者展示维度为1天时，不展示年份
-    result = dime === 'day' ? 'mm-dd' : dime === 'hour' ? 'mm-dd HH' : 'mm-dd HH2'
+    result = dime === 'day' ? 'MM-DD' : dime === 'hour' ? 'MM-DD hh' : 'MM-DD hh:mm'
   } else if (dime !== 'day') {
     //当跨度不超过一天时且展示维度不为1天时，不展示天
-    result = dime === 'hour' ? 'HH' : 'HH2'
+    result = dime === 'hour' ? 'hh' : 'hh:mm'
   }
   return result
 }

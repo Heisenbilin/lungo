@@ -229,7 +229,6 @@ const convertData = value => {
 
 //将接口返回值处理成“地域分布”图表数据
 export function getUAMapOption(data) {
-  console.log(data)
   if (!(Array.isArray(data) && data.length)) {
     return null
   }

@@ -10,7 +10,7 @@ const defaultColumns = [
   {
     title: '请求 URL',
     dataIndex: 'resource_url',
-    width: '70%',
+    width: '60%',
     key: 'resource_url',
     // slots: { customRender: "api" },
   },
@@ -22,6 +22,13 @@ const defaultColumns = [
     // slots: { customRender: "count" },
   },
   {
+    key: 'user',
+    title: '影响用户量',
+    align: 'center',
+    dataIndex: 'userCount',
+    width: '10%',
+  },
+  {
     title: '操作',
     align: 'center',
     width: '16%',
@@ -30,20 +37,18 @@ const defaultColumns = [
   },
 ]
 
-export const getDefaultColumns = type => {
-  if (type === 'interface') {
-    return cloneDeep(defaultColumns)
+export const getDefaultColumns = (type, isFail = true) => {
+  const columns = cloneDeep(defaultColumns)
+  if (!isFail) {
+    delete columns[3]
   }
-  if (type === 'domain') {
-    const columns = cloneDeep(defaultColumns)
-    columns[1] = {
-      title: '页面 URL',
-      dataIndex: 'currenthref',
-      width: '70%',
-      key: 'url',
-      // slots: { customRender: "url" },
-    }
+  if (type === 'interface') {
     return columns
   }
-  return cloneDeep(defaultColumns)
+  if (type === 'domain') {
+    columns[1].title = '页面 URL'
+    columns[1].dataIndex = 'current_href'
+    return columns
+  }
+  return columns
 }

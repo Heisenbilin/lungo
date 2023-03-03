@@ -1,5 +1,6 @@
-import { cloneDeep, formatDateString } from '@vben/utils'
+import { cloneDeep } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
+import dayjs from 'dayjs'
 
 const boardStore = useBoardStore()
 
@@ -80,19 +81,12 @@ const keysConfig = {
   tti: { name: 'TTI', value: [] },
 }
 
-var latestsSelectedLegend =
-  '{"DNS":false,"TCP":false,"SSL":false,"请求响应":false,"内容传输":false,"DOM解析":false,"资源加载":false,"RTT":false,"FCP":false,"FP":false,"RD":false,"TTI":false}'
-
 //获取运行时异常图表的option
-export function getSummaryChartOption(data, selectedLegend) {
+export function getSummaryChartOption(data) {
+  console.log(data)
   //1 数据为空时，返回null，图表为空状态
   if (!(Array.isArray(data) && data.length)) {
     return null
-  }
-  //2 legend变换时，直接返回{}（代表不更新chartOption），echarts底层自动进行图表渲染
-  if (latestsSelectedLegend !== JSON.stringify(selectedLegend.selected)) {
-    latestsSelectedLegend = JSON.stringify(selectedLegend.selected)
-    return {}
   }
 
   //3 非legend变换（data变换），处理data数据成图表Option
@@ -114,7 +108,7 @@ export function getSummaryChartOption(data, selectedLegend) {
   //3.2 将valueArrs中的数据存入chartOption中
   //3.2.1 横坐标：时间数据
   chartOption.xAxis.data = valueArrs.time.value.map(time => ({
-    value: formatDateString(time, timeFormatStr),
+    value: dayjs(time).format(timeFormatStr),
     name: time,
   }))
   //时间数据过多时，添加底部滑块
@@ -140,6 +134,20 @@ export function getSummaryChartOption(data, selectedLegend) {
   })
 
   //3.2.4 绑定legend选择的状态
-  chartOption.legend.selected = selectedLegend.selected
+  chartOption.legend.selected = {
+    DNS: false,
+    TCP: false,
+    SSL: false,
+    请求响应: false,
+    内容传输: false,
+    DOM解析: false,
+    资源加载: false,
+    RTT: false,
+    FCP: false,
+    FP: false,
+    RD: false,
+    TTI: false,
+  }
+
   return chartOption
 }

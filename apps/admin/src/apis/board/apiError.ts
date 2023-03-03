@@ -6,7 +6,7 @@ enum Api {
   STATUS_SUMMARY = '/v2/interface/statusSummary',
   CHART_SUMMARY = '/v2/interface/chartSummary',
   TOP_10 = '/v2/interface/top10',
-  API_DETAILS = '/v2/interface/apiDetails',
+  API_DETAILS = '/v2/interface/details',
 }
 
 /**
@@ -51,4 +51,5 @@ export const getTop10Data = (params: any) => request.post<any>({ url: Api.TOP_10
  * @description: 获取接口详情数据
  */
 
-export const getApiDetailsData = (params: any) => request.get<any>({ url: Api.API_DETAILS, params })
+export const getApiDetailsData = (params: any) =>
+  request.post<any>({ url: Api.API_DETAILS, params })

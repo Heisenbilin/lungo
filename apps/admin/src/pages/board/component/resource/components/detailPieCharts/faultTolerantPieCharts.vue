@@ -49,15 +49,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { getErrorHrefData, getFErrorData, getFTimesData } from "@/apis/board/resource";
-import { getFaultTolerantOption, getFaultTolerantTimesOption } from "../../../util/pieChartConfig";
-import { QuestionCircleOutlined } from "@ant-design/icons-vue";
-import { logTypeEnum } from "@vben/constants";
-import { useBoardStore } from "@/store/modules/board";
-import { BaseChart } from "@vben/components";
+import { computed } from 'vue'
+import { getErrorHrefData, getFErrorData, getFTimesData } from '@/apis/board/resource'
+import { getFaultTolerantOption, getFaultTolerantTimesOption } from '../../../util/pieChartConfig'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { logTypeEnum } from '@vben/constants'
+import { useBoardStore } from '@/store/modules/board'
+import { BaseChart } from '@vben/components'
 
-const boardStore = useBoardStore();
+const boardStore = useBoardStore()
 
 //请求参数
 const requestParams = computed(() => ({
@@ -67,12 +67,12 @@ const requestParams = computed(() => ({
   url: boardStore.filterState.url, //路由筛选
   browser: boardStore.filterState.browser, //浏览器筛选
   device: boardStore.filterState.device, //设备筛选
-  region: boardStore.filterState.region, //地区筛选
+  province: boardStore.filterState.province, //地区筛选
   network: boardStore.filterState.network, //网络类型筛选
   client: boardStore.filterState.client, //客户端筛选
   os: boardStore.filterState.os, //操作系统筛选
   resource_type: boardStore.filterState.resource_type, //资源类型筛选
-}));
+}))
 
 // api异常详情相关饼图组件
 const props = defineProps({
@@ -80,17 +80,17 @@ const props = defineProps({
     type: String,
     required: true,
   },
-});
+})
 
 // 打开日志详情
-const openLog = (title) => {
-  const times = title.data.name.split("次")[0];
+const openLog = title => {
+  const times = title.data.name.split('次')[0]
   boardStore.openLogInfoState({
     type: logTypeEnum.FAULTTOLERANT,
     visible: true,
     requestParams: {
       fault_tolerant_count: times,
     },
-  });
-};
+  })
+}
 </script>
