@@ -4,7 +4,7 @@ import { cloneDeep, accAdd, accSub, commafy } from '@vben/utils'
 const performanceStandards = {
   dns: [15, 30, 100],
   tcp: [100, 200, 300],
-  pagessl: [15, 30, 100],
+  ssl: [15, 30, 100],
   ttfb: [300, 500, 700],
   trans: [100, 200, 300],
   dom: [3800, 7300, 9000],
@@ -14,7 +14,7 @@ const performanceStandards = {
 const performanceRules = {
   dns: 't.domainLookupEnd - t.domainLookupStart',
   tcp: 't.connectEnd - t.connectStart',
-  pagessl: 't.connectEnd - t.secureConnectionStart',
+  ssl: 't.connectEnd - t.secureConnectionStart',
   ttfb: 't.responseStart - t.requestStart',
   trans: 't.responseEnd - t.responseStart',
   dom: 't.domInteractive - t.responseEnd',
@@ -102,7 +102,7 @@ export const useWaterfallChartOption = data => {
   const chartOption = cloneDeep(waterfallChartOption)
   const color = ['#a2d2ff', '#bde0fe', '#ffafcc', '#ffc8dd', '#cdb4db', '#bdb2ff', '#a0c4ff']
   var sum = 0
-  const performanceKeys = ['dns', 'tcp', 'pagessl', 'ttfb', 'trans', 'dom', 'res']
+  const performanceKeys = ['dns', 'tcp', 'ssl', 'ttfb', 'trans', 'dom', 'res']
   const arr: [any[], any[], any[]] = [[], [], []]
   performanceKeys.forEach(key => {
     //考虑到数据差值，这里进行补齐
@@ -120,7 +120,7 @@ export const useWaterfallChartOption = data => {
         color: getColor(performanceStandards[key], data[key] || 0), //根据标准动态设置颜色
       },
     })
-    if (key === 'pagessl') {
+    if (key === 'ssl') {
       arr[0].unshift(accSub(sum, data[key] || 0))
     } else {
       arr[0].unshift(sum)

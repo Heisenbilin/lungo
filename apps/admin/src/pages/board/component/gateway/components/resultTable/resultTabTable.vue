@@ -106,6 +106,12 @@ const getResultTableData = debounce((page = pagination.current) => {
         pagination.showQuickJumper = false
       }
     })
+    .catch(() => {
+      dataList.value = []
+      pagination.current = 1
+      pagination.total = 0
+      pagination.showQuickJumper = false
+    })
     .finally(() => {
       loading.value = false
     })

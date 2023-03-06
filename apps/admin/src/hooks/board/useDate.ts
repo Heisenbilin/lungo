@@ -46,7 +46,7 @@ export const addTimeFilter = (params, chart) => {
     //获得图表中点击的列
     let time = op.xAxis[0].data[handleIndex] //获取点击的列名
     try {
-      time = dayjs(time.name || time) // 点击的时间
+      time = dayjs(time.name || time.value || time) // 点击的时间
       const dimension = boardStore.filterState.dimension || 'day' // 维度
       const start_time = time.format('YYYY-MM-DD HH:mm:ss') // 开始时间
       let end_time = '' // 结束时间

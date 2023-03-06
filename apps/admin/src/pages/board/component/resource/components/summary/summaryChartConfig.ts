@@ -3,7 +3,7 @@ import { cloneDeep, commafy, accSub, getDateWeekday } from '@vben/utils'
 //图表基础配置
 //柱状图与曲线图结合，支持时间范围选择
 const summaryChartConfig: any = {
-  color: ['#5c7bd8', '#ee6666', '#92CC76'], // 蓝绿
+  color: ['#5c7bd8', '#ee6666', '#8f7acf', '#92CC76'], // 蓝绿
   //热力线
   visualMap: {
     show: false,
@@ -152,7 +152,7 @@ export const getFaultTolerantChartOption = (data, hasSuccessData = false) => {
       value: successCount,
     })
     beforeRateList.push({
-      name: `接入容错前异常率：${beforeRate}%（优化${accSub(beforeRate, afterRate)}%）`,
+      name: `接入容错前异常率：${beforeRate}%（容错后减少${accSub(beforeRate, afterRate)}%）`,
       value: beforeRate,
     })
   })

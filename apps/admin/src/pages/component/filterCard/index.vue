@@ -92,7 +92,6 @@ type RangeValue = [dayjs.Dayjs, dayjs.Dayjs]
 const boardStore = useBoardStore()
 const panelStore = usePanelStore()
 
-const type = 'YY-MM-DD hh-mm-ss'
 const props = defineProps({
   boardType: {
     type: String,
@@ -172,10 +171,10 @@ const disabledDate = current => {
 // 清除所有筛选条件
 const clearFilter = () => {
   //把当前选择的时间转换为API规范的时间
-  const start_time = dayjs().startOf('day').subtract(6, 'd').format(type)
-  const end_time = dayjs().second(0).format(type)
-  store.commitFilterState({ start_time, end_time, dimension: 'hour' })
-  filterDimension.value = 'hour'
+  const start_time = dayjs().startOf('day').subtract(6, 'd').format('YYYY-MM-DD HH-mm-ss')
+  const end_time = dayjs().second(0).format('YYYY-MM-DD HH-mm-ss')
+  store.commitFilterState({ start_time, end_time, dimension: 'day' })
+  filterDimension.value = 'day'
 }
 </script>
 ``

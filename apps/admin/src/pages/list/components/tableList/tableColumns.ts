@@ -8,7 +8,7 @@ const columns = [
     width: '160px',
   },
   {
-    title: 'SDK版本',
+    title: 'SDK',
     dataIndex: 'sdk',
     key: 'sdk',
     // slots: { customRender: 'sdk' },
@@ -55,15 +55,15 @@ const columns = [
     align: 'center',
   },
   {
-    title: '运行时异常率',
+    title: '运行时异常',
     key: 'runtimeError',
     dataIndex: 'runtimeError',
     // slots: { customRender: 'runtimeError' },
-    width: '50px',
+    width: '65px',
     align: 'center',
   },
   {
-    title: '资源异常率',
+    title: '资源异常',
     key: 'resourceError',
     dataIndex: 'error',
     // slots: { customRender: 'resourceError' },
@@ -75,7 +75,7 @@ const columns = [
     key: 'success',
     dataIndex: 'success',
     // slots: { customRender: 'success' },
-    width: '50px',
+    width: '65px',
     align: 'center',
   },
   // {

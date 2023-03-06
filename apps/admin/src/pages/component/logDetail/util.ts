@@ -256,7 +256,7 @@ const clearPerformanceData = (data, uaList) => {
       performance: {
         dns: item.dns,
         tcp: item.tcp,
-        pagessl: item.pagessl,
+        ssl: item.ssl,
         ttfb: item.ttfb,
         firstbyte: item.firstbyte,
         trans: item.trans,

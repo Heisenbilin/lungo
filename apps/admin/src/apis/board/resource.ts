@@ -5,13 +5,13 @@ enum Api {
   GET_FILE_TYPE_DATA = '/v2/resource/errTypeSummary',
   GET_TOP10_DATA = '/v2/resource/top10',
   GET_ERROR_HREF_DATA = '/v2/resource/errHref',
-  GET_F_ERROR_DATA = '/resource/faultTolerantError',
+  GET_F_ERROR_DATA = '/v2/resource/faultTolerantError',
   GET_F_ERROR_LIST_DATA = '/v2/resource/faultTolerantErrorList',
   GET_F_TIMES_DATA = '/v2/resource/faultTolerantTimes',
   CHECK_FAULT_TOLERANT = '/v2/resource/checkResource',
   GET_LIST_DATA = '/v2/resource/list',
   GET_DETAILS = '/v2/resource/details',
-  GET_F_ERROR_DETAILS = '/v1/resource/faultTolerantErrorDetails',
+  GET_F_ERROR_DETAILS = '/v2/resource/faultTolerantErrorDetails',
   GET_ERROR_CHART = '/v2/resource/errorChart',
 }
 
@@ -93,4 +93,4 @@ export const getErrorDetails = (params: any) => request.post<any>({ url: Api.GET
  */
 
 export const getFErrorDetails = (params: any) =>
-  request.get<any>({ url: Api.GET_F_ERROR_DETAILS, params })
+  request.post<any>({ url: Api.GET_F_ERROR_DETAILS, params })

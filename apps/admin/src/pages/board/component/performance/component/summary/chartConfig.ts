@@ -69,7 +69,7 @@ const keysConfig = {
   pageload: { name: '页面完全加载', value: [] },
   dns: { name: 'DNS', value: [] },
   tcp: { name: 'TCP', value: [] },
-  pagessl: { name: 'SSL', value: [] },
+  ssl: { name: 'SSL', value: [] },
   ttfb: { name: '请求响应', value: [] },
   trans: { name: '内容传输', value: [] },
   dom: { name: 'DOM解析', value: [] },

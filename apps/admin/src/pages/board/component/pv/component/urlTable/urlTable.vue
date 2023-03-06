@@ -124,6 +124,13 @@ const getTableData = debounce((page = pagination.current) => {
         pagination.showQuickJumper = false
       }
     })
+    .catch(err => {
+      console.log(err)
+      dataList.value = []
+      pagination.current = 1
+      pagination.total = 0
+      pagination.showQuickJumper = false
+    })
     .finally(() => {
       loading.value = false
     })

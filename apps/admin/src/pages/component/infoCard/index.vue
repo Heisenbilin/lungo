@@ -34,7 +34,7 @@
         </template>
       </InfoTag>
       <InfoTag title="eventid" :content="projectInfo.eventid" />
-      <InfoTag title="SDK版本">
+      <InfoTag title="SDK">
         <template #content>
           <SDKVersion :currentSDKVersion="projectInfo.sdk_version" />
         </template>
