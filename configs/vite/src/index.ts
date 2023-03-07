@@ -81,7 +81,7 @@ export async function createViteConfig(
             mockjs: ['mockjs'],
           },
         },
-        external:['ant-design-vue']
+        external:['ant-design-vue/dist/light.css']
       },
       sourcemap: 'hidden',
     },
