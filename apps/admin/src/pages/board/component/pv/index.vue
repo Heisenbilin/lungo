@@ -26,15 +26,17 @@
 </template>
 
 <script setup lang="ts">
-<<<<<<< Updated upstream
 import { computed } from 'vue'
 import { versionStringCompare } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
-import PVUVSummary from './component/pvuvsummary.vue'
-import uaInfo from './component/uaInfo/index.vue'
-import UrlTable from './component/urlTable/urlTable.vue'
-import UAMap from './component/uaMap/index.vue'
-import DetailPieCharts from './component/detailPieCharts.vue'
+//通用看板组件
+import PVUVSummary from "./component/pvuvsummary.vue";
+import uaInfo from "./component/uaInfo/index.vue";
+import UrlTable from "./component/urlTable/urlTable.vue";
+import UAMap from "./component/uaMap/index.vue";
+import DetailPieCharts from "./component/detailPieCharts.vue";
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore()
 
@@ -44,14 +46,5 @@ const isSafeSDK = computed<boolean>(() =>
       versionStringCompare(boardStore.boardInfoState.sdk_version, '2.4.0') !== -1,
   ),
 )
-=======
-//通用看板组件
-import PVUVSummary from "./component/pvuvsummary.vue";
-import uaInfo from "./component/uaInfo/index.vue";
-import UrlTable from "./component/urlTable/urlTable.vue";
-import UAMap from "./component/uaMap/index.vue";
-import DetailPieCharts from "./component/detailPieCharts.vue";
-import { useAppTheme } from '@vben/hooks';
-const { isDark } = useAppTheme()
->>>>>>> Stashed changes
+
 </script>
