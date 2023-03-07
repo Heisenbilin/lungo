@@ -81,6 +81,7 @@ export async function createViteConfig(
             mockjs: ['mockjs'],
           },
         },
+        external:['ant-design-vue']
       },
       sourcemap: 'hidden',
     },
