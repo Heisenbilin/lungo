@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container-full">
+  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full" @change="handleTabChange">
       <a-tab-pane key="success" tab="全部请求">
         <ResultTabTable type="success" v-model:searchUrl="tabSearchValue.successUrl" />
@@ -9,11 +9,7 @@
       </a-tab-pane>
       <template #rightExtra>
         <div class="box-border w-80">
-          <a-input-search
-            v-model:value="searchValue"
-            placeholder="请输入URL关键词匹配"
-            @search="onSearch"
-          />
+          <a-input-search v-model:value="searchValue" placeholder="请输入URL关键词匹配" @search="onSearch" />
         </div>
       </template>
     </a-tabs>
@@ -24,6 +20,8 @@
 //api异常数据汇总图表Tab框
 import { reactive, ref, watch } from 'vue';
 import ResultTabTable from './resultTabTable.vue';
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 //tab页key值与对应的看板type
 const activeKey = ref('success');

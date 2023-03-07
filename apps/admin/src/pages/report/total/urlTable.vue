@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <h1>五、页面详细质量周报</h1>
+    <h1  :style="{ 'color': !isDark ? '' : 'rgb(212, 212, 213)' }">五、页面详细质量周报</h1>
     <div v-if="showLighthouseStatus" class="lighthouse-wrapper">
       <span>URL执行lighthouse成功数量：{{ lighthouseSuccessTotal }}</span>
       <span>URL执行lighthouse失败数量：{{ lighthouseErrorTotal }}</span>
@@ -51,6 +51,8 @@ import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useReportStore } from '@/store/modules/report'
 import { cloneDeep } from '@vben/utils'
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const reportStore = useReportStore()
 const projectId = computed(() => reportStore.boardInfoState.id)

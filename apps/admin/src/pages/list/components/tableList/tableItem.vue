@@ -8,28 +8,22 @@
     </template>
     <router-link v-if="!needGray" class="grid justify-items-center center w-full" :to="linkToUrl">
       <!-- 正常 -->
-      <div
-        class="flex my-1 items-center whitespace-nowrap center"
-        @click="() => useStoreProject(project, 'board')"
-      >
-        <div class="text-1xl text-gray-700 font-medium center">
+      <div class="flex my-1 items-center whitespace-nowrap center" @click="() => useStoreProject(project, 'board')">
+        <div :class="['text-1xl', { 'text-gray-700': !isDark }, 'font-medium', 'center']">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
         <div class="text-gray-500 center" v-if="unit.length">{{ unit }}</div>
       </div>
     </router-link>
-    <router-link
-      v-else
-      class="grid justify-items-center content-center w-full opacity-80"
-      :to="linkToUrl"
-    >
+    <router-link v-else class="grid justify-items-center content-center w-full opacity-80" :to="linkToUrl">
       <!-- 具有一定灰度、字体更小 -->
 
       <div class="flex my-1 items-center center" @click="() => useStoreProject(project, 'board')">
-        <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center">
+        <div :class="['text-1xl', { 'text-gray-700': !isDark }, 'font-medium', 'whitespace-nowrap', 'center']">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
-        <div class="text-gray-500 center" v-if="unit.length">{{ unit }}</div>
+        <div class="text-gray-500 center" :style="{ color: isDark ? '#eee' : '' }" v-if="unit.length">{{ unit }}
+        </div>
       </div>
     </router-link>
   </a-tooltip>
@@ -39,7 +33,8 @@ import { commafy } from '@vben/utils'
 // import {a-tooltip} from 'ant-design-vue'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
-
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 const props = defineProps({
   data: {
     type: Object,

@@ -6,14 +6,7 @@
     <a-empty :image="simpleImage" />
   </div>
   <div v-else class="flex flex-wrap h-52">
-    <ContentItem
-      :data="itemsData.pvData"
-      :project="project"
-      title="PV量"
-      unit=""
-      :needCommafy="true"
-      jumpKey="pageview"
-    />
+    <ContentItem :data="itemsData.pvData" :project="project" title="PV量" unit="" :needCommafy="true" jumpKey="pageview" />
     <div class="w-2/4 mt-1 px-2">
       <div class="text-gray-500 pl-2">
         {{ filterState.dimension === 'hour' ? '今日' : '本周' }}活跃趋势
@@ -22,18 +15,11 @@
         <BasicChart :chartOption="chartOption" height="3.25rem" />
       </div>
     </div>
-    <ContentItem
-      :data="itemsData.uvData"
-      :project="project"
-      title="UV量"
-      unit=""
-      :needCommafy="true"
-      jumpKey="pageview"
-    />
+    <ContentItem :data="itemsData.uvData" :project="project" title="UV量" unit="" :needCommafy="true" jumpKey="pageview" />
     <div class="flex w-full mt-4">
       <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
         <template #title>
-          <div class="text-gray-800">
+          <div>
             分数来源：<br />
             页面加载速度(25%)<br />
             运行时异常率(25%)<br />
@@ -46,45 +32,14 @@
           <div class="text-gray-600 my-1">实时评分</div>
         </div>
       </a-tooltip>
-      <ContentItem
-        :data="itemsData.pageloadData"
-        :project="project"
-        title="页面加载"
-        unit="ms"
-        :needCommafy="true"
-        :reverseColor="true"
-        :needGray="true"
-        jumpKey="performance"
-      />
-      <ContentItem
-        :data="itemsData.runtimeData"
-        :project="project"
-        title="运行时异常率"
-        unit="%"
-        numName="运行时异常量"
-        :reverseColor="true"
-        :needGray="true"
-        jumpKey="runtime"
-      />
-      <ContentItem
-        :data="itemsData.resourceData"
-        :project="project"
-        title="资源异常率"
-        unit="%"
-        numName="资源异常量"
-        :reverseColor="true"
-        :needGray="true"
-        jumpKey="resource"
-      />
-      <ContentItem
-        :data="itemsData.ajaxData"
-        :project="project"
-        title="请求成功率"
-        unit="%"
-        numName="成功请求量"
-        :needGray="true"
-        jumpKey="api"
-      />
+      <ContentItem :data="itemsData.pageloadData" :project="project" title="页面加载" unit="ms" :needCommafy="true"
+        :reverseColor="true" :needGray="true" jumpKey="performance" />
+      <ContentItem :data="itemsData.runtimeData" :project="project" title="运行时异常率" unit="%" numName="运行时异常量"
+        :reverseColor="true" :needGray="true" jumpKey="runtime" />
+      <ContentItem :data="itemsData.resourceData" :project="project" title="资源异常率" unit="%" numName="资源异常量"
+        :reverseColor="true" :needGray="true" jumpKey="resource" />
+      <ContentItem :data="itemsData.ajaxData" :project="project" title="请求成功率" unit="%" numName="成功请求量" :needGray="true"
+        jumpKey="api" />
     </div>
   </div>
 </template>

@@ -8,6 +8,8 @@ import { createNamespace } from '@vben/utils'
 import DutyAid from '@xes/duty-aid';
 import { getGlobalConfig } from '@vben/utils';
 import { useI18n } from '@vben/locale'
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const { t } = useI18n()
 
@@ -50,7 +52,7 @@ onMounted(() => {
 const curYear = computed(() => new Date().getFullYear());
 </script>
 <template>
-  <footer :class="bem()" :style="style">
+  <footer :class="bem()" :style="{ 'background-color': !isDark ? '' : 'rgb(53,54,58)' }">
     <div class="lh-32px">
       <VbenText depth="3" class="lh-32px">Copyright &copy;©{{ curYear }} 美校事业部-大班云-前端研发部 All Rights Reserved，由
         <a class="link" href="https://cloud.xesv5.com/#/index">未来云</a> 提供计算服务 | 联系我们：

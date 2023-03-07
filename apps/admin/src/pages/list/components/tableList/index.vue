@@ -1,20 +1,9 @@
 <template>
-  <a-table
-    :loading="loading === 'loading'"
-    :columns="columns"
-    :dataSource="huatuoProjectList"
-    :pagination="false"
-    :scroll="{ x: 1600 }"
-    :customRow="customRowWithScore"
-  >
+  <a-table :loading="loading === 'loading'" :columns="columns" :dataSource="huatuoProjectList" :pagination="false"
+    :scroll="{ x: 1600 }" :customRow="customRowWithScore">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'name'">
-        <tableHeader
-          :project="record"
-          @star="starProject"
-          :closeDays="closeDays"
-          :isStar="isStar"
-        />
+        <tableHeader :project="record" @star="starProject" :closeDays="closeDays" :isStar="isStar" />
       </template>
       <template v-if="column.key === 'sdk'">
         <div :style="{ display: show(record.close_project) }">
@@ -22,10 +11,7 @@
         </div>
       </template>
       <template v-if="column.key === 'score'">
-        <div
-          class="text-center items-center opacity-80"
-          :style="{ display: show(record.close_project) }"
-        >
+        <div class="text-center items-center opacity-80" :style="{ display: show(record.close_project) }">
           <tableContent :projectId="record.id" title="分数" :data="record" :loading="loadingT" />
         </div>
       </template>
@@ -42,63 +28,36 @@
       </template>
       <template v-if="column.key === 'runtimeError'">
         <div :style="{ display: show(record.close_project) }">
-          <tableContent
-            :projectId="record.id"
-            title="运行时异常率"
-            :data="record"
-            :loading="loadingT"
-          />
+          <tableContent :projectId="record.id" title="运行时异常率" :data="record" :loading="loadingT" />
         </div>
       </template>
       <template v-if="column.key === 'resourceError'">
         <div :style="{ display: show(record.close_project) }">
-          <tableContent
-            :projectId="record.id"
-            title="资源异常率"
-            :data="record"
-            :loading="loadingT"
-          />
+          <tableContent :projectId="record.id" title="资源异常率" :data="record" :loading="loadingT" />
         </div>
       </template>
       <template v-if="column.key === 'success'">
         <div :style="{ display: show(record.close_project) }">
-          <tableContent
-            :projectId="record.id"
-            title="请求成功率"
-            :data="record"
-            :loading="loadingT"
-          />
+          <tableContent :projectId="record.id" title="请求成功率" :data="record" :loading="loadingT" />
         </div>
       </template>
       <template v-if="column.key === 'chartOption'">
         <div class="content" :style="{ display: show(record.close_project) }">
-          <tableContent
-            :projectId="record.id"
-            title="活跃趋势"
-            :data="record"
-            :loading="loadingT"
-          />
+          <tableContent :projectId="record.id" title="活跃趋势" :data="record" :loading="loadingT" />
         </div>
       </template>
       <template v-if="column.key === 'pageloadData'">
         <div :style="{ display: show(record.close_project) }">
-          <tableContent
-            :projectId="record.id"
-            title="页面加载"
-            :data="record"
-            :loading="loadingT"
-          />
+          <tableContent :projectId="record.id" title="页面加载" :data="record" :loading="loadingT" />
         </div>
       </template>
       <template v-if="column.key === 'screen'">
         <div v-if="record.close_project === 1">
-          <a-popconfirm
-            :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
-            ok-text="是"
-            cancel-text="否"
-            @confirm="openProject(record.id, index)"
-          >
-            <a-button type="primary"> <InfoCircleOutlined /> 开启项目 </a-button>
+          <a-popconfirm :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`" ok-text="是" cancel-text="否"
+            @confirm="openProject(record.id, index)">
+            <a-button type="primary">
+              <InfoCircleOutlined /> 开启项目
+            </a-button>
           </a-popconfirm>
         </div>
         <div v-else>
@@ -106,34 +65,21 @@
         </div>
       </template>
       <template v-if="column.key === 'action'">
-        <tableActions
-          :projectId="record.id"
-          :collectFlag="record.collectFlag"
-          @edit="id => emit('edit', id)"
-          @star="starProject"
-          :isStar="isStar"
-        />
+        <tableActions :projectId="record.id" :collectFlag="record.collectFlag" @edit="id => emit('edit', id)"
+          @star="starProject" :isStar="isStar" />
       </template>
     </template>
   </a-table>
   <div class="text-right mt-4">
-    <Pagination
-      @change="getHuatuoProjectList"
-      v-model:current="currentPage"
-      v-model:pageSize="pageSize"
-      :total="total"
-      show-size-changer
-      :pageSizeOptions="
+    <Pagination @change="getHuatuoProjectList" v-model:current="currentPage" v-model:pageSize="pageSize" :total="total"
+      show-size-changer :pageSizeOptions="
         [screenPageSize, screenPageSize * 2, screenPageSize * 3, screenPageSize * 4].map(String)
-      "
-      :show-total="total => `共${total}个应用`"
-      :show-quick-jumper="total / pageSize > 10 ? true : false"
-    />
+      " :show-total="total => `共${total}个应用`" :show-quick-jumper="total / pageSize > 10 ? true : false" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, reactive, Ref, ref, watch } from 'vue'
 import { message, Pagination } from 'ant-design-vue'
 import { getProjectList, getProjectBoard, modifyProjectParams } from '@/apis/list'
 import { caculatePageSizeByWidth } from '../utils'
@@ -149,6 +95,7 @@ import tableHeader from './tableHeader.vue'
 import tableScreen from './tableScreen.vue'
 import tableContent from './tableContent.vue'
 import tableSdk from './tableSdk.vue'
+import { useAppTheme } from '@vben/hooks'
 
 const listStore = useListStore()
 const boardStore = useBoardStore()
@@ -339,14 +286,30 @@ const { filterState } = storeToRefs(boardStore)
 // const dimension = computed(() => boardStore.getFilterState.dimension);
 // 周/天变化
 watch(() => listStore.startTime, initTableContentData)
+const { isDark } = useAppTheme()
+
+const themeStyles = reactive({
+  background: 'rgba(253, 247, 247);',
+})
+watch(isDark, (isdark) => {
+  themeStyles.background = isdark ? 'rgb(20,20,20)' : 'rgba(253, 247, 247)'
+}, {
+  immediate: true
+})
 </script>
 
 <style lang="scss" scoped>
 :deep(.table-row-red) {
-  background: rgba(253, 247, 247);
+  background: v-bind('themeStyles.background');
 
   td {
-    background: rgba(253, 247, 247);
+    background: v-bind('themeStyles.background');
+  }
+}
+
+:deep(.dark-table-cell) {
+  * {
+    // color: v-bind('themeStyles.color') !important;
   }
 }
 

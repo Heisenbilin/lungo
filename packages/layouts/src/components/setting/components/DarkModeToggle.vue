@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useAppTheme } from '@vben/hooks'
 const { isDark, toggleTheme } = useAppTheme()
+
 </script>
 
 <template>

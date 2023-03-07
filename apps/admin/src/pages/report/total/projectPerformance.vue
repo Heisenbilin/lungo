@@ -1,5 +1,5 @@
 <template>
-  <h1>三、项目性能指标</h1>
+  <h1 :style="{ 'color': !isDark ? '' : 'rgb(212, 212, 213)' }">三、项目性能指标</h1>
   <div class="w-full p-4">
     <div class="chart-title">本周页面加载均值瀑布图</div>
     <BaseChart :requestParams="requestParams" :requestFunc="PerformanceApis.getAverageData"
@@ -20,6 +20,8 @@ import BaseChart from '@vben/components/src/chart/baseChart.vue';
 // import moment from 'moment'
 import dayjs from 'dayjs'
 import { useReportStore } from '@/store/modules/report';
+import { useAppTheme } from '@vben/hooks'
+const { isDark } = useAppTheme()
 const reportStore = useReportStore()
 const requestParams = computed(() => ({
   project_id: `${reportStore.boardInfoState.id}`,

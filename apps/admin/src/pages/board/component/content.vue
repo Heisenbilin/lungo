@@ -44,6 +44,8 @@ import FAQ from '../../component/FAQ.vue'
 // import intro from 'intro.js'
 // import 'intro.js/introjs.css'
 import { getQuery } from '@vben/router'
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore()
 const userStore = useUserStore()
@@ -71,6 +73,9 @@ const initWatch = () => {
 
 const areaRef = ref<Nullable<HTMLElement>>(null)
 const { setWatermark } = useWatermark(areaRef)
+watch(isDark, () => {
+  setWatermark(`${userName}-${boardStore.boardInfoState.project_name}`)
+})
 
 onMounted(initWatch)
 onActivated(initWatch)

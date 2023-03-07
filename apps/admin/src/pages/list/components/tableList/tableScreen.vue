@@ -4,20 +4,20 @@
       <router-link :to="boardUrl">
         <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'board')">
           <AreaChartOutlined style="color: #7ed591" class="text-lg mr-1" />
-          <span class="text-gray-700">监控</span>
+          <span :class="[ { 'text-gray-700': !isDark }]">监控</span>
         </a-button>
       </router-link>
       <router-link :to="dataBoardUrl">
         <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'panel')">
           <PieChartOutlined style="color: #f77f00" class="text-lg mr-1" />
-          <span class="text-gray-700">大盘</span>
+          <span :class="[ { 'text-gray-700': !isDark }]">大盘</span>
         </a-button>
       </router-link>
       <div v-if="!isEditProject">
         <router-link :to="reportUrl">
           <a-button type="link" class="!w-full" @click="() => useStoreProject(project, 'report')">
             <FundOutlined style="color: #f07d70" class="text-lg mr-1" />
-            <span class="text-gray-700">周报</span>
+            <span :class="[ { 'text-gray-700': !isDark }]">周报</span>
           </a-button>
         </router-link>
       </div>
@@ -29,6 +29,8 @@
 import { AreaChartOutlined, FundOutlined, PieChartOutlined } from '@ant-design/icons-vue'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const props = defineProps({
   project: {

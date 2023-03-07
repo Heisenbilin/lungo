@@ -1,5 +1,6 @@
 <template>
-  <div class="relative mt-3 chart-container" id="project-boardReport-content" ref="areaRef">
+  <div class="relative mt-3 chart-container" id="project-boardReport-content" ref="areaRef"
+    :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <projectScore />
     <projectBase />
     <projectPerformance />
@@ -24,6 +25,8 @@ import projectPerformance from '@/pages/report/total/projectPerformance.vue'
 import projectStability from '@/pages/report/total/stability/index.vue'
 import projectBase from '@/pages/report/total/projectBase.vue'
 import urlTable from '@/pages/report/total/urlTable.vue'
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const reprotStore = useReportStore()
 const userStore = useUserStore()
@@ -47,6 +50,9 @@ const initWatch = () => {
 const areaRef = ref<Nullable<HTMLElement>>(null)
 
 const { setWatermark } = useWatermark(areaRef)
+watch(isDark, () => {
+  setWatermark(`${userName}-${boardInfoState.value.project_name}`)
+})
 
 //当使用手机查看时的警告信息
 const warnMessage = ref('')

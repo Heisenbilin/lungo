@@ -1,4 +1,6 @@
 import { accSub, accMul, accDiv } from '@vben/utils'; //accAdd,
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 export const INDEX_LIST = [
   {
     name: 'DNS 域名解析时间',
@@ -130,7 +132,7 @@ export function getAvgOptions(data) {
       text: '1.1 常见性能指标平均值',
       textStyle: {
         fontSize: 20,
-        color: 'rgba(0, 0, 0, 0.85)',
+        color:  !isDark ? 'rgba(0, 0, 0, 0.85)' : 'rgb(212, 212, 213)',
         fontWeight: 'bold',
         margin: '20px 10px',
       },
@@ -208,7 +210,7 @@ export function getProOptions(data) {
       text: '1.3 常见性能日趋势图',
       textStyle: {
         fontSize: 20,
-        color: 'rgba(0, 0, 0, 0.85)',
+        color:  !isDark ? 'rgba(0, 0, 0, 0.85)' : 'rgb(212, 212, 213)',
         fontWeight: 'bold',
         margin: '20px 10px',
       },

@@ -1,25 +1,21 @@
 <template>
-  <div class="flex h-20 flex-row justify-center chart-container-full">
+  <div class="flex h-20 flex-row justify-center chart-container-full"
+    :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
       <div class="w-1/7 grid justify-items-center content-center space-y-1">
-        <a-tooltip
-          :overlayStyle="{ maxWidth: '500px' }"
-          title="加载异常、且未容错/容错失败的资源的总和"
-        >
-          <div class="text-gray-500">失败资源数 <QuestionCircleOutlined /></div>
+        <a-tooltip :overlayStyle="{ maxWidth: '500px' }" title="加载异常、且未容错/容错失败的资源的总和">
+          <div class="text-gray-500">失败资源数
+            <QuestionCircleOutlined />
+          </div>
         </a-tooltip>
         <div class="text-3xl font-medium">{{ commafy(summaryData.errTotal) }}</div>
       </div>
-      <div
-        class="w-1/7 grid justify-items-center content-center space-y-1"
-        v-if="faultTolerantStatus === 'accessed'"
-      >
-        <a-tooltip
-          :overlayStyle="{ maxWidth: '500px' }"
-          title="经过资源容错过程后，成功容错的资源数量总和。"
-        >
-          <div class="text-gray-500">容错成功资源数 <QuestionCircleOutlined /></div>
+      <div class="w-1/7 grid justify-items-center content-center space-y-1" v-if="faultTolerantStatus === 'accessed'">
+        <a-tooltip :overlayStyle="{ maxWidth: '500px' }" title="经过资源容错过程后，成功容错的资源数量总和。">
+          <div class="text-gray-500">容错成功资源数
+            <QuestionCircleOutlined />
+          </div>
         </a-tooltip>
         <div class="text-3xl font-medium">{{ commafy(summaryData.successCount) }}</div>
       </div>
@@ -38,7 +34,8 @@
       <div class="w-1/7 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
           <a-tooltip title="计算规则：总异常数/总PV数">
-            总异常率 <QuestionCircleOutlined />
+            总异常率
+            <QuestionCircleOutlined />
           </a-tooltip>
         </div>
         <div class="flex items-end">
@@ -59,7 +56,8 @@ import { getSummaryData } from '@/apis/board/resource'
 import { commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
-
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 defineProps({
   faultTolerantStatus: {
     type: String,

@@ -121,15 +121,14 @@ export const useAppConfig = defineStore({
     },
   }),
   getters: {
-    isSidebar: (state) => state.navBarMode === NavBarModeEnum.SIDEBAR,
-    isTopMenu: (state) => state.navBarMode === NavBarModeEnum.TOP_MENU,
-    isMixSidebar: (state) => state.navBarMode === NavBarModeEnum.MIX_SIDEBAR,
-    isMix: (state) => state.navBarMode === NavBarModeEnum.MIX,
-    isMixMode: (state) =>
-      state.menu.mode === MenuModeEnum.INLINE &&
-      state.navBarMode === NavBarModeEnum.MIX,
-    isHorizontal: (state) => state.menu.mode === MenuModeEnum.HORIZONTAL,
-    getTabTarCache: (state) => state.tabTar.cache,
+    isSidebar: state => state.navBarMode === NavBarModeEnum.SIDEBAR,
+    isTopMenu: state => state.navBarMode === NavBarModeEnum.TOP_MENU,
+    isMixSidebar: state => state.navBarMode === NavBarModeEnum.MIX_SIDEBAR,
+    isMix: state => state.navBarMode === NavBarModeEnum.MIX,
+    isMixMode: state =>
+      state.menu.mode === MenuModeEnum.INLINE && state.navBarMode === NavBarModeEnum.MIX,
+    isHorizontal: state => state.menu.mode === MenuModeEnum.HORIZONTAL,
+    getTabTarCache: state => state.tabTar.cache,
   },
   actions: {
     setTheme(value: ThemeEnum) {
@@ -186,11 +185,7 @@ export const useAppConfig = defineStore({
     setCanEmbedIFramePage(value: boolean) {
       this.canEmbedIFramePage = value
     },
-    setSidebar(
-      value: Partial<
-        Omit<SidebarConfigOptions, 'mixSidebarWidth' | 'collapsedWidth'>
-      >,
-    ) {
+    setSidebar(value: Partial<Omit<SidebarConfigOptions, 'mixSidebarWidth' | 'collapsedWidth'>>) {
       _assign(this.sidebar, value)
     },
     setMenu(value: Partial<MenuConfigOptions>) {

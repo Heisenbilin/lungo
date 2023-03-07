@@ -1,5 +1,6 @@
 <template>
-  <div class="flex h-20 flex-row justify-center chart-container-full">
+  <div class="flex h-20 flex-row justify-center chart-container-full"
+    :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
       <div class="w-1/6 grid justify-items-center content-center space-y-1">
@@ -17,7 +18,8 @@
       <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
           <a-tooltip title="计算规则：总异常数/总PV数">
-            总异常率 <QuestionCircleOutlined />
+            总异常率
+            <QuestionCircleOutlined />
           </a-tooltip>
         </div>
         <div class="flex items-end">
@@ -35,18 +37,14 @@
       </div>
     </template>
   </div>
-  <div class="chart-container-full">
+  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <template #rightExtra>
         <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
       </template>
       <a-tab-pane key="1" tab="异常量与异常率">
-        <BaseChart
-          :requestParams="requestParams"
-          :requestFunc="requestSummaryData"
-          :getOptionFunc="getSummaryOption"
-          :zrFuncs="{ click: addTimeFilter }"
-        />
+        <BaseChart :requestParams="requestParams" :requestFunc="requestSummaryData" :getOptionFunc="getSummaryOption"
+          :zrFuncs="{ click: addTimeFilter }" />
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -62,7 +60,8 @@ import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getSummaryData, getChartData } from '@/apis/board/runtime'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { BaseChart } from '@vben/components'
-
+import { useAppTheme } from '@vben/hooks'
+const { isDark } = useAppTheme()
 const boardStore = useBoardStore()
 
 const loading = ref(true)
@@ -98,13 +97,13 @@ const requestSummaryData = async params => {
     .then(result => (summaryData.value = result.data))
     .catch(
       () =>
-        (summaryData.value = {
-          errorCount: '',
-          errorTypeCount: '',
-          errorRate: '',
-          pvTotal: '',
-          userCount: '',
-        }),
+      (summaryData.value = {
+        errorCount: '',
+        errorTypeCount: '',
+        errorRate: '',
+        pvTotal: '',
+        userCount: '',
+      }),
     )
     .finally(() => (loading.value = false))
   return getChartData(params)

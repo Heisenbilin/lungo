@@ -1,14 +1,10 @@
 <template>
-  <div class="chart-container-full">
+  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">
       异常Top10 <a-tag color="green" class="filter-tag"> 双击查看日志 </a-tag>
     </div>
-    <BaseChart
-      :requestParams="requestParams"
-      :bindFuncs="{ dblclick: openLog }"
-      :requestFunc="getTop10Data"
-      :getOptionFunc="getChartOption"
-    />
+    <BaseChart :requestParams="requestParams" :bindFuncs="{ dblclick: openLog }" :requestFunc="getTop10Data"
+      :getOptionFunc="getChartOption" />
   </div>
 </template>
 
@@ -20,7 +16,8 @@ import { useBoardStore } from '@/store/modules/board'
 import { logTypeEnum } from '@vben/constants'
 import { getTop10Data } from '@/apis/board/runtime'
 import { BaseChart } from '@vben/components'
-
+import { useAppTheme } from '@vben/hooks'
+const { isDark } = useAppTheme()
 const boardStore = useBoardStore()
 
 //请求参数

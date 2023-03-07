@@ -2,10 +2,8 @@
   <div class="relative">
     <div class="card">
       <router-link class="flex items-center px-0 py-3" :to="linkToUrl" style="width: 100%">
-        <span
-          class="ml-2 text-gray-800 text-lg truncate trun-cate w-64"
-          @click="() => useStoreProject(project, 'board')"
-        >
+        <span :class="['ml-2', { 'text-gray-800': !isDark }, 'text-lg', 'truncate', 'trun-cate', ' w-64']"
+          @click="() => useStoreProject(project, 'board')">
           <a-tag v-if="project.saas === 'yes'" color="red">学科</a-tag>
           <a-tag v-else color="blue">素质</a-tag>
           {{ project.project_name }}
@@ -20,6 +18,8 @@
 // import {a-tag} from 'ant-design-vue'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const props = defineProps({
   project: {

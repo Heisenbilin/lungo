@@ -1,33 +1,19 @@
 <template>
-  <div class="chart-container-full">
+  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <a-tab-pane key="1" tab="请求成功率">
-        <BaseChart
-          :requestParams="requestParams1"
-          :requestFunc="getChartSummary"
-          :getOptionFunc="getAmountChartOption"
-        />
+        <BaseChart :requestParams="requestParams1" :requestFunc="getChartSummary" :getOptionFunc="getAmountChartOption" />
       </a-tab-pane>
       <a-tab-pane key="2" tab="请求耗时">
-        <BaseChart
-          :requestParams="requestParams2"
-          :requestFunc="getChartSummary"
-          :getOptionFunc="getTimeConsumingChartOption"
-        />
+        <BaseChart :requestParams="requestParams2" :requestFunc="getChartSummary"
+          :getOptionFunc="getTimeConsumingChartOption" />
       </a-tab-pane>
       <a-tab-pane key="3" tab="upstream请求成功率">
-        <BaseChart
-          :requestParams="requestParams3"
-          :requestFunc="getChartSummary"
-          :getOptionFunc="getAmountChartOption"
-        />
+        <BaseChart :requestParams="requestParams3" :requestFunc="getChartSummary" :getOptionFunc="getAmountChartOption" />
       </a-tab-pane>
       <a-tab-pane key="4" tab="upstream请求耗时">
-        <BaseChart
-          :requestParams="requestParams4"
-          :requestFunc="getChartSummary"
-          :getOptionFunc="getTimeConsumingChartOption"
-        />
+        <BaseChart :requestParams="requestParams4" :requestFunc="getChartSummary"
+          :getOptionFunc="getTimeConsumingChartOption" />
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -40,6 +26,8 @@ import { getChartSummary } from "@/apis/board/gateway";
 import { useBoardStore } from "@/store/modules/board";
 import { getApiAmountChartOption, getTimeConsumingChartOption } from "./summaryChartConfig";
 import { BaseChart } from "@vben/components";
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore();
 

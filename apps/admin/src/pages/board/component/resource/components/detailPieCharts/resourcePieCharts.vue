@@ -1,39 +1,25 @@
 <template>
-  <div class="chart-container">
+  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">
       异常资源文件类型
-      <a-tooltip
-        :overlayStyle="{ maxWidth: '500px' }"
-        title="异常资源（接入容错时指：未容错/容错失败资源）的文件类型"
-      >
+      <a-tooltip :overlayStyle="{ maxWidth: '500px' }" title="异常资源（接入容错时指：未容错/容错失败资源）的文件类型">
         <QuestionCircleOutlined />
       </a-tooltip>
       <a-tag color="blue" class="filter-tag"> 单击筛选：异常文件类型 </a-tag>
     </div>
-    <BaseChart
-      :requestParams="requestParams"
-      :requestFunc="getFileTypeData"
-      :getOptionFunc="getErrorTypeOption"
-      :bindFuncs="{ click: addFilter }"
-    />
+    <BaseChart :requestParams="requestParams" :requestFunc="getFileTypeData" :getOptionFunc="getErrorTypeOption"
+      :bindFuncs="{ click: addFilter }" />
   </div>
-  <div class="chart-container">
+  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">
       异常资源Top10
-      <a-tooltip
-        :overlayStyle="{ maxWidth: '500px' }"
-        title="异常资源（接入容错时指：未容错/容错失败资源）Top10"
-      >
+      <a-tooltip :overlayStyle="{ maxWidth: '500px' }" title="异常资源（接入容错时指：未容错/容错失败资源）Top10">
         <QuestionCircleOutlined />
       </a-tooltip>
       <a-tag color="green" class="filter-tag"> 双击查看日志 </a-tag>
     </div>
-    <BaseChart
-      :requestParams="requestParams"
-      :requestFunc="getTop10Data"
-      :bindFuncs="{ dblclick: openLog }"
-      :getOptionFunc="getTop10Option"
-    />
+    <BaseChart :requestParams="requestParams" :requestFunc="getTop10Data" :bindFuncs="{ dblclick: openLog }"
+      :getOptionFunc="getTop10Option" />
   </div>
 </template>
 
@@ -46,7 +32,8 @@ import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { logTypeEnum } from '@vben/constants'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
-
+import { useAppTheme } from '@vben/hooks'
+const { isDark } = useAppTheme()
 const boardStore = useBoardStore()
 
 //请求参数

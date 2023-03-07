@@ -1,8 +1,4 @@
-import {
-  StoreGeneric,
-  storeToRefs,
-  useAppConfig as appConfigStore,
-} from '@vben/stores'
+import { StoreGeneric, storeToRefs, useAppConfig as appConfigStore } from '@vben/stores'
 import { DefineAppConfigOptions } from '@vben/types'
 import { HandlerSettingEnum, ThemeEnum } from '@vben/constants'
 import { _merge } from '@vben/utils'
@@ -25,7 +21,7 @@ export const useAppConfig = () => {
   ) as unknown as DefineAppConfigOptions & DefineAppConfigStoreGetters
   const { openSettingDrawer, sidebar, menu, isMixSidebar } = appConfigOptions
   const setAppConfig = (configs: DeepPartial<DefineAppConfigOptions>) => {
-    useAppConfigStore.$patch((state) => {
+    useAppConfigStore.$patch(state => {
       _merge(state, configs)
     })
   }
@@ -49,8 +45,7 @@ export const useAppConfig = () => {
   async function copyConfigs() {
     try {
       const { copy, isSupported } = useClipboard()
-      if (!isSupported)
-        return console.error('Your browser does not support Clipboard API')
+      if (!isSupported) return console.error('Your browser does not support Clipboard API')
       const source = reactive(_omit(appConfigOptions, ['openSettingDrawer']))
       await copy(JSON.stringify(source))
     } catch (e) {

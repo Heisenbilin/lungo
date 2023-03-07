@@ -1,5 +1,6 @@
 <template>
-  <div class="flex h-20 flex-row justify-center chart-container-full">
+  <div class="flex h-20 flex-row justify-center chart-container-full"
+    :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
       <div class="w-1/6 grid justify-items-center content-center space-y-1">
@@ -50,6 +51,8 @@ import { getSummaryData } from '@/apis/board/apiError'
 import { commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore()
 
@@ -83,14 +86,14 @@ const requestSummaryData = async () => {
   const result = await getSummaryData(requestParams.value)
   summaryData.value = result?.data
     ? {
-        total: result.data.total,
-        error: result.data.error,
-        errUserCount: result.data.error_uv,
-        averageTime: result.data.averageTime,
-        successRate: result.data.total
-          ? ((result.data.success * 100) / result.data.total).toFixed(2)
-          : '0',
-      }
+      total: result.data.total,
+      error: result.data.error,
+      errUserCount: result.data.error_uv,
+      averageTime: result.data.averageTime,
+      successRate: result.data.total
+        ? ((result.data.success * 100) / result.data.total).toFixed(2)
+        : '0',
+    }
     : { total: '', error: '', errUserCount: '', successRate: '', averageTime: '' }
   loading.value = false
 }

@@ -1,39 +1,23 @@
 <template>
-  <div class="chart-container">
+  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">请求响应码</div>
-    <BaseChart
-      :requestParams="requestParams1"
-      :requestFunc="getStatusSummary"
-      :getOptionFunc="getStatusChartOption"
-      :bindFuncs="{ click: (title) => openStatusLog(title, 'status') }"
-    />
+    <BaseChart :requestParams="requestParams1" :requestFunc="getStatusSummary" :getOptionFunc="getStatusChartOption"
+      :bindFuncs="{ click: (title) => openStatusLog(title, 'status') }" />
   </div>
-  <div class="chart-container">
+  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">upstream响应码</div>
-    <BaseChart
-      :requestParams="requestParams2"
-      :requestFunc="getStatusSummary"
-      :getOptionFunc="getStatusChartOption"
-      :bindFuncs="{ click: (title) => openStatusLog(title, 'upstream') }"
-    />
+    <BaseChart :requestParams="requestParams2" :requestFunc="getStatusSummary" :getOptionFunc="getStatusChartOption"
+      :bindFuncs="{ click: (title) => openStatusLog(title, 'upstream') }" />
   </div>
-  <div class="chart-container">
+  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">请求耗时统计</div>
-    <BaseChart
-      :requestParams="requestParams1"
-      :requestFunc="getCostTime"
-      :getOptionFunc="getGateWayCostTimeChartOption"
-      :bindFuncs="{ click: (title) => openCostTimeLog(title, 'status') }"
-    />
+    <BaseChart :requestParams="requestParams1" :requestFunc="getCostTime" :getOptionFunc="getGateWayCostTimeChartOption"
+      :bindFuncs="{ click: (title) => openCostTimeLog(title, 'status') }" />
   </div>
-  <div class="chart-container">
+  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">upstream耗时统计</div>
-    <BaseChart
-      :requestParams="requestParams2"
-      :requestFunc="getCostTime"
-      :getOptionFunc="getGateWayCostTimeChartOption"
-      :bindFuncs="{ click: (title) => openCostTimeLog(title, 'upstream') }"
-    />
+    <BaseChart :requestParams="requestParams2" :requestFunc="getCostTime" :getOptionFunc="getGateWayCostTimeChartOption"
+      :bindFuncs="{ click: (title) => openCostTimeLog(title, 'upstream') }" />
   </div>
 </template>
 
@@ -45,6 +29,8 @@ import { useBoardStore } from "@/store/modules/board";
 import { getStatusChartOption, getGateWayCostTimeChartOption } from "../../util/pieChartConfig";
 import { logTypeEnum } from "@vben/constants";
 import { BaseChart } from "@vben/components";
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore();
 

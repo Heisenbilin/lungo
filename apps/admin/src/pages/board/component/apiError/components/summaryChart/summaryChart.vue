@@ -1,32 +1,20 @@
 <template>
-  <div class="chart-container-full">
+  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <template #rightExtra>
         <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
       </template>
       <a-tab-pane key="1" tab="异常量与异常率">
-        <BaseChart
-          :requestParams="requestParams1"
-          :requestFunc="getChartSummaryData"
-          :getOptionFunc="getAmountChartOption"
-          :zrFuncs="{ click: addTimeFilter }"
-        />
+        <BaseChart :requestParams="requestParams1" :requestFunc="getChartSummaryData"
+          :getOptionFunc="getAmountChartOption" :zrFuncs="{ click: addTimeFilter }" />
       </a-tab-pane>
       <a-tab-pane key="2" tab="成功耗时">
-        <BaseChart
-          :requestParams="requestParams2"
-          :requestFunc="getChartSummaryData"
-          :getOptionFunc="getTimeConsumingChartOption"
-          :zrFuncs="{ click: addTimeFilter }"
-        />
+        <BaseChart :requestParams="requestParams2" :requestFunc="getChartSummaryData"
+          :getOptionFunc="getTimeConsumingChartOption" :zrFuncs="{ click: addTimeFilter }" />
       </a-tab-pane>
       <a-tab-pane key="3" tab="失败耗时">
-        <BaseChart
-          :requestParams="requestParams3"
-          :requestFunc="getChartSummaryData"
-          :getOptionFunc="getTimeConsumingChartOption"
-          :zrFuncs="{ click: addTimeFilter }"
-        />
+        <BaseChart :requestParams="requestParams3" :requestFunc="getChartSummaryData"
+          :getOptionFunc="getTimeConsumingChartOption" :zrFuncs="{ click: addTimeFilter }" />
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -40,6 +28,8 @@ import { useBoardStore } from '@/store/modules/board'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { getApiAmountChartOption, getTimeConsumingChartOption } from './summaryChartConfig'
 import { BaseChart } from '@vben/components'
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore()
 

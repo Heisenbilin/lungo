@@ -13,17 +13,13 @@ import { configSvgIconsPlugin } from './svg-icons'
 import { configUnocssPlugin } from './unocss'
 import { createConfigPlugin } from './config'
 import { configHttpsPlugin } from './https'
-import {configAntdPlugin} from './antd'
+import { configAntdPlugin } from './antd'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
 
 // import Components from 'unplugin-vue-components/vite';
 // import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
-export async function configVitePlugins(
-  root: string,
-  viteEnv: ViteEnv,
-  isBuild: boolean,
-) {
+export async function configVitePlugins(root: string, viteEnv: ViteEnv, isBuild: boolean) {
   const {
     VITE_USE_IMAGEMIN,
     VITE_USE_MOCK,
@@ -54,7 +50,6 @@ export async function configVitePlugins(
   // unocss
   vitePlugins.push(configUnocssPlugin() as PluginOption)
 
-  
   vitePlugins.push(createConfigPlugin())
 
   // vite-plugin-svg-icons
@@ -81,10 +76,7 @@ export async function configVitePlugins(
 
     // rollup-plugin-gzip
     vitePlugins.push(
-      configCompressPlugin(
-        VITE_BUILD_COMPRESS,
-        VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE,
-      ),
+      configCompressPlugin(VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE),
     )
   }
 

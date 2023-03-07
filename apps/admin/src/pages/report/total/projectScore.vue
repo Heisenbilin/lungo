@@ -1,5 +1,5 @@
 <template>
-  <h1>一、项目总评</h1>
+  <h1 :style="{ 'color': !isDark ? '' : 'rgb(212, 212, 213)' }">一、项目总评</h1>
   <div v-if="loading === 0" class="min-h-60 flex-center">
     <a-spin size="large" />
   </div>
@@ -12,7 +12,7 @@
         key="duration-model"
         :progress="total_score"
       />
-      <div class="pro-label">项目质量</div>
+      <div class="pro-label" :style="{ 'color': !isDark ? '' : 'rgb(212, 212, 213)' }">项目质量</div>
     </a-col>
     <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6">
       <circle-progress
@@ -21,7 +21,7 @@
         key="duration-model"
         :progress="performance_score"
       />
-      <div class="pro-label">页面性能</div>
+      <div class="pro-label" >页面性能</div>
     </a-col>
     <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6">
       <circle-progress
@@ -30,14 +30,14 @@
         key="duration-model"
         :progress="stability_score"
       />
-      <div class="pro-label">服务稳定</div>
+      <div class="pro-label" >服务稳定</div>
     </a-col>
     <a-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6">
       <div class="ranking">
         <span class="rank">{{ rank }}</span>
         <span class="total">/{{ total }}</span>
       </div>
-      <div class="pro-label">综合排名</div>
+      <div class="pro-label" >综合排名</div>
     </a-col>
   </a-row>
 </template>
@@ -48,7 +48,11 @@ import CircleProgress from '@vben/components/src/chart/circleProgress.vue'
 import { getProjectRanking } from '@/apis/report/apis'
 import { Empty } from 'ant-design-vue'
 import { useReportStore } from '@/store/modules/report'
+import { useAppTheme } from '@vben/hooks'
+const { isDark } = useAppTheme()
+
 const reportStore = useReportStore()
+
 
 const total_score = ref(0)
 const performance_score = ref(0)

@@ -1,15 +1,10 @@
 <template>
-  <div class="chart-container-full">
+  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">
       地域分布 <a-tag color="blue" class="filter-tag"> 单击筛选：地域 </a-tag>
     </div>
-    <BaseChart
-      height="500px"
-      :requestParams="requestParams"
-      :requestFunc="getRegionData"
-      :getOptionFunc="getUAMapOption"
-      :bindFuncs="{ click: title => boardStore.addFilterValue({ province: title.data.name }) }"
-    />
+    <BaseChart height="500px" :requestParams="requestParams" :requestFunc="getRegionData" :getOptionFunc="getUAMapOption"
+      :bindFuncs="{ click: title => boardStore.addFilterValue({ province: title.data.name }) }" />
   </div>
 </template>
 <script setup lang="ts">
@@ -18,7 +13,8 @@ import { getRegionData } from '@/apis/board/pv'
 import { getUAMapOption } from './uaMapConfig'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
-
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 const boardStore = useBoardStore()
 
 //请求参数

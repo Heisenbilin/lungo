@@ -10,7 +10,9 @@ import { setupPinia } from '@vben/stores'
 import { initApplication } from './init-application'
 import { registerComponents } from '../init-components'
 // import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
+// import 'ant-design-vue/dist/antd.css'
+import 'ant-design-vue/dist/light.css'
+import 'ant-design-vue/dist/dark.css'
 
 import XesLoggerSDK from '@xes/xes_fe_log'
 

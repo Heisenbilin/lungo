@@ -9,9 +9,7 @@ import { configVitePlugins } from './plugins'
 import type { PresetType } from './presets'
 import { createPreset } from './presets'
 import { resolveProxy, wrapperEnv } from './utils'
-import Components from 'unplugin-vue-components/vite';
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
-
+import { getThemeVariables } from '../../../apps/admin/node_modules/ant-design-vue/dist/theme'
 export * from './constants'
 
 export async function createViteConfig(
@@ -28,8 +26,7 @@ export async function createViteConfig(
 
   const root = cwd
   const env = loadEnv(mode, root)
-  const { dependencies, devDependencies, name, version } =
-    await readPackageJSON(cwd)
+  const { dependencies, devDependencies, name, version } = await readPackageJSON(cwd)
 
   // The boolean type read by loadEnv is a string. This function can be converted to boolean type
   const viteEnv = wrapperEnv(env)
@@ -39,7 +36,7 @@ export async function createViteConfig(
     VITE_USE_MOCK,
     VITE_DROP_CONSOLE,
     VITE_USE_HTTPS,
-    VITE_SDK_APPID
+    VITE_SDK_APPID,
   } = viteEnv
   const commonConfig: UserConfig = {
     root,
@@ -85,14 +82,23 @@ export async function createViteConfig(
           },
         },
       },
-      sourcemap: 'hidden'
+      sourcemap: 'hidden',
     },
+    // css: {
+    //   preprocessorOptions: {
+    //     less: {
+    //       modifyVars: getThemeVariables({ dark: true }),
+    //       javascriptEnabled: true,
+    //     },
+    //   },
+    // },
+
     optimizeDeps: {
       include: ['dayjs/locale/en', 'dayjs/locale/zh-cn', '@iconify/iconify'],
       // exclude: ['vue-demi'],
     },
     // plugins:await configVitePlugins(root, viteEnv, command === 'build'),
-    
+
     // plugins:[
     //   ...await configVitePlugins(root, viteEnv, command === 'build'),
     //   Components({

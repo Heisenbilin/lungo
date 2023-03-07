@@ -1,29 +1,21 @@
 <template>
-  <div class="chart-container">
+  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">
       响应码
       <a-tag color="blue" class="filter-tag"> 单击设置筛选 </a-tag>
       <a-tag color="green" class="float-right"> 双击查看日志 </a-tag>
     </div>
-    <BaseChart
-      :requestParams="requestParams"
-      :requestFunc="getStatusData"
-      :getOptionFunc="getStatusChartOption"
-      :bindFuncs="{ click: title => addFilter(title, 'api_status'), dblclick: openStatusLog }"
-    />
+    <BaseChart :requestParams="requestParams" :requestFunc="getStatusData" :getOptionFunc="getStatusChartOption"
+      :bindFuncs="{ click: title => addFilter(title, 'api_status'), dblclick: openStatusLog }" />
   </div>
-  <div class="chart-container">
+  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <div class="chart-title">
       耗时统计
       <a-tag color="blue" class="filter-tag"> 单击设置筛选 </a-tag>
       <a-tag color="green" class="float-right"> 双击查看日志 </a-tag>
     </div>
-    <BaseChart
-      :requestParams="requestParams"
-      :requestFunc="getCostTimeData"
-      :getOptionFunc="getCostTimeChartOption"
-      :bindFuncs="{ click: title => addFilter(title, 'api_range'), dblclick: openCostTimeLog }"
-    />
+    <BaseChart :requestParams="requestParams" :requestFunc="getCostTimeData" :getOptionFunc="getCostTimeChartOption"
+      :bindFuncs="{ click: title => addFilter(title, 'api_range'), dblclick: openCostTimeLog }" />
   </div>
 </template>
 
@@ -35,7 +27,8 @@ import { useBoardStore } from '@/store/modules/board'
 import { getStatusChartOption, getCostTimeChartOption } from '../../util/pieChartConfig'
 import { logTypeEnum } from '@vben/constants'
 import { BaseChart } from '@vben/components'
-
+import { useAppTheme } from '@vben/hooks'
+const { isDark } = useAppTheme()
 const boardStore = useBoardStore()
 
 //请求参数

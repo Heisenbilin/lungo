@@ -1,11 +1,18 @@
 import { getCurrentInstance, onBeforeUnmount, ref, Ref, shallowRef, unref } from 'vue'
-import { addResizeListener, removeResizeListener, useRafThrottle, isDef } from '@vben/utils'
+import {
+  addResizeListener,
+  removeResizeListener,
+  useRafThrottle,
+  isDef,
+  useLocalStorage,
+} from '@vben/utils'
 
 const domSymbol = Symbol('watermark-dom')
 
 export function useWatermark(
   appendEl: Ref<HTMLElement | null> = ref(document.body) as Ref<HTMLElement>,
 ) {
+  const themeState = useLocalStorage('theme', 'light')
   const func = useRafThrottle(function () {
     const el = unref(appendEl)
     if (!el) return
@@ -34,7 +41,9 @@ export function useWatermark(
     if (cans) {
       cans.rotate((-20 * Math.PI) / 120)
       cans.font = '15px Vedana'
-      cans.fillStyle = 'rgba(0, 0, 0, 0.15)'
+      cans.fillStyle =
+      themeState.value === 'light' ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255,0.15)'
+      // cans.fillStyle = 'rgba(0, 0, 0, 0.15)'
       cans.textAlign = 'left'
       cans.textBaseline = 'middle'
       cans.fillText(str, width / 20, height)

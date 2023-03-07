@@ -22,6 +22,6 @@ import ProjectList from './components/projectList.vue'
   width: 100%;
   min-height: 50rem;
   padding: 16px;
-  background-color: white;
+  /* background-color: white; */
 }
 </style>

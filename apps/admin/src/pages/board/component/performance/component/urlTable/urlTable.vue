@@ -1,16 +1,9 @@
 <template>
-  <div class="chart-container-full">
+  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <a-tab-pane key="url" tab="页面性能统计">
-        <a-table
-          :columns="tableColumns"
-          :data-source="dataList"
-          size="middle"
-          :pagination="pagination"
-          @change="handleTableChange"
-          tableLayout="fixed"
-          :loading="loading"
-        >
+        <a-table :columns="tableColumns" :data-source="dataList" size="middle" :pagination="pagination"
+          @change="handleTableChange" tableLayout="fixed" :loading="loading">
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'url'">
               <a-tooltip title="点击跳转至该页面">
@@ -43,7 +36,8 @@ import { getUrlListData } from '@/apis/board/performance'
 import { debounce, commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { logTypeEnum } from '@vben/constants'
-
+import { useAppTheme } from '@vben/hooks';
+const { isDark } = useAppTheme()
 const boardStore = useBoardStore()
 
 //请求参数
