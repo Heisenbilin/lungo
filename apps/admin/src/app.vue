@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { useLocale } from '@vben/locale'
 import { useAppTheme, useWebTitle } from '@vben/hooks'
-
+import { watch } from "vue"
 import { REDIRECT_NAME } from '@vben/constants'
 import { getGlobalConfig, computedAsync } from '@vben/utils'
 import AppProvider from '@/layout/components/app/AppProvider'
 import { dateEnUS, dateZhCN, enUS, zhCN } from 'naive-ui'
 import { useAppStore } from '@/store/modules/app'
-import { useAppConfig } from '@vben/stores'
 // Support Multi-language
 const { getLocale } = useLocale()
 // Listening to page changes and dynamically changing site titles
@@ -47,11 +46,18 @@ const locale = computedAsync(async () => {
 })
 
 const { theme } = useAppTheme()
-
+watch(theme, (newTheme) => {
+  const rootHtml = document.querySelector('html')
+  if (rootHtml && rootHtml?.getAttribute('id') === 'rootHtml') {
+    rootHtml.setAttribute('data-theme', newTheme as unknown as string)
+  }
+}, {
+  immediate: true
+})
 </script>
 
 <template>
-  <a-config-provider :prefix-cls="theme">
+  <a-config-provider>
     <VbenConfig :locale="locale" :date-locale="dateLocale">
       <VbenNotificationProvider>
         <VbenMessageProvider>

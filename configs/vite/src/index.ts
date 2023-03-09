@@ -9,9 +9,8 @@ import { configVitePlugins } from './plugins'
 import type { PresetType } from './presets'
 import { createPreset } from './presets'
 import { resolveProxy, wrapperEnv } from './utils'
-import { getThemeVariables } from '../../../apps/admin/node_modules/ant-design-vue/dist/theme'
 export * from './constants'
-
+import { createAdditionalData } from '../../../apps/admin/src/theme/themeConfig'
 export async function createViteConfig(
   command: 'build' | 'serve',
   mode: string,
@@ -81,18 +80,24 @@ export async function createViteConfig(
             mockjs: ['mockjs'],
           },
         },
-        external:['ant-design-vue/dist/light.css','ant-design-vue/dist/dark.css']
+        // external: ['ant-design-vue/dist/light.css', 'ant-design-vue/dist/dark.css'],
       },
       sourcemap: 'hidden',
     },
-    // css: {
-    //   preprocessorOptions: {
-    //     less: {
-    //       modifyVars: getThemeVariables({ dark: true }),
-    //       javascriptEnabled: true,
-    //     },
-    //   },
-    // },
+    css: {
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            hack: `true;@import "${require.resolve(
+              `${cwd}/node_modules/ant-design-vue/lib/style/color/colorPalette.less`,
+            )}";`,
+            'root-entry-name': 'variable',
+          },
+          javascriptEnabled: true,
+          additionalData: createAdditionalData(cwd),
+        },
+      },
+    },
 
     optimizeDeps: {
       include: ['dayjs/locale/en', 'dayjs/locale/zh-cn', '@iconify/iconify'],

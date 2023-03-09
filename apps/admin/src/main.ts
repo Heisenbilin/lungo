@@ -1,5 +1,6 @@
 import '@vben/styles'
 // import 'ant-design-vue/dist/antd.variable.css'
+
 import 'virtual:svg-icons-register'
 import App from './app.vue'
 import { createApp } from 'vue'
@@ -10,10 +11,9 @@ import { setupPinia } from '@vben/stores'
 import { initApplication } from './init-application'
 import { registerComponents } from '../init-components'
 // import Antd from 'ant-design-vue'
-// import 'ant-design-vue/dist/antd.css'
-import 'ant-design-vue/dist/light.css'
-import 'ant-design-vue/dist/dark.css'
-
+// import './theme/ant-dark.css'
+// import './theme/ant-light.css'
+import 'ant-design-vue/dist/antd.less'
 import XesLoggerSDK from '@xes/xes_fe_log'
 
 const SDKConfig = {
