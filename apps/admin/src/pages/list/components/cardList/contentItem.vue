@@ -1,7 +1,7 @@
 <template>
   <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
     <template #title>
-      <div>
+      <div class="text-gray-800">
         <div v-if="needCommafy">
           {{ last }}同比{{ title }}：{{ commafy(parseFloat(data.yesterdayData))
           }}{{ unit.length ? unit : '' }}
@@ -9,19 +9,19 @@
         <div v-else>
           {{ current }}{{ numName }}：{{ commafy(parseFloat(data.todayData))
           }}{{
-  data.todayTotalData !== undefined
-  ? `（总请求量：${commafy(parseFloat(data.todayTotalData))})`
-  : ''
-}}
+            data.todayTotalData !== undefined
+              ? `（总请求量：${commafy(parseFloat(data.todayTotalData))})`
+              : ''
+          }}
           <br />
           {{ current }}{{ title }}：{{ parseFloat(data.todayRate) }}%
           <br />
           {{ last }}同比{{ numName }}：{{ commafy(parseFloat(data.yesterdayData))
           }}{{
-  data.yesterTotalData !== undefined
-  ? `（总请求量：${commafy(parseFloat(data.yesterTotalData))})`
-  : ''
-}}
+            data.yesterTotalData !== undefined
+              ? `（总请求量：${commafy(parseFloat(data.yesterTotalData))})`
+              : ''
+          }}
           <br />
           {{ last }}同比{{ title }}：{{ parseFloat(data.yesterdayRate) }}%
         </div>
@@ -30,7 +30,10 @@
       </div>
     </template>
     <router-link v-if="!needGray" :to="linkToUrl" class="w-1/4">
-      <div @click="() => useStoreProject(project, 'board')" class="grid justify-items-center content-center">
+      <div
+        @click="() => useStoreProject(project, 'board')"
+        class="grid justify-items-center content-center"
+      >
         <!-- 正常 -->
         <div class="text-gray-500 text-base whitespace-nowrap">{{ title }}</div>
         <div class="flex my-1 items-end whitespace-nowrap">
@@ -44,7 +47,10 @@
           <span v-if="data.increaseRate === '0.00'" class="text-gray-600">
             {{ parseFloat(data.increaseRate) }}%-
           </span>
-          <span v-else-if="!data.increaseRate.includes('-')" :class="reverseColor ? 'text-red-600' : 'text-green-600'">
+          <span
+            v-else-if="!data.increaseRate.includes('-')"
+            :class="reverseColor ? 'text-red-600' : 'text-green-600'"
+          >
             {{ parseFloat(data.increaseRate) }}%
             <ArrowUpOutlined />
           </span>
@@ -57,10 +63,15 @@
     </router-link>
     <router-link v-else :to="linkToUrl" class="w-1/5 opacity-80">
       <!-- 具有一定灰度、字体更小 -->
-      <div @click="() => useStoreProject(project, 'board')" class="grid justify-items-center content-center">
+      <div
+        @click="() => useStoreProject(project, 'board')"
+        class="grid justify-items-center content-center"
+      >
         <div class="text-gray-500 whitespace-nowrap">{{ title }}</div>
         <div class="flex my-1 items-end">
-          <div :class="['text-2xl', { 'text-gray-700': !isDark }, 'font-medium', 'whitespace-nowrap']">
+          <div
+            :class="['text-2xl', { 'text-gray-700': !isDark }, 'font-medium', 'whitespace-nowrap']"
+          >
             {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
           </div>
           <div class="text-gray-500" v-if="unit.length">{{ unit }}</div>
@@ -70,7 +81,10 @@
           <span v-if="data.increaseRate === '0.00'" class="text-gray-600">
             {{ parseFloat(data.increaseRate) }}%-
           </span>
-          <span v-else-if="!data.increaseRate.includes('-')" :class="reverseColor ? 'text-red-600' : 'text-green-600'">
+          <span
+            v-else-if="!data.increaseRate.includes('-')"
+            :class="reverseColor ? 'text-red-600' : 'text-green-600'"
+          >
             {{ parseFloat(data.increaseRate) }}%
             <ArrowUpOutlined />
           </span>
