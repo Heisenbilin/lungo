@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <a-tab-pane key="all" tab="全部请求">
         <ResultTabTable type="all_interface" :searchUrl="searchValue" />
@@ -26,7 +26,7 @@
 //api异常数据汇总图表Tab框
 import { ref } from 'vue'
 import ResultTabTable from './resultTabTable.vue'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 //tab页key值与对应的看板type

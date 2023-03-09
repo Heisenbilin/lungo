@@ -1,6 +1,6 @@
 <template>
   <div class="stability-title">
-    <h1 :style="{ 'color': !isDark ? '' : 'rgb(212, 212, 213)' }">四、项目稳定性指标</h1>
+    <h1 :style="{ color: !isDark ? '' : 'rgb(212, 212, 213)' }">四、项目稳定性指标</h1>
     <div class="access-status float-right text-base l">
       <project-access-status />
     </div>
@@ -183,7 +183,7 @@ const openRuntimeLogDrawer = (error_content, error_type) => {
   })
 }
 
-// 打开runtime异常抽屉
+// 打开resource异常抽屉
 const openResourceLogDrawer = (err_content, error_type) => {
   boardStore.openLogInfoState({
     type: logTypeEnum.RESOURCE,

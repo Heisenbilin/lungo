@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4 grid grid-cols-2 gap-3">
-    <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+    <div class="chart-container">
       <div class="chart-title">
         PV
         <a-tooltip :overlayStyle="{ maxWidth: '500px' }">
@@ -10,9 +10,13 @@
           <QuestionCircleOutlined />
         </a-tooltip>
       </div>
-      <BaseChart :requestParams="requestParams" :requestFunc="getPVChartData" :getOptionFunc="getChartOption" />
+      <BaseChart
+        :requestParams="requestParams"
+        :requestFunc="getPVChartData"
+        :getOptionFunc="getChartOption"
+      />
     </div>
-    <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+    <div class="chart-container">
       <div class="chart-title">
         UV
         <a-tooltip :overlayStyle="{ maxWidth: '500px' }">
@@ -22,13 +26,17 @@
           <QuestionCircleOutlined />
         </a-tooltip>
       </div>
-      <BaseChart :requestParams="requestParams" :requestFunc="getUVChartData" :getOptionFunc="getChartOption" />
+      <BaseChart
+        :requestParams="requestParams"
+        :requestFunc="getUVChartData"
+        :getOptionFunc="getChartOption"
+      />
     </div>
-    <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+    <div class="chart-container">
       <div class="chart-title">浏览器信息</div>
       <uaInfo type="browser" boardType="data" />
     </div>
-    <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+    <div class="chart-container">
       <div class="chart-title">设备信息</div>
       <uaInfo type="os" boardType="data" />
     </div>
@@ -45,7 +53,7 @@ import { usePanelStore } from '@/store/modules/panel'
 import { useUserStore } from '@/store/user'
 import { BaseChart } from '@vben/components'
 import uaInfo from '@/pages/report/total/components/uaInfo.vue'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 const panelStore = usePanelStore()

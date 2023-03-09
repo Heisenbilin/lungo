@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <a-tab-pane key="content" tab="异常详情">
         <ResultTabTable type="content" :searchValue="searchValue" />
@@ -9,7 +9,11 @@
       </a-tab-pane>
       <template #rightExtra v-if="activeKey === 'content'">
         <div class="box-border w-80">
-          <a-input-search v-model:value="searchValue" placeholder="请输入异常内容关键词匹配" @search="onSearch" />
+          <a-input-search
+            v-model:value="searchValue"
+            placeholder="请输入异常内容关键词匹配"
+            @search="onSearch"
+          />
         </div>
       </template>
     </a-tabs>
@@ -20,7 +24,7 @@
 //api异常数据汇总图表Tab框
 import { ref } from 'vue'
 import ResultTabTable from './resultTabTable.vue'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 //tab页key值与对应的看板type
 const activeKey = ref('content')

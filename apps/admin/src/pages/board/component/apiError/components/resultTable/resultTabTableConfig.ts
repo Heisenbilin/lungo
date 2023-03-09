@@ -40,7 +40,7 @@ const defaultColumns = [
 export const getDefaultColumns = (type, isFail = true) => {
   const columns = cloneDeep(defaultColumns)
   if (!isFail) {
-    delete columns[3]
+    columns.splice(3, 1)
   }
   if (type === 'interface') {
     return columns

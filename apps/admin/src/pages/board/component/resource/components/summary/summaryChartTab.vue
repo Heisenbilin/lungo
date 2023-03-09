@@ -1,21 +1,31 @@
 <template>
-  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <a-tab-pane key="summary" tab="异常量与异常率">
-        <BaseChart :requestParams="requestParams" :requestFunc="getErrorChart" :getOptionFunc="getSummaryOption"
-          :zrFuncs="{ click: addTimeFilter }" />
+        <BaseChart
+          :requestParams="requestParams"
+          :requestFunc="getErrorChart"
+          :getOptionFunc="getSummaryOption"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
       </a-tab-pane>
       <template #rightExtra>
         <div class="!mt-3 leading-3">
           <span v-if="faultTolerantStatus === 'accessed'" :style="'color: #3aa272'">
             资源容错已接入,
-            <a href="http://app.xesv5.com/doc/pages/fedata/url-fallback/intro.html#%E4%BB%8B%E7%BB%8D" target="_blank">
+            <a
+              href="http://app.xesv5.com/doc/pages/fedata/url-fallback/intro.html#%E4%BB%8B%E7%BB%8D"
+              target="_blank"
+            >
               查看资源容错文档
             </a>
           </span>
           <span v-if="faultTolerantStatus === 'notAccess'" :style="'color: #ee6666'">
             没有查询到该时间段内的资源容错数据,
-            <a href="http://app.xesv5.com/doc/pages/fedata/url-fallback/intro.html#%E4%BB%8B%E7%BB%8D" target="_blank">
+            <a
+              href="http://app.xesv5.com/doc/pages/fedata/url-fallback/intro.html#%E4%BB%8B%E7%BB%8D"
+              target="_blank"
+            >
               查看资源容错文档
             </a>
           </span>

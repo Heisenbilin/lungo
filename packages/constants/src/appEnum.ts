@@ -94,7 +94,6 @@ export enum logTypeEnum {
   PERFORMANCE = 'performance',
   RUNTIME = 'runtime',
   RESOURCE = 'resource',
-  FAULTTOLERANT = 'faultTolerant',
   API = 'api',
   GATEWAY = 'gateway',
   DEFAULT = '',

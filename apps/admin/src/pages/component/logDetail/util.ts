@@ -15,7 +15,7 @@
 import { getApiDetailsData } from '@/apis/board/apiError'
 import { getApiDetails as getGatewayApiDetails } from '@/apis/board/gateway'
 import { getRuntimeErrorDetails } from '@/apis/board/runtime'
-import { getErrorDetails, getFErrorDetails } from '@/apis/board/resource'
+import { getErrorDetails } from '@/apis/board/resource'
 import { getLogDetails } from '@/apis/board/performance'
 import { commafy, getGlobalConfig } from '@vben/utils'
 import { clientUserAgent } from '@vben/constants'
@@ -34,8 +34,6 @@ export const getTableColumns = type => {
       return runtimeTableColumns
     case 'resource':
       return resourceTableColumns
-    case 'faultTolerant':
-      return faultTolerantTableColumns
     case 'api':
       return apiTableColumns
     case 'gateway':
@@ -52,8 +50,6 @@ export const getDataList = (type, params, page = 1, pageSize = 10, ua_flag = '')
       return getRuntimeDetails(params, page, pageSize, ua_flag)
     case 'resource':
       return getResourceDetails(params, page, pageSize, ua_flag)
-    case 'faultTolerant':
-      return getFaultTolerantDetails(params, page, pageSize)
     case 'api':
       return getApiDetails(params, page, pageSize, ua_flag)
     case 'gateway':
@@ -95,16 +91,6 @@ const getResourceDetails = async (params, page, pageSize, ua_flag) => {
   })
   const uaList = ua_flag.length ? ua_flag.split(',') : []
   return clearResourceData(data, uaList)
-}
-
-// 请求资源容错日志
-const getFaultTolerantDetails = async (params, page, pageSize) => {
-  const data = await getFErrorDetails({
-    ...params,
-    limit: pageSize,
-    page: page,
-  })
-  return clearFaultTolerantData(data)
 }
 
 // 请求接口异常日志
@@ -172,24 +158,8 @@ const resourceTableColumns = [
     dataIndex: 'upload_time',
   },
   {
-    title: '异常内容',
-    key: 'url',
-    width: '70%',
-    dataIndex: 'err_content',
-  },
-]
-
-// 资源容错表格配置
-const faultTolerantTableColumns = [
-  {
-    title: '生成时间',
-    key: 'upload_time',
-    width: '20%',
-    dataIndex: 'upload_time',
-  },
-  {
     title: '异常资源',
-    key: 'url',
+    key: 'failsource',
     width: '70%',
     dataIndex: 'failsource',
   },
@@ -343,11 +313,11 @@ const clearResourceData = (data, uaList) => {
       abstract: [
         { name: '生成时间', value: item.upload_time },
         {
-          name: '异常内容',
-          value: item.url,
+          name: '异常资源',
+          value: item.failsource,
           copyable: true,
           isHref: true,
-          href: item.url,
+          href: item.failsource,
           title: '点击跳转至该文件',
         },
         {
@@ -357,66 +327,22 @@ const clearResourceData = (data, uaList) => {
           title: '点击跳转至该页面',
           href: item.current_href,
         },
-        // {
-        //   name: '容错列表',
-        //   value: item.error_list?.split(','),
-        //   arrayParse: true,
-        //   copyable: item.error_list?.length !== 0,
-        // },
-        { name: '容错次数', value: item.fault_tolerant, span: 1 },
-        { name: '容错资源', value: item.successsource || '无', span: 1 },
+        {
+          name: '容错列表',
+          value: item.errorlist ? JSON.parse(item.errorlist) : [],
+          arrayParse: true,
+          copyable: item.error_list?.length !== 0,
+        },
+        { name: '容错次数', value: item.fault_tolerant },
+        { name: '容错成功资源', value: item.successsource || '无' },
         { name: 'tagName', value: item.tagName, span: 1 },
+        { name: 'loglevel', value: item.loglevel, span: 1 },
         { name: 'xPath', value: item.XPath },
         { name: 'outerHTML', value: item.outerHTML },
         { name: 'selector', value: item.selector },
       ],
       //用户信息
       userInfo: getUserInfo(item, uaList),
-      upload_time: item.upload_time,
-      err_content: item.resource_url,
-    }))
-    total = data.total
-  }
-  return { result, total }
-}
-
-//将“资源容错返回值”清洗成日志组件可解析的配置列表
-const clearFaultTolerantData = data => {
-  let result = [{}] //资源日志数组，每一个元素代表一条日志
-  let total = 0
-  if (data.stat === 1 && data.data?.list?.length) {
-    //日志数据清洗成符合antd Descrpition组件配置的格式
-    result = data.data.list.map(item => ({
-      //跳转kibana方法
-      // jumpKibana: (topicId) => {
-      //   const msg = item.resource_url
-      //     .replace(/'+/g, "!'")
-      //     .replace(/=+/g, '%3D!')
-      //     .replace(/\s+/g, '%20');
-      //   return `${kibanaHref}/app/kibana#/discover?_g=(filters:!(('$state':(store:globalState),meta:(alias:!n,disabled:!f,index:'${topicId}',key:data.url,negate:!f,params:(query:'${msg}',type:phrase),type:phrase,value:'${msg}'),query:(match:(data.url:(query:'${msg}',type:phrase))))),refreshInterval:(pause:!t,value:0),time:(from:now-24h,mode:quick,to:now))&time:(from:now%2Fd,mode:quick,to:now%2Fd))&_a=(columns:!(data.url),index:'${topicId}',interval:auto,query:(language:lucene,query:''),sort:!('@timestamp',desc))`;
-      // },
-      abstract: [
-        { name: '生成时间', value: item.upload_time },
-        {
-          name: '页面URL',
-          value: item.current_href,
-          isHref: true,
-          title: '点击跳转至该页面',
-          href: item.current_href,
-        },
-        { name: '异常资源', value: item.failsource, copyable: true },
-        { name: '容错成功资源', value: item.successsource, copyable: true },
-        { name: 'pvid', value: item.pvid },
-        { name: 'loglevel', value: item.loglevel },
-        { name: '资源路径', value: item.resource_path },
-        { name: '容错次数', value: item.fault_tolerant_count },
-        {
-          name: '容错列表',
-          value: item.error_list.split(','),
-          arrayParse: true,
-          copyable: item.error_list.length !== 0,
-        },
-      ],
       upload_time: item.upload_time,
       failsource: item.failsource,
     }))

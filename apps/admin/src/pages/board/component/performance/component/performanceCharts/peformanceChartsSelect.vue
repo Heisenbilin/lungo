@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full">
     <div class="chart-title">
       <a-select class="!mr-2" v-model:value="chartName">
         <template v-for="(value, key) in boardConfigs" :key="key">
@@ -14,9 +14,13 @@
       </a-tooltip>
       <a-tag color="blue" class="filter-tag"> 单击筛选：{{ chartName }}耗时、时间范围 </a-tag>
     </div>
-    <BaseChart :requestParams="requestParams" :requestFunc="getChartDataFuncs[boardConfigs[chartName].type - 1]"
-      :getOptionFunc="getChartOptionFuncs[boardConfigs[chartName].type - 1]" :bindFuncs="{ click: addFilter }"
-      :zrFuncs="{ click: addTimeFilter }" />
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getChartDataFuncs[boardConfigs[chartName].type - 1]"
+      :getOptionFunc="getChartOptionFuncs[boardConfigs[chartName].type - 1]"
+      :bindFuncs="{ click: addFilter }"
+      :zrFuncs="{ click: addTimeFilter }"
+    />
   </div>
 </template>
 
@@ -30,7 +34,7 @@ import { addTimeFilter } from '@/hooks/board/useDate'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
 import { useUserStore } from '@/store/user'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore()

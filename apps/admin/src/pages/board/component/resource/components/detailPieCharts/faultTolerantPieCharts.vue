@@ -1,25 +1,37 @@
 <template>
-  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container">
     <div class="chart-title">
       异常资源域名分布
-      <a-tooltip :overlayStyle="{ maxWidth: '500px' }" title="异常资源（接入容错时指：未容错/容错失败资源）的文件url中的域名分布情况">
+      <a-tooltip
+        :overlayStyle="{ maxWidth: '500px' }"
+        title="异常资源（接入容错时指：未容错/容错失败资源）的文件url中的域名分布情况"
+      >
         <QuestionCircleOutlined />
       </a-tooltip>
     </div>
-    <BaseChart :requestParams="requestParams" :requestFunc="getErrorHrefData" :getOptionFunc="getFaultTolerantOption" />
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getErrorHrefData"
+      :getOptionFunc="getFaultTolerantOption"
+    />
   </div>
-  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }"
-    v-if="props.faultTolerantStatus === 'accessed'">
+  <div class="chart-container" v-if="props.faultTolerantStatus === 'accessed'">
     <div class="chart-title">
       容错成功资源域名分布
-      <a-tooltip :overlayStyle="{ maxWidth: '500px' }" title="容错成功资源的文件url中的域名分布情况">
+      <a-tooltip
+        :overlayStyle="{ maxWidth: '500px' }"
+        title="容错成功资源的文件url中的域名分布情况"
+      >
         <QuestionCircleOutlined />
       </a-tooltip>
     </div>
-    <BaseChart :requestParams="requestParams" :requestFunc="getFErrorData" :getOptionFunc="getFaultTolerantOption" />
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getFErrorData"
+      :getOptionFunc="getFaultTolerantOption"
+    />
   </div>
-  <div class="chart-container" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }"
-    v-if="props.faultTolerantStatus === 'accessed'">
+  <div class="chart-container" v-if="props.faultTolerantStatus === 'accessed'">
     <div class="chart-title">
       容错次数
       <a-tooltip :overlayStyle="{ maxWidth: '500px' }" title="容错成功历经的容错次数">
@@ -27,8 +39,12 @@
       </a-tooltip>
       <a-tag color="green" class="filter-tag"> 双击查看日志 </a-tag>
     </div>
-    <BaseChart :requestParams="requestParams" :requestFunc="getFTimesData" :bindFuncs="{ dblclick: openLog }"
-      :getOptionFunc="getFaultTolerantTimesOption" />
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getFTimesData"
+      :bindFuncs="{ dblclick: openLog }"
+      :getOptionFunc="getFaultTolerantTimesOption"
+    />
   </div>
 </template>
 
@@ -71,9 +87,10 @@ const props = defineProps({
 const openLog = title => {
   const times = title.data.name.split('次')[0]
   boardStore.openLogInfoState({
-    type: logTypeEnum.FAULTTOLERANT,
+    type: logTypeEnum.RESOURCE,
     visible: true,
     requestParams: {
+      error_type: 'faultTolerant',
       fault_tolerant_count: times,
     },
   })

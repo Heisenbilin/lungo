@@ -70,8 +70,6 @@ const drawerName = computed(() => {
       return '运行时异常日志详情'
     case 'resource':
       return '资源异常日志详情'
-    case 'faultTolerant':
-      return '资源容错日志详情'
     case 'api':
       return '接口异常日志详情'
     case 'gateway':

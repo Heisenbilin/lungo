@@ -1,6 +1,5 @@
 <template>
-  <div class="chart-container-full flex h-20 flex-row justify-center"
-    :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full flex h-20 flex-row justify-center">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
       <div class="w-1/4 grid justify-items-center content-center space-y-1">
@@ -13,7 +12,7 @@
       </div>
     </template>
   </div>
-  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full">
     <div class="chart-title">
       页面访问 <a-tag color="blue" class="filter-tag"> 单击筛选：时间范围 </a-tag>
       <a-tooltip :overlayStyle="{ maxWidth: '500px' }">

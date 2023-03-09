@@ -1,6 +1,5 @@
 <template>
-  <div class="flex h-20 flex-row justify-center chart-container-full"
-    :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="flex h-20 flex-row justify-center chart-container-full">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
       <div class="w-1/7 grid justify-items-center content-center space-y-1">

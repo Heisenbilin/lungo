@@ -6,7 +6,7 @@
           <router-link class="flex items-center px-4 py-3" :to="boardUrl">
             <a-tag v-if="project.saas === 'yes'" color="red">学科</a-tag>
             <a-tag v-else color="blue">素质</a-tag>
-            <span class="ml-2  text-lg truncate">
+            <span class="ml-2 text-gray-800 dark:text-gray-200 text-lg truncate">
               {{ project.project_name }}
             </span>
           </router-link>
@@ -17,25 +17,39 @@
               <CardContent :project="project" />
             </div>
             <div v-else class="h-52 bg-gray-900 bg-opacity-50 flex-center">
-              <a-popconfirm :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`" ok-text="是" cancel-text="否"
-                @confirm="openProject(project.id)">
-                <a-button type="primary">
-                  <InfoCircleOutlined /> 开启项目
-                </a-button>
+              <a-popconfirm
+                :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
+                ok-text="是"
+                cancel-text="否"
+                @confirm="openProject(project.id)"
+              >
+                <a-button type="primary"> <InfoCircleOutlined /> 开启项目 </a-button>
               </a-popconfirm>
             </div>
           </template>
         </a-card-meta>
         <template #extra>
-          <a-tooltip v-if="latestSDKVersion.length && project.sdk_version !== latestSDKVersion"
-            :overlayStyle="{ maxWidth: '300px' }" :title="`日志上报SDK可更新至${latestSDKVersion}版本，点击查看`" color="orange">
-            <a-button type="link" href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log" target="_blank">
+          <a-tooltip
+            v-if="latestSDKVersion.length && project.sdk_version !== latestSDKVersion"
+            :overlayStyle="{ maxWidth: '300px' }"
+            :title="`日志上报SDK可更新至${latestSDKVersion}版本，点击查看`"
+            color="orange"
+          >
+            <a-button
+              type="link"
+              href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log"
+              target="_blank"
+            >
               <a-tag color="warning">
                 {{ project.sdk_version === '' ? '&lt;2.1.0' : project.sdk_version }}
               </a-tag>
             </a-button>
           </a-tooltip>
-          <a-tooltip v-else-if="latestSDKVersion.length" title="日志上报SDK已经是最新版本了" color="green">
+          <a-tooltip
+            v-else-if="latestSDKVersion.length"
+            title="日志上报SDK已经是最新版本了"
+            color="green"
+          >
             <a-tag color="success">
               {{ project.sdk_version }}
             </a-tag>
@@ -50,7 +64,11 @@
               <StarTwoTone twoToneColor="#b1b1b1" @click="() => handleProjectStar(true)" />
             </a-tooltip>
             <a-tooltip title="修改配置">
-              <SettingOutlined style="color: gray" class="ml-1 text-base" @click="editProject(project.id)" />
+              <SettingOutlined
+                style="color: gray"
+                class="ml-1 text-base"
+                @click="editProject(project.id)"
+              />
             </a-tooltip>
           </span>
           <span v-if="userStore.isAdminUser()" class="absolute -top-1 right-20 text-gray-200">
@@ -198,11 +216,6 @@ const handleProjectStar = async flag => {
 .card {
   position: relative;
 
-  .ant-card-bordered {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-  }
-
   :deep(.ant-card-head-title:hover) {
     opacity: 0.7;
     text-decoration: underline;
@@ -219,7 +232,7 @@ const handleProjectStar = async flag => {
   :deep(.ant-card-actions) {
     border-radius: 0 0 8px 8px;
 
-    >li {
+    > li {
       margin: 0;
     }
 

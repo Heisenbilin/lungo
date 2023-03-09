@@ -6,12 +6,10 @@ enum Api {
   GET_TOP10_DATA = '/v2/resource/top10',
   GET_ERROR_HREF_DATA = '/v2/resource/errHref',
   GET_F_ERROR_DATA = '/v2/resource/faultTolerantError',
-  GET_F_ERROR_LIST_DATA = '/v2/resource/faultTolerantErrorList',
   GET_F_TIMES_DATA = '/v2/resource/faultTolerantTimes',
   CHECK_FAULT_TOLERANT = '/v2/resource/checkResource',
   GET_LIST_DATA = '/v2/resource/list',
   GET_DETAILS = '/v2/resource/details',
-  GET_F_ERROR_DETAILS = '/v2/resource/faultTolerantErrorDetails',
   GET_ERROR_CHART = '/v2/resource/errorChart',
 }
 
@@ -55,13 +53,6 @@ export const getFErrorData = (params: any) =>
   request.post<any>({ url: Api.GET_F_ERROR_DATA, params })
 
 /**
- * @description: 获取容错详情列表数据
- */
-
-export const getFErrorListData = (params: any) =>
-  request.post<any>({ url: Api.GET_F_ERROR_LIST_DATA, params })
-
-/**
  * @description: 获取容错次数分布数据
  */
 
@@ -87,10 +78,3 @@ export const checkFaultTolerant = (params: any) =>
  */
 
 export const getErrorDetails = (params: any) => request.post<any>({ url: Api.GET_DETAILS, params })
-
-/**
- * @description: 获取容错详情数据
- */
-
-export const getFErrorDetails = (params: any) =>
-  request.post<any>({ url: Api.GET_F_ERROR_DETAILS, params })

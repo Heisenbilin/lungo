@@ -1,6 +1,5 @@
 <template>
-  <div class="flex h-20 flex-row justify-center chart-container-full"
-    :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="flex h-20 flex-row justify-center chart-container-full">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
       <div class="w-1/5 grid justify-items-center content-center space-y-1">
@@ -41,22 +40,29 @@
       </div>
     </template>
   </div>
-  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <template #rightExtra>
         <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
       </template>
       <a-tab-pane key="average" tab="性能均值">
-        <BaseChart :requestParams="requestParams2" :requestFunc="getChartSummaryData" :getOptionFunc="getSummaryOption"
-          :zrFuncs="{ click: addTimeFilter }" />
+        <BaseChart
+          :requestParams="requestParams2"
+          :requestFunc="getChartSummaryData"
+          :getOptionFunc="getSummaryOption"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
       </a-tab-pane>
     </a-tabs>
   </div>
-  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey2" class="box-border w-full">
       <a-tab-pane key="waterfall" tab="页面加载均值瀑布图">
-        <BaseChart :requestParams="requestParams" :requestFunc="requestAverageData"
-          :getOptionFunc="useDataToWaterfallChartOption" />
+        <BaseChart
+          :requestParams="requestParams"
+          :requestFunc="requestAverageData"
+          :getOptionFunc="useDataToWaterfallChartOption"
+        />
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -72,7 +78,7 @@ import { commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
 import { addTimeFilter } from '@/hooks/board/useDate'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore()

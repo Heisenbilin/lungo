@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useLocale } from '@vben/locale'
 import { useAppTheme, useWebTitle } from '@vben/hooks'
-import { watch } from "vue"
+import { watch } from 'vue'
 import { REDIRECT_NAME } from '@vben/constants'
 import { getGlobalConfig, computedAsync } from '@vben/utils'
 import AppProvider from '@/layout/components/app/AppProvider'
@@ -11,7 +11,7 @@ import { useAppStore } from '@/store/modules/app'
 const { getLocale } = useLocale()
 // Listening to page changes and dynamically changing site titles
 const { title } = getGlobalConfig(import.meta.env)
-useWebTitle(title, (route) => route.name !== REDIRECT_NAME)
+useWebTitle(title, route => route.name !== REDIRECT_NAME)
 const appStore = useAppStore()
 
 // Dynamic switch component library language
@@ -46,14 +46,19 @@ const locale = computedAsync(async () => {
 })
 
 const { theme } = useAppTheme()
-watch(theme, (newTheme) => {
-  const rootHtml = document.querySelector('html')
-  if (rootHtml && rootHtml?.getAttribute('id') === 'rootHtml') {
-    rootHtml.setAttribute('data-theme', newTheme as unknown as string)
-  }
-}, {
-  immediate: true
-})
+watch(
+  theme,
+  newTheme => {
+    const rootHtml = document.querySelector('html')
+    if (rootHtml && rootHtml?.getAttribute('id') === 'rootHtml') {
+      rootHtml.setAttribute('data-theme', newTheme as unknown as string)
+      rootHtml.setAttribute('class', newTheme as unknown as string)
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <template>

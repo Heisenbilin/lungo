@@ -1,6 +1,5 @@
 <template>
-  <div class="flex h-20 flex-row justify-center chart-container-full"
-    :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="flex h-20 flex-row justify-center chart-container-full">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
       <div class="w-1/6 grid justify-items-center content-center space-y-1">
@@ -37,7 +36,7 @@
       </div>
     </template>
   </div>
-  <div class="chart-container-full" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <template #rightExtra>
         <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>

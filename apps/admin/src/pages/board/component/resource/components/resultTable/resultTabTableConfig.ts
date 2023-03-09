@@ -44,6 +44,7 @@ export const getDefaultColumns = type => {
   } else {
     columns[1].title = '容错成功资源'
     columns[1].dataIndex = 'successsource'
+    columns.splice(3, 1)
   }
   return columns
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container-full flex flex-col" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }">
+  <div class="chart-container-full flex flex-col">
     <div style="display: flex; justify-content: space-between; align-items: center">
       <div>
         <span class="chart-title !mt-2 mr-2"> 性能优化建议 </span>

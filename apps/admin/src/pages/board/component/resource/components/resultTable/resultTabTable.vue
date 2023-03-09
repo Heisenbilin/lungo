@@ -11,8 +11,12 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'url'">
         <a-tooltip title="点击跳转">
-          <a v-if="record.url || record.resource_currenthref" :href="record.url" target="_blank">
-            {{ record.url || record.resource_currenthref }}
+          <a
+            v-if="record.url || record.resource_currenthref || record.successsource"
+            :href="record.url || record.resource_currenthref || record.successsource"
+            target="_blank"
+          >
+            {{ record.url || record.resource_currenthref || record.successsource }}
           </a>
           <template v-else>未知</template>
         </a-tooltip>
@@ -39,7 +43,7 @@
 <script setup lang="ts">
 //资源异常数据汇总Tab内部图表组件
 import { ref, computed, watch, reactive } from 'vue'
-import { getFErrorListData, getListData } from '@/apis/board/resource'
+import { getListData } from '@/apis/board/resource'
 import { debounce, commafy } from '@vben/utils'
 import { getDefaultColumns } from './resultTabTableConfig'
 import { useBoardStore } from '@/store/modules/board'
@@ -57,8 +61,6 @@ const props = defineProps({
     default: '',
   },
 })
-
-const isFaultTolerant = props.type === 'faultTolerant' ? true : false
 
 // 表格loading
 const loading = ref(true)
@@ -84,33 +86,23 @@ let lastSearchId = 0
 
 //请求参数
 const requestParams = computed(() => {
-  return Object.assign(
-    {
-      project_id: `${boardStore.boardInfoState.id}`, //项目id
-      start_time: boardStore.filterState.start_time, //开始时间
-      end_time: boardStore.filterState.end_time, //结束时间
-      url: boardStore.filterState.url, //路由筛选
-      browser: boardStore.filterState.browser, //浏览器筛选
-      device: boardStore.filterState.device, //设备筛选
-      province: boardStore.filterState.province, //地区筛选
-      network: boardStore.filterState.network, //网络类型筛选
-      client: boardStore.filterState.client, //客户端筛选
-      os: boardStore.filterState.os, //操作系统筛选
-      resource_type: boardStore.filterState.resource_type, //资源类型筛选
-      limit: `${pagination.pageSize}`,
-    },
-    isFaultTolerant
-      ? {}
-      : {
-          error_type: props.type,
-          error_content: props.searchValue,
-        },
-  )
+  return Object.assign({
+    project_id: `${boardStore.boardInfoState.id}`, //项目id
+    start_time: boardStore.filterState.start_time, //开始时间
+    end_time: boardStore.filterState.end_time, //结束时间
+    url: boardStore.filterState.url, //路由筛选
+    browser: boardStore.filterState.browser, //浏览器筛选
+    device: boardStore.filterState.device, //设备筛选
+    province: boardStore.filterState.province, //地区筛选
+    network: boardStore.filterState.network, //网络类型筛选
+    client: boardStore.filterState.client, //客户端筛选
+    os: boardStore.filterState.os, //操作系统筛选
+    resource_type: boardStore.filterState.resource_type, //资源类型筛选
+    limit: `${pagination.pageSize}`,
+    error_type: props.type,
+    error_content: props.searchValue,
+  })
 })
-
-const getApiData = async params => {
-  return await (isFaultTolerant ? getFErrorListData(params) : getListData(params))
-}
 
 const getResultTableData = debounce((page = pagination.current) => {
   lastSearchId += 1
@@ -118,7 +110,7 @@ const getResultTableData = debounce((page = pagination.current) => {
   //开始loading
   loading.value = true
   //开始请求
-  getApiData({
+  getListData({
     ...requestParams.value,
     page: `${page}`,
   })
@@ -182,25 +174,19 @@ const handleTableChange = page => {
 
 // 改变日志state，打开日志详情
 const openLog = record => {
-  if (props.type === 'href' || props.type === 'domain') {
-    boardStore.openLogInfoState({
-      type: logTypeEnum.RESOURCE,
-      visible: true,
-      requestParams: {
-        error_type: props.type,
-        err_content: props.type === 'href' ? record.resource_url : record.current_href,
-      },
-    })
-  }
-  if (isFaultTolerant) {
-    boardStore.openLogInfoState({
-      type: logTypeEnum.FAULTTOLERANT,
-      visible: true,
-      requestParams: {
-        successresource: record.successsource,
-      },
-    })
-  }
+  boardStore.openLogInfoState({
+    type: logTypeEnum.RESOURCE,
+    visible: true,
+    requestParams: {
+      error_type: props.type,
+      err_content:
+        props.type === 'href'
+          ? record.resource_url
+          : props.type === 'domain'
+          ? record.current_href
+          : record.successsource,
+    },
+  })
 }
 
 // 设为筛选

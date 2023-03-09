@@ -64,7 +64,7 @@ const defaultOption: any = {
       if (params.data && 'pageload' in params.data) {
         return `${params.name}<br/>PV数: ${commafy(
           params.value[2] !== undefined ? params.value[2] : params.value,
-        )}<br/>页面平均加载时间: ${commafy(params.data.pageload)}ms`
+        )}`
       }
     },
   },

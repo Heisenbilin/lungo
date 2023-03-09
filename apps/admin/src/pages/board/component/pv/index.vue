@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-2 gap-3">
-    <div class="chart-container-full text-center" :style="{ 'background-color': isDark ? 'rgb(20,20,20)' : '' }" v-if="!isSafeSDK">
+    <div class="chart-container-full text-center" v-if="!isSafeSDK">
       <a
         href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log"
         target="_blank"
