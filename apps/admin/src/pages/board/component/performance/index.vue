@@ -10,7 +10,6 @@
         :endTime="endTime"
       />
     </template>
-    <PerformanceChartsSelect />
   </div>
 </template>
 
@@ -22,7 +21,6 @@ import { getListById } from '@/apis/report/apis'
 import dayjs from 'dayjs'
 import Summary from './component/summary/index.vue'
 import UrlTable from './component/urlTable/urlTable.vue'
-import PerformanceChartsSelect from './component/performanceCharts/peformanceChartsSelect.vue'
 import performanceList from './component/performanceAdvise/performanceList.vue'
 
 const boardStore = useBoardStore()

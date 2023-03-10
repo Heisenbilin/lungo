@@ -5,10 +5,10 @@ export default { name: 'LayoutFooter' }
 import { CSSProperties, onMounted } from 'vue'
 import { computed } from 'vue'
 import { createNamespace } from '@vben/utils'
-import DutyAid from '@xes/duty-aid';
-import { getGlobalConfig } from '@vben/utils';
+import DutyAid from '@xes/duty-aid'
+import { getGlobalConfig } from '@vben/utils'
 import { useI18n } from '@vben/locale'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 const { t } = useI18n()
@@ -21,19 +21,16 @@ const props = defineProps({
 })
 const { bem, cssVarBlock } = createNamespace('footer')
 const style = computed(
-  () =>
-    (props.height
-      ? cssVarBlock({ height: props.height })
-      : {}) as CSSProperties,
+  () => (props.height ? cssVarBlock({ height: props.height }) : {}) as CSSProperties,
 )
 // @ts-ignore
 const { DUTY_GROUP_ID, DUTY_M_GROUP_ID } = getGlobalConfig(import.meta.env)
 onMounted(() => {
-  let dutyId;
+  let dutyId
   if (window.location.host.indexOf('saasz.vdyoo') > -1) {
-    dutyId = DUTY_M_GROUP_ID;
+    dutyId = DUTY_M_GROUP_ID
   } else {
-    dutyId = DUTY_GROUP_ID;
+    dutyId = DUTY_GROUP_ID
   }
   const dutyobj = new DutyAid({
     groupId: dutyId,
@@ -44,22 +41,23 @@ onMounted(() => {
       workcode: false, //  a标签text 是否显示 工号，默认： true
       separator: ',', // 多个a标签的分隔符 默认： ","逗号
     },
-  });
+  })
   // 生成A标签列表
-  dutyobj.initLinkBox();
-});
+  dutyobj.initLinkBox()
+})
 
-const curYear = computed(() => new Date().getFullYear());
+const curYear = computed(() => new Date().getFullYear())
 </script>
 <template>
   <footer :class="bem()" :style="{ 'background-color': !isDark ? '' : 'rgb(53,54,58)' }">
     <div class="lh-32px">
-      <VbenText depth="3" class="lh-32px">Copyright &copy;©{{ curYear }} 美校事业部-大班云-前端研发部 All Rights Reserved，由
+      <VbenText depth="3" class="lh-32px"
+        >Copyright &copy;{{ curYear }} 美校事业部-大班云-前端研发部 All Rights Reserved，由
         <a class="link" href="https://cloud.xesv5.com/#/index">未来云</a> 提供计算服务 | 联系我们：
         <span id="connectme" class="mr-3"></span>
         <div class="tooltip">
           问题反馈群
-          <img class="tooltipimg"  src="../../../../apps/admin/src/assets/images/feedback.png" />
+          <img class="tooltipimg" src="../../../../apps/admin/src/assets/images/feedback.png" />
         </div>
       </VbenText>
     </div>
@@ -69,7 +67,7 @@ const curYear = computed(() => new Date().getFullYear());
 <style lang="less" scoped>
 footer {
   position: fixed;
-  width: calc(100% - 210px);
+  width: 100%;
   bottom: 0px;
   background-color: #fff;
   padding: 5px 0px;
@@ -88,7 +86,7 @@ footer {
 }
 .tooltipimg {
   // visibility: hidden;
-  display:none;
+  display: none;
   width: 150px;
   background-color: black;
   text-align: center;
@@ -100,7 +98,7 @@ footer {
   margin-left: -60px;
 }
 .tooltip .tooltipimg::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 100%;
   left: 50%;
@@ -110,9 +108,9 @@ footer {
   border-color: transparent transparent black transparent;
 }
 
-.tooltip:hover .tooltipimg{
+.tooltip:hover .tooltipimg {
   // visibility: visible;
-  display:inline;
+  display: inline;
   transform: translate(20px, -125%);
 }
 </style>

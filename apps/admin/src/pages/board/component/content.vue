@@ -1,5 +1,5 @@
 <template>
-  <div id="general-board-container" ref="areaRef" class="p-2 mt-3 relative">
+  <div id="general-board-container" ref="areaRef" class="p-2 mt-3 mb-8 relative">
     <a-tabs v-model:activeKey="activeKey" size="large">
       <a-tab-pane key="pageview" :tab="tabNameConfig.pageview">
         <PVBoard v-if="activeKey === 'pageview'" />
@@ -44,7 +44,7 @@ import FAQ from '../../component/FAQ.vue'
 // import intro from 'intro.js'
 // import 'intro.js/introjs.css'
 import { getQuery } from '@vben/router'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore()

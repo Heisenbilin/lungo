@@ -1,24 +1,28 @@
 <template>
-  <div class="relative">
-    <div class="card">
-      <router-link class="flex items-center px-0 py-3" :to="linkToUrl" style="width: 100%">
-        <span :class="['ml-2', { 'text-gray-800': !isDark }, 'text-lg', 'truncate', 'trun-cate', ' w-64']"
-          @click="() => useStoreProject(project, 'board')">
-          <a-tag v-if="project.saas === 'yes'" color="red">学科</a-tag>
-          <a-tag v-else color="blue">素质</a-tag>
+  <div class="w-full">
+    <router-link class="flex items-center" :to="linkToUrl">
+      <span
+        class="ml-2 text-gray-800 dark:text-gray-200 text-lg truncate trun-cate w-full"
+        @click="() => useStoreProject(project, 'board')"
+      >
+        <a-tag v-if="project.saas === 'yes'" color="red">学科</a-tag>
+        <a-tag v-else color="blue">素质</a-tag>
+        <a-tooltip
+          :overlayStyle="{ maxWidth: '400px' }"
+          :title="`点击进入：${project.project_name}`"
+        >
           {{ project.project_name }}
-          <a-tag v-if="project.appid === '1001970'" color="cyan">编辑器</a-tag>
-        </span>
-      </router-link>
-    </div>
+        </a-tooltip>
+        <a-tag v-if="project.appid === '1001970'" color="cyan">编辑器</a-tag>
+      </span>
+    </router-link>
   </div>
 </template>
 
 <script setup lang="ts">
-// import {a-tag} from 'ant-design-vue'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 const props = defineProps({
@@ -32,12 +36,12 @@ const linkToUrl = useLinkToUrl(props.project.id, 'board', 'list')
 </script>
 
 <style lang="scss" scoped>
-.card {
-  // position: relative;
-  display: flex;
-  align-items: center;
-  margin-right: 0px;
-}
+// .card {
+//   // position: relative;
+//   display: flex;
+//   align-items: center;
+//   margin-right: 0px;
+// }
 
 :deep(.ant-tag) {
   height: 1.5rem;

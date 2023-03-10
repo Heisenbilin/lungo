@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, watch, ref } from 'vue'
+import { Ref, watch, ref, onActivated } from 'vue'
 import { useECharts } from '@vben/hooks'
 
 const props = defineProps({
@@ -41,7 +41,11 @@ const props = defineProps({
 })
 
 const chartRef = ref<HTMLDivElement | null>(null)
-const { setOptions, setActions } = useECharts(chartRef as Ref<HTMLDivElement>)
+const { setOptions, setActions, resize } = useECharts(chartRef as Ref<HTMLDivElement>)
+
+onActivated(() => {
+  resize()
+})
 
 watch(
   () => props.chartOption,

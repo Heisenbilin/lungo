@@ -1,19 +1,24 @@
 <template>
-  <div class="weekly-main" :style="{ 'background-color': !isDark ? '' : 'rgb(53,54,58)' }" id="weekly-main-container"
-    ref="areaRef">
-    <div class="title" :style="{ 'color': !isDark ? '' : 'rgb(212, 212, 213)' }">质量周报</div>
+  <div class="weekly-main bg-$component-background-color" id="weekly-main-container" ref="areaRef">
+    <div class="title" :style="{ color: !isDark ? '' : 'rgb(212, 212, 213)' }">质量周报</div>
 
     <url-base :score="score" />
     <a-divider style="background-color: #555" />
 
-    <url-performance @performanceScoreChange="performanceScoreChange" :lighthouseLoading="lighthouseLoading"
+    <url-performance
+      @performanceScoreChange="performanceScoreChange"
+      :lighthouseLoading="lighthouseLoading"
       :preparedLighthouse="lighthouseLoading === 2 ? lighthouseData.categories.performance : {}"
-      :groups="lighthouseLoading === 2 ? lighthouseData.categoryGroups : {}" />
+      :groups="lighthouseLoading === 2 ? lighthouseData.categoryGroups : {}"
+    />
     <a-divider style="background-color: #555" />
 
-    <url-stability @stabilityScoreChange="stabilityScoreChange" :lighthouseLoading="lighthouseLoading"
+    <url-stability
+      @stabilityScoreChange="stabilityScoreChange"
+      :lighthouseLoading="lighthouseLoading"
       :preparedLighthouse="lighthouseLoading === 2 ? lighthouseData.categories.accessibility : {}"
-      :groups="lighthouseLoading === 2 ? lighthouseData.categoryGroups : {}" />
+      :groups="lighthouseLoading === 2 ? lighthouseData.categoryGroups : {}"
+    />
   </div>
 </template>
 
@@ -29,7 +34,7 @@ import { getQuery } from '@vben/router'
 import urlBase from './detail/urlBase.vue'
 import urlPerformance from './detail/urlPerformance.vue'
 import urlStability from './detail/urlStability.vue'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 const props = defineProps({
@@ -47,7 +52,8 @@ const initWatch = () => {
     () => [reportStore.boardInfoState.project_name, userName],
     () =>
       setWatermark(
-        `${userName}-${reportStore.boardInfoState.project_name}-${props.type ? '华佗' : 'Swat Det'
+        `${userName}-${reportStore.boardInfoState.project_name}-${
+          props.type ? '华佗' : 'Swat Det'
         }`,
       ),
     { immediate: true },
@@ -59,11 +65,9 @@ const areaRef = ref<Nullable<HTMLElement>>(null)
 const { setWatermark } = useWatermark(areaRef)
 watch(isDark, () => {
   setWatermark(
-    `${userName}-${reportStore.boardInfoState.project_name}-${props.type ? '华佗' : 'Swat Det'
-    }`,
+    `${userName}-${reportStore.boardInfoState.project_name}-${props.type ? '华佗' : 'Swat Det'}`,
   )
 })
-
 
 onDeactivated(() => {
   while (watchFunc.length) watchFunc.pop()()
@@ -75,7 +79,9 @@ const score = ref({
 const lighthouseLoading = ref(0)
 const lighthouseData = <any>ref([])
 const preQuery = ref<{
-  start_time: string, project_id: string, url: string
+  start_time: string
+  project_id: string
+  url: string
 }>(getQuery())
 onMounted(() => {
   initAudits()
@@ -83,7 +89,11 @@ onMounted(() => {
 })
 
 onActivated(() => {
-  const clearScrollElement = ([].slice.call(document.querySelectorAll('.n-layout .n-layout-scroll-container')) as HTMLDivElement[]).find(el => el.style.height === 'calc(100vh - 87px)')
+  const clearScrollElement = (
+    [].slice.call(
+      document.querySelectorAll('.n-layout .n-layout-scroll-container'),
+    ) as HTMLDivElement[]
+  ).find(el => el.style.height === 'calc(100vh - 87px)')
   if (clearScrollElement) clearScrollElement.scrollTop = 0
 
   if (JSON.stringify(getQuery()) !== JSON.stringify(preQuery.value)) {
@@ -128,7 +138,6 @@ async function initAudits() {
   box-sizing: content-box;
   width: 800px;
   height: auto;
-  background-color: #ffffff;
   margin: auto;
   padding: 47px 90px;
 }

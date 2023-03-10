@@ -241,7 +241,7 @@
         </a-collapse-panel>
         <a-collapse-panel key="2">
           <template #header>
-            <a-row>
+            <a-row class="w-full">
               <a-col :span="18"> Sourcemap解析 </a-col>
               <a-col :span="6">
                 <a-tooltip
@@ -441,7 +441,7 @@
         </a-collapse-panel>
         <a-collapse-panel key="4">
           <template #header>
-            <a-row>
+            <a-row class="w-full">
               <a-col :span="17">
                 登录认证参数
                 <a-tooltip
@@ -658,7 +658,7 @@
     </a-form>
     <div
       class="absolute right-0 bottom-0 w-full border-t-gray-300 border-t-1 px-2 py-3 bg-white text-right z-1"
-      :style="{ 'background-color':!isDark ? '' : 'rgba(0, 0, 0, 0.85)'}"
+      :style="{ 'background-color': !isDark ? '' : 'rgba(0, 0, 0, 0.85)' }"
     >
       <a-button class="mr-10 float-left" type="primary" @click="showSDKConfig">
         生成SDK推荐配置
@@ -709,7 +709,7 @@ import { saveAs } from 'file-saver'
 import { getRecommendSDKConfig, getVueRecommendSDKConfig } from './sdkConfig'
 import { CodeArea } from '@vben/components'
 import { removeQuery } from '@vben/router'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
 const props = defineProps({

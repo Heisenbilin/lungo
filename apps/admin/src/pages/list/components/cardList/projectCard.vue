@@ -7,8 +7,16 @@
             <a-tag v-if="project.saas === 'yes'" color="red">学科</a-tag>
             <a-tag v-else color="blue">素质</a-tag>
             <span class="ml-2 text-gray-800 dark:text-gray-200 text-lg truncate">
-              {{ project.project_name }}
+              <a-tooltip
+                :overlayStyle="{ maxWidth: '400px' }"
+                :title="`点击进入：${project.project_name}`"
+              >
+                {{ project.project_name }}
+              </a-tooltip>
             </span>
+            <!-- 
+              {{ project.project_name }}
+            </span> -->
           </router-link>
         </template>
         <a-card-meta>

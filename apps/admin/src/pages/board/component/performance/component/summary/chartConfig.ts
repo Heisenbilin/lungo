@@ -83,7 +83,6 @@ const keysConfig = {
 
 //获取运行时异常图表的option
 export function getSummaryChartOption(data) {
-  console.log(data)
   //1 数据为空时，返回null，图表为空状态
   if (!(Array.isArray(data) && data.length)) {
     return null

@@ -2,7 +2,6 @@ import { request } from '@vben/request'
 enum Api {
   GET_BOARD_DATA = '/v1/board/chartdata',
   GET_BOARD_DATA_BY_TYPE = '/v1/board/chartdata/getByType',
-  GET_TIME_SOLT_DATA_BY_TYPE = '/v1/board/chartdata/getTimeSlotDataByType',
   GET_ERR_SUMMARY = '/v1/sourcemap/errSummary',
   GET_ERR_TYPE_SUMMARY = '/v1/sourcemap/errTypeSummary',
   GET_RUNTIME_LIST = '/v1/sourcemap/runtimeList',
@@ -25,13 +24,6 @@ export const getChartData = (params: any) => request.post<any>({ url: Api.GET_BO
 
 export const getChartDataByType = (params: any) =>
   request.post<any>({ url: Api.GET_BOARD_DATA_BY_TYPE, params })
-
-/**
- * @description: 获取自定义看板图表数据
- */
-
-export const getTimeSlotDataByType = (params: any) =>
-  request.post<any>({ url: Api.GET_TIME_SOLT_DATA_BY_TYPE, params })
 
 /**
  * @description: 获取错误异常信息汇总

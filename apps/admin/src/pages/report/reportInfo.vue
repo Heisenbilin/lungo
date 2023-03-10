@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 bg-gray-100" :style="{ 'background-color': !isDark ? '' : 'rgb(53,54,58)' }">
+  <div class="p-4 bg-$component-background-color mb-8">
     <div class="grid grid-cols-2 gap-3">
       <div class="chart-container">
         <InfoCard boardType="report" />

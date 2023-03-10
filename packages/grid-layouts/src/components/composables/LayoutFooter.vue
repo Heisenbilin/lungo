@@ -22,13 +22,11 @@ const { copyright, links } = useSiteGeneral()
           class="decoration-none mx-5 flex-center color-blue-gray-400 cursor-pointer hover:color-blue-gray-800 dark:hover:color-blue-gray-50"
         >
           <VbenIconify :icon="item.icon" size="18" />
-          <span>{{ t(item.label) }}</span>
+          <span>{{ t(item.label || '') }}</span>
         </a>
       </template>
     </div>
-    <div class="flex-center color-blue-gray-400">
-      Copyright ©{{ copyright }}
-    </div>
+    <div class="flex-center color-blue-gray-400">Copyright {{ copyright }}</div>
     <SecondaryBorder top />
   </footer>
 </template>
