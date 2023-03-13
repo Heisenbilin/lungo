@@ -1,7 +1,7 @@
 <template>
-  <div class="p-4 bg-$component-background-color mb-8">
+  <div class="p-4 bg-color mb-8">
     <div class="grid grid-cols-2 gap-3">
-      <div class="chart-container">
+      <div class="chart-container ">
         <InfoCard boardType="report" />
       </div>
       <div v-if="boardInfoState.id" class="chart-container">
@@ -35,10 +35,9 @@ import ReportFilterCard from '@/pages/component/filterCard/reportFilterCard.vue'
 
 import Content from './totalContent.vue'
 import { storeToRefs } from '@vben/stores'
-import { useAppTheme } from '@vben/hooks'
 import { computed } from 'vue'
 import { versionStringCompare } from '@vben/utils'
-const { isDark } = useAppTheme()
+
 
 const reprotStore = useReportStore()
 

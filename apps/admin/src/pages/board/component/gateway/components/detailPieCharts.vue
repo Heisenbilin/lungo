@@ -45,8 +45,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { getStatusChartOption, getGateWayCostTimeChartOption } from '../../util/pieChartConfig'
 import { logTypeEnum } from '@vben/constants'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 
 const boardStore = useBoardStore()
 

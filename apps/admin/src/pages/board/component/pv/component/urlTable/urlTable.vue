@@ -45,8 +45,7 @@ import { getUrlListData } from '@/apis/board/pv'
 import { debounce, commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { logTypeEnum } from '@vben/constants'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 const boardStore = useBoardStore()
 
 //表格页码

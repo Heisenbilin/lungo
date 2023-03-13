@@ -31,8 +31,7 @@
 //api异常数据汇总图表Tab框
 import { ref } from 'vue'
 import ResultTabTable from './resultTabTable.vue'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 const props = defineProps({
   faultTolerantStatus: {
     type: String,

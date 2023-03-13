@@ -43,8 +43,7 @@ import { getFaultTolerantChartOption } from './summaryChartConfig'
 import { useBoardStore } from '@/store/modules/board'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 const boardStore = useBoardStore()
 
 const props = defineProps({

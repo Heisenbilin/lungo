@@ -22,8 +22,7 @@
 <script setup lang="ts">
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 
 const props = defineProps({
   project: {

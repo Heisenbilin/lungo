@@ -38,8 +38,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { commafy } from '@vben/utils'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks';
-const { isDark } = useAppTheme()
+
 const boardStore = useBoardStore()
 
 const loading = ref(true)

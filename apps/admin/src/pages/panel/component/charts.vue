@@ -53,8 +53,7 @@ import { usePanelStore } from '@/store/modules/panel'
 import { useUserStore } from '@/store/user'
 import { BaseChart } from '@vben/components'
 import uaInfo from '@/pages/report/total/components/uaInfo.vue'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 
 const panelStore = usePanelStore()
 const userStore = useUserStore()

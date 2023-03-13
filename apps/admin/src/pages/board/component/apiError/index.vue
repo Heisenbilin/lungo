@@ -27,8 +27,7 @@ import SummaryNumber from './components/summaryNumber.vue'
 import SummaryChart from './components/summaryChart/summaryChart.vue'
 import ResultTabs from './components/resultTable/resultTabs.vue'
 import DetailPieCharts from './components/detailPieCharts.vue'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 const boardStore = useBoardStore()
 
 const isSafeSDK = computed<boolean>(() =>

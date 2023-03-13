@@ -1,5 +1,5 @@
 <template>
-  <div class="relative mt-3 chart-container" id="project-boardReport-content" ref="areaRef">
+  <div class="relative mt-3 chart-container " id="project-boardReport-content" ref="areaRef">
     <projectScore />
     <projectBase />
     <projectPerformance />

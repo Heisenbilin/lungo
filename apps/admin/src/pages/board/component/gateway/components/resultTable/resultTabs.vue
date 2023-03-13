@@ -24,8 +24,7 @@
 //api异常数据汇总图表Tab框
 import { reactive, ref, watch } from 'vue'
 import ResultTabTable from './resultTabTable.vue'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 
 //tab页key值与对应的看板type
 const activeKey = ref('success')

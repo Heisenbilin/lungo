@@ -31,8 +31,7 @@ import { getLighthouseAudits } from '@/apis/report/apis'
 import auditLayout from '@/pages/report//detail/audit/auditLayout.vue'
 import { useReportStore } from '@/store/modules/report'
 import { Empty } from 'ant-design-vue'
-import { useAppTheme } from '@vben/hooks';
-const { isDark } = useAppTheme()
+
 
 const reportStore = useReportStore()
 

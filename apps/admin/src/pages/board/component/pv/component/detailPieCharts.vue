@@ -46,8 +46,7 @@ import {
 import { clientUserAgent } from '@vben/constants'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 const boardStore = useBoardStore()
 
 //请求参数
