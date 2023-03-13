@@ -23,7 +23,7 @@
         </div>
         <div class="flex items-end">
           <div class="text-3xl font-medium">
-            {{ summaryData.errorRate }}
+            {{ accMul(summaryData.errorRate, 100) }}
           </div>
           <div class="text-gray-500">%</div>
         </div>
@@ -42,8 +42,12 @@
         <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
       </template>
       <a-tab-pane key="1" tab="异常量与异常率">
-        <BaseChart :requestParams="requestParams" :requestFunc="requestSummaryData" :getOptionFunc="getSummaryOption"
-          :zrFuncs="{ click: addTimeFilter }" />
+        <BaseChart
+          :requestParams="requestParams"
+          :requestFunc="requestSummaryData"
+          :getOptionFunc="getSummaryOption"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -54,7 +58,7 @@
 import { ref, computed } from 'vue'
 import { useBoardStore } from '@/store/modules/board'
 import { getSummaryChartOption } from '../../../util/errorSummaryChartConfig'
-import { commafy } from '@vben/utils'
+import { accMul, commafy } from '@vben/utils'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getSummaryData, getChartData } from '@/apis/board/runtime'
 import { addTimeFilter } from '@/hooks/board/useDate'
@@ -96,13 +100,13 @@ const requestSummaryData = async params => {
     .then(result => (summaryData.value = result.data))
     .catch(
       () =>
-      (summaryData.value = {
-        errorCount: '',
-        errorTypeCount: '',
-        errorRate: '',
-        pvTotal: '',
-        userCount: '',
-      }),
+        (summaryData.value = {
+          errorCount: '',
+          errorTypeCount: '',
+          errorRate: '',
+          pvTotal: '',
+          userCount: '',
+        }),
     )
     .finally(() => (loading.value = false))
   return getChartData(params)

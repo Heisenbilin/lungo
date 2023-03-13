@@ -10,6 +10,7 @@
           :disabledDate="disabledDate"
           style="width: 150px"
           :allowClear="false"
+          :locale="locale"
         />
         <span class="week-picker">
           ({{
@@ -29,6 +30,7 @@ import { ref, watch } from 'vue'
 import { formatToDate } from '@vben/utils'
 import { useReportStore } from '@/store/modules/report'
 import { storeToRefs } from '@vben/stores'
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'

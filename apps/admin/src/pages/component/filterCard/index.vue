@@ -32,6 +32,7 @@
           v-model:value="filterDate"
           style="width: 340px"
           :ranges="datePickerRanges"
+          :locale="locale"
         />
       </div>
       <div>
@@ -79,6 +80,7 @@ import { clientUserAgent } from '@vben/constants'
 import { datePickerRanges } from '@/hooks/board/useDate'
 import { filterTitleConfig, tabActiveFilters, excludeFilters } from '@vben/constants'
 import { storeToRefs } from '@vben/stores'
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN'
 import FilterTag from './filterTag.vue'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'

@@ -1,5 +1,6 @@
 import { request } from '@vben/request'
 enum Api {
+  GET_SUMMARY_DATA = '/v2/pageview/summary',
   GET_PAGE_VIEW_DATA = '/v2/pageview/pv',
   GET_URL_LIST_DATA = '/v2/pageview/list',
   GET_BROWSER_DATA = '/v2/monitor/browser',
@@ -11,6 +12,13 @@ enum Api {
   GET_OS_DATA = '/v2/monitor/os',
   GET_OPERATOR_DATA = '/v2/monitor/operator', //TODO: 运营商数据
 }
+
+/**
+ * @description: 获取页面访问概览数据
+ */
+
+export const getSummaryData = (params: any) =>
+  request.post<any>({ url: Api.GET_SUMMARY_DATA, params })
 
 /**
  * @description: 获取pv数据

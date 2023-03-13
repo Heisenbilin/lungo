@@ -3,11 +3,43 @@
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
       <div class="w-1/4 grid justify-items-center content-center space-y-1">
-        <div class="text-gray-500">总PV数</div>
+        <div class="text-gray-500">
+          <a-tooltip :overlayStyle="{ maxWidth: '500px' }">
+            <template #title>
+              PV(page view):页面浏览量或点击量。用来衡量网站的访问次数。<br />
+              PV采集规则：一条 data.type 为 'pv' 的日志采集一次 PV 行为。<br />
+              hashchange 事件也可进行 PV 采集，配置请参考
+              <a
+                href="https://app.xesv5.com/doc/pages/fedata/fe-log-sdk/access.html#npm%E6%8E%A5%E5%85%A5%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"
+              >
+                SDK 配置详情 </a
+              ><br />
+              SDK 2.4.0 版本以下无数据，请确保您的 SDK 版本在 2.4.0 以上。
+            </template>
+            总PV数
+            <QuestionCircleOutlined />
+          </a-tooltip>
+        </div>
         <div class="text-3xl font-medium">{{ commafy(totalCount.PVCount) }}</div>
       </div>
       <div class="w-1/4 grid justify-items-center content-center space-y-1">
-        <div class="text-gray-500">总UV数</div>
+        <div class="text-gray-500">
+          <a-tooltip :overlayStyle="{ maxWidth: '500px' }">
+            <template #title>
+              UV(unique visitor):独立访客数。用来统计一天内访问某站点的用户数。<br />
+              UV量统计规则：一天内独立的 data.uvid 为一次 UV 行为。<br />
+              uvid 可自行配置，配置请参考
+              <a
+                href="https://app.xesv5.com/doc/pages/fedata/fe-log-sdk/access.html#npm%E6%8E%A5%E5%85%A5%E3%80%90%E6%8E%A8%E8%8D%90%E3%80%91"
+              >
+                SDK 配置详情 </a
+              ><br />
+              SDK 2.4.0 版本以下无数据，请确保您的 SDK 版本在 2.4.0 以上。
+            </template>
+            总UV数
+            <QuestionCircleOutlined />
+          </a-tooltip>
+        </div>
         <div class="text-3xl font-medium">{{ commafy(totalCount.UVCount) }}</div>
       </div>
     </template>
@@ -17,14 +49,18 @@
       页面访问 <a-tag color="blue" class="filter-tag"> 单击筛选：时间范围 </a-tag>
       <a-tooltip :overlayStyle="{ maxWidth: '500px' }">
         <template #title>
-          PV(page view):页面浏览量或点击量。用来衡量网站用户访问的网页数量。<br />
+          PV(page view):页面浏览量或点击量。用来衡量网站的访问次数。<br />
           UV(unique visitor):独立访客数。用来统计1天内访问某站点的用户数。
         </template>
         <QuestionCircleOutlined />
       </a-tooltip>
     </div>
-    <BaseChart :requestParams="requestParams" :requestFunc="requestPageViewData" :getOptionFunc="getChartOption"
-      :zrFuncs="{ click: addTimeFilter }" />
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="requestPageViewData"
+      :getOptionFunc="getChartOption"
+      :zrFuncs="{ click: addTimeFilter }"
+    />
   </div>
 </template>
 
@@ -33,12 +69,12 @@
 import { computed, reactive, ref } from 'vue'
 import { getPVUVChartOption } from './chartsConfig'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
-import { getPageViewData } from '@/apis/board/pv'
+import { getSummaryData, getPageViewData } from '@/apis/board/pv'
 import { useBoardStore } from '@/store/modules/board'
 import { commafy } from '@vben/utils'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 const boardStore = useBoardStore()
 
@@ -47,20 +83,20 @@ const totalCount = reactive({ PVCount: '', UVCount: '' })
 
 const requestPageViewData = async params => {
   loading.value = true
-  try {
-    const result = await getPageViewData(params)
-    totalCount.UVCount =
-      result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.uv, 0) : ''
-    totalCount.PVCount =
-      result?.data?.length > 0 ? result.data.reduce((pre, cur) => pre + cur.pv, 0) : ''
-    return result
-  } catch {
-    totalCount.UVCount = ''
-    totalCount.PVCount = ''
-    return null
-  } finally {
-    loading.value = false
-  }
+  getSummaryData(params)
+    .then(res => {
+      totalCount.UVCount = res?.data[0]?.uv || ''
+      totalCount.PVCount = res?.data[0]?.pv || ''
+    })
+    .catch(() => {
+      totalCount.UVCount = ''
+      totalCount.PVCount = ''
+      return null
+    })
+    .finally(() => {
+      loading.value = false
+    })
+  return getPageViewData(params)
 }
 
 // 请求参数

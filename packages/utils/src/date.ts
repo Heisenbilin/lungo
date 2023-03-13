@@ -202,13 +202,13 @@ export const computeTimeFormatStr = (
   const dime = dimension
   if (duraYears > 0) {
     //当跨度超过1年时，展示年份
-    result = dime === 'day' ? 'YY-MM-DD' : dime === 'hour' ? 'YY-MM-DD HH' : 'YY-MM-DD HH:mm'
+    result = dime === 'day' ? 'YY-MM-DD' : dime === 'hour' ? 'YY-MM-DD HH点' : 'YY-MM-DD HH:mm'
   } else if (duraDays > 0 || dime === 'day') {
     //当跨度不超过一年或者展示维度为1天时，不展示年份
-    result = dime === 'day' ? 'MM-DD' : dime === 'hour' ? 'MM-DD HH' : 'MM-DD HH:mm'
+    result = dime === 'day' ? 'MM-DD' : dime === 'hour' ? 'MM-DD HH点' : 'MM-DD HH:mm'
   } else if (dime !== 'day') {
     //当跨度不超过一天时且展示维度不为1天时，不展示天
-    result = dime === 'hour' ? 'HH' : 'HH:mm'
+    result = dime === 'hour' ? 'HH点' : 'HH:mm'
   }
   return result
 }
