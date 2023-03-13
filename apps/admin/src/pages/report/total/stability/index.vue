@@ -1,6 +1,6 @@
 <template>
   <div class="stability-title">
-    <h1 :style="{ color: !isDark ? '' : 'rgb(212, 212, 213)' }">四、项目稳定性指标</h1>
+    <h1 >四、项目稳定性指标</h1>
     <div class="access-status float-right text-base l">
       <project-access-status />
     </div>
@@ -131,8 +131,7 @@ import LogDrawer from '@/pages/component/logDetail/logDrawer.vue'
 import { BaseChart } from '@vben/components'
 import { useReportStore } from '@/store/modules/report'
 import { useUserStore } from '@/store/user'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 
 const boardStore = useReportStore()
 const userStore = useUserStore()

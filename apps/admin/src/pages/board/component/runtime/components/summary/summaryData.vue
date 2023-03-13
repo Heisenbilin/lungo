@@ -63,8 +63,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getSummaryData, getChartData } from '@/apis/board/runtime'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 const boardStore = useBoardStore()
 
 const loading = ref(true)

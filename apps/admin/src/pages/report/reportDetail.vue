@@ -1,6 +1,7 @@
 <template>
-  <div class="weekly-main bg-$component-background-color" id="weekly-main-container" ref="areaRef">
-    <div class="title" :style="{ color: !isDark ? '' : 'rgb(212, 212, 213)' }">质量周报</div>
+  <div class="weekly-main bg-$component-background-color" id="weekly-main-container"
+    ref="areaRef">
+    <div class="title text-color" >质量周报</div>
 
     <url-base :score="score" />
     <a-divider style="background-color: #555" />
@@ -143,7 +144,6 @@ async function initAudits() {
 }
 
 .title {
-  color: #000000;
   font-size: 30px;
   line-height: 24px;
   margin: 20px;

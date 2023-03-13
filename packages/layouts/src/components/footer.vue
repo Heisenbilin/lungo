@@ -49,7 +49,7 @@ onMounted(() => {
 const curYear = computed(() => new Date().getFullYear())
 </script>
 <template>
-  <footer :class="bem()" :style="{ 'background-color': !isDark ? '' : 'rgb(53,54,58)' }">
+  <footer :class="bem()" class="chart-container" >
     <div class="lh-32px">
       <VbenText depth="3" class="lh-32px"
         >Copyright &copy;{{ curYear }} 美校事业部-大班云-前端研发部 All Rights Reserved，由
@@ -69,7 +69,7 @@ footer {
   position: fixed;
   width: 100%;
   bottom: 0px;
-  background-color: #fff;
+  // background-color: #fff;
   padding: 5px 0px;
   // padding: var(--footer-padding);
   box-sizing: border-box;

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 bg-gray-100" :style="{ 'background-color': !isDark ? '' : 'rgb(53,54,58)' }">
+  <div class="p-4  bg-color">
     <div class="grid grid-cols-2 gap-3">
       <div class="chart-container">
         <InfoCard boardType="panel" />
@@ -20,8 +20,7 @@ import { storeToRefs } from '@vben/stores'
 import InfoCard from '../component/infoCard/index.vue'
 import FilterCard from '../component/filterCard/index.vue'
 import Content from './component/content.vue'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 const panelStore = usePanelStore()
 
 // 项目id

@@ -40,8 +40,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { getApiAmountChartOption, getTimeConsumingChartOption } from './summaryChartConfig'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 
 const boardStore = useBoardStore()
 

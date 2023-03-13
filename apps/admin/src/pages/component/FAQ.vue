@@ -16,7 +16,7 @@
       </div>
     </template>
     <div class="fixed right-10 bottom-12 w-12 h-12 z-10000 rounded-3xl opacity-80  text-center leading-14 shadow-lg"
-      :class="`${isDark ? 'bg-black' : 'bg-wright'}`" id="faq-icon" v-if="faqVisible">
+     id="faq-icon" v-if="faqVisible">
       <Icon :style="{ fontSize: '2rem' }">
         <template #component="svgProps">
           <svg viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor" v-bind="svgProps">
@@ -101,8 +101,7 @@ import { ref, computed } from 'vue'
 import { useBoardStore } from '@/store/modules/board'
 import { kibanaHref } from './logDetail/util'
 import Icon from '@ant-design/icons-vue'
-import { useAppTheme } from '@vben/hooks';
-const { isDark } = useAppTheme()
+
 
 const boardStore = useBoardStore()
 

@@ -40,8 +40,7 @@ import { getChartSummary } from '@/apis/board/gateway'
 import { useBoardStore } from '@/store/modules/board'
 import { getApiAmountChartOption, getTimeConsumingChartOption } from './summaryChartConfig'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 
 const boardStore = useBoardStore()
 

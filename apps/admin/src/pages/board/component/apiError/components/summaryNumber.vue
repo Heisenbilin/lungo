@@ -50,8 +50,6 @@ import { getSummaryData } from '@/apis/board/apiError'
 import { commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
-import { useAppTheme } from '@vben/hooks';
-const { isDark } = useAppTheme()
 
 const boardStore = useBoardStore()
 

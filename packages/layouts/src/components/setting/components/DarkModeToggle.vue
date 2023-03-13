@@ -5,6 +5,7 @@ const changeTheme = (isDark: boolean) => {
   const rootHtml = document.querySelector('html')
   if (rootHtml && rootHtml?.getAttribute('id') === 'rootHtml') {
     rootHtml.setAttribute('data-theme', isDark ? 'dark' : 'light')
+    rootHtml.setAttribute('class', isDark ? 'dark' : 'light')
   }
   toggleTheme(isDark)
 }

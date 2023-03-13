@@ -20,8 +20,7 @@ import { useBoardStore } from '@/store/modules/board'
 import { logTypeEnum } from '@vben/constants'
 import { getTop10Data } from '@/apis/board/runtime'
 import { BaseChart } from '@vben/components'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 const boardStore = useBoardStore()
 
 //请求参数

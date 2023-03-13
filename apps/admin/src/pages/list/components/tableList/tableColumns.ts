@@ -72,7 +72,7 @@ const columns = [
     title: '看板',
     key: 'screen',
     dataIndex: 'screen',
-    width: '150px',
+    width: '160px',
     fixed: 'right',
     align: 'center',
   },

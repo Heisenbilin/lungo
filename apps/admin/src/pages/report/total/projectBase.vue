@@ -1,5 +1,5 @@
 <template>
-  <h1 :style="{ 'color': !isDark ? '' : 'rgb(212, 212, 213)' }">二、基础项目指标</h1>
+  <h1 >二、基础项目指标</h1>
   <div class="flex flex-wrap w-full">
     <div class="w-full xl:w-1/2 p-4">
       <div class="chart-title">PV数据</div>
@@ -51,8 +51,7 @@ import uaInfo from './components/uaInfo.vue'
 // import BaseChart from '@/components/coreBoard/baseChart.vue';
 import BaseChart from '@vben/components/src/chart/baseChart.vue'
 import { getUAMapOption } from '@/pages/board/component/pv/component/uaMap/uaMapConfig'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+
 
 const reportStore = useReportStore()
 

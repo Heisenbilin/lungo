@@ -37,7 +37,7 @@
         <!-- 正常 -->
         <div class="text-gray-500 text-base whitespace-nowrap">{{ title }}</div>
         <div class="flex my-1 items-end whitespace-nowrap">
-          <div :class="['text-3xl', { 'text-gray-700': !isDark }, 'font-medium']">
+          <div class="text-3xl, font-medium">
             {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
           </div>
           <div class="text-gray-500" v-if="unit.length">{{ unit }}</div>
@@ -70,7 +70,7 @@
         <div class="text-gray-500 whitespace-nowrap">{{ title }}</div>
         <div class="flex my-1 items-end">
           <div
-            :class="['text-2xl', { 'text-gray-700': !isDark }, 'font-medium', 'whitespace-nowrap']"
+            class="text-2xl, font-medium, whitespace-nowrap"
           >
             {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
           </div>
@@ -106,7 +106,7 @@ import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from '@vben/stores'
 import { BoardInfo } from '@vben/types'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
-import { useAppTheme } from '@vben/hooks'
+
 
 const props = defineProps({
   data: {
@@ -149,7 +149,7 @@ const props = defineProps({
 
 const listStore = useListStore()
 const { dimension } = storeToRefs(listStore)
-const { isDark } = useAppTheme()
+
 const last = computed(() => (dimension.value === 'week' ? '上周' : '昨日'))
 const current = computed(() => (dimension.value === 'week' ? '本周' : '今日'))
 

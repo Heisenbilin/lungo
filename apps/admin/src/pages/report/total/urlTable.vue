@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <h1  :style="{ 'color': !isDark ? '' : 'rgb(212, 212, 213)' }">五、页面详细质量周报</h1>
+    <h1 >五、页面详细质量周报</h1>
     <div v-if="showLighthouseStatus" class="lighthouse-wrapper">
       <span>URL执行lighthouse成功数量：{{ lighthouseSuccessTotal }}</span>
       <span>URL执行lighthouse失败数量：{{ lighthouseErrorTotal }}</span>
@@ -16,15 +16,8 @@
     </div>
   </div>
   <div v-if="loaded">
-    <a-table
-      :columns="urlColumns"
-      :data-source="urlList"
-      :row-key="record => record.board_url"
-      size="middle"
-      :pagination="pagination"
-      @change="handleTableChange"
-      tableLayout="fixed"
-    >
+    <a-table :columns="urlColumns" :data-source="urlList" :row-key="record => record.board_url" size="middle"
+      :pagination="pagination" @change="handleTableChange" tableLayout="fixed">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'URL'">
           <a-tooltip title="点击进入原始页面">
@@ -51,8 +44,7 @@ import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useReportStore } from '@/store/modules/report'
 import { cloneDeep } from '@vben/utils'
-import { useAppTheme } from '@vben/hooks';
-const { isDark } = useAppTheme()
+
 
 const reportStore = useReportStore()
 const projectId = computed(() => reportStore.boardInfoState.id)
@@ -179,8 +171,8 @@ const getUrlByPro = async (page = 1, order = null, field = null, limit = 10) => 
         item.lighthouse_status === 'success'
           ? '成功'
           : item.lighthouse_status === 'error'
-          ? '失败'
-          : '未开始'
+            ? '失败'
+            : '未开始'
       let reason = (item.lighthouse_reason + '').toLowerCase()
       if (reason && reason.includes('error')) {
         reason = '检测异常'
@@ -244,7 +236,7 @@ const toReport = url => ({
     right: 0;
     top: 0;
 
-    > span {
+    >span {
       margin-right: 20px;
     }
   }
