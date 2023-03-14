@@ -1,15 +1,15 @@
 <template>
-  <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
+  <a-tooltip overlayClassName='bg-$component-background-color' :overlayStyle="{ maxWidth: '400px'}">
     <template #title>
-      <div class="text-gray-800">
-        <div v-if="linkToUrl.name !== ''">点击可查看本数据详情</div>
+      <div class="">
+        <div   v-if="linkToUrl.name !== ''">点击可查看本数据详情</div>
         <div v-else>编辑器应用未生成质量周报</div>
       </div>
     </template>
     <router-link v-if="!needGray" class="grid justify-items-center center w-full" :to="linkToUrl">
       <!-- 正常 -->
       <div class="flex my-1 items-center whitespace-nowrap center" @click="() => useStoreProject(project, 'board')">
-        <div class="text-1xl text-gray-700  font-medium center text-color">
+        <div class="text-1xl  text-gray-700 font-medium center text-color!">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
         <div class="text-gray-500 center" v-if="unit.length">{{ unit }}</div>
@@ -19,10 +19,10 @@
       <!-- 具有一定灰度、字体更小 -->
 
       <div class="flex my-1 items-center center" @click="() => useStoreProject(project, 'board')">
-        <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center text-color">
+        <div class="text-1xl text-gray-700 font-medium whitespace-nowrap center text-color!">
           {{ needCommafy ? commafy(parseFloat(data.todayData)) : parseFloat(data.todayRate) }}
         </div>
-        <div class="text-gray-500 center text-color"  v-if="unit.length">{{ unit }}
+        <div class="text-gray-500 center text-color!"  v-if="unit.length">{{ unit }}
         </div>
       </div>
     </router-link>

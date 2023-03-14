@@ -25,6 +25,7 @@ import { useMultipleTabStore } from '@/store/multipleTab'
 import { listenerRouteChange } from '@/logics/mitt/routeChange'
 import { useAppStore } from '@/store/modules/app'
 import Logo from '@/layout/components/logo.vue'
+import feadback from '@/assets/images/feedback.png'
 import { useMenuSetting } from '@/hooks/setting/useMenuSetting'
 import { useLockStore } from '@/store/lock'
 import { unref } from 'vue'
@@ -105,6 +106,7 @@ async function initPackages() {
         useAppStore,
         useConfigStore,
         Logo,
+        feadback,
         useMenuSetting,
         useMultipleTabSetting,
         useTransitionSetting,

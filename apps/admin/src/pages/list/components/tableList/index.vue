@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, Ref, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { message, Pagination } from 'ant-design-vue'
 import { getProjectList, getProjectBoard, modifyProjectParams } from '@/apis/list'
 import { caculatePageSizeByWidth } from '../utils'
@@ -95,7 +95,6 @@ import tableHeader from './tableHeader.vue'
 import tableScreen from './tableScreen.vue'
 import tableContent from './tableContent.vue'
 import tableSdk from './tableSdk.vue'
-import { useAppTheme } from '@vben/hooks'
 
 const listStore = useListStore()
 const boardStore = useBoardStore()
@@ -224,7 +223,7 @@ const customRowWithScore = record => {
     return { class: 'table-row-gray' }
   }
   if (record?.itemsData?.score < 50) {
-    return { class: 'table-row-red' }
+    return { class: 'bg-red-50 dark:bg-black' }
   }
 }
 
@@ -286,30 +285,14 @@ const { filterState } = storeToRefs(boardStore)
 // const dimension = computed(() => boardStore.getFilterState.dimension);
 // 周/天变化
 watch(() => listStore.startTime, initTableContentData)
-const { isDark } = useAppTheme()
-
-const themeStyles = reactive({
-  background: 'rgba(253, 247, 247);',
-})
-watch(isDark, (isdark) => {
-  themeStyles.background = isdark ? 'rgb(20,20,20)' : 'rgba(253, 247, 247)'
-}, {
-  immediate: true
-})
 </script>
 
-<style lang="scss" scoped>
-:deep(.table-row-red) {
-  background: v-bind('themeStyles.background');
+<style lang="less" scoped>
+:deep(.bg-red-50) {
+  // background: --table-row-color;
 
   td {
-    background: v-bind('themeStyles.background');
-  }
-}
-
-:deep(.dark-table-cell) {
-  * {
-    // color: v-bind('themeStyles.color') !important;
+    background: inherit;
   }
 }
 
