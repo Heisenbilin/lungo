@@ -16,8 +16,8 @@ export function configUnocssPlugin() {
       'chart-container': 'bg-$component-background-color rounded-lg p-3 col-span-2 xl:col-span-1',
       'chart-container-full': 'chart-container !col-span-2',
       'grid-center': 'grid place-content-center',
-      'text-color': 'dark:text-white ',
-      'bg-color':' dark:bg-black'
+      'text-color': 'text-$content-text-color ',
+      'bg-color':'bg-$content-background-color'
     },
     theme: {
       colors: {

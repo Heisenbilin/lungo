@@ -6,6 +6,9 @@
 
   /* component */
   --component-background-color: #fff;
+  --content-background-color: rgb(246, 246, 249);
+  --content-text-color:rgb(91, 97, 107);
+  --table-row-color:rgba(253, 247, 247)
 
   /* transition */
   --transition-bezier: cubic-bezier(0.4, 0, 0.2, 1);
@@ -59,6 +62,8 @@
 :root[class=dark] {
   --layout-border-color: rgba(255, 255, 255, 0.09);
   --layout-container-background-color: rgb(16, 16, 20);
-
   --component-background-color: rgb(24, 24, 28);
+  --content-background-color: rgb(47, 47, 51);
+  --content-text-color:#fff;
+  --table-row-color:  rgb(24, 24, 28);
 }

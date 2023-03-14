@@ -29,6 +29,7 @@ export interface ContextOptions {
   getAllParentPath: (menu, path) => string[]
   siteSetting: Record<string, string>
   Logo: VNode | null
+  feadback:string | null
 }
 
 export let context: ContextOptions = {
@@ -56,6 +57,7 @@ export let context: ContextOptions = {
   getAllParentPath: (menu, path) => [],
   siteSetting: {},
   Logo: null,
+  feadback:null
 }
 
 export const initLayout = async (func: AnyFunction<any>) => {

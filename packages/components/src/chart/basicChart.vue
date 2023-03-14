@@ -1,10 +1,12 @@
 <template>
-  <div :class="className" ref="chartRef" :style="{ height, width }"></div>
+  <div :class="className"  ref="chartRef" :style="{ height, width }"></div>
 </template>
 
 <script setup lang="ts">
 import { Ref, watch, ref, onActivated } from 'vue'
 import { useECharts } from '@vben/hooks'
+import { useAppTheme } from '@vben/hooks'
+const {isDark } = useAppTheme()
 
 const props = defineProps({
   className: {
@@ -41,8 +43,8 @@ const props = defineProps({
 })
 
 const chartRef = ref<HTMLDivElement | null>(null)
-const { setOptions, setActions, resize } = useECharts(chartRef as Ref<HTMLDivElement>)
-
+const { setOptions, setActions, resize } = isDark ? useECharts(chartRef as Ref<HTMLDivElement>,"dark") : useECharts(chartRef as Ref<HTMLDivElement>)
+// console.log(isDark)
 onActivated(() => {
   resize()
 })

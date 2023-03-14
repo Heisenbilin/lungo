@@ -8,8 +8,7 @@ import { createNamespace } from '@vben/utils'
 import DutyAid from '@xes/duty-aid'
 import { getGlobalConfig } from '@vben/utils'
 import { useI18n } from '@vben/locale'
-import { useAppTheme } from '@vben/hooks'
-const { isDark } = useAppTheme()
+import { context } from '../../bridge'
 
 const { t } = useI18n()
 
@@ -19,6 +18,9 @@ const props = defineProps({
     default: null,
   },
 })
+const {feadback} = context
+console.log(feadback);
+
 const { bem, cssVarBlock } = createNamespace('footer')
 const style = computed(
   () => (props.height ? cssVarBlock({ height: props.height }) : {}) as CSSProperties,
@@ -57,7 +59,7 @@ const curYear = computed(() => new Date().getFullYear())
         <span id="connectme" class="mr-3"></span>
         <div class="tooltip">
           问题反馈群
-          <img class="tooltipimg" src="../../../../apps/admin/src/assets/images/feedback.png" />
+          <img class="tooltipimg" :src='`${feadback}`' />
         </div>
       </VbenText>
     </div>
