@@ -288,6 +288,7 @@ const clearRuntimeData = (data, uaList) => {
       tryToGetSourceMapList: true,
       upload_time: item.upload_time,
       error_content: item.error_content,
+      stimestamp: item.stimestamp,
     }))
     total = data.data.total
   }

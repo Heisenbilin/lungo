@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <router-link class="flex items-center" :to="linkToUrl">
+    <router-link class="flex items-center py-3" :to="linkToUrl">
       <span
         class="ml-2 text-gray-800 dark:text-gray-200 text-lg truncate trun-cate w-full"
         @click="() => useStoreProject(project, 'board')"
@@ -23,7 +23,6 @@
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
 
-
 const props = defineProps({
   project: {
     type: Object as PropType<BoardInfo>,
@@ -35,13 +34,6 @@ const linkToUrl = useLinkToUrl(props.project.id, 'board', 'list')
 </script>
 
 <style lang="scss" scoped>
-// .card {
-//   // position: relative;
-//   display: flex;
-//   align-items: center;
-//   margin-right: 0px;
-// }
-
 :deep(.ant-tag) {
   height: 1.5rem;
 }

@@ -149,7 +149,6 @@
 import { ref, watch, computed } from 'vue'
 import { Empty, message } from 'ant-design-vue'
 import { InboxOutlined } from '@ant-design/icons-vue'
-// import { getUrlParams } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { uploadSourcemap, getMappingList } from '@/apis/board/sourceMap'
 import { WaterfallChart, CodeArea, SourceCodeArea } from '@vben/components'
@@ -213,7 +212,7 @@ const getSourceMapData = async () => {
   try {
     const res = await getMappingList({
       project_id: `${boardStore.boardInfoState.id}`,
-      upload_time: props.content.upload_time,
+      stimestamp: props.content.stimestamp,
       error_content: props.content.error_content,
     })
     if (res.stat === 1 && res.data) {
