@@ -1,9 +1,20 @@
 <template>
-  <a-table :loading="loading === 'loading'" :columns="columns" :dataSource="huatuoProjectList" :pagination="false"
-    :scroll="{ x: 1600 }" :customRow="customRowWithScore">
+  <a-table
+    :loading="loading === 'loading'"
+    :columns="columns"
+    :dataSource="huatuoProjectList"
+    :pagination="false"
+    :scroll="{ x: 1600 }"
+    :customRow="customRowWithScore"
+  >
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'name'">
-        <tableHeader :project="record" @star="starProject" :closeDays="closeDays" :isStar="isStar" />
+        <tableHeader
+          :project="record"
+          @star="starProject"
+          :closeDays="closeDays"
+          :isStar="isStar"
+        />
       </template>
       <template v-if="column.key === 'sdk'">
         <div :style="{ display: show(record.close_project) }">
@@ -11,7 +22,10 @@
         </div>
       </template>
       <template v-if="column.key === 'score'">
-        <div class="text-center items-center opacity-80" :style="{ display: show(record.close_project) }">
+        <div
+          class="text-center items-center opacity-80"
+          :style="{ display: show(record.close_project) }"
+        >
           <tableContent :projectId="record.id" title="分数" :data="record" :loading="loadingT" />
         </div>
       </template>
@@ -28,36 +42,63 @@
       </template>
       <template v-if="column.key === 'runtimeError'">
         <div :style="{ display: show(record.close_project) }">
-          <tableContent :projectId="record.id" title="运行时异常率" :data="record" :loading="loadingT" />
+          <tableContent
+            :projectId="record.id"
+            title="运行时异常率"
+            :data="record"
+            :loading="loadingT"
+          />
         </div>
       </template>
       <template v-if="column.key === 'resourceError'">
         <div :style="{ display: show(record.close_project) }">
-          <tableContent :projectId="record.id" title="资源异常率" :data="record" :loading="loadingT" />
+          <tableContent
+            :projectId="record.id"
+            title="资源异常率"
+            :data="record"
+            :loading="loadingT"
+          />
         </div>
       </template>
       <template v-if="column.key === 'success'">
         <div :style="{ display: show(record.close_project) }">
-          <tableContent :projectId="record.id" title="请求成功率" :data="record" :loading="loadingT" />
+          <tableContent
+            :projectId="record.id"
+            title="请求成功率"
+            :data="record"
+            :loading="loadingT"
+          />
         </div>
       </template>
       <template v-if="column.key === 'chartOption'">
         <div class="content" :style="{ display: show(record.close_project) }">
-          <tableContent :projectId="record.id" title="活跃趋势" :data="record" :loading="loadingT" />
+          <tableContent
+            :projectId="record.id"
+            title="活跃趋势"
+            :data="record"
+            :loading="loadingT"
+          />
         </div>
       </template>
       <template v-if="column.key === 'pageloadData'">
         <div :style="{ display: show(record.close_project) }">
-          <tableContent :projectId="record.id" title="页面加载" :data="record" :loading="loadingT" />
+          <tableContent
+            :projectId="record.id"
+            title="页面加载"
+            :data="record"
+            :loading="loadingT"
+          />
         </div>
       </template>
       <template v-if="column.key === 'screen'">
         <div v-if="record.close_project === 1">
-          <a-popconfirm :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`" ok-text="是" cancel-text="否"
-            @confirm="openProject(record.id, index)">
-            <a-button type="primary">
-              <InfoCircleOutlined /> 开启项目
-            </a-button>
+          <a-popconfirm
+            :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
+            ok-text="是"
+            cancel-text="否"
+            @confirm="() => openProject(record.id, index)"
+          >
+            <a-button type="primary"> <InfoCircleOutlined /> 开启项目 </a-button>
           </a-popconfirm>
         </div>
         <div v-else>
@@ -65,16 +106,29 @@
         </div>
       </template>
       <template v-if="column.key === 'action'">
-        <tableActions :projectId="record.id" :collectFlag="record.collectFlag" @edit="id => emit('edit', id)"
-          @star="starProject" :isStar="isStar" />
+        <tableActions
+          :projectId="record.id"
+          :collectFlag="record.collectFlag"
+          @edit="id => emit('edit', id)"
+          @star="starProject"
+          :isStar="isStar"
+        />
       </template>
     </template>
   </a-table>
   <div class="text-right mt-4">
-    <Pagination @change="getHuatuoProjectList" v-model:current="currentPage" v-model:pageSize="pageSize" :total="total"
-      show-size-changer :pageSizeOptions="
+    <Pagination
+      @change="getHuatuoProjectList"
+      v-model:current="currentPage"
+      v-model:pageSize="pageSize"
+      :total="total"
+      show-size-changer
+      :pageSizeOptions="
         [screenPageSize, screenPageSize * 2, screenPageSize * 3, screenPageSize * 4].map(String)
-      " :show-total="total => `共${total}个应用`" :show-quick-jumper="total / pageSize > 10 ? true : false" />
+      "
+      :show-total="total => `共${total}个应用`"
+      :show-quick-jumper="total / pageSize > 10 ? true : false"
+    />
   </div>
 </template>
 
@@ -180,7 +234,7 @@ const getHuatuoProjectList = debounce(async (page = currentPage.value) => {
       }
       loading.value = 'complete'
       // 第一次table 初始化 每一个 itemData
-      initTableContentData()
+      initTableContentData(searchId)
     } else {
       total.value = 0
       huatuoProjectList.value = []
@@ -192,7 +246,7 @@ const getHuatuoProjectList = debounce(async (page = currentPage.value) => {
 // 请求详细数据的初始状态
 const loadingT = ref(false)
 //获取项目具体数据(分数、pv、uv等)
-const initTableContentData = async () => {
+const initTableContentData = async searchId => {
   loadingT.value = true
   const otherParams = {
     start_time: listStore.startTime,
@@ -202,16 +256,25 @@ const initTableContentData = async () => {
   try {
     const mapResult = await Promise.all(
       huatuoProjectList.value.map(async item => {
-        const mapRes = await getProjectBoard({
-          ...otherParams,
-          project_id: item.id,
-        })
-        return {
-          ...item,
-          itemsData: mapRes.data,
+        if (searchId !== lastSearchId) return
+        try {
+          const mapRes = await getProjectBoard({
+            ...otherParams,
+            project_id: item.id,
+          })
+          return {
+            ...item,
+            itemsData: mapRes.data,
+          }
+        } catch (e) {
+          return {
+            ...item,
+            itemsData: null,
+          }
         }
       }),
     )
+    if (searchId !== lastSearchId) return
     huatuoProjectList.value = mapResult
   } finally {
     loadingT.value = false
@@ -251,7 +314,7 @@ const openProject = async (id, index) => {
       time_dimension: filterState.value.dimension === 'hour' ? 'day' : 'week',
       project_id: id,
     })
-    huatuoProjectList.value[index].itemsData = result.data || {}
+    huatuoProjectList.value[index].itemsData = result.data || null
     huatuoProjectList.value[index].close_project = 0
     //刷新另一Tab
     const tabName = props.isStar ? 'all' : 'star'

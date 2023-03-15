@@ -3,7 +3,7 @@ enum Api {
   GET_BOARD_DATA = '/v1/board/chartdata',
   GET_BOARD_DATA_BY_TYPE = '/v1/board/chartdata/getByType',
   GET_MAPPING_LIST = '/v2/sourcemap/mappinglist',
-  UPLOAD_SOURCEMAP = '/v1/sourcemap/uploadSourcemapFile',
+  UPLOAD_SOURCEMAP = '/v2/sourcemap/uploadSourcemapFile',
 }
 
 /**

@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <div class="content-list mb-10">
+    <div class="w-full min-h-4xl p-4 mb-10">
       <ProjectList />
     </div>
   </div>
@@ -17,11 +17,3 @@ import ProjectList from './components/projectList.vue'
 //   toggleCollapsed();
 // }
 </script>
-<style scoped>
-.content-list {
-  width: 100%;
-  min-height: 50rem;
-  padding: 16px;
-  /* background-color: white; */
-}
-</style>

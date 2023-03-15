@@ -3,20 +3,15 @@
     <Spin size="small" />
   </div>
   <div v-else-if="!data.itemsData && !loading" class="flex justify-center items-center h-full">
-    <Empty :image="simpleImage" />
+    <Empty :image="simpleImage" :description="null" class="m-0! -mb-3!" />
   </div>
   <template v-else>
-    <tableContentMiddle
-      :title="title"
-      :project="data"
-      :itemsData="data.itemsData"
-    />
+    <tableContentMiddle :title="title" :project="data" :itemsData="data.itemsData" />
   </template>
-  
 </template>
 <script setup lang="ts">
 import { BoardInfo } from '@vben/types'
-import { Empty,Spin } from 'ant-design-vue'
+import { Empty, Spin } from 'ant-design-vue'
 import tableContentMiddle from './tableContentMiddle.vue'
 defineProps({
   projectId: {
@@ -30,7 +25,6 @@ defineProps({
   },
   loading: Boolean,
 })
-
 
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>
