@@ -1,20 +1,9 @@
 import nProgress from 'nprogress'
 
-import {
-  stores,
-  getPermissionMode,
-  isBackMode,
-  isRouteMappingMode,
-  router,
-} from './index'
+import { stores, getPermissionMode, isBackMode, isRouteMappingMode, router } from './index'
 
 import type { Menu } from '@vben/types'
-import {
-  BASIC_LOCK_PATH,
-  BASIC_LOGIN_PATH,
-  PageEnum,
-  PermissionModeEnum,
-} from '@vben/constants'
+import { BASIC_LOCK_PATH, BASIC_LOGIN_PATH, PageEnum, PermissionModeEnum } from '@vben/constants'
 import { PAGE_NOT_FOUND_ROUTE, ROOT_ROUTE } from './routes'
 import { configureDynamicParamsMenu } from './helper'
 
@@ -26,7 +15,7 @@ const ROOT_PATH = ROOT_ROUTE.path
 
 export function createBasicGuard() {
   const openNProgress = stores.appConfig?.transition?.openNProgress
-  router.beforeEach((to) => {
+  router.beforeEach(to => {
     // The page has already been loaded, it will be faster to open it again, you don’t need to do loading and other processing
     to.meta.loaded = !!LOADED_PAGE_POOL.get(to.path)
     // Display a progress bar at the top when switching pages
@@ -36,7 +25,7 @@ export function createBasicGuard() {
     }
     return true
   })
-  router.afterEach((to) => {
+  router.afterEach(to => {
     // Indicates that the page has been loaded
     // When opening again, you can turn off some progress display interactions
     LOADED_PAGE_POOL.set(to.path, true)
@@ -141,10 +130,7 @@ export function createAuthGuard() {
     }
     const permissionMode = getPermissionMode()
     // TODO get userinfo while last fetch time is empty
-    if (
-      userStore.getLastUpdateTime === 0 &&
-      permissionMode == PermissionModeEnum.BACK
-    ) {
+    if (userStore.getLastUpdateTime === 0 && permissionMode == PermissionModeEnum.BACK) {
       try {
         await userStore.getUserInfoAction()
       } catch (err) {
@@ -160,7 +146,7 @@ export function createAuthGuard() {
     // console.log(to.params)
     const routes = await authStore.buildRoutesAction()
 
-    routes.forEach((route) => {
+    routes.forEach(route => {
       router.addRoute(route)
     })
 
@@ -174,8 +160,7 @@ export function createAuthGuard() {
     } else {
       const redirectPath = (from.query.redirect || to.path) as string
       const redirect = decodeURIComponent(redirectPath)
-      const nextData =
-        to.path === redirect ? { ...to, replace: true } : { path: redirect }
+      const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect }
       next(nextData)
     }
   })
@@ -183,7 +168,7 @@ export function createAuthGuard() {
 
 // 路由守卫：进入路由，增加Tabs
 export function createTabsGuard(func: Function) {
-  router.beforeEach(async (to) => {
+  router.beforeEach(async to => {
     if (whitePathList.includes(to.path)) return
     // Notify routing changes
     func(to)
@@ -210,7 +195,7 @@ export function createParamMenuGuard() {
     } else if (isRouteMappingMode()) {
       menus = authStore.getFrontMenuList
     }
-    menus.forEach((item) => configureDynamicParamsMenu(item, to.params))
+    menus.forEach(item => configureDynamicParamsMenu(item, to.params))
     next()
   })
 }

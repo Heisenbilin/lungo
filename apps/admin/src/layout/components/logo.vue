@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { BASIC_HOME_PATH } from '@vben/constants'
+import { INTRO_PATH } from '@vben/constants'
 import { createNamespace, getGlobalConfig } from '@vben/utils'
 import logo from '@/assets/images/logo.png'
 
@@ -15,7 +15,7 @@ const props = defineProps({
   /**
    * Click to jump to which path
    */
-  homePath: { type: String, default: BASIC_HOME_PATH },
+  homePath: { type: String, default: INTRO_PATH },
 })
 
 const { push } = useRouter()
@@ -29,11 +29,7 @@ function goHome() {
 <template>
   <div :class="bem()" @click="goHome">
     <img :src="logo" alt="logo" />
-    <div
-      class="ml-2 truncate md:opacity-100"
-      :class="bem('title')"
-      v-show="showTitle"
-    >
+    <div class="ml-2 truncate md:opacity-100" :class="bem('title')" v-show="showTitle">
       {{ title }}
     </div>
   </div>

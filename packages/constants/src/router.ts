@@ -4,6 +4,7 @@ export const PAGE_NOT_FOUND_NAME = 'PageNotFound'
 
 export const BASIC_LOGIN_PATH = '/login'
 export const BASIC_HOME_PATH = '/monitor'
+export const INTRO_PATH = '/home'
 export const BASIC_ERROR_PATH = '/exception'
 export const BASIC_LOCK_PATH = '/lock'
 
@@ -17,4 +18,5 @@ export enum PageEnum {
   // error log page path
   ERROR_LOG_PAGE = '/error-log/list',
   BASE_LOCK = '/lock',
+  INTRO_PAGE = '/home',
 }

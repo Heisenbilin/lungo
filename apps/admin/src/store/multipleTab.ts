@@ -1,8 +1,4 @@
-import type {
-  RouteLocationNormalized,
-  RouteLocationRaw,
-  Router,
-} from 'vue-router'
+import type { RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router'
 import { toRaw, unref } from 'vue'
 import { defineStore } from '@vben/stores'
 
@@ -131,9 +127,12 @@ export const useMultipleTabStore = defineStore({
       const { path, name, meta } = getRawRoute(route)
       // 404  The page does not need to add a tab
       if (
-        [PageEnum.ERROR_PAGE, PageEnum.BASE_LOGIN, PageEnum.BASE_LOCK].includes(
-          path as PageEnum,
-        ) ||
+        [
+          PageEnum.ERROR_PAGE,
+          PageEnum.BASE_LOGIN,
+          PageEnum.BASE_LOCK,
+          PageEnum.INTRO_PAGE,
+        ].includes(path as PageEnum) ||
         meta?.hideTab ||
         !name ||
         [REDIRECT_ROUTE.name, PAGE_NOT_FOUND_ROUTE.name].includes(name as string)
