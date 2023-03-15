@@ -6,18 +6,20 @@ import { unref, nextTick, watch, computed, ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { useEventListener, useBreakpoint } from '../event'
 import * as echarts from 'echarts'
+import { useLocalStorage,} from '@vben/utils'
 // import { useRootSetting } from './setting/useRootSetting';
 // import { useMenuSetting } from './setting/useMenuSetting';
 
+const themeState = useLocalStorage('theme', 'light')
 export function useECharts(
   elRef: Ref<HTMLDivElement>,
-  theme: 'light' | 'dark' | 'default' = 'default',
+  theme: String,
 ) {
   // const { getDarkMode: getSysDarkMode } = useRootSetting();
   // const { getCollapsed } = useMenuSetting();
 
   const getDarkMode = computed(() => {
-    return theme //theme === 'default' ? getSysDarkMode.value :
+    return   themeState.value  //theme === 'default' ? getSysDarkMode.value :
   })
   let chartInstance: echarts.ECharts | null = null
   let resizeFn: Fn = resize
@@ -68,7 +70,7 @@ export function useECharts(
     nextTick(() => {
       useTimeoutFn(() => {
         if (!chartInstance) {
-          initCharts(getDarkMode.value as 'default')
+          initCharts(getDarkMode.value )
           if (!chartInstance) return
         }
         clear && chartInstance?.clear()
@@ -108,8 +110,9 @@ export function useECharts(
     () => getDarkMode.value,
     theme => {
       if (chartInstance) {
+        
         chartInstance.dispose()
-        initCharts(theme as 'default')
+        initCharts(theme )
         setOptions(cacheOptions.value)
       }
     },
@@ -130,7 +133,7 @@ export function useECharts(
 
   function getInstance(): echarts.ECharts | null {
     if (!chartInstance) {
-      initCharts(getDarkMode.value as 'default')
+      initCharts(getDarkMode.value)
     }
     return chartInstance
   }
