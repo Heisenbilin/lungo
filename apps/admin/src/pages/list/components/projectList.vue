@@ -1,41 +1,43 @@
 <template>
-  <Tabs v-model:activeKey="activeKey">
+  <a-tabs v-model:activeKey="activeKey">
     <template #rightExtra>
       <div class="flex justify-end h-8 gap-3 2xl:gap-2 items-center" id="projectList">
         <div class="flex gap-3 2xl:gap-6">
-          <Select v-model:value="projectType" style="min-width: 130px">
-            <SelectOption :value="''">所有应用</SelectOption>
-            <SelectOption :value="0">非编辑器应用</SelectOption>
-            <SelectOption :value="1">编辑器应用</SelectOption>
-          </Select>
-          <Select v-model:value="saasType" style="min-width: 110px">
-            <SelectOption :value="''">学科&素质</SelectOption>
-            <SelectOption :value="'yes'">学科</SelectOption>
-            <SelectOption :value="'no'">素质</SelectOption>
-          </Select>
+          <a-select v-model:value="projectType" style="min-width: 130px">
+            <a-selectOption  :value="''">所有应用</a-selectOption >
+            <a-selectOption :value="0">非编辑器应用</a-selectOption>
+            <a-selectOption :value="1">编辑器应用</a-selectOption>
+          </a-select>
+          <a-select v-model:value="saasType" style="min-width: 110px">
+            <a-selectOption :value="''">学科&素质</a-selectOption >
+            <a-selectOption :value="'yes'">学科</a-selectOption>
+            <a-selectOption :value="'no'">素质</a-selectOption>
+          </a-select>
 
-          <Tooltip placement="top">
+          <a-tooltip placement="top">
             <template v-if="currentGroup" #title>
               {{ currentGroup.group_name }}
             </template>
-            <Select
+            <a-select
               v-model:value="groupId"
               showSearch
               :filterOption="filterOption"
               style="width: 200px"
             >
-              <SelectOption value="" key="全部用户组" title="全部用户组"> 全部用户组 </SelectOption>
-              <SelectOption
+              <a-selectOption value="" key="全部用户组" title="全部用户组">
+                全部用户组
+              </a-selectOption>
+              <a-selectOption
                 v-for="item in groups"
                 :value="item.group_id"
                 :key="item.group_id"
                 :title="item.group_name"
               >
                 {{ item.group_name }}
-              </SelectOption>
-            </Select>
-          </Tooltip>
-          <InputSearch
+              </a-selectOption>
+            </a-select>
+          </a-tooltip>
+          <a-inputSearch
             v-model:value="searchValue"
             style="width: 200px"
             placeholder="输入名称/appid/eventid"
@@ -44,10 +46,10 @@
         </div>
         <div>
           <span class="pr-1">数据维度:</span>
-          <RadioGroup v-model:value="dimension">
-            <RadioButton value="week">周</RadioButton>
-            <RadioButton value="day">天</RadioButton>
-          </RadioGroup>
+          <a-radioGroup v-model:value="dimension">
+            <a-radioButton value="week">周</a-radioButton>
+            <a-radioButton value="day">天</a-radioButton>
+          </a-radioGroup>
         </div>
         <a-button
           type="primary"
@@ -59,7 +61,7 @@
         </a-button>
         <a-button type="primary" @click="addProject">创建应用</a-button>
         <div>
-          <Tooltip title="列表展示">
+          <a-tooltip title="列表展示">
             <UnorderedListOutlined
               :style="{
                 color: state === 'table' ? 'rgba(43, 96, 179)' : 'gray',
@@ -67,8 +69,8 @@
               }"
               @click="() => handleToggleShow('table')"
             />
-          </Tooltip>
-          <Tooltip title="卡片展示">
+          </a-tooltip>
+          <a-tooltip title="卡片展示">
             <AppstoreOutlined
               :style="{
                 color: state === 'card' ? 'rgba(43, 96, 179)' : 'gray',
@@ -77,11 +79,11 @@
               }"
               @click="() => handleToggleShow('card')"
             />
-          </Tooltip>
+          </a-tooltip>
         </div>
       </div>
     </template>
-    <TabPane key="all" tab="应用列表">
+    <a-tabPane key="all" tab="应用列表">
       <div v-if="state === 'card'">
         <cardList
           :requestParams="{
@@ -110,8 +112,8 @@
           @edit="editProjectInfo"
         />
       </div>
-    </TabPane>
-    <TabPane key="star" tab="我的收藏">
+    </a-tabPane>
+    <a-tabPane key="star" tab="我的收藏">
       <div v-if="state === 'card'">
         <cardList
           :requestParams="{
@@ -140,8 +142,8 @@
           @edit="editProjectInfo"
         />
       </div>
-    </TabPane>
-  </Tabs>
+    </a-tabPane>
+  </a-tabs>
   <addProjectModal
     v-if="addProjectVisible"
     v-model:visible="addProjectVisible"
@@ -153,18 +155,7 @@
 <script setup lang="ts">
 import { ref, watch, h, computed, provide } from 'vue'
 import { checkProjectData } from '@/apis/list'
-import {
-  message,
-  Modal,
-  Tabs,
-  Select,
-  SelectOption,
-  Tooltip,
-  InputSearch,
-  RadioGroup,
-  RadioButton,
-  TabPane,
-} from 'ant-design-vue'
+import { message, Modal} from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 import { useListStore } from '@/store/modules/list'
 import { useUserStore } from '@/store/user'
