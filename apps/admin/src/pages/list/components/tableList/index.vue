@@ -262,9 +262,26 @@ const initTableContentData = async searchId => {
             ...otherParams,
             project_id: item.id,
           })
-          return {
-            ...item,
-            itemsData: mapRes.data,
+          if (mapRes.stat === 1) {
+            mapRes.data.uvData = {
+              todayData: mapRes.data.pvData.todayuvCount,
+              increaseRate: mapRes.data.pvData.uvIncreaseRate,
+              yesterdayData: mapRes.data.pvData.yesterdayuvData,
+            }
+            mapRes.data.pvData = {
+              todayData: mapRes.data.pvData.todayData,
+              increaseRate: mapRes.data.pvData.pvIncreaseRate,
+              yesterdayData: mapRes.data.pvData.yesterdaypvData,
+            }
+            return {
+              ...item,
+              itemsData: mapRes.data,
+            }
+          } else {
+            return {
+              ...item,
+              itemsData: null,
+            }
           }
         } catch (e) {
           return {

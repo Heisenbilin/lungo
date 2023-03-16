@@ -2,7 +2,7 @@ import { request } from '@vben/request'
 
 enum Api {
   PROJECT = '/v1/huatuo/projects',
-  GET_PROJECT_DATA = '/v1/huatuo/projectboard',
+  GET_PROJECT_DATA = '/v2/project/board',
   MODIFY_PROJECT = '/v1/huatuo/modify/projects',
   STAR_PROJECT = '/v1/huatuo/collectProject',
   CHECK_PROJECT = '/v1/project/checkProjectData',
@@ -27,7 +27,7 @@ export const addProject = (data: any) => request.post<any>({ url: Api.PROJECT, d
  */
 
 export const getProjectBoard = (params: any) =>
-  request.get<any>({ url: Api.GET_PROJECT_DATA, params })
+  request.post<any>({ url: Api.GET_PROJECT_DATA, params })
 
 /**
  * @description: 修改项目

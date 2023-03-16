@@ -136,6 +136,16 @@ const initCardContentData = async () => {
   try {
     const result = await getProjectBoard(params)
     if (result.stat === 1) {
+      result.data.uvData = {
+        todayData: result.data.pvData.todayuvCount,
+        increaseRate: result.data.pvData.uvIncreaseRate,
+        yesterdayData: result.data.pvData.yesterdayuvData,
+      }
+      result.data.pvData = {
+        todayData: result.data.pvData.todayData,
+        increaseRate: result.data.pvData.pvIncreaseRate,
+        yesterdayData: result.data.pvData.yesterdaypvData,
+      }
       itemsData.value = result.data
     } else {
       itemsData.value = {}
