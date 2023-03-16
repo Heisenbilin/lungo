@@ -11,7 +11,7 @@
         <div class="text-3xl font-medium">{{ commafy(summaryData.pvTotal) }}</div>
       </div>
       <div class="w-1/6 grid justify-items-center content-center space-y-1">
-        <div class="text-gray-500">总UV数</div>
+        <div class="text-gray-500">影响用户数</div>
         <div class="text-3xl font-medium">{{ commafy(summaryData.userCount) }}</div>
       </div>
       <div class="w-1/6 grid justify-items-center content-center space-y-1">
