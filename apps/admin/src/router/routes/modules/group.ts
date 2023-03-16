@@ -7,7 +7,7 @@ const Group: RouteRecordItem = {
   redirect: '/group/groups',
   meta: {
     orderNo: 3,
-    icon: 'mdi:monitor-dashboard',
+    icon: 'ic:sharp-supervised-user-circle',
     title: '用户组管理',
   },
   children: [
@@ -17,7 +17,7 @@ const Group: RouteRecordItem = {
       component: () => import('@/pages/groups/groups.vue'),
       meta: {
         title: '用户组管理',
-        icon: 'ion:grid-outline',
+        icon: 'ic:twotone-supervised-user-circle',
         // affix: false,
       },
     },

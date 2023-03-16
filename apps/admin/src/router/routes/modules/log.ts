@@ -7,7 +7,7 @@ const Log: RouteRecordItem = {
   redirect: '/log/logs',
   meta: {
     orderNo: 4,
-    icon: 'mdi:monitor-dashboard',
+    icon: 'material-symbols:event-note-outline',
     title: '操作日志',
   },
   children: [
@@ -17,7 +17,7 @@ const Log: RouteRecordItem = {
       component: () => import('@/pages/logs/log.vue'),
       meta: {
         title: '操作日志',
-        icon: 'ion:grid-outline',
+        icon: 'material-symbols:event-note',
         // affix: false,
       },
     },

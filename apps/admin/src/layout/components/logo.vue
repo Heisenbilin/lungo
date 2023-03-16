@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { INTRO_PATH } from '@vben/constants'
+import { BASIC_HOME_PATH } from '@vben/constants'
 import { createNamespace, getGlobalConfig } from '@vben/utils'
 import logo from '@/assets/images/logo.png'
 
@@ -15,7 +15,7 @@ const props = defineProps({
   /**
    * Click to jump to which path
    */
-  homePath: { type: String, default: INTRO_PATH },
+  homePath: { type: String, default: BASIC_HOME_PATH },
 })
 
 const { push } = useRouter()

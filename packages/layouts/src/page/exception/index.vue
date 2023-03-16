@@ -7,6 +7,7 @@ import { useI18n } from '@vben/locale'
 import { createNamespace } from '@vben/utils/src/bem'
 import notDataSvg from '@/assets/svg/no-data.svg'
 import netWorkSvg from '@/assets/svg/net-error.svg'
+import { useGo, useRedo } from '@vben/hooks'
 
 /**
  * Exception related enumeration
@@ -65,8 +66,8 @@ export default defineComponent({
     const statusMapRef = ref(new Map<string | number, MapValue>())
 
     const { query } = useRoute()
-    const go = function (_arg?: any) {}
-    const redo = function (_arg?: any) {}
+    const go = useGo() //function (_arg?: any) {}
+    const redo = useRedo() //function (_arg?: any) {}
     const { t } = useI18n()
     const { bem } = createNamespace('app-exception-page')
 

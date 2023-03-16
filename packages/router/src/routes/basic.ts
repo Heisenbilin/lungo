@@ -80,6 +80,16 @@ const LOCK_SCREEN_ROUTE: RouteRecordItem = {
   },
 }
 
+const HOME_ROUTE: RouteRecordItem = {
+  path: '/home',
+  name: 'Home',
+  component: () => import('@/pages/sys/home/home.vue'),
+  meta: {
+    hideMenu: true,
+    title: '首页',
+  },
+}
+
 export {
   LAYOUT,
   PARENT_LAYOUT,
@@ -88,4 +98,5 @@ export {
   ROOT_ROUTE,
   LOGIN_ROUTE,
   LOCK_SCREEN_ROUTE,
+  HOME_ROUTE,
 }

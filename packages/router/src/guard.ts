@@ -3,14 +3,20 @@ import nProgress from 'nprogress'
 import { stores, getPermissionMode, isBackMode, isRouteMappingMode, router } from './index'
 
 import type { Menu } from '@vben/types'
-import { BASIC_LOCK_PATH, BASIC_LOGIN_PATH, PageEnum, PermissionModeEnum } from '@vben/constants'
+import {
+  BASIC_LOCK_PATH,
+  BASIC_LOGIN_PATH,
+  INTRO_PATH,
+  PageEnum,
+  PermissionModeEnum,
+} from '@vben/constants'
 import { PAGE_NOT_FOUND_ROUTE, ROOT_ROUTE } from './routes'
 import { configureDynamicParamsMenu } from './helper'
 
 const LOADED_PAGE_POOL = new Map<string, boolean>()
 const LOCK_PATH = BASIC_LOCK_PATH
 const LOGIN_PATH = BASIC_LOGIN_PATH
-const whitePathList: string[] = [LOGIN_PATH, LOCK_PATH]
+const whitePathList: string[] = [LOGIN_PATH, LOCK_PATH, INTRO_PATH]
 const ROOT_PATH = ROOT_ROUTE.path
 
 export function createBasicGuard() {
@@ -40,6 +46,7 @@ export function createBasicGuard() {
 export function createAuthGuard() {
   const { userStore, authStore, lockStore } = stores
   router.beforeEach(async (to, from, next) => {
+    // debugger
     if (
       from.path === ROOT_PATH &&
       to.path === PageEnum.BASE_HOME &&
