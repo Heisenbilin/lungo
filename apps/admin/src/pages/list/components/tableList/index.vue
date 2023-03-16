@@ -140,7 +140,6 @@ import { caculatePageSizeByWidth } from '../utils'
 import { debounce } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { useBoardStore } from '@/store/modules/board'
-import { storeToRefs } from '@vben/stores'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { getQuery, addOrUpdateQuery } from '@vben/router'
 import columns from './tableColumns'
@@ -251,7 +250,7 @@ const initTableContentData = async searchId => {
   const otherParams = {
     start_time: listStore.startTime,
     end_time: listStore.endTime,
-    time_dimension: props.dimension === 'hour' ? 'day' : 'week',
+    dimension: listStore.dimension,
   }
   try {
     const mapResult = await Promise.all(
@@ -263,31 +262,12 @@ const initTableContentData = async searchId => {
             project_id: item.id,
           })
           if (mapRes.stat === 1) {
-            mapRes.data.uvData = {
-              todayData: mapRes.data.pvData.todayuvCount,
-              increaseRate: mapRes.data.pvData.uvIncreaseRate,
-              yesterdayData: mapRes.data.pvData.yesterdayuvData,
-            }
-            mapRes.data.pvData = {
-              todayData: mapRes.data.pvData.todayData,
-              increaseRate: mapRes.data.pvData.pvIncreaseRate,
-              yesterdayData: mapRes.data.pvData.yesterdaypvData,
-            }
-            return {
-              ...item,
-              itemsData: mapRes.data,
-            }
+            return { ...item, itemsData: mapRes.data }
           } else {
-            return {
-              ...item,
-              itemsData: null,
-            }
+            return { ...item, itemsData: null }
           }
         } catch (e) {
-          return {
-            ...item,
-            itemsData: null,
-          }
+          return { ...item, itemsData: null }
         }
       }),
     )
@@ -328,7 +308,7 @@ const openProject = async (id, index) => {
     const result = await getProjectBoard({
       start_time: listStore.startTime,
       end_time: listStore.endTime,
-      time_dimension: filterState.value.dimension === 'hour' ? 'day' : 'week',
+      dimension: listStore.dimension,
       project_id: id,
     })
     huatuoProjectList.value[index].itemsData = result.data || null
@@ -361,10 +341,8 @@ watch(
 )
 getHuatuoProjectList()
 
-const { filterState } = storeToRefs(boardStore)
-// const dimension = computed(() => boardStore.getFilterState.dimension);
 // 周/天变化
-watch(() => listStore.startTime, initTableContentData)
+watch(() => listStore.dimension, initTableContentData)
 </script>
 
 <style lang="less" scoped>

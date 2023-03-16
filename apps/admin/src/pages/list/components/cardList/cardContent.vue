@@ -16,7 +16,7 @@
     />
     <div class="w-2/4 mt-1 px-2">
       <div class="text-gray-400 pl-2 text-center">
-        {{ filterState.dimension === 'hour' ? '今日' : '本周' }}活跃趋势
+        {{ listStore.dimension === 'day' ? '今日' : '本周' }}活跃趋势
       </div>
       <div class="mt-2 content">
         <BasicChart :chartOption="chartOption" height="3.25rem" />
@@ -95,13 +95,10 @@ import { CardProgress } from '@vben/components'
 import { getTendencyChartOption } from './tendencyChartConfig'
 import { BasicChart } from '@vben/components'
 import { Empty } from 'ant-design-vue'
-import { useBoardStore } from '@/store/modules/board'
 import { useListStore } from '@/store/modules/list'
-import { storeToRefs } from '@vben/stores'
 import ContentItem from './contentItem.vue'
 import { BoardInfo } from '@vben/types'
 
-const boardStore = useBoardStore()
 const listStore = useListStore()
 
 const props = defineProps({
@@ -112,9 +109,6 @@ const props = defineProps({
 })
 
 const loading = ref(true)
-
-const { filterState } = storeToRefs(boardStore)
-
 //数据
 const itemsData = ref<any>({})
 
@@ -131,21 +125,11 @@ const initCardContentData = async () => {
     project_id: props.project.id,
     start_time: listStore.startTime,
     end_time: listStore.endTime,
-    time_dimension: filterState.value.dimension === 'hour' ? 'day' : 'week',
+    dimension: listStore.dimension,
   }
   try {
     const result = await getProjectBoard(params)
     if (result.stat === 1) {
-      result.data.uvData = {
-        todayData: result.data.pvData.todayuvCount,
-        increaseRate: result.data.pvData.uvIncreaseRate,
-        yesterdayData: result.data.pvData.yesterdayuvData,
-      }
-      result.data.pvData = {
-        todayData: result.data.pvData.todayData,
-        increaseRate: result.data.pvData.pvIncreaseRate,
-        yesterdayData: result.data.pvData.yesterdaypvData,
-      }
       itemsData.value = result.data
     } else {
       itemsData.value = {}
@@ -155,7 +139,7 @@ const initCardContentData = async () => {
   }
 }
 
-watch(props, initCardContentData, { immediate: true })
+watch(() => [props, listStore.dimension], initCardContentData, { immediate: true })
 
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
 </script>

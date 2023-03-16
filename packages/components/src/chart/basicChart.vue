@@ -43,7 +43,7 @@ const props = defineProps({
 })
 
 const chartRef = ref<HTMLDivElement | null>(null)
-const {setOptions, setActions, resize } = isDark.value ? useECharts(chartRef as Ref<HTMLDivElement>,"dark") : useECharts(chartRef as Ref<HTMLDivElement>,'default')
+const { setOptions, setActions, resize } = useECharts(chartRef as Ref<HTMLDivElement>)
 onActivated(() => {
   resize()
 })
@@ -57,6 +57,4 @@ watch(
   },
   { deep: true, immediate: true },
 )
-
-
 </script>

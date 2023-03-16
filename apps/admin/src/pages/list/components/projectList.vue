@@ -4,19 +4,19 @@
       <div class="flex justify-end h-8 gap-3 2xl:gap-2 items-center" id="projectList">
         <div class="flex gap-3 2xl:gap-6">
           <Select v-model:value="projectType" style="min-width: 130px">
-            <SelectOption  :value="''">所有应用</SelectOption >
+            <SelectOption :value="''">所有应用</SelectOption>
             <SelectOption :value="0">非编辑器应用</SelectOption>
             <SelectOption :value="1">编辑器应用</SelectOption>
           </Select>
           <Select v-model:value="saasType" style="min-width: 110px">
-            <SelectOption :value="''">学科&素质</SelectOption >
+            <SelectOption :value="''">学科&素质</SelectOption>
             <SelectOption :value="'yes'">学科</SelectOption>
             <SelectOption :value="'no'">素质</SelectOption>
           </Select>
 
           <Tooltip placement="top">
             <template v-if="currentGroup" #title>
-              {{  currentGroup.group_name }}
+              {{ currentGroup.group_name }}
             </template>
             <Select
               v-model:value="groupId"
@@ -24,9 +24,7 @@
               :filterOption="filterOption"
               style="width: 200px"
             >
-              <SelectOption value="" key="全部用户组" title="全部用户组">
-                全部用户组
-              </SelectOption>
+              <SelectOption value="" key="全部用户组" title="全部用户组"> 全部用户组 </SelectOption>
               <SelectOption
                 v-for="item in groups"
                 :value="item.group_id"
@@ -155,7 +153,18 @@
 <script setup lang="ts">
 import { ref, watch, h, computed, provide } from 'vue'
 import { checkProjectData } from '@/apis/list'
-import { message, Modal,Tabs,Select,SelectOption,Tooltip,InputSearch,RadioGroup,RadioButton,TabPane } from 'ant-design-vue'
+import {
+  message,
+  Modal,
+  Tabs,
+  Select,
+  SelectOption,
+  Tooltip,
+  InputSearch,
+  RadioGroup,
+  RadioButton,
+  TabPane,
+} from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 import { useListStore } from '@/store/modules/list'
 import { useUserStore } from '@/store/user'
@@ -221,7 +230,6 @@ const currentGroup = computed(
 
 //选择用户组时，用户自己输入时的搜索关键字
 function filterOption(inputValue, options) {
-
   // return options.children[0].children.includes(inputValue)
   return options.title.includes(inputValue)
 }
@@ -234,12 +242,7 @@ watch(activeKey, val => addOrUpdateQuery({ tabKey: val }))
 //时间范围
 const startTime = dayjs().startOf('day').format('YYYY-MM-DD HH:mm:ss')
 const startWeek = dayjs().startOf('day').subtract(6, 'd').format('YYYY-MM-DD HH:mm:ss')
-const endTime = dayjs()
-  .minute(10 * Math.floor(dayjs().minute() / 10))
-  .second(0)
-  .format('YYYY-MM-DD HH:mm:ss')
-// provide('startTime', dimension.value === 'week' ? startWeek : startTime)
-// provide('endTime', endTime)
+const endTime = dayjs().second(0).format('YYYY-MM-DD HH:mm:ss')
 
 //对比维度
 const dimension = ref<'week' | 'day'>(dimen as 'week' | 'day')

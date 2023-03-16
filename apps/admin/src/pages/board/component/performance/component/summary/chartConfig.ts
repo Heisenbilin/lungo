@@ -66,7 +66,7 @@ const keysConfig = {
   count: { name: 'PV值', value: [] },
   firstbyte: { name: '首字节', value: [] },
   ready: { name: 'DOM Ready', value: [] },
-  pageload: { name: '页面完全加载', value: [] },
+  load: { name: '页面完全加载', value: [] },
   dns: { name: 'DNS', value: [] },
   tcp: { name: 'TCP', value: [] },
   ssl: { name: 'SSL', value: [] },
