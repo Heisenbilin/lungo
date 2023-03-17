@@ -27,7 +27,7 @@
         </span>
         <a-range-picker
           format="YYYY-MM-DD HH:mm"
-          :show-time="{ format: 'HH:mm', minuteStep: 10 }"
+          :show-time="{ format: 'HH:mm' }"
           :disabledDate="props.boardType === 'general' ? disabledDate : null"
           v-model:value="filterDate"
           style="width: 340px"
@@ -142,7 +142,17 @@ watch(
     const end_time = dayjs(store.filterState.end_time, 'YYYY-MM-DD HH:mm:ss')
     if (start_time.isValid() && end_time.isValid()) filterDate.value = [start_time, end_time]
   },
-  { immediate: true },
+  // { immediate: true },
+)
+
+watch(
+  () => store.filterState.dimension,
+  val => {
+    if (val && val !== filterDimension.value) {
+      filterDimension.value = val
+    }
+  },
+  // { immediate: true },
 )
 
 // 处理时间范围变化

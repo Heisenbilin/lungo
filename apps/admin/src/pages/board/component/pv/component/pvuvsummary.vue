@@ -14,7 +14,7 @@
               >
                 SDK 配置详情 </a
               ><br />
-              SDK 2.4.0 版本以下无数据，请确保您的 SDK 版本在 2.4.0 以上。
+              SDK 2.3.4 版本以下无数据，请确保您的 SDK 版本在 2.3.4 以上。
             </template>
             总PV数
             <QuestionCircleOutlined />
@@ -34,7 +34,7 @@
               >
                 SDK 配置详情 </a
               ><br />
-              SDK 2.4.0 版本以下无数据，请确保您的 SDK 版本在 2.4.0 以上。
+              SDK 2.3.4 版本以下无数据，请确保您的 SDK 版本在 2.3.4 以上。
             </template>
             总UV数
             <QuestionCircleOutlined />

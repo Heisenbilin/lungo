@@ -8,7 +8,7 @@ const Monitor: RouteRecordItem = {
   meta: {
     orderNo: 1,
     icon: 'mdi:monitor-dashboard',
-    title: 'Web端质量监控',
+    title: 'Web前端监控',
   },
   children: [
     {

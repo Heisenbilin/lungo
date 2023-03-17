@@ -33,7 +33,7 @@
     <div class="flex w-full mt-4">
       <a-tooltip :overlayStyle="{ maxWidth: '600px' }">
         <template #title>
-          评分规则：以下四项评分和除以4
+          评分规则：以下四项评分的均值
           <a-table
             :columns="scoreColumns"
             :data-source="scoreData"

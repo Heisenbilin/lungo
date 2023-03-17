@@ -63,7 +63,7 @@
       </InfoTag>
       <InfoTag v-if="boardType !== 'panel'">
         <template #content>
-          <router-link :to="useLinkToUrl(projectInfo.id, 'panel', boardType)">
+          <router-link :to="panelUrl">
             <span @click="() => useStoreProject(projectInfo, 'panel')">
               <PieChartOutlined style="color: #f77f00" key="data" class="mr-2" /> 数据大盘
             </span>
@@ -72,7 +72,7 @@
       </InfoTag>
       <InfoTag v-if="boardType !== 'board'">
         <template #content>
-          <router-link :to="useLinkToUrl(projectInfo.id, 'board', boardType)">
+          <router-link :to="boardUrl">
             <span @click="() => useStoreProject(projectInfo, 'board')">
               <AreaChartOutlined style="color: #7ed591" key="board" class="mr-2" /> 质量监控
             </span>
@@ -81,7 +81,7 @@
       </InfoTag>
       <InfoTag v-if="boardType !== 'report' && projectInfo.appid !== '1001970'">
         <template #content>
-          <router-link :to="useLinkToUrl(projectInfo.id, 'report', boardType)">
+          <router-link :to="reportUrl">
             <span @click="() => useStoreProject(projectInfo, 'report')">
               <FundOutlined style="color: #720096" key="report" class="mr-2" /> 质量周报
             </span>
@@ -204,6 +204,9 @@ function initWatch() {
     () => {
       if (projectInfo.value.id) {
         projectId.value = projectInfo.value.id
+        // 把路由中的start_time、end_time、dimension同步到store中
+        const { start_time, end_time, dimension } = getQuery()
+        store.addFilterValue({ start_time, end_time, dimension })
         getTopicId(projectInfo.value.appid, projectInfo.value.saas)
         freshYachId(undefined, projectInfo.value.uc_group_id)
       } else {
@@ -254,4 +257,11 @@ const getProjectListByGroup = async (needCommitProjectInfo = false) => {
 }
 
 getProjectListByGroup(Boolean(!projectInfo.value.id && +urlProjectId!))
+
+//点击卡片跳转的路由
+const boardUrl = useLinkToUrl(projectInfo.value.id, 'board', props.boardType)
+//点击质量周报按钮跳转的路由
+const panelUrl = useLinkToUrl(projectInfo.value.id, 'panel', props.boardType)
+//点击数据大盘按钮跳转的路由
+const reportUrl = useLinkToUrl(projectInfo.value.id, 'report', props.boardType)
 </script>

@@ -9,6 +9,7 @@ export const datePickerRanges = {
       .minute(10 * Math.floor(dayjs().minute() / 10))
       .second(0),
   ],
+  昨天: [dayjs().startOf('day').subtract(1, 'day'), dayjs().startOf('day').subtract(0, 'day')],
   最近三天: [
     dayjs().startOf('day').subtract(3, 'day'),
     dayjs()
@@ -17,12 +18,6 @@ export const datePickerRanges = {
   ],
   最近一周: [
     dayjs().startOf('day').subtract(7, 'day'),
-    dayjs()
-      .minute(10 * Math.floor(dayjs().minute() / 10))
-      .second(0),
-  ],
-  最近两周: [
-    dayjs().startOf('day').subtract(14, 'day'),
     dayjs()
       .minute(10 * Math.floor(dayjs().minute() / 10))
       .second(0),

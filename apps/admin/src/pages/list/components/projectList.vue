@@ -4,12 +4,12 @@
       <div class="flex justify-end h-8 gap-3 2xl:gap-2 items-center" id="projectList">
         <div class="flex gap-3 2xl:gap-6">
           <a-select v-model:value="projectType" style="min-width: 130px">
-            <a-selectOption  :value="''">所有应用</a-selectOption >
+            <a-selectOption :value="''">所有应用</a-selectOption>
             <a-selectOption :value="0">非编辑器应用</a-selectOption>
             <a-selectOption :value="1">编辑器应用</a-selectOption>
           </a-select>
           <a-select v-model:value="saasType" style="min-width: 110px">
-            <a-selectOption :value="''">学科&素质</a-selectOption >
+            <a-selectOption :value="''">学科&素质</a-selectOption>
             <a-selectOption :value="'yes'">学科</a-selectOption>
             <a-selectOption :value="'no'">素质</a-selectOption>
           </a-select>
@@ -155,7 +155,7 @@
 <script setup lang="ts">
 import { ref, watch, h, computed, provide } from 'vue'
 import { checkProjectData } from '@/apis/list'
-import { message, Modal} from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 import { useListStore } from '@/store/modules/list'
 import { useUserStore } from '@/store/user'
@@ -233,14 +233,9 @@ watch(activeKey, val => addOrUpdateQuery({ tabKey: val }))
 //时间范围
 const startTime = dayjs().startOf('day').format('YYYY-MM-DD HH:mm:ss')
 const startWeek = dayjs().startOf('day').subtract(6, 'd').format('YYYY-MM-DD HH:mm:ss')
-const endTime = dayjs().second(0).format('YYYY-MM-DD HH:mm:ss')
 
 //对比维度
-const dimension = ref<'week' | 'day'>(dimen as 'week' | 'day')
-
-// 开始时间与结束时间存入listStore
-listStore.startTime = dimension.value === 'week' ? startWeek : startTime
-listStore.endTime = endTime
+const dimension = ref<'week' | 'day'>(dimen == 'week' || dimen == 'day' ? dimen : 'week')
 
 //监听数据维度变化，更新store
 watch(
@@ -248,6 +243,7 @@ watch(
   val => {
     listStore.dimension = val
     listStore.startTime = val === 'week' ? startWeek : startTime
+    listStore.endTime = dayjs().second(0).format('YYYY-MM-DD HH:mm:ss')
     addOrUpdateQuery({ dimen: val })
   },
   { immediate: true },

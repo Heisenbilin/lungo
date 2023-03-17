@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
 import { defineStore } from '@vben/stores'
 import { getQuery, router } from '@vben/router'
+import dayjs from 'dayjs'
 
 export const useBoardStore = defineStore({
   id: 'app-board',
@@ -89,11 +90,25 @@ export const useBoardStore = defineStore({
     commitLatestSDKVersionState(latestSDKVersion: string): void {
       this.latestSDKVersionState = latestSDKVersion
     },
-    addFilterValue(values: object): void {
+    addFilterValue(values: filter): void {
       const oldFilter = JSON.stringify(this.filterState)
       Object.assign(this.filterState, values)
       const newFilter = JSON.stringify(this.filterState)
       if (oldFilter !== newFilter) {
+        // 判断start_time和end_time是否有变化，如果有变化，通过dayjs计算出时间差值,调整展示维度
+        if (values.start_time && values.end_time) {
+          const dime = this.filterState.dimension
+          const diffHour = dayjs(values.end_time).diff(dayjs(values.start_time), 'hour')
+          if (diffHour < 1 && (dime === 'day' || dime === 'hour')) {
+            message.warning(`选择的时间段不足1小时，自动切换展示维度为‘分钟’`)
+            this.filterState.dimension = 'minute'
+          } else {
+            if (diffHour < 25 && dime === 'day') {
+              message.warning(`选择的时间段不足1天，自动切换展示维度为‘小时’`)
+              this.filterState.dimension = 'hour'
+            }
+          }
+        }
         this.setUrlQuery()
         if (Object.keys(values).some(key => !noNeedMessageKeys.includes(key))) {
           message.success(`已更新筛选条件`)
