@@ -70,7 +70,7 @@
     <div
       v-else-if="title == '分数'"
       class="my-1 center text- text-2xl font-bold outline-solid-red-700"
-      :class="barFinColor(itemsData.score)"
+      :style="{ color: barFinColor(itemsData.score) }"
     >
       <a-tooltip :overlayStyle="{ maxWidth: '600px' }">
         <template #title>
@@ -92,7 +92,8 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getTendencyChartOption, scoreColumns, scoreData, barFinColor } from '../utils'
+import { scoreColumns, scoreData, barFinColor } from '../utils'
+import { getTendencyChartOption } from '../tendencyChartConfig'
 import { BasicChart } from '@vben/components'
 import TableTtem from './tableItem.vue'
 import { BoardInfo } from '@vben/types'

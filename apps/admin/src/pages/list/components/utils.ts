@@ -170,13 +170,13 @@ export const projectListColumns = [
 //设置分数的颜色样式
 export const barFinColor = num => {
   if (num < 50) {
-    return 'text-[#ec5c4c]'
+    return '#ec5c4c'
   }
   if (49 < num && num < 75) {
-    return 'text-[#F2AE57]'
+    return '#F2AE57'
   }
   if (74 < num) {
-    return 'text-[#5eca75]'
+    return '#5eca75'
   }
 }
 
@@ -409,57 +409,4 @@ export function caculatePageSizeByWidth(w) {
     return 16
   }
   return 10
-}
-
-const defaultOption = {
-  grid: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    top: 0,
-  },
-  xAxis: {
-    show: false,
-    data: ['1', '2'],
-  },
-  yAxis: {
-    show: false,
-  },
-  series: [
-    {
-      data: [0, 0],
-      type: 'line',
-      sampling: 'lttb',
-      symbol: 'none',
-      itemStyle: {
-        color: '#f77f00',
-      },
-      areaStyle: {
-        color: new linearGradient(0, 0, 0, 1, [
-          {
-            offset: 0,
-            color: '#f77f00',
-          },
-          {
-            offset: 1,
-            color: '#fff',
-          },
-        ]),
-      },
-    },
-  ],
-}
-
-export const getTendencyChartOption = data => {
-  const chartOption: any = cloneDeep(defaultOption)
-  if (!(Array.isArray(data) && data.length)) return chartOption
-  let timeList = data.length === 1 ? ['1'] : []
-  let countList = data.length === 1 ? [0] : []
-  data.forEach(item => {
-    timeList.push(item.query_time)
-    countList.push(item.board_count)
-  })
-  chartOption.xAxis.data = timeList
-  chartOption.series[0].data = countList
-  return chartOption
 }
