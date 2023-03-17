@@ -30,7 +30,6 @@
 </template>
 <script setup lang="ts">
 import { commafy } from '@vben/utils'
-// import {a-tooltip} from 'ant-design-vue'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BoardInfo } from '@vben/types'
 

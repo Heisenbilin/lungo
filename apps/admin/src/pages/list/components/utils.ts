@@ -21,6 +21,165 @@ const paramsObj = {
   3: '检测异常',
 }
 
+export const scoreData = [
+  {
+    key: '1',
+    name: '运行时异常率',
+    low: '>3%',
+    middle: '1%~3%',
+    high: '<1%',
+  },
+  {
+    key: '2',
+    name: '资源异常率',
+    low: '>3%',
+    middle: '1%~3%',
+    high: '<1%',
+  },
+  {
+    key: '3',
+    name: '请求成功率',
+    low: '<97%',
+    middle: ' 97~99%',
+    high: '99~100%',
+  },
+  {
+    key: '4',
+    name: '页面加载',
+    low: '>4S',
+    middle: '2.5S~4S',
+    high: '<2.5S',
+  },
+]
+
+export const scoreColumns = [
+  {
+    title: '评分项',
+    dataIndex: 'name',
+    key: 'name',
+    align: 'center',
+  },
+  {
+    title: '0~50分',
+    dataIndex: 'low',
+    key: 'low',
+    align: 'center',
+  },
+  {
+    title: '50～75分',
+    dataIndex: 'middle',
+    key: 'middle',
+    align: 'center',
+  },
+  {
+    title: '75~100分',
+    dataIndex: 'high',
+    key: 'high',
+    align: 'center',
+  },
+]
+
+export const projectListColumns = [
+  {
+    title: '应用名称',
+    dataIndex: 'name',
+    key: 'name',
+    fixed: 'left',
+    width: '20%',
+  },
+  {
+    title: 'SDK',
+    dataIndex: 'sdk',
+    key: 'sdk',
+    width: '40px',
+  },
+  {
+    title: '实时评分',
+    dataIndex: 'score',
+    key: 'score',
+    width: '55px',
+    align: 'center',
+  },
+  {
+    title: 'PV量',
+    dataIndex: 'pv',
+    key: 'pv',
+    width: '50px',
+    align: 'center',
+  },
+  {
+    title: 'UV量',
+    key: 'uv',
+    dataIndex: 'uv',
+    width: '50px',
+    align: 'center',
+  },
+  {
+    title: '活跃趋势',
+    key: 'chartOption',
+    dataIndex: 'chartOption',
+    width: '100px',
+    align: 'center',
+  },
+  {
+    title: '页面加载',
+    key: 'pageloadData',
+    dataIndex: 'pageloadData',
+    width: '60px',
+    align: 'center',
+  },
+  {
+    title: '运行时异常',
+    key: 'runtimeError',
+    dataIndex: 'runtimeError',
+    width: '65px',
+    align: 'center',
+  },
+  {
+    title: '资源异常',
+    key: 'resourceError',
+    dataIndex: 'error',
+    width: '55px',
+    align: 'center',
+  },
+  {
+    title: '请求成功率',
+    key: 'success',
+    dataIndex: 'success',
+    width: '65px',
+    align: 'center',
+  },
+  {
+    title: '看板',
+    key: 'screen',
+    dataIndex: 'screen',
+    width: '160px',
+    fixed: 'right',
+    align: 'center',
+  },
+  {
+    title: '操作',
+    key: 'action',
+    dataIndex: 'action',
+    fixed: 'right',
+    width: '50px',
+    align: 'center',
+  },
+]
+
+//设置分数的颜色样式
+export const barFinColor = num => {
+  if (num < 50) {
+    return 'text-[#ec5c4c]'
+  }
+  if (49 < num && num < 75) {
+    return 'text-[#F2AE57]'
+  }
+  if (74 < num) {
+    return 'text-[#5eca75]'
+  }
+}
+
 //ua解析
 export function handleUaParse(ua_name, ua_flag) {
   //根据keywords解析ua名

@@ -33,24 +33,12 @@
 
 <script setup lang="ts">
 defineProps({
-  project: {
-    type: Object,
-    required: true,
-  },
-  latestSDKVersion: {
-    type: String,
-    default: '',
-  },
+  project: { type: Object, required: true },
+  latestSDKVersion: { type: String, default: '' },
 })
 </script>
 
 <style lang="scss" scoped>
-.card {
-  // position: relative;
-  display: flex;
-  align-items: center;
-}
-
 :deep(.ant-tag) {
   height: 1.5rem;
 }

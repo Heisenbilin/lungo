@@ -12,7 +12,7 @@ export const getRecommendSDKConfig = (
   clickMsg: { open: false }, // 关闭交互日志上传(b.gif)
   //【***注意***】trace打开后可能会造成跨域问题, 需要服务器做traceid header的跨域支持
   // 包含xueersi、xesv5、vdyoo、xiwang等域名的API网关下, 大部分默认支持该跨域规则，故推荐打开
-  trace: { open: true }, //打开traceid上传
+  trace: { open: false }, //关闭traceid上传，推荐自行打开！以便跟踪用户操作路径
   vue: { errorHandler: true }, // 捕获Vue抛出的错误
 }`
 
@@ -31,7 +31,7 @@ const SDKConfig = {
   clickMsg: { open: false }, // 关闭交互日志上传(b.gif)
   //【***注意***】trace打开后可能会造成跨域问题, 需要服务器做traceid header的跨域支持
   // 包含xueersi、xesv5、vdyoo、xiwang等域名的API网关下, 大部分默认支持该跨域规则，故推荐打开
-  trace: { open: true }, //打开traceid上传
+  trace: { open: false }, //关闭traceid上传，推荐自行打开！以便跟踪用户操作路径
   vue: { errorHandler: true }, // 捕获Vue抛出的错误
 }
 Vue.use(XesLoggerSDK, SDKConfig)  //注册，建议最先use`

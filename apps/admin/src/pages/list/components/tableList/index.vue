@@ -1,7 +1,7 @@
 <template>
   <a-table
     :loading="loading === 'loading'"
-    :columns="columns"
+    :columns="projectListColumns"
     :dataSource="huatuoProjectList"
     :pagination="false"
     :scroll="{ x: 1600 }"
@@ -141,7 +141,7 @@ import { debounce } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { getQuery, addOrUpdateQuery } from '@vben/router'
-import columns from './tableColumns'
+import { projectListColumns } from '../utils'
 import tableActions from './tableActions.vue'
 import tableHeader from './tableHeader.vue'
 import tableScreen from './tableScreen.vue'

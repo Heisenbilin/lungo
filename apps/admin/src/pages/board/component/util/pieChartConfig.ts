@@ -149,7 +149,7 @@ export function getCostTimeChartOption(data) {
 
 //将接口返回值处理成网关“耗时统计”图表数据
 export function getGateWayCostTimeChartOption(data) {
-  if (!(typeof data === 'object' && Object.keys(data).length)) {
+  if (!(data && typeof data === 'object' && Object.keys(data).length)) {
     return null
   }
   const chartOption = cloneDeep(pieChartOption)

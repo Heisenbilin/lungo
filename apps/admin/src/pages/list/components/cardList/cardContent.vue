@@ -31,15 +31,15 @@
       jumpKey="pageview"
     />
     <div class="flex w-full mt-4">
-      <a-tooltip color="white" :overlayStyle="{ maxWidth: '400px' }">
+      <a-tooltip :overlayStyle="{ maxWidth: '600px' }">
         <template #title>
-          <div class="text-gray-800">
-            分数来源：<br />
-            页面加载速度(25%)<br />
-            运行时异常率(25%)<br />
-            资源异常率(25%)<br />
-            请求成功率(25%)
-          </div>
+          评分规则：以下四项评分和除以4
+          <a-table
+            :columns="scoreColumns"
+            :data-source="scoreData"
+            size="small"
+            :pagination="false"
+          />
         </template>
         <div class="w-1/5 text-center items-center opacity-80">
           <CardProgress :progress="itemsData.score" width="70" radius="3" :hasUnit="false" />
@@ -92,12 +92,13 @@
 import { computed, ref, watch } from 'vue'
 import { getProjectBoard } from '@/apis/list'
 import { CardProgress } from '@vben/components'
-import { getTendencyChartOption } from './tendencyChartConfig'
+import { getTendencyChartOption } from '../tendencyChartConfig'
 import { BasicChart } from '@vben/components'
 import { Empty } from 'ant-design-vue'
-import { useListStore } from '@/store/modules/list'
-import ContentItem from './contentItem.vue'
 import { BoardInfo } from '@vben/types'
+import { useListStore } from '@/store/modules/list'
+import { scoreData, scoreColumns } from '../utils'
+import ContentItem from './contentItem.vue'
 
 const listStore = useListStore()
 

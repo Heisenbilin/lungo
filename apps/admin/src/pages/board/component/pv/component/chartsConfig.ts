@@ -11,7 +11,7 @@ const PVUVChartConfig: any = {
     data: [],
   },
   grid: {
-    top: 20,
+    top: 30,
     left: '2%',
     right: '3%',
     bottom: '3%',
@@ -49,13 +49,13 @@ const PVUVChartConfig: any = {
       name: '访问次数-PV',
       data: [],
       type: 'line',
-      animation: false,
+      smooth: true,
     },
     {
       name: '访问用户数-UV',
       data: [],
       type: 'line',
-      animation: false,
+      smooth: true,
     },
   ],
 }

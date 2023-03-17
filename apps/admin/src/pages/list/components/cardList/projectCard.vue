@@ -14,9 +14,6 @@
                 {{ project.project_name }}
               </a-tooltip>
             </span>
-            <!-- 
-              {{ project.project_name }}
-            </span> -->
           </router-link>
         </template>
         <a-card-meta>
@@ -29,7 +26,7 @@
                 :title="`由于本项目连续${closeDays}无数据/手动关闭，现已关闭日志采集，确定要开启吗？`"
                 ok-text="是"
                 cancel-text="否"
-                @confirm="openProject(project.id)"
+                @confirm="() => openProject(project.id)"
               >
                 <a-button type="primary"> <InfoCircleOutlined /> 开启项目 </a-button>
               </a-popconfirm>
@@ -83,7 +80,7 @@
               <SettingOutlined
                 style="color: gray"
                 class="ml-1 text-base"
-                @click="editProject(project.id)"
+                @click="() => editProject(project.id)"
               />
             </a-tooltip>
           </span>
