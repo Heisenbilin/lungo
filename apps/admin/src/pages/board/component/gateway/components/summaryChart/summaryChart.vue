@@ -41,7 +41,6 @@ import { useBoardStore } from '@/store/modules/board'
 import { getApiAmountChartOption, getTimeConsumingChartOption } from './summaryChartConfig'
 import { BaseChart } from '@vben/components'
 
-
 const boardStore = useBoardStore()
 
 const activeKey = ref('1')
@@ -50,13 +49,12 @@ const params = computed(() => ({
   project_id: boardStore.boardInfoState.id,
   start_time: boardStore.filterState.start_time,
   end_time: boardStore.filterState.end_time,
-  summary_dimension: boardStore.filterState.dimension,
+  summary_dimension:
+    boardStore.filterState.dimension === 'minute' ? 'halfHour' : boardStore.filterState.dimension,
 }))
 
 const requestParams1 = computed(() => ({ ...params.value, summary_type: 'statusAmount' }))
-
 const requestParams2 = computed(() => ({ ...params.value, summary_type: 'statusTimeConsuming' }))
-
 const requestParams3 = computed(() => ({ ...params.value, summary_type: 'upstreamStatusAmount' }))
 
 const requestParams4 = computed(() => ({

@@ -1,5 +1,5 @@
 <template>
-  <div id="general-board-container" ref="areaRef" class="p-2 mt-3 mb-8 relative">
+  <div ref="areaRef" class="p-2 mt-3 mb-8 relative">
     <a-tabs v-model:activeKey="activeKey" size="large">
       <a-tab-pane key="pageview" :tab="tabNameConfig.pageview">
         <PVBoard v-if="activeKey === 'pageview'" />

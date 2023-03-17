@@ -139,7 +139,6 @@ import { getProjectList, getProjectBoard, modifyProjectParams } from '@/apis/lis
 import { caculatePageSizeByWidth } from '../utils'
 import { debounce } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
-import { useBoardStore } from '@/store/modules/board'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { getQuery, addOrUpdateQuery } from '@vben/router'
 import columns from './tableColumns'
@@ -150,7 +149,6 @@ import tableContent from './tableContent.vue'
 import tableSdk from './tableSdk.vue'
 
 const listStore = useListStore()
-const boardStore = useBoardStore()
 
 const props = defineProps({
   requestParams: {
@@ -342,13 +340,14 @@ watch(
 getHuatuoProjectList()
 
 // 周/天变化
-watch(() => listStore.dimension, initTableContentData)
+watch(
+  () => listStore.dimension,
+  () => initTableContentData(lastSearchId),
+)
 </script>
 
 <style lang="less" scoped>
 :deep(.bg-red-50) {
-  // background: --table-row-color;
-
   td {
     background: inherit;
   }

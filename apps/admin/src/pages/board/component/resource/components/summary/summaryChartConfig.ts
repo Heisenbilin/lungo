@@ -1,3 +1,5 @@
+import { xAxisMaxLength } from '@vben/constants'
+import { chartDataValue } from '@vben/types'
 import { cloneDeep, commafy, accSub, getDateWeekday } from '@vben/utils'
 
 //图表基础配置
@@ -20,7 +22,9 @@ const summaryChartConfig: any = {
     position(pt) {
       return [pt[0], '10%']
     },
-    formatter: item => item.map(data => data.name).join('<br/>'),
+    formatter: item =>
+      `<font style="color:green">${item[0]?.axisValue}</font><br/>` +
+      item.map(data => data.name).join('<br/>'),
   },
   legend: {},
   grid: {
@@ -100,7 +104,8 @@ const summaryChartConfig: any = {
 
 var latestsSelectedLegend = { 接入容错前异常率: false, 容错成功数: false }
 
-export const getFaultTolerantChartOption = (data, hasSuccessData = false) => {
+export const getFaultTolerantChartOption = (data: any, hasSuccessData = false) => {
+  // 1. 数据为空时，返回null，图表为空状态
   if (!(Array.isArray(data) && data.length)) {
     return null
   }
@@ -110,12 +115,13 @@ export const getFaultTolerantChartOption = (data, hasSuccessData = false) => {
     chartOption.legend.selected = latestsSelectedLegend
   }
 
-  const timeList: any[] = [] //时间数据
-  const countList: any[] = [] //异常资源数
-  const rateList: any[] = [] //异常率(容错后)
-  const uvRateList: any[] = [] //影响用户率
-  const successCountList: any[] = [] //异常容错数
-  const beforeRateList: any[] = [] //容错前异常率
+  // 2. 接口数据处理成图表数据
+  const timeList: chartDataValue[] = [] //时间数据
+  const countList: chartDataValue[] = [] //异常资源数
+  const rateList: chartDataValue[] = [] //异常率(容错后)
+  const uvRateList: chartDataValue[] = [] //影响用户率
+  const successCountList: chartDataValue[] = [] //异常容错数
+  const beforeRateList: chartDataValue[] = [] //容错前异常率
   data.forEach(item => {
     const count = item.resource_num
     const successCount = item.resource_success_num
@@ -123,24 +129,13 @@ export const getFaultTolerantChartOption = (data, hasSuccessData = false) => {
     const uvCount = item.uv
     const userCount = item.error_uv
     const totalCount = count + successCount
-
-    //比率
     const rate = totalCount ? ((count * 100) / totalCount).toFixed(2) : 0 //容错失败率
     const beforeRate = pvCount ? ((totalCount * 100) / pvCount).toFixed(2) : null //容错前的异常率
     const afterRate = pvCount ? ((count * 100) / pvCount).toFixed(2) : null //容错后的异常率
     const uvRate = uvCount ? ((userCount * 100) / uvCount).toFixed(2) : null //影响用户率
-
-    timeList.push({ value: item.time, name: item.originTime })
-    countList.push({
-      name: `${
-        item.time + ' ' + getDateWeekday(item.originTime)
-      }<br/>异常资源数（容错后）：${commafy(count)}`,
-      value: count,
-    })
-    rateList.push({
-      name: `异常率：${afterRate}%（PV数：${commafy(pvCount)}）`,
-      value: afterRate,
-    })
+    timeList.push({ value: item.time, name: `${item.time} ${getDateWeekday(item.originTime)}` })
+    countList.push({ name: `异常资源数（容错后）：${commafy(count)}`, value: count })
+    rateList.push({ name: `异常率：${afterRate}%（PV数：${commafy(pvCount)}）`, value: afterRate })
     uvRateList.push({
       name: `影响用户率：${uvRate}%（影响用户数：${commafy(userCount)}，总UV：${commafy(
         uvCount,
@@ -157,7 +152,15 @@ export const getFaultTolerantChartOption = (data, hasSuccessData = false) => {
     })
   })
 
-  //存入数据
+  // 3. 设置热力线区间
+  const maxRate = Math.max(...rateList.map(item => (item.value ? Number(item.value) : 0)))
+  const minRate = Math.min(...rateList.map(item => (item.value ? Number(item.value) : 0)))
+  if (maxRate > 0) {
+    chartOption.visualMap.max = Math.ceil(maxRate * 10) / 10 //向上取整，美化坐标轴、防止数据js溢出
+    chartOption.visualMap.min = minRate * 0.5
+  } // 防止maxRate为0或为nan
+
+  // 4. 存入数据
   chartOption.xAxis.data = timeList
   chartOption.series[0].data = countList
   chartOption.series[1].data = rateList
@@ -165,10 +168,10 @@ export const getFaultTolerantChartOption = (data, hasSuccessData = false) => {
   chartOption.series[3].data = successCountList
   chartOption.series[4].data = beforeRateList
 
-  if (timeList.length > 15) {
+  // 5. 当坐标过多时，显示滚动条
+  if (timeList.length > xAxisMaxLength) {
     chartOption.dataZoom.show = true
     chartOption.grid.bottom = '15%'
   }
-
   return chartOption
 }

@@ -455,7 +455,7 @@ const clearGatewayData = (data, uaList) => {
         // { name: '接口返回', ...parseJson(item.response) },
       ],
       //用户信息
-      userInfo: getUserInfo(item, uaList),
+      // userInfo: getUserInfo(item, uaList),
       upload_time: item.upload_time,
       url: item.url,
     }))

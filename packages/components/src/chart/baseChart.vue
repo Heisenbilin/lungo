@@ -23,20 +23,11 @@ const props = defineProps({
   bindFuncs: Object,
   zrFuncs: Object,
   //请求方法
-  requestFunc: {
-    type: Function,
-    required: true,
-  },
+  requestFunc: { type: Function, required: true },
   //将请求结果处理成图表数据
-  getOptionFunc: {
-    type: Function,
-    required: true,
-  },
+  getOptionFunc: { type: Function, required: true },
   //图表高度
-  height: {
-    type: String,
-    default: '320px',
-  },
+  height: { type: String, default: '320px' },
 })
 
 const loading = ref<boolean>(true)

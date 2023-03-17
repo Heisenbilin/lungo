@@ -19,7 +19,6 @@ const props = defineProps({
   },
 })
 const {feadback} = context
-console.log(feadback);
 
 const { bem, cssVarBlock } = createNamespace('footer')
 const style = computed(

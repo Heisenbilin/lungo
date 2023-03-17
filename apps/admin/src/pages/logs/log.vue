@@ -7,14 +7,38 @@ import { useGetLogs } from './hooks'
 import LogSearch from './component/LogSearch.vue'
 import type { TableColumnsType } from 'ant-design-vue'
 import { useUserStore } from '@/store/user'
+import { watch } from 'vue'
+import { BASIC_HOME_PATH } from '@vben/constants'
 
 const userStore = useUserStore()
 /**
  * 请求操作日志列表
  */
+const anyData: any = {
+  query: undefined,
+  pagination: undefined,
+  logs: undefined,
+  loading: undefined,
+  onDateChange: undefined,
+  handleTableChange: undefined,
+  handleSearch: undefined,
+}
 
-const { query, pagination, logs, loading, onDateChange, handleTableChange, handleSearch } =
-  useGetLogs()
+let { query, pagination, logs, loading, onDateChange, handleTableChange, handleSearch } = anyData
+
+watch(
+  () => userStore.isAdminUser,
+  val => {
+    if (val) {
+      ;({ query, pagination, logs, loading, onDateChange, handleTableChange, handleSearch } =
+        useGetLogs())
+    }
+  },
+  { immediate: true },
+)
+
+// const { query, pagination, logs, loading, onDateChange, handleTableChange, handleSearch } =
+//   useGetLogs()
 
 const columns: TableColumnsType = [
   {
@@ -59,7 +83,13 @@ const columns: TableColumnsType = [
 ]
 </script>
 <template>
-  <div v-if="userStore.isAdminUser">无权限</div>
+  <div v-if="!userStore.isAdminUser">
+    <div class="flex-center text-3xl pt-10">401</div>
+    <div class="flex-center pt-2">抱歉，您无权限访问该页面</div>
+    <router-link :to="BASIC_HOME_PATH" class="flex-center pt-2">
+      <a-button type="primary">返回首页</a-button></router-link
+    >
+  </div>
   <div v-else>
     <LogSearch :query="query" @date-change="onDateChange" @search="handleSearch" />
     <div class="mt-4 mr-4 ml-4">

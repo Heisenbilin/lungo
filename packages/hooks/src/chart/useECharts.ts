@@ -15,9 +15,7 @@ export function useECharts(elRef: Ref<HTMLDivElement>, theme: String) {
   // const { getDarkMode: getSysDarkMode } = useRootSetting();
   // const { getCollapsed } = useMenuSetting();
 
-  const getDarkMode = computed(() => {
-    return themeState.value === 'dark' ? 'dark' : 'default' //theme === 'default' ? getSysDarkMode.value :
-  })
+  const getDarkMode = computed(() => (themeState.value === 'dark' ? 'dark' : 'default')) //theme === 'default' ? getSysDarkMode.value :
   let chartInstance: echarts.ECharts | null = null
   let resizeFn: Fn = resize
   const cacheOptions = ref({}) as Ref<EChartsOption>
@@ -35,7 +33,7 @@ export function useECharts(elRef: Ref<HTMLDivElement>, theme: String) {
     } as EChartsOption
   })
 
-  function initCharts(t = theme) {
+  function initCharts(t = getDarkMode.value) {
     const el = unref(elRef)
     if (!el || !unref(el)) {
       return
