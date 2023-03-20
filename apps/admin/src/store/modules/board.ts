@@ -55,6 +55,7 @@ export const useBoardStore = defineStore({
         path: router.currentRoute.value.path,
         query,
       })
+      
     },
     commitBoardInfoState(info: BoardInfo): void {
       this.boardInfoState = info
