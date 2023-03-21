@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue';
-import { tryOnUnmounted } from '@vueuse/core';
+import { tryOnUnmounted } from '@vben/utils';
 
 function isFunction(val: unknown): val is Function {
   return typeof val === 'function';

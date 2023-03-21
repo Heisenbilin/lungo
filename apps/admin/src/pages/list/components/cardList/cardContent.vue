@@ -36,7 +36,7 @@
           评分规则：以下四项评分的均值
           <a-table
             :columns="scoreColumns"
-            :data-source="scoreData"
+            :data-source="scoreDataList"
             size="small"
             :pagination="false"
           />
@@ -99,6 +99,7 @@ import { BoardInfo } from '@vben/types'
 import { useListStore } from '@/store/modules/list'
 import { scoreData, scoreColumns } from '../utils'
 import ContentItem from './contentItem.vue'
+import { cloneDeep } from '@vben/utils'
 
 const listStore = useListStore()
 
@@ -112,6 +113,17 @@ const props = defineProps({
 const loading = ref(true)
 //数据
 const itemsData = ref<any>({})
+
+// 得分数据
+const scoreDataList = computed(() => {
+  const dataList = cloneDeep(scoreData)
+  if (Object.keys(itemsData.value).length === 0) return dataList
+  dataList[0].score = itemsData.value.runtimeData?.score ?? ''
+  dataList[1].score = itemsData.value.resourceData?.score ?? ''
+  dataList[2].score = itemsData.value.ajaxData?.score ?? ''
+  dataList[3].score = itemsData.value.pageloadData?.score ?? ''
+  return dataList
+})
 
 //今日活跃趋势图表option
 const chartOption = computed(() => {

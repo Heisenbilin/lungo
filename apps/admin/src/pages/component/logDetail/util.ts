@@ -392,8 +392,7 @@ const clearApiData = (data, uaList) => {
           href: getTraceidURL(item.traceid),
         },
         { name: 'referrer', value: item.referrer, span: 1 },
-        { name: '重试次数', value: item.retrying_times, span: 1 },
-        { name: '重试次数', value: item.retrying_times, span: 1 },
+        // { name: '重试次数', value: item.retrying_times, span: 1 },
         // { name: '接口返回', ...parseJson(item.response) },
       ],
       //用户信息

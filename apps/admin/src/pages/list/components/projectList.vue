@@ -39,7 +39,7 @@
           </a-tooltip>
           <a-inputSearch
             v-model:value="searchValue"
-            style="width: 200px"
+            style="width: 210px"
             placeholder="输入名称/appid/eventid"
             @keydown="onInputKeyDown"
           />

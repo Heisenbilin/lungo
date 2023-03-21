@@ -2,7 +2,7 @@
   <div class="flex h-20 flex-row justify-center chart-container-full">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
-      <div class="w-1/7 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <a-tooltip
           :overlayStyle="{ maxWidth: '500px' }"
           title="加载异常、且未容错/容错失败的资源的总和"
@@ -15,7 +15,7 @@
         <div class="text-3xl font-medium">{{ commafy(summaryData.errTotal) }}</div>
       </div>
       <div
-        class="w-1/7 grid justify-items-center content-center space-y-1"
+        class="w-1/8 grid justify-items-center content-center space-y-1"
         v-if="faultTolerantStatus === 'accessed'"
       >
         <a-tooltip
@@ -29,19 +29,19 @@
         </a-tooltip>
         <div class="text-3xl font-medium">{{ commafy(summaryData.successCount) }}</div>
       </div>
-      <div class="w-1/7 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">影响用户数</div>
         <div class="flex items-end">
           <div class="text-3xl font-medium">{{ commafy(summaryData.userCount) }}</div>
         </div>
       </div>
-      <div class="w-1/7 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">总PV数</div>
         <div class="flex items-end">
           <div class="text-3xl font-medium">{{ commafy(summaryData.pvTotal) }}</div>
         </div>
       </div>
-      <div class="w-1/7 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
           <a-tooltip title="计算规则：总异常数/总PV数">
             总异常率
@@ -53,6 +53,24 @@
             {{ accMul(summaryData.errorRate, 100) }}
           </div>
           <div class="text-gray-500">%</div>
+        </div>
+      </div>
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
+        <div class="text-gray-500">
+          <a-tooltip :overlayStyle="{ maxWidth: '400px' }">
+            <template #title>
+              根据总异常率计算产生 <br />
+              0-1%：75-100分<br />
+              1-3%：50-75分<br />
+              3%以上：0-50分<br />
+            </template>
+            得分
+            <QuestionCircleOutlined />
+          </a-tooltip>
+        </div>
+        <div class="flex items-end">
+          <div class="text-3xl font-medium">{{ summaryData.score }}</div>
+          <div class="text-gray-500">分</div>
         </div>
       </div>
     </template>
@@ -99,6 +117,7 @@ const summaryData = ref({
   userCount: '',
   pvTotal: '',
   successCount: '',
+  score: '',
 })
 
 const requestSummaryData = async params => {
@@ -114,6 +133,7 @@ const requestSummaryData = async params => {
       userCount: '',
       pvTotal: '',
       successCount: '',
+      score: '',
     }
   } finally {
     loading.value = false

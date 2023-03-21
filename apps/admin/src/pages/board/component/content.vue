@@ -43,7 +43,7 @@ import LogDrawer from '../../component/logDetail/logDrawer.vue'
 import FAQ from '../../component/FAQ.vue'
 // import intro from 'intro.js'
 // import 'intro.js/introjs.css'
-import { getQuery } from '@vben/router'
+import { useRouteQuery } from '@vben/router'
 import { useAppTheme } from '@vben/hooks'
 const { isDark } = useAppTheme()
 
@@ -52,15 +52,26 @@ const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
 //tab页key值
 const { tabState: activeKey } = storeToRefs(boardStore)
+
+const urlTabkey = useRouteQuery('tabKey', '')
 if (!activeKey.value) {
-  // store中没有值，从url中获取
-  const { tabKey = '' } = getQuery()
-  activeKey.value = tabNameConfig[tabKey] ? tabKey : 'pageview'
+  activeKey.value = tabNameConfig[urlTabkey.value] ? urlTabkey.value : 'pageview'
 }
 
 const watchFunc: any[] = []
 const initWatch = () => {
-  const tabKeyWatch = watch(activeKey, val => boardStore.commitTabState(val), { immediate: true })
+  const tabKeyWatch = watch(
+    () => [activeKey, urlTabkey],
+    () => {
+      activeKey.value = tabNameConfig[urlTabkey.value]
+        ? urlTabkey.value
+        : activeKey.value
+        ? activeKey.value
+        : 'pageview'
+      boardStore.commitTabState(activeKey.value)
+    },
+    { immediate: true },
+  )
   // 从其他页面返回时，重新生成水印
   const watermarkWatch = watch(
     () => [boardStore.boardInfoState.project_name, userName],

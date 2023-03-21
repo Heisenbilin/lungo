@@ -2,7 +2,7 @@
   <div class="flex h-20 flex-row justify-center chart-container-full">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
-      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
           <a-tooltip title="均值">
             首字节
@@ -14,7 +14,7 @@
           <div class="text-gray-500">ms</div>
         </div>
       </div>
-      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
           <a-tooltip title="均值">
             DOM Ready
@@ -26,7 +26,7 @@
           <div class="text-gray-500">ms</div>
         </div>
       </div>
-      <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
           <a-tooltip title="均值">
             页面完全加载
@@ -36,6 +36,25 @@
         <div class="flex items-end">
           <div class="text-3xl font-medium">{{ commafy(averageData.load || '') }}</div>
           <div class="text-gray-500">ms</div>
+        </div>
+      </div>
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
+        <div class="text-gray-500">
+          <a-tooltip :overlayStyle="{ maxWidth: '400px' }">
+            <template #title>
+              根据页面完全加载时间计算产生 <br />
+              0S-2.5S：100-75分<br />
+              2.5S-4S：75-50分<br />
+              4S-20S：50-0分<br />
+              20S以上：0分
+            </template>
+            得分
+            <QuestionCircleOutlined />
+          </a-tooltip>
+        </div>
+        <div class="flex items-end">
+          <div class="text-3xl font-medium">{{ averageData.score }}</div>
+          <div class="text-gray-500">分</div>
         </div>
       </div>
     </template>
@@ -111,6 +130,7 @@ const averageData = ref({
   dom: '',
   load: '',
   ready: '',
+  score: '',
 })
 
 //从后端获取均值瀑布图数据方法
@@ -121,7 +141,7 @@ const requestAverageData = async params => {
   loading.value = true
   //拦截请求结果，存入averageData中
   const result = await getAverageData(params)
-  averageData.value = result?.data ?? { firstbyte: '', dom: '', load: '', ready: '' }
+  averageData.value = result?.data ?? { firstbyte: '', dom: '', load: '', ready: '', score: '' }
   loading.value = false
   return result
 }

@@ -1,12 +1,10 @@
 import type { EChartsOption } from 'echarts'
 import type { Ref } from 'vue'
 import { useTimeoutFn } from '../core/useTimeout'
-import { tryOnUnmounted } from '@vueuse/core'
+import { tryOnUnmounted, useLocalStorage, useDebounceFn } from '@vben/utils'
 import { unref, nextTick, watch, computed, ref } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
 import { useEventListener, useBreakpoint } from '../event'
 import * as echarts from 'echarts'
-import { useLocalStorage } from '@vben/utils'
 // import { useRootSetting } from './setting/useRootSetting';
 // import { useMenuSetting } from './setting/useMenuSetting';
 

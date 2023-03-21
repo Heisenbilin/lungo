@@ -82,7 +82,7 @@ importers:
       '@xes/fe-utils': ^2.1.4
       '@xes/tal-oss-huatuo': ^0.0.9
       '@xes/uc': 0.0.22
-      '@xes/xes_fe_log': ^2.4.1
+      '@xes/xes_fe_log': ^2.4.2
       ant-design-vue: ^3.2.14
       clean: ^4.0.2
       dayjs: ^1.11.7
@@ -124,7 +124,7 @@ importers:
       '@xes/fe-utils': 2.1.6
       '@xes/tal-oss-huatuo': 0.0.9
       '@xes/uc': 0.0.22_@vue+compiler-sfc@3.2.47
-      '@xes/xes_fe_log': 2.4.1
+      '@xes/xes_fe_log': 2.4.2
       ant-design-vue: registry.npmmirror.com/ant-design-vue/3.2.15_vue@3.2.47
       clean: registry.npmmirror.com/clean/4.0.2
       dayjs: registry.npmmirror.com/dayjs/1.11.7
@@ -370,7 +370,6 @@ importers:
       '@vben/stores': workspace:*
       '@vben/types': workspace:*
       '@vben/utils': workspace:*
-      '@vueuse/core': ^9.9.0
       echarts: ^5.3.2
       vue: ^3.2.47
       vue-router: ^4.1.6
@@ -379,7 +378,6 @@ importers:
       '@vben/locale': link:../locale
       '@vben/stores': link:../stores
       '@vben/utils': link:../utils
-      '@vueuse/core': 9.13.0_vue@3.2.47
       echarts: registry.npmmirror.com/echarts/5.4.1
       vue: registry.npmmirror.com/vue/3.2.47
       vue-router: registry.npmmirror.com/vue-router/4.1.6_vue@3.2.47
@@ -451,6 +449,7 @@ importers:
       '@vben/stores': workspace:*
       '@vben/types': workspace:*
       '@vben/utils': workspace:*
+      '@vueuse/router': ^9.13.0
       nprogress: ^0.2.0
       path-to-regexp: ^6.2.1
       vue: ^3.2.47
@@ -462,6 +461,7 @@ importers:
       '@vben/locale': link:../locale
       '@vben/stores': link:../stores
       '@vben/utils': link:../utils
+      '@vueuse/router': 9.13.0_lavcef455lp3wtm2mcdrwhgymm
       nprogress: registry.npmmirror.com/nprogress/0.2.0
       path-to-regexp: registry.npmmirror.com/path-to-regexp/6.2.1
       vue: registry.npmmirror.com/vue/3.2.47
@@ -3424,6 +3424,19 @@ packages:
     resolution: {integrity: sha512-gdU7TKNAUVlXXLbaF+ZCfte8BjRJQWPCa2J55+7/h+yDtzw3vOoGQDRXzI6pyKyo6bXFT5/QoPE4hAknExjRLQ==}
     dev: false
 
+  /@vueuse/router/9.13.0_lavcef455lp3wtm2mcdrwhgymm:
+    resolution: {integrity: sha512-lcL6auSUGMGZMdDzZJb02QDe909AChzMXoxqFS3gL2E8mHmIx0SrNor+33UkqvvBPi18vXpDq/R7tPd9fxWwTg==}
+    peerDependencies:
+      vue-router: '>=4.0.0-rc.1'
+    dependencies:
+      '@vueuse/shared': 9.13.0_vue@3.2.47
+      vue-demi: registry.npmmirror.com/vue-demi/0.13.11_vue@3.2.47
+      vue-router: registry.npmmirror.com/vue-router/4.1.6_vue@3.2.47
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
   /@vueuse/shared/9.13.0_vue@3.2.47:
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
     dependencies:
@@ -3564,7 +3577,7 @@ packages:
     resolution: {integrity: sha512-hKRyVd6VnZTp5+TM0bao9iB/dzk6FroZ5iNn5gx+XwTm5aHI4ESyNBlMfH72/qynvCTxdxAyHaotwtJ9b5YyHQ==}
     dependencies:
       '@ant-design/icons-vue': 6.1.0_vue@3.1.0
-      '@xes/xes_fe_log': 2.4.1
+      '@xes/xes_fe_log': 2.4.2
       ajv: registry.npmmirror.com/ajv/8.12.0
       ajv-errors: registry.npmmirror.com/ajv-errors/3.0.0_ajv@8.12.0
       ajv-keywords: registry.npmmirror.com/ajv-keywords/5.1.0_ajv@8.12.0
@@ -3670,8 +3683,8 @@ packages:
       - webpack-command
     dev: false
 
-  /@xes/xes_fe_log/2.4.1:
-    resolution: {integrity: sha512-bzD5/A3yKj/2+e8+UpAkAjHOD63ryu0MnDCHCw0YzRWqX7WrzGxVqr+q8v8kaQ1vEnfBv12T0xQdpYd+yQdS8Q==}
+  /@xes/xes_fe_log/2.4.2:
+    resolution: {integrity: sha512-FESaPJUJZ4ldnouh8vS82OXSSMmvTCFkCleGj59s7WQXuNRjnMC7HYOeJDvUm1CegvfOlf9dISFIt9JXbAn5KQ==}
     hasBin: true
     dependencies:
       '@bcc/url-fallback': 1.2.0
@@ -6862,7 +6875,7 @@ packages:
     engines: {node: '>=4'}
 
   registry.npmmirror.com/errno/0.1.8:
-    resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/errno/-/errno-0.1.8.tgz}
+    resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/errno/-/errno-0.1.8.tgz}
     name: errno
     version: 0.1.8
     hasBin: true
@@ -8433,7 +8446,7 @@ packages:
     version: 1.0.0
 
   registry.npmmirror.com/fsevents/1.2.13:
-    resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/fsevents/-/fsevents-1.2.13.tgz}
+    resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/fsevents/-/fsevents-1.2.13.tgz}
     name: fsevents
     version: 1.2.13
     engines: {node: '>= 4.0'}
@@ -8447,7 +8460,7 @@ packages:
     optional: true
 
   registry.npmmirror.com/fsevents/2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/fsevents/-/fsevents-2.3.2.tgz}
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/fsevents/-/fsevents-2.3.2.tgz}
     name: fsevents
     version: 2.3.2
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -8911,7 +8924,7 @@ packages:
     dev: false
 
   registry.npmmirror.com/graceful-fs/4.2.10:
-    resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/graceful-fs/-/graceful-fs-4.2.10.tgz}
+    resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/graceful-fs/-/graceful-fs-4.2.10.tgz}
     name: graceful-fs
     version: 4.2.10
 
@@ -9345,7 +9358,7 @@ packages:
     engines: {node: '>= 4'}
 
   registry.npmmirror.com/image-size/0.5.5:
-    resolution: {integrity: sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/image-size/-/image-size-0.5.5.tgz}
+    resolution: {integrity: sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/image-size/-/image-size-0.5.5.tgz}
     name: image-size
     version: 0.5.5
     engines: {node: '>=0.10.0'}
@@ -11075,7 +11088,7 @@ packages:
     dev: false
 
   registry.npmmirror.com/make-dir/2.1.0:
-    resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/make-dir/-/make-dir-2.1.0.tgz}
+    resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/make-dir/-/make-dir-2.1.0.tgz}
     name: make-dir
     version: 2.1.0
     engines: {node: '>=6'}
@@ -11389,7 +11402,7 @@ packages:
       mime-db: registry.npmmirror.com/mime-db/1.52.0
 
   registry.npmmirror.com/mime/1.6.0:
-    resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/mime/-/mime-1.6.0.tgz}
+    resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/mime/-/mime-1.6.0.tgz}
     name: mime
     version: 1.6.0
     engines: {node: '>=4'}
@@ -11826,7 +11839,7 @@ packages:
     dev: false
 
   registry.npmmirror.com/needle/3.2.0:
-    resolution: {integrity: sha512-oUvzXnyLiVyVGoianLijF9O/RecZUf7TkBfimjGrLM4eQhXyeJwM6GeAWccwfQ9aa4gMCZKqhAOuLaMIcQxajQ==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/needle/-/needle-3.2.0.tgz}
+    resolution: {integrity: sha512-oUvzXnyLiVyVGoianLijF9O/RecZUf7TkBfimjGrLM4eQhXyeJwM6GeAWccwfQ9aa4gMCZKqhAOuLaMIcQxajQ==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/needle/-/needle-3.2.0.tgz}
     name: needle
     version: 3.2.0
     engines: {node: '>= 4.4.x'}
@@ -16005,7 +16018,7 @@ packages:
     dev: false
 
   registry.npmmirror.com/turbo-darwin-64/1.8.1:
-    resolution: {integrity: sha512-H7pxGF/vsYG7kbY+vB8h+3r8VXn2L6hhYQi0XWA+EjZ1e2zu7+TzEMRWFYmvJPx8TRo5cV5txtg0I22/Y7bxUA==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/turbo-darwin-64/-/turbo-darwin-64-1.8.1.tgz}
+    resolution: {integrity: sha512-H7pxGF/vsYG7kbY+vB8h+3r8VXn2L6hhYQi0XWA+EjZ1e2zu7+TzEMRWFYmvJPx8TRo5cV5txtg0I22/Y7bxUA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/turbo-darwin-64/-/turbo-darwin-64-1.8.1.tgz}
     name: turbo-darwin-64
     version: 1.8.1
     cpu: [x64]
@@ -16015,7 +16028,7 @@ packages:
     optional: true
 
   registry.npmmirror.com/turbo-darwin-arm64/1.8.1:
-    resolution: {integrity: sha512-zMcvplVGluR6v4oJXW7S1/R9QFsHdDkXMhPq8PIdvT3HwTb69ms0MNv7aKiQ0ZFy5D/eKCTyBRUFZvjorZmBqA==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/turbo-darwin-arm64/-/turbo-darwin-arm64-1.8.1.tgz}
+    resolution: {integrity: sha512-zMcvplVGluR6v4oJXW7S1/R9QFsHdDkXMhPq8PIdvT3HwTb69ms0MNv7aKiQ0ZFy5D/eKCTyBRUFZvjorZmBqA==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/turbo-darwin-arm64/-/turbo-darwin-arm64-1.8.1.tgz}
     name: turbo-darwin-arm64
     version: 1.8.1
     cpu: [arm64]
@@ -16025,7 +16038,7 @@ packages:
     optional: true
 
   registry.npmmirror.com/turbo-linux-64/1.8.1:
-    resolution: {integrity: sha512-eJNx8iWDn5Lt8d0221RFd6lBjViLiPCVWNFF5JtqOohgRYplvepY3y/THa1GivMxY4px6zjTiy2oPE/VscVP4w==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/turbo-linux-64/-/turbo-linux-64-1.8.1.tgz}
+    resolution: {integrity: sha512-eJNx8iWDn5Lt8d0221RFd6lBjViLiPCVWNFF5JtqOohgRYplvepY3y/THa1GivMxY4px6zjTiy2oPE/VscVP4w==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/turbo-linux-64/-/turbo-linux-64-1.8.1.tgz}
     name: turbo-linux-64
     version: 1.8.1
     cpu: [x64]
@@ -16035,7 +16048,7 @@ packages:
     optional: true
 
   registry.npmmirror.com/turbo-linux-arm64/1.8.1:
-    resolution: {integrity: sha512-hFZkm8tq9kLE8tdbOzD6EbNzftdzMR4JEuuoKC6AbTzx1ZsWRvXJ/BGTeSH9/dYYm/wfuIEUiOP7HeXWiZRx7g==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/turbo-linux-arm64/-/turbo-linux-arm64-1.8.1.tgz}
+    resolution: {integrity: sha512-hFZkm8tq9kLE8tdbOzD6EbNzftdzMR4JEuuoKC6AbTzx1ZsWRvXJ/BGTeSH9/dYYm/wfuIEUiOP7HeXWiZRx7g==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/turbo-linux-arm64/-/turbo-linux-arm64-1.8.1.tgz}
     name: turbo-linux-arm64
     version: 1.8.1
     cpu: [arm64]
@@ -16045,7 +16058,7 @@ packages:
     optional: true
 
   registry.npmmirror.com/turbo-windows-64/1.8.1:
-    resolution: {integrity: sha512-o3oDg0lTYZl5KZD3Mi753On2vQT51unIiungoUmHDCeDH5JXfWPFu+6p+GAoIyRwQkZPvaEzMLuUtRgklKcBJw==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/turbo-windows-64/-/turbo-windows-64-1.8.1.tgz}
+    resolution: {integrity: sha512-o3oDg0lTYZl5KZD3Mi753On2vQT51unIiungoUmHDCeDH5JXfWPFu+6p+GAoIyRwQkZPvaEzMLuUtRgklKcBJw==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/turbo-windows-64/-/turbo-windows-64-1.8.1.tgz}
     name: turbo-windows-64
     version: 1.8.1
     cpu: [x64]
@@ -16055,7 +16068,7 @@ packages:
     optional: true
 
   registry.npmmirror.com/turbo-windows-arm64/1.8.1:
-    resolution: {integrity: sha512-NDYr2Mra21KOdl18BhMRoH2jQmlu+oqkpqRd+cGB8+c5P0B6LDVCM83cfcXQ+PNqX9S3Y1eZDRENZJx9I03sSw==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/turbo-windows-arm64/-/turbo-windows-arm64-1.8.1.tgz}
+    resolution: {integrity: sha512-NDYr2Mra21KOdl18BhMRoH2jQmlu+oqkpqRd+cGB8+c5P0B6LDVCM83cfcXQ+PNqX9S3Y1eZDRENZJx9I03sSw==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/turbo-windows-arm64/-/turbo-windows-arm64-1.8.1.tgz}
     name: turbo-windows-arm64
     version: 1.8.1
     cpu: [arm64]
@@ -17276,7 +17289,7 @@ packages:
     dev: false
 
   registry.npmmirror.com/watchpack-chokidar2/2.0.1:
-    resolution: {integrity: sha512-nCFfBIPKr5Sh61s4LPpy1Wtfi0HE8isJ3d2Yb5/Ppw2P2B/3eVSEBjKfN0fmHJSK14+31KwMKmcrzs2GM4P0Ww==, registry: https://npm.xesv5.com/, tarball: https://registry.npmmirror.com/watchpack-chokidar2/-/watchpack-chokidar2-2.0.1.tgz}
+    resolution: {integrity: sha512-nCFfBIPKr5Sh61s4LPpy1Wtfi0HE8isJ3d2Yb5/Ppw2P2B/3eVSEBjKfN0fmHJSK14+31KwMKmcrzs2GM4P0Ww==, registry: http://npm.100tal.com/, tarball: https://registry.npmmirror.com/watchpack-chokidar2/-/watchpack-chokidar2-2.0.1.tgz}
     name: watchpack-chokidar2
     version: 2.0.1
     requiresBuild: true

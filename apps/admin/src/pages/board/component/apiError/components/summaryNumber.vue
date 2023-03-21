@@ -2,11 +2,11 @@
   <div class="flex h-20 flex-row justify-center chart-container-full">
     <a-spin size="large" class="flex self-center" v-if="loading" />
     <template v-else>
-      <div class="w-1/6 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">请求总数</div>
         <div class="text-3xl font-medium">{{ commafy(summaryData.total) }}</div>
       </div>
-      <div class="w-1/6 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
           <a-tooltip :overlayStyle="{ maxWidth: '400px' }">
             <template #title>
@@ -24,20 +24,38 @@
           <div class="text-gray-500">%</div>
         </div>
       </div>
-      <div class="w-1/6 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">平均耗时</div>
         <div class="flex items-end">
           <div class="text-3xl font-medium">{{ summaryData.averageTime }}</div>
           <div class="text-gray-500">ms</div>
         </div>
       </div>
-      <div class="w-1/6 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">失败请求数</div>
         <div class="text-3xl font-medium">{{ commafy(summaryData.error) }}</div>
       </div>
-      <div class="w-1/6 grid justify-items-center content-center space-y-1">
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">影响用户数</div>
         <div class="text-3xl font-medium">{{ commafy(summaryData.errUserCount) }}</div>
+      </div>
+      <div class="w-1/8 grid justify-items-center content-center space-y-1">
+        <div class="text-gray-500">
+          <a-tooltip :overlayStyle="{ maxWidth: '400px' }">
+            <template #title>
+              根据成功率计算产生 <br />
+              0-1%：75-100分<br />
+              1-3%：50-75分<br />
+              3%以上：0-50分<br />
+            </template>
+            得分
+            <QuestionCircleOutlined />
+          </a-tooltip>
+        </div>
+        <div class="flex items-end">
+          <div class="text-3xl font-medium">{{ summaryData.score }}</div>
+          <div class="text-gray-500">分</div>
+        </div>
       </div>
     </template>
   </div>
@@ -76,6 +94,7 @@ const summaryData = ref({
   errUserCount: '',
   successRate: '',
   averageTime: '',
+  score: '',
 })
 
 const requestSummaryData = async () => {
@@ -83,15 +102,16 @@ const requestSummaryData = async () => {
   const result = await getSummaryData(requestParams.value)
   summaryData.value = result?.data
     ? {
-      total: result.data.total,
-      error: result.data.error,
-      errUserCount: result.data.error_uv,
-      averageTime: result.data.averageTime,
-      successRate: result.data.total
-        ? ((result.data.success * 100) / result.data.total).toFixed(2)
-        : '0',
-    }
-    : { total: '', error: '', errUserCount: '', successRate: '', averageTime: '' }
+        total: result.data.total,
+        error: result.data.error,
+        errUserCount: result.data.error_uv,
+        averageTime: result.data.averageTime,
+        successRate: result.data.total
+          ? ((result.data.success * 100) / result.data.total).toFixed(2)
+          : '0',
+        score: result.data.score,
+      }
+    : { total: '', error: '', errUserCount: '', successRate: '', averageTime: '', score: '' }
   loading.value = false
 }
 

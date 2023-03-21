@@ -28,6 +28,7 @@ export const scoreData = [
     low: '>3%',
     middle: '1%~3%',
     high: '<1%',
+    score: '',
   },
   {
     key: '2',
@@ -35,6 +36,7 @@ export const scoreData = [
     low: '>3%',
     middle: '1%~3%',
     high: '<1%',
+    score: '',
   },
   {
     key: '3',
@@ -42,6 +44,7 @@ export const scoreData = [
     low: '<97%',
     middle: ' 97~99%',
     high: '99~100%',
+    score: '',
   },
   {
     key: '4',
@@ -49,6 +52,7 @@ export const scoreData = [
     low: '>4S',
     middle: '2.5S~4S',
     high: '<2.5S',
+    score: '',
   },
 ]
 
@@ -57,6 +61,12 @@ export const scoreColumns = [
     title: '评分项',
     dataIndex: 'name',
     key: 'name',
+    align: 'center',
+  },
+  {
+    title: '得分',
+    dataIndex: 'score',
+    key: 'score',
     align: 'center',
   },
   {

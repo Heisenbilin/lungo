@@ -77,7 +77,7 @@
           评分规则：以下四项评分的均值
           <a-table
             :columns="scoreColumns"
-            :data-source="scoreData"
+            :data-source="scoreDataList"
             size="small"
             :pagination="false"
           />
@@ -97,6 +97,7 @@ import { getTendencyChartOption } from '../tendencyChartConfig'
 import { BasicChart } from '@vben/components'
 import TableTtem from './tableItem.vue'
 import { BoardInfo } from '@vben/types'
+import { cloneDeep } from '@vben/utils'
 
 const props = defineProps({
   title: String,
@@ -108,6 +109,17 @@ const props = defineProps({
     type: Object as PropType<BoardInfo>,
     required: true,
   },
+})
+
+// 得分数据
+const scoreDataList = computed(() => {
+  const dataList = cloneDeep(scoreData)
+  if (Object.keys(props.itemsData).length === 0) return dataList
+  dataList[0].score = props.itemsData.runtimeData?.score ?? ''
+  dataList[1].score = props.itemsData.resourceData?.score ?? ''
+  dataList[2].score = props.itemsData.ajaxData?.score ?? ''
+  dataList[3].score = props.itemsData.pageloadData?.score ?? ''
+  return dataList
 })
 
 //今日活跃趋势图表option

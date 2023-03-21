@@ -5,6 +5,7 @@
   >
     <template #title>
       <div>
+        <div v-if="data.score">得分：{{ data.score }}</div>
         <div v-if="needCommafy">
           {{ last }}同比{{ title }}：{{ commafy(parseFloat(data.yesterdayData))
           }}{{ unit.length ? unit : '' }}
@@ -28,8 +29,7 @@
           <br />
           {{ last }}同比{{ title }}：{{ parseFloat(data.yesterdayRate) }}%
         </div>
-        <div v-if="linkToUrl?.name !== ''">点击可查看本数据详情</div>
-        <div v-else>编辑器应用未生成质量周报</div>
+        <div>点击可查看本数据详情</div>
       </div>
     </template>
     <router-link v-if="!needGray" :to="linkToUrl" class="w-1/4">
@@ -109,42 +109,15 @@ import { BoardInfo } from '@vben/types'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 
 const props = defineProps({
-  data: {
-    type: Object,
-    required: false,
-    default: () => ({}),
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  unit: {
-    type: String,
-    default: '',
-  },
-  needCommafy: {
-    type: Boolean,
-    default: false,
-  },
-  needGray: {
-    type: Boolean,
-    default: false,
-  },
-  reverseColor: {
-    type: Boolean,
-    default: false,
-  },
-  numName: {
-    type: String,
-    default: '',
-  },
-  project: {
-    type: Object as PropType<BoardInfo>,
-    required: true,
-  },
-  jumpKey: {
-    type: String,
-  },
+  data: { type: Object, required: false, default: () => ({}) },
+  title: { type: String, required: true },
+  unit: { type: String, default: '' },
+  needCommafy: { type: Boolean, default: false },
+  needGray: { type: Boolean, default: false },
+  reverseColor: { type: Boolean, default: false },
+  numName: { type: String, default: '' },
+  project: { type: Object as PropType<BoardInfo>, required: true },
+  jumpKey: { type: String },
 })
 
 const listStore = useListStore()
