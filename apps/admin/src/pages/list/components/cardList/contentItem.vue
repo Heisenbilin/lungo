@@ -5,7 +5,7 @@
   >
     <template #title>
       <div>
-        <div v-if="data.score">得分：{{ data.score }}</div>
+        <div v-if="Object.keys(data).includes('score')">得分：{{ data.score }}</div>
         <div v-if="needCommafy">
           {{ last }}同比{{ title }}：{{ commafy(parseFloat(data.yesterdayData))
           }}{{ unit.length ? unit : '' }}

@@ -4,7 +4,7 @@
     :overlayStyle="{ maxWidth: '400px' }"
   >
     <template #title>
-      <div>得分：{{ data.score }}</div>
+      <div v-if="Object.keys(data).includes('score')">得分：{{ data.score }}</div>
       <div v-if="needCommafy">
         {{ last }}同比{{ title }}：{{ commafy(parseFloat(data.yesterdayData))
         }}{{ unit.length ? unit : '' }}
