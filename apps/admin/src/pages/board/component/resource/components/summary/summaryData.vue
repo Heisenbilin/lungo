@@ -49,9 +49,7 @@
           </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">
-            {{ accMul(summaryData.errorRate, 100) }}
-          </div>
+          <div class="text-3xl font-medium">{{ summaryData.errorRate }}</div>
           <div class="text-gray-500">%</div>
         </div>
       </div>
@@ -81,7 +79,7 @@
 //resource异常数据汇总组件
 import { ref, computed, watch } from 'vue'
 import { getSummaryData } from '@/apis/board/resource'
-import { accMul, commafy } from '@vben/utils'
+import { commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 

@@ -22,9 +22,7 @@
           </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">
-            {{ accMul(summaryData.errorRate, 100) }}
-          </div>
+          <div class="text-3xl font-medium">{{ summaryData.errorRate }}</div>
           <div class="text-gray-500">%</div>
         </div>
       </div>
@@ -76,7 +74,7 @@
 import { ref, computed } from 'vue'
 import { useBoardStore } from '@/store/modules/board'
 import { getSummaryChartOption } from '../../../util/errorSummaryChartConfig'
-import { accMul, commafy } from '@vben/utils'
+import { commafy } from '@vben/utils'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getSummaryData, getChartData } from '@/apis/board/runtime'
 import { addTimeFilter } from '@/hooks/board/useDate'
