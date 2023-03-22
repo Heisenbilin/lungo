@@ -60,34 +60,31 @@ if (!activeKey.value) {
 
 const watchFunc: any[] = []
 const initWatch = () => {
-  const tabKeyWatch = watch(
-    () => [activeKey, urlTabkey],
-    () => {
-      activeKey.value = tabNameConfig[urlTabkey.value]
-        ? urlTabkey.value
-        : activeKey.value
-        ? activeKey.value
-        : 'pageview'
-      boardStore.commitTabState(activeKey.value)
+  // 监听tabkekey值变化，存入store
+  const tabKeyWatch = watch(activeKey, val => boardStore.commitTabState(val), { immediate: true })
+  // 监听url中tabkey值变化，改变activeKey
+  const urlTabkeyWatch = watch(
+    urlTabkey,
+    val => {
+      if (val && val !== activeKey.value) {
+        activeKey.value = tabNameConfig[val] ? val : 'pageview'
+      }
     },
     { immediate: true },
   )
-  // 从其他页面返回时，重新生成水印
+  // 监听项目名称、用户名称、tab页、暗黑模式变化，重新生成水印
   const watermarkWatch = watch(
-    () => [boardStore.boardInfoState.project_name, userName],
+    () => [boardStore.boardInfoState.project_name, activeKey.value, isDark.value],
     () => setWatermark(`${userName}-${boardStore.boardInfoState.project_name}`),
     { immediate: true },
   )
   watchFunc.push(watermarkWatch)
+  watchFunc.push(urlTabkeyWatch)
   watchFunc.push(tabKeyWatch)
 }
 
 const areaRef = ref<Nullable<HTMLElement>>(null)
 const { setWatermark } = useWatermark(areaRef)
-watch(isDark, () => {
-  setWatermark(`${userName}-${boardStore.boardInfoState.project_name}`)
-})
-
 onMounted(initWatch)
 onActivated(initWatch)
 onDeactivated(() => {

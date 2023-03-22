@@ -42,7 +42,7 @@ export function useWatermark(
       cans.rotate((-20 * Math.PI) / 120)
       cans.font = '15px Vedana'
       cans.fillStyle =
-      themeState.value === 'light' ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255,0.15)'
+        themeState.value === 'light' ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255,0.15)'
       // cans.fillStyle = 'rgba(0, 0, 0, 0.15)'
       cans.textAlign = 'left'
       cans.textBaseline = 'middle'
@@ -72,8 +72,11 @@ export function useWatermark(
   }
 
   const createWatermark = (str: string) => {
+    const el = unref(appendEl)
+    if (!el) return id
+    const { clientHeight: height, clientWidth: width } = el
     if (unref(watermarkEl)) {
-      updateWatermark({ str })
+      updateWatermark({ str, width, height })
       return id
     }
     const div = document.createElement('div')
@@ -84,9 +87,6 @@ export function useWatermark(
     div.style.left = '0px'
     div.style.position = 'absolute'
     div.style.zIndex = '100000'
-    const el = unref(appendEl)
-    if (!el) return id
-    const { clientHeight: height, clientWidth: width } = el
     updateWatermark({ str, width, height })
     el.appendChild(div)
     return id

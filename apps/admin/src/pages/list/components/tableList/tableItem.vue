@@ -4,7 +4,9 @@
     :overlayStyle="{ maxWidth: '400px' }"
   >
     <template #title>
-      <div v-if="Object.keys(data).includes('score')">得分：{{ data.score }}</div>
+      <div v-if="data.score !== undefined">
+        得分：<span :style="{ color: barFinColor(data.score) }">{{ data.score }}</span>
+      </div>
       <div v-if="needCommafy">
         {{ last }}同比{{ title }}：{{ commafy(parseFloat(data.yesterdayData))
         }}{{ unit.length ? unit : '' }}
@@ -102,6 +104,7 @@ import { BoardInfo } from '@vben/types'
 import { useListStore } from '@/store/modules/list'
 import { computed } from 'vue'
 import { storeToRefs } from '@vben/stores'
+import { barFinColor } from '../utils'
 
 const props = defineProps({
   data: { type: Object, required: false, default: () => ({}) },
@@ -119,16 +122,5 @@ const listStore = useListStore()
 const { dimension } = storeToRefs(listStore)
 const last = computed(() => (dimension.value === 'week' ? '上周' : '昨日'))
 const current = computed(() => (dimension.value === 'week' ? '本周' : '今日'))
-
 const linkToUrl = useLinkToUrl(props.project.id, 'board', 'list', props.tabKey)
 </script>
-
-<style lang="less" scoped>
-.font-sm {
-  font-size: 0.5rem;
-}
-
-:deep(.ant-table-row-cell-break-word) {
-  text-align: center;
-}
-</style>

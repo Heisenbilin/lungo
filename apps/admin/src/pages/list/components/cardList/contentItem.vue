@@ -5,7 +5,9 @@
   >
     <template #title>
       <div>
-        <div v-if="Object.keys(data).includes('score')">得分：{{ data.score }}</div>
+        <div v-if="data.score !== undefined">
+          得分：<span :style="{ color: barFinColor(data.score) }">{{ data.score }}</span>
+        </div>
         <div v-if="needCommafy">
           {{ last }}同比{{ title }}：{{ commafy(parseFloat(data.yesterdayData))
           }}{{ unit.length ? unit : '' }}
@@ -77,7 +79,7 @@
           </div>
           <div class="text-gray-400" v-if="unit.length">{{ unit }}</div>
         </div>
-        <div class="flex text-gray-400 font-sm whitespace-nowrap justify-center">
+        <div class="flex text-gray-400 whitespace-nowrap justify-center text-[0.5rem]">
           较{{ last }}
           <span v-if="data.increaseRate === '0.00'" class="text-gray-400">
             {{ parseFloat(data.increaseRate) }}%-
@@ -107,6 +109,7 @@ import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from '@vben/stores'
 import { BoardInfo } from '@vben/types'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
+import { barFinColor } from '../utils'
 
 const props = defineProps({
   data: { type: Object, required: false, default: () => ({}) },
@@ -127,9 +130,3 @@ const current = computed(() => (dimension.value === 'week' ? '本周' : '今日'
 
 const linkToUrl = useLinkToUrl(props.project.id, 'board', 'list', props.jumpKey)
 </script>
-
-<style lang="less" scoped>
-.font-sm {
-  font-size: 0.5rem;
-}
-</style>

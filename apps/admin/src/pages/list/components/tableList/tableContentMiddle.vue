@@ -74,13 +74,24 @@
     >
       <a-tooltip :overlayStyle="{ maxWidth: '600px' }">
         <template #title>
-          评分规则：以下四项评分的均值
+          <div class="mb-1">评分规则：以下四项评分均值</div>
           <a-table
             :columns="scoreColumns"
             :data-source="scoreDataList"
             size="small"
             :pagination="false"
-          />
+          >
+            <template #bodyCell="{ column, text }">
+              <template v-if="column.key === 'name'">
+                <router-link class="grid justify-items-center center w-full" :to="linkUrl(text)">
+                  <div @click="() => useStoreProject(project, 'board')">{{ text }}</div>
+                </router-link>
+              </template>
+              <template v-if="column.key === 'score'">
+                <div :style="{ color: barFinColor(text) }">{{ text }}</div>
+              </template>
+            </template>
+          </a-table>
         </template>
         {{ itemsData.score }}
       </a-tooltip>
@@ -90,25 +101,21 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import { computed } from 'vue'
 import { scoreColumns, scoreData, barFinColor } from '../utils'
 import { getTendencyChartOption } from '../tendencyChartConfig'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BasicChart } from '@vben/components'
-import TableTtem from './tableItem.vue'
 import { BoardInfo } from '@vben/types'
 import { cloneDeep } from '@vben/utils'
+import TableTtem from './tableItem.vue'
 
 const props = defineProps({
   title: String,
-  itemsData: {
-    type: Object,
-    required: true,
-  },
-  project: {
-    type: Object as PropType<BoardInfo>,
-    required: true,
-  },
+  itemsData: { type: Object, required: true },
+  project: { type: Object as PropType<BoardInfo>, required: true },
 })
 
 // 得分数据
@@ -123,7 +130,19 @@ const scoreDataList = computed(() => {
 })
 
 //今日活跃趋势图表option
-const chartOption = computed(() => {
-  return getTendencyChartOption(props.itemsData.pvData.pvlist)
-})
+const chartOption = computed(() => getTendencyChartOption(props.itemsData.pvData.pvlist))
+
+const linkUrl = text => {
+  const tabKey =
+    text === '页面加载'
+      ? 'performance'
+      : text === '运行时异常率'
+      ? 'runtime'
+      : text === '资源异常率'
+      ? 'resource'
+      : text === '请求成功率'
+      ? 'api'
+      : ''
+  return useLinkToUrl(props.project.id, 'board', 'list', tabKey)
+}
 </script>

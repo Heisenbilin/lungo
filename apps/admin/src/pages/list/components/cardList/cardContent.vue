@@ -33,13 +33,24 @@
     <div class="flex w-full mt-4">
       <a-tooltip :overlayStyle="{ maxWidth: '600px' }">
         <template #title>
-          评分规则：以下四项评分的均值
+          <div class="mb-1">评分规则：以下四项评分均值</div>
           <a-table
             :columns="scoreColumns"
             :data-source="scoreDataList"
             size="small"
             :pagination="false"
-          />
+          >
+            <template #bodyCell="{ column, text }">
+              <template v-if="column.key === 'name'">
+                <router-link class="grid justify-items-center center w-full" :to="linkUrl(text)">
+                  <div @click="() => useStoreProject(project, 'board')">{{ text }}</div>
+                </router-link>
+              </template>
+              <template v-if="column.key === 'score'">
+                <div :style="{ color: barFinColor(text) }">{{ text }}</div>
+              </template>
+            </template>
+          </a-table>
         </template>
         <div class="w-1/5 text-center items-center opacity-80">
           <CardProgress :progress="itemsData.score" width="70" radius="3" :hasUnit="false" />
@@ -97,9 +108,10 @@ import { BasicChart } from '@vben/components'
 import { Empty } from 'ant-design-vue'
 import { BoardInfo } from '@vben/types'
 import { useListStore } from '@/store/modules/list'
-import { scoreData, scoreColumns } from '../utils'
+import { scoreData, scoreColumns, barFinColor } from '../utils'
 import ContentItem from './contentItem.vue'
 import { cloneDeep } from '@vben/utils'
+import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 
 const listStore = useListStore()
 
@@ -155,4 +167,18 @@ const initCardContentData = async () => {
 watch(() => [props, listStore.dimension], initCardContentData, { immediate: true })
 
 const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE
+
+const linkUrl = text => {
+  const tabKey =
+    text === '页面加载'
+      ? 'performance'
+      : text === '运行时异常率'
+      ? 'runtime'
+      : text === '资源异常率'
+      ? 'resource'
+      : text === '请求成功率'
+      ? 'api'
+      : ''
+  return useLinkToUrl(props.project.id, 'board', 'list', tabKey)
+}
 </script>

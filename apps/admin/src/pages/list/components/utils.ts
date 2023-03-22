@@ -24,6 +24,14 @@ const paramsObj = {
 export const scoreData = [
   {
     key: '1',
+    name: '页面加载',
+    low: '>4S',
+    middle: '2.5S~4S',
+    high: '<2.5S',
+    score: '',
+  },
+  {
+    key: '2',
     name: '运行时异常率',
     low: '>3%',
     middle: '1%~3%',
@@ -31,7 +39,7 @@ export const scoreData = [
     score: '',
   },
   {
-    key: '2',
+    key: '3',
     name: '资源异常率',
     low: '>3%',
     middle: '1%~3%',
@@ -39,19 +47,11 @@ export const scoreData = [
     score: '',
   },
   {
-    key: '3',
+    key: '4',
     name: '请求成功率',
     low: '<97%',
     middle: ' 97~99%',
     high: '99~100%',
-    score: '',
-  },
-  {
-    key: '4',
-    name: '页面加载',
-    low: '>4S',
-    middle: '2.5S~4S',
-    high: '<2.5S',
     score: '',
   },
 ]
