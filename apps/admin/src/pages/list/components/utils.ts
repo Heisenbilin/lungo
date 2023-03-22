@@ -24,6 +24,7 @@ const paramsObj = {
 export const scoreData = [
   {
     key: '1',
+    board: '性能监控',
     name: '页面加载',
     low: '>4S',
     middle: '2.5S~4S',
@@ -32,6 +33,7 @@ export const scoreData = [
   },
   {
     key: '2',
+    board: '运行时监控',
     name: '运行时异常率',
     low: '>3%',
     middle: '1%~3%',
@@ -40,6 +42,7 @@ export const scoreData = [
   },
   {
     key: '3',
+    board: '资源监控',
     name: '资源异常率',
     low: '>3%',
     middle: '1%~3%',
@@ -48,6 +51,7 @@ export const scoreData = [
   },
   {
     key: '4',
+    board: '接口监控',
     name: '请求成功率',
     low: '<97%',
     middle: ' 97~99%',
@@ -57,6 +61,12 @@ export const scoreData = [
 ]
 
 export const scoreColumns = [
+  {
+    title: '看板',
+    dataIndex: 'board',
+    key: 'board',
+    align: 'center',
+  },
   {
     title: '评分项',
     dataIndex: 'name',
@@ -139,17 +149,17 @@ export const projectListColumns = [
     align: 'center',
   },
   {
-    title: '运行时异常',
+    title: '运行时异常率',
     key: 'runtimeError',
     dataIndex: 'runtimeError',
-    width: '65px',
+    width: '70px',
     align: 'center',
   },
   {
-    title: '资源异常',
+    title: '资源异常率',
     key: 'resourceError',
     dataIndex: 'error',
-    width: '55px',
+    width: '65px',
     align: 'center',
   },
   {

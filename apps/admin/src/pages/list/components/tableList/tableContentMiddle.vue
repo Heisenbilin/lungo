@@ -82,7 +82,7 @@
             :pagination="false"
           >
             <template #bodyCell="{ column, text }">
-              <template v-if="column.key === 'name'">
+              <template v-if="column.key === 'board'">
                 <router-link class="grid justify-items-center center w-full" :to="linkUrl(text)">
                   <div @click="() => useStoreProject(project, 'board')">{{ text }}</div>
                 </router-link>
@@ -122,10 +122,10 @@ const props = defineProps({
 const scoreDataList = computed(() => {
   const dataList = cloneDeep(scoreData)
   if (Object.keys(props.itemsData).length === 0) return dataList
-  dataList[0].score = props.itemsData.runtimeData?.score ?? ''
-  dataList[1].score = props.itemsData.resourceData?.score ?? ''
-  dataList[2].score = props.itemsData.ajaxData?.score ?? ''
-  dataList[3].score = props.itemsData.pageloadData?.score ?? ''
+  dataList[0].score = props.itemsData.pageloadData?.score ?? ''
+  dataList[1].score = props.itemsData.runtimeData?.score ?? ''
+  dataList[2].score = props.itemsData.resourceData?.score ?? ''
+  dataList[3].score = props.itemsData.ajaxData?.score ?? ''
   return dataList
 })
 
@@ -134,13 +134,13 @@ const chartOption = computed(() => getTendencyChartOption(props.itemsData.pvData
 
 const linkUrl = text => {
   const tabKey =
-    text === '页面加载'
+    text === '性能监控'
       ? 'performance'
-      : text === '运行时异常率'
+      : text === '运行时监控'
       ? 'runtime'
-      : text === '资源异常率'
+      : text === '资源监控'
       ? 'resource'
-      : text === '请求成功率'
+      : text === '接口监控'
       ? 'api'
       : ''
   return useLinkToUrl(props.project.id, 'board', 'list', tabKey)
