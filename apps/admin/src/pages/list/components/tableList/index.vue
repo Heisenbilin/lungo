@@ -136,7 +136,6 @@
 import { ref, watch } from 'vue'
 import { message, Pagination } from 'ant-design-vue'
 import { getProjectList, getProjectBoard, modifyProjectParams } from '@/apis/list'
-import { caculatePageSizeByWidth } from '../utils'
 import { debounce } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
@@ -174,8 +173,8 @@ const show = closeNum => {
 }
 
 //页面卡片数量
-const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-const screenPageSize = caculatePageSizeByWidth(w)
+// const w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+const screenPageSize = 10
 
 const { page = 1, page_size = screenPageSize, total: preTotal } = getQuery() as any
 //页码

@@ -152,9 +152,9 @@ import { InboxOutlined } from '@ant-design/icons-vue'
 import { useBoardStore } from '@/store/modules/board'
 import { uploadSourcemap, getMappingList } from '@/apis/board/sourceMap'
 import { WaterfallChart, CodeArea, SourceCodeArea } from '@vben/components'
+import { getQuery } from '@vben/router'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
-import { getQuery } from '@vben/router'
 
 const boardStore = useBoardStore()
 
@@ -304,7 +304,7 @@ watch(
   text-overflow: ellipsis;
 }
 
-.sourcemap-upload-tab.ant-tabs {
+.sourcemap-upload-tab .ant-tabs {
   :deep(.ant-tabs-content) {
     display: block;
   }

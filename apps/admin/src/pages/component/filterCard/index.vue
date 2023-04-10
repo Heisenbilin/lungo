@@ -126,7 +126,7 @@ const initFilterDate = () => {
     filterDimension.value === 'day'
       ? dayjs().startOf('day').subtract(6, 'd')
       : dayjs().startOf('day')
-  const endTime = dayjs().second(0)
+  const endTime = dayjs().startOf('day').subtract(-1, 'day')
   const range: RangeValue = [startTime, endTime]
   return range
 }
@@ -184,7 +184,7 @@ const disabledDate = current => {
 const clearFilter = () => {
   //把当前选择的时间转换为API规范的时间
   const start_time = dayjs().startOf('day').subtract(6, 'd').format('YYYY-MM-DD HH-mm-ss')
-  const end_time = dayjs().second(0).format('YYYY-MM-DD HH-mm-ss')
+  const end_time = dayjs().startOf('day').subtract(-1, 'day').format('YYYY-MM-DD HH:mm:ss')
   store.commitFilterState({ start_time, end_time, dimension: 'day' })
   filterDimension.value = 'day'
 }

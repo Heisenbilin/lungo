@@ -1,6 +1,6 @@
 import { logTypeEnum, noNeedMessageKeys, allFilterKeys } from '@vben/constants'
 import { message } from 'ant-design-vue'
-import type { BoardInfo, filter, logInfo, BoardState } from '@vben/types'
+import type { BoardInfo, filter, filterState, logInfo, BoardState } from '@vben/types'
 import { defineStore } from '@vben/stores'
 import { getQuery, router } from '@vben/router'
 
@@ -78,7 +78,7 @@ export const useReportStore = defineStore({
     commitLatestSDKVersionState(latestSDKVersion: string): void {
       this.latestSDKVersionState = latestSDKVersion
     },
-    addFilterValue(values: object): void {
+    addFilterValue(values: filterState): void {
       console.log(JSON.stringify(values))
       const oldFilter = JSON.stringify(this.filterState)
       Object.assign(this.filterState, values)

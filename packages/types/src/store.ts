@@ -71,6 +71,24 @@ export interface filter {
   api_range?: Array<number>
 }
 
+export interface filterState {
+  start_time?: string
+  end_time?: string
+  dimension?: string
+  url?: string
+  browser?: string
+  device?: string
+  province?: string
+  network?: string
+  client?: string
+  os?: string
+  performance_key?: string
+  performance_range?: Array<number>
+  resource_type?: string
+  api_status?: string
+  api_range?: Array<number>
+}
+
 export interface logInfo {
   type: logTypeEnum
   visible: boolean

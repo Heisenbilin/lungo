@@ -42,8 +42,8 @@
 import { computed, watch, ref, reactive } from 'vue'
 import { getDefaultColumns } from './urlTableConfig'
 import { getUrlListData } from '@/apis/board/pv'
-import { debounce, commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
+import { debounce, commafy } from '@vben/utils'
 import { logTypeEnum } from '@vben/constants'
 
 const boardStore = useBoardStore()
