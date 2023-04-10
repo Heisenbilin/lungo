@@ -243,7 +243,7 @@ watch(
   val => {
     listStore.dimension = val
     listStore.startTime = val === 'week' ? startWeek : startTime
-    listStore.endTime = dayjs().second(0).format('YYYY-MM-DD HH:mm:ss')
+    listStore.endTime = dayjs().startOf('day').subtract(-1, 'd').format('YYYY-MM-DD HH:mm:ss')
     addOrUpdateQuery({ dimen: val })
   },
   { immediate: true },
