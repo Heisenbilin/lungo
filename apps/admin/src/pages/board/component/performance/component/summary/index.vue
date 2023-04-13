@@ -4,6 +4,17 @@
     <template v-else>
       <div class="w-1/6 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">
+          <a-tooltip title="成功进行性能采样的PV数，一般少于页面访问的PV数">
+            采样PV数
+            <QuestionCircleOutlined />
+          </a-tooltip>
+        </div>
+        <div class="flex items-end">
+          <div class="text-3xl font-medium">{{ commafy(averageData.count || '') }}</div>
+        </div>
+      </div>
+      <div class="w-1/6 grid justify-items-center content-center space-y-1">
+        <div class="text-gray-500">
           <a-tooltip title="均值">
             首字节
             <QuestionCircleOutlined />
@@ -131,6 +142,7 @@ const averageData = ref({
   load: '',
   ready: '',
   score: '',
+  count: '',
 })
 
 //从后端获取均值瀑布图数据方法
@@ -141,7 +153,14 @@ const requestAverageData = async params => {
   loading.value = true
   //拦截请求结果，存入averageData中
   const result = await getAverageData(params)
-  averageData.value = result?.data ?? { firstbyte: '', dom: '', load: '', ready: '', score: '' }
+  averageData.value = result?.data ?? {
+    firstbyte: '',
+    dom: '',
+    load: '',
+    ready: '',
+    score: '',
+    count: '',
+  }
   loading.value = false
   return result
 }

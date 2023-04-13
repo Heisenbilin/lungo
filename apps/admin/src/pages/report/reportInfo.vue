@@ -19,7 +19,7 @@
         class="text-red-500"
       >
         SDK版本更新公告：
-        日志上报SDK版本低于2.3.4的应用，页面访问数据采集不完整，请及时升级至2.3.4及以上版本【点击查看】。
+        日志上报SDK版本低于2.4.0的应用，页面访问数据采集不完整，请及时升级至2.4.0及以上版本【点击查看】。
       </a>
     </div>
     <Content v-if="boardInfoState.id" />
@@ -45,7 +45,7 @@ const { boardInfoState } = storeToRefs(reprotStore)
 const isSafeSDK = computed<boolean>(() =>
   Boolean(
     !reprotStore.latestSDKVersionState ||
-      versionStringCompare(boardInfoState.value.sdk_version, '2.3.4') !== -1,
+      versionStringCompare(boardInfoState.value.sdk_version, '2.4.0') !== -1,
   ),
 )
 </script>

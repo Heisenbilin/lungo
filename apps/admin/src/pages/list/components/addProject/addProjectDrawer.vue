@@ -657,8 +657,7 @@
       </a-collapse>
     </a-form>
     <div
-      class="absolute right-0 bottom-0 w-full border-t-gray-300 border-t-1 px-2 py-3  text-right z-1 bg-$component-background-color"
-      
+      class="absolute right-0 bottom-0 w-full border-t-gray-300 border-t-1 px-2 py-3 text-right z-1 bg-$component-background-color"
     >
       <a-button class="mr-10 float-left" type="primary" @click="showSDKConfig">
         生成SDK推荐配置
@@ -697,19 +696,17 @@ import {
   CloseCircleTwoTone,
 } from '@ant-design/icons-vue'
 import { handleUaParse, handleProjectParams, initEditFormData } from '../utils'
-import UANoteIMG from '@/assets/images/huatuo/ua_note.jpg'
-import yachInputFilter from '../yachInputFilter.vue'
 import { useAuth } from '@/hooks/board/useAuth'
 import { cloneDeep, buildUUID } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from '@vben/stores'
-// import { isEqual } from 'lodash-es';
-import LabelComponent from './labelComponent.vue'
 import { saveAs } from 'file-saver'
 import { getRecommendSDKConfig, getVueRecommendSDKConfig } from './sdkConfig'
 import { CodeArea } from '@vben/components'
-import { removeQuery } from '@vben/router'
-
+import { useRouteQuery } from '@vben/router'
+import UANoteIMG from '@/assets/images/huatuo/ua_note.jpg'
+import yachInputFilter from '../yachInputFilter.vue'
+import LabelComponent from './labelComponent.vue'
 
 const props = defineProps({
   visible: {
@@ -848,6 +845,9 @@ watch(activeKey, (val, preVal) => {
   }
 })
 
+const openUpdateDialog = useRouteQuery('openUpdateDialog')
+const project_id = useRouteQuery('project_id')
+
 //表单为编辑项目时，根据项目id请求数据，初始化表单
 async function initProjectData() {
   const result = await getProject(props.editProjectId)
@@ -927,14 +927,16 @@ async function addOrModifyProject(isShutDown) {
     message.success('提交成功！')
     //提交表单后，更新项目列表
     emit('flash')
-    removeQuery(['openUpdateDialog, project_id'])
+    openUpdateDialog.value = null
+    project_id.value = null
     emit('update:visible', false)
   }
   loading.value = false
 }
 
 function handleCancel() {
-  removeQuery(['openUpdateDialog', 'project_id'])
+  openUpdateDialog.value = null
+  project_id.value = null
   emit('update:visible', false)
 }
 

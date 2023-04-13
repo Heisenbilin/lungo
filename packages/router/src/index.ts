@@ -62,21 +62,8 @@ export function getQuery(): any {
 export function addOrUpdateQuery(query) {
   if (!router) return
   const { path, query: oldQuery } = router.currentRoute.value
+  console.log({ ...oldQuery, ...query })
   router.replace({ path, query: { ...oldQuery, ...query } })
-}
-
-// 删除路由query
-export function removeQuery(keys: string[] | string) {
-  if (!router) return
-  const { path, query } = router.currentRoute.value
-  if (Array.isArray(keys)) {
-    keys.forEach(key => {
-      delete query[key]
-    })
-  } else {
-    delete query[keys]
-  }
-  router.replace({ path, query })
 }
 
 export function initGuard(s: Stores) {
