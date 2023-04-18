@@ -161,7 +161,6 @@ watch(
   val => {
     if (!val) return
     const [gteTime, lteTime] = val
-    //把当前选择的时间转换为API规范的时间
     const start_time = gteTime.format('YYYY-MM-DD HH:mm:ss')
     const end_time = lteTime.format('YYYY-MM-DD HH:mm:ss')
     if (start_time !== filters.value.start_time || end_time !== filters.value.end_time) {

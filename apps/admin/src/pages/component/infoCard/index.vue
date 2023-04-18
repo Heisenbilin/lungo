@@ -206,7 +206,12 @@ function initWatch() {
         projectId.value = projectInfo.value.id
         // 把路由中的start_time、end_time、dimension同步到store中
         const { start_time, end_time, dimension } = getQuery()
-        store.addFilterValue({ start_time, end_time, dimension })
+        if (start_time && end_time) {
+          store.addFilterValue({ start_time, end_time })
+        }
+        if (dimension) {
+          store.addFilterValue({ dimension })
+        }
         getTopicId(projectInfo.value.appid, projectInfo.value.saas)
         freshYachId(undefined, projectInfo.value.uc_group_id)
       } else {

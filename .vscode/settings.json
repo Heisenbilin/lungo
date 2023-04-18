@@ -1,5 +1,6 @@
 {
   "prettier.configPath": ".prettierrc.js",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "unocss.root": "apps/admin"
+  "unocss.root": "apps/admin",
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
