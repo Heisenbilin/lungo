@@ -108,8 +108,8 @@ export const useBoardStore = defineStore({
         }
       }
       const newFilter = JSON.stringify(this.filterState)
+      this.setUrlQuery()
       if (oldFilter !== newFilter) {
-        this.setUrlQuery()
         if (Object.keys(values).some(key => !noNeedMessageKeys.includes(key))) {
           message.success(`已更新筛选条件`)
         }

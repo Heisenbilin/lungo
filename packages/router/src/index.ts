@@ -62,7 +62,6 @@ export function getQuery(): any {
 export function addOrUpdateQuery(query) {
   if (!router) return
   const { path, query: oldQuery } = router.currentRoute.value
-  console.log({ ...oldQuery, ...query })
   router.replace({ path, query: { ...oldQuery, ...query } })
 }
 

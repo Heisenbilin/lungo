@@ -232,3 +232,24 @@ export function getDeviceTypeOption(data) {
   chartOption.series[0].data = seriesData
   return chartOption
 }
+
+//将接口返回值处理成“分辨率类型”图表数据
+export function getResolutionOption(data) {
+  if (!(Array.isArray(data) && data.length)) {
+    return null
+  }
+  const chartOption = cloneDeep(pieChartOption)
+  data = data.sort(compare('board_count'))
+  let seriesData = data.map(item => ({
+    value: item.board_count,
+    name: item.board_key || '未知',
+    // pageload: item.pageload || 0,
+  }))
+  chartOption.legend.formatter = name => getMainInfo(name, 40)
+  chartOption.tooltip.formatter = item =>
+    `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>分辨率：${
+      item.data.name
+    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)`
+  chartOption.series[0].data = seriesData
+  return chartOption
+}

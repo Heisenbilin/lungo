@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 bg-color">
     <div class="grid grid-cols-2 gap-3">
-      <div >
+      <div class="chart-container">
         <InfoCard boardType="board" />
       </div>
       <div v-if="boardInfoState.id" class="chart-container">

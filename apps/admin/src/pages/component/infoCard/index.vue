@@ -6,7 +6,7 @@
         <a-select
           v-model:value="projectId"
           placeholder="请选择项目名称"
-          style="width: 300px"
+          style="width: 360px"
           showSearch
           optionFilterProp="label"
         >

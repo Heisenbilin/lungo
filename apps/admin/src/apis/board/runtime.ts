@@ -5,6 +5,7 @@ enum Api {
   GET_TOP10_DATA = '/v2/runtime/top10',
   GET_DETAILS_DATA = '/v2/runtime/details', //TODO：详情数据展示
   GET_CHART_DATA = '/v2/runtime/chart', //TODO：图表数据展示
+  
 }
 
 /**

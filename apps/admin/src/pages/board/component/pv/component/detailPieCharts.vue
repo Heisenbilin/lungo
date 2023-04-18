@@ -33,15 +33,24 @@
       :bindFuncs="{ click: title => addFilter(title, 'device') }"
     />
   </div>
+  <div class="chart-container">
+    <div class="chart-title">分辨率</div>
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getResolutionData"
+      :getOptionFunc="getDeviceTypeOption"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getNetworkData, getDeviceData, getClientData } from '@/apis/board/pv'
+import { getNetworkData, getDeviceData, getClientData, getResolutionData } from '@/apis/board/pv'
 import {
   getNetworkTypeOption,
   getClientTypeOption,
   getDeviceTypeOption,
+  getResolutionOption,
 } from '../../util/pieChartConfig'
 import { clientUserAgent } from '@vben/constants'
 import { useBoardStore } from '@/store/modules/board'

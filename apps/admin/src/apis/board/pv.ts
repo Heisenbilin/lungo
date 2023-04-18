@@ -74,3 +74,10 @@ export const getNetworkData = (params: any) =>
 
 export const getRegionData = (params: any) =>
   request.post<any>({ url: Api.GET_REGION_DATA, params })
+
+/**
+ * @description: 获取分辨率数据
+ */
+
+export const getResolutionData = (params: any) =>
+  request.post<any>({ url: Api.GET_RESOLUTION_DATA, params })
