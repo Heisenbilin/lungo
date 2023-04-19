@@ -1,4 +1,4 @@
 export type chartDataValue = {
-  name: string
+  name?: string
   value: number | string | null
 }

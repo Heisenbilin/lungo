@@ -72,5 +72,9 @@ const requestParams = computed(() => ({
 const activeKey = ref('summary')
 
 const getSummaryOption = data =>
-  getFaultTolerantChartOption(data, props.faultTolerantStatus === 'accessed')
+  getFaultTolerantChartOption(
+    data,
+    boardStore.getTimeFormatStr,
+    props.faultTolerantStatus === 'accessed',
+  )
 </script>

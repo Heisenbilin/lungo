@@ -10,9 +10,6 @@ const summaryChartConfig: any = {
       type: 'cross',
     },
     trigger: 'axis',
-    position(pt) {
-      return [pt[0], '10%']
-    },
   },
   grid: {
     top: '2%',

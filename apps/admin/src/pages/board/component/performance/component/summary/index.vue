@@ -73,13 +73,33 @@
   <div class="chart-container-full">
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <template #rightExtra>
-        <a-tag color="blue" class="!mt-2 filter-tag"> 单击筛选：时间范围</a-tag>
+        <span class="mr-3 pt-2" v-if="activeKey === 'percentile'">
+          <a-select style="width: 130px" v-model:value="label" size="small" :options="lableList" />
+        </span>
+
+        <a-tag color="blue" class="filter-tag"> 单击筛选：时间范围</a-tag>
       </template>
       <a-tab-pane key="average" tab="性能均值">
         <BaseChart
           :requestParams="requestParams2"
           :requestFunc="getChartSummaryData"
           :getOptionFunc="getSummaryOption"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
+      </a-tab-pane>
+      <a-tab-pane key="contrast" tab="快/慢开比">
+        <BaseChart
+          :requestParams="requestParams2"
+          :requestFunc="getContrastData"
+          :getOptionFunc="getContrastChartOption"
+          :zrFuncs="{ click: addTimeFilter }"
+        />
+      </a-tab-pane>
+      <a-tab-pane key="percentile" tab="百分比">
+        <BaseChart
+          :requestParams="requestParams3"
+          :requestFunc="getPercentileData"
+          :getOptionFunc="getPercentileChartOption"
           :zrFuncs="{ click: addTimeFilter }"
         />
       </a-tab-pane>
@@ -101,8 +121,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useDataToWaterfallChartOption } from '@vben/hooks'
-import { getSummaryChartOption } from './chartConfig'
-import { getChartSummaryData, getAverageData } from '@/apis/board/performance'
+import {
+  getSummaryChartOption,
+  getContrastChartOption,
+  getPercentileChartOption,
+} from './chartConfig'
+import {
+  getChartSummaryData,
+  getAverageData,
+  getContrastData,
+  getPercentileData,
+} from '@/apis/board/performance'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
@@ -134,6 +163,30 @@ const requestParams2 = computed(() => ({
 
 const activeKey = ref('average')
 const activeKey2 = ref('waterfall')
+const label = ref('firstbyte')
+
+const lableList = [
+  { label: '首字节', value: 'firstbyte' },
+  { label: '页面完全加载', value: 'load' },
+  { label: 'DOM Ready', value: 'ready' },
+  { label: 'DOM 解析', value: 'dom' },
+  { label: 'DNS 查询', value: 'dns' },
+  { label: 'TCP 连接', value: 'tcp' },
+  { label: 'SSL 建连', value: 'ssl' },
+  { label: '请求响应', value: 'ttfb' },
+  { label: 'downlink', value: 'downlink' },
+  { label: '首次绘制', value: 'fp' },
+  { label: '首次内容绘制', value: 'fcp' },
+  { label: '资源加载', value: 'res' },
+  { label: 'trans', value: 'trans' },
+  { label: '首次可交互时间', value: 'tti' },
+]
+
+const requestParams3 = computed(() => ({
+  ...requestParams2.value,
+  percent_type: label.value,
+  percents: [50, 70, 80, 90, 99],
+}))
 
 const loading = ref(true)
 const averageData = ref({

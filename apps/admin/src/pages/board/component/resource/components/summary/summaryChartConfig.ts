@@ -1,6 +1,7 @@
 import { xAxisMaxLength } from '@vben/constants'
 import { chartDataValue } from '@vben/types'
-import { cloneDeep, commafy, accSub, getDateWeekday } from '@vben/utils'
+import { cloneDeep, commafy, accSub } from '@vben/utils'
+import dayjs from 'dayjs'
 
 //图表基础配置
 //柱状图与曲线图结合，支持时间范围选择
@@ -19,9 +20,6 @@ const summaryChartConfig: any = {
       type: 'cross',
     },
     trigger: 'axis',
-    position(pt) {
-      return [pt[0], '10%']
-    },
     formatter: item =>
       `<font style="color:green">${item[0]?.axisValue}</font><br/>` +
       item.map(data => data.name).join('<br/>'),
@@ -104,7 +102,11 @@ const summaryChartConfig: any = {
 
 var latestsSelectedLegend = { 接入容错前异常率: false, 容错成功数: false }
 
-export const getFaultTolerantChartOption = (data: any, hasSuccessData = false) => {
+export const getFaultTolerantChartOption = (
+  data: any,
+  timeFormatStr: string,
+  hasSuccessData = false,
+) => {
   // 1. 数据为空时，返回null，图表为空状态
   if (!(Array.isArray(data) && data.length)) {
     return null
@@ -123,6 +125,7 @@ export const getFaultTolerantChartOption = (data: any, hasSuccessData = false) =
   const successCountList: chartDataValue[] = [] //异常容错数
   const beforeRateList: chartDataValue[] = [] //容错前异常率
   data.forEach(item => {
+    const formatTime = dayjs(item.time).format(timeFormatStr)
     const count = item.resource_num
     const successCount = item.resource_success_num
     const pvCount = item.pv
@@ -133,7 +136,7 @@ export const getFaultTolerantChartOption = (data: any, hasSuccessData = false) =
     const beforeRate = pvCount ? ((totalCount * 100) / pvCount).toFixed(2) : null //容错前的异常率
     const afterRate = pvCount ? ((count * 100) / pvCount).toFixed(2) : null //容错后的异常率
     const uvRate = uvCount ? ((userCount * 100) / uvCount).toFixed(2) : null //影响用户率
-    timeList.push({ value: item.time, name: `${item.time} ${getDateWeekday(item.originTime)}` })
+    timeList.push({ value: formatTime, name: item.time })
     countList.push({ name: `异常资源数（容错后）：${commafy(count)}`, value: count })
     rateList.push({ name: `异常率：${afterRate}%（PV数：${commafy(pvCount)}）`, value: afterRate })
     uvRateList.push({

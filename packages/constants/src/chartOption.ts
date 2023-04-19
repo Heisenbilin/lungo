@@ -42,9 +42,9 @@ export const lineChartOption: any = {
       type: 'cross',
     },
     trigger: 'axis',
-    position(pt) {
-      return [pt[0], '10%']
-    },
+    formatter: item =>
+      `<font style="color:green">${item[0]?.axisValue}</font><br/>` +
+      item.map(data => data.name).join('<br/>'),
   },
   legend: {},
   grid: {
@@ -54,12 +54,19 @@ export const lineChartOption: any = {
     bottom: '2%',
     containLabel: true,
   },
+  dataZoom: {
+    show: false,
+    start: 0,
+    end: 100,
+  },
   xAxis: {
     type: 'category',
   },
-  yAxis: {
-    type: 'value',
-  },
+  yAxis: [
+    {
+      type: 'value',
+    },
+  ],
   series: [],
 }
 
@@ -91,7 +98,6 @@ export const barChartOption: any = {
 
 export const xAxisMaxLength = 15
 
-
 export const errorRateChartConfig: any = {
   color: ['#5c7bd8', '#ee6666', '#92CC76'], // 蓝绿
   //热力线
@@ -107,9 +113,6 @@ export const errorRateChartConfig: any = {
       type: 'cross',
     },
     trigger: 'axis',
-    position(pt) {
-      return [pt[0], '10%']
-    },
     formatter: item =>
       `<font style="color:green">${item[0]?.axisValue}</font><br/>` +
       item.map(data => data.name).join('<br/>'),

@@ -9,9 +9,6 @@ const summaryChartConfig: any = {
       type: 'cross',
     },
     trigger: 'axis',
-    position(pt) {
-      return [pt[0], '10%']
-    },
     formatter: item => item.map(data => data.name).join('<br/>'),
   },
   grid: {

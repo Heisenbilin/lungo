@@ -3,7 +3,7 @@
     <a-tooltip>
       <template #title>
         该筛选条件仅生效于
-        <a target="_blank" class="text-green-300">{{ filtersActiveTab[name]?.join('、') }}</a>
+        <span class="text-green-300">{{ filtersActiveTab[name]?.join('、') }}</span>
         栏目
       </template>
       <a-tag

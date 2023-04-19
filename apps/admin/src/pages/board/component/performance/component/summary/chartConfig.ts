@@ -1,5 +1,7 @@
 import { cloneDeep } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
+import { lineChartOption } from '@vben/constants'
+import { type chartDataValue } from '@vben/types'
 import dayjs from 'dayjs'
 
 const boardStore = useBoardStore()
@@ -12,9 +14,6 @@ const summaryChartConfig: any = {
       type: 'cross',
     },
     trigger: 'axis',
-    position(pt) {
-      return [pt[0], '10%']
-    },
   },
   legend: {},
   grid: {
@@ -29,7 +28,7 @@ const summaryChartConfig: any = {
   },
   yAxis: [
     {
-      name: 'PV数',
+      name: '采样PV数',
       nameTextStyle: { padding: [0, 0, 0, 45] },
       type: 'value',
       position: 'right',
@@ -55,7 +54,7 @@ const summaryChartConfig: any = {
     {
       data: [],
       type: 'bar',
-      name: 'PV数',
+      name: '采样PV数',
       barMaxWidth: 40,
     },
   ],
@@ -146,6 +145,136 @@ export function getSummaryChartOption(data) {
     FP: false,
     RD: false,
     TTI: false,
+  }
+
+  return chartOption
+}
+
+//获取时间区间图表的option
+export function getContrastChartOption(data) {
+  //1 数据为空时，返回null，图表为空状态
+  if (!(Array.isArray(data) && data.length)) {
+    return null
+  }
+
+  const chartOption = cloneDeep(lineChartOption)
+  const timeFormatStr = boardStore.getTimeFormatStr
+
+  const timeList: chartDataValue[] = []
+  const lte1RateArr: chartDataValue[] = []
+  const lte2RateArr: chartDataValue[] = []
+  const lte5RateArr: chartDataValue[] = []
+  try {
+    data.forEach(item => {
+      timeList.push({
+        value: dayjs(item.time).format(timeFormatStr),
+        name: item.time,
+      })
+      const lte1Rate = item.total ? ((item.lte1 * 100) / item.total).toFixed(2) : '0'
+      const lte2Rate = item.total ? ((item.lte2 * 100) / item.total).toFixed(2) : '0'
+      const lte5Rate = item.total ? ((item.lte5 * 100) / item.total).toFixed(2) : '0'
+      lte1RateArr.push({ value: lte1Rate, name: `1S快开比：${lte1Rate}%` })
+      lte2RateArr.push({ value: lte2Rate, name: `2S快开比：${lte2Rate}%` })
+      lte5RateArr.push({ value: lte5Rate, name: `5S慢开比：${lte5Rate}%` })
+    })
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+
+  chartOption.xAxis.data = timeList
+  chartOption.series[0] = {
+    data: lte1RateArr,
+    type: 'line',
+    name: '1S快开比',
+    smooth: true,
+  }
+  chartOption.series[1] = {
+    data: lte2RateArr,
+    type: 'line',
+    name: '2S快开比',
+    smooth: true,
+  }
+  chartOption.series[2] = {
+    data: lte5RateArr,
+    type: 'line',
+    name: '5S慢开比',
+    smooth: true,
+  }
+
+  //时间数据过多时，添加底部滑块
+  if (timeList.length > 15) {
+    chartOption.dataZoom.show = true
+    chartOption.grid.bottom = '15%'
+  }
+  return chartOption
+}
+
+//获取百分比图表的option
+export function getPercentileChartOption(data) {
+  //1 数据为空时，返回null，图表为空状态
+  if (!(Array.isArray(data) && data.length)) {
+    return null
+  }
+
+  const chartOption = cloneDeep(lineChartOption)
+  const timeFormatStr = boardStore.getTimeFormatStr
+
+  const timeList: chartDataValue[] = []
+  const pvList: chartDataValue[] = []
+  const percentileKeys = Object.keys(data[0]).filter(key => key.includes('p_'))
+  const percentileArrs: chartDataValue[][] = Array.from({ length: percentileKeys.length }, () => [])
+
+  try {
+    data.forEach(item => {
+      timeList.push({
+        value: dayjs(item.time).format(timeFormatStr),
+        name: item.time,
+      })
+      percentileKeys.forEach((key, index) => {
+        percentileArrs[index].push({
+          value: item[key],
+          name: `${percentileKeys[index].split('_')[1]}%：<= ${item[key]}ms`,
+        })
+      })
+      pvList.push({ value: item.total, name: `采样PV数：${item.total}` })
+    })
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+
+  chartOption.xAxis.data = timeList
+  // yAxis列表最前面插入一个，用于显示PV数
+  chartOption.yAxis.unshift({
+    type: 'value',
+    axisLabel: {
+      formatter: '{value} ms',
+    },
+    splitLine: {
+      show: false,
+    },
+  })
+  chartOption.series[0] = {
+    data: pvList,
+    type: 'bar',
+    yAxisIndex: 1,
+    name: '采样PV数',
+  }
+  // 把percentileArrs中的数据，添加到chartOption.series中
+  percentileArrs.forEach((arr, index) => {
+    chartOption.series.push({
+      name: percentileKeys[index].split('_')[1] + '%',
+      data: arr,
+      type: 'line',
+      smooth: true,
+    })
+  })
+
+  //时间数据过多时，添加底部滑块
+  if (timeList.length > 15) {
+    chartOption.dataZoom.show = true
+    chartOption.grid.bottom = '15%'
   }
 
   return chartOption

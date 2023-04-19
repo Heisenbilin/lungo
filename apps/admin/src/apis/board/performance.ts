@@ -5,9 +5,9 @@ enum Api {
   GET_SUMMARY_DATA = '/v2/performance/summary',
   GET_LOG_DETAILS = '/v2/performance/details',
   GET_AVG_CHART_DATA = '/v2/performance/avgChart', //TODO 平均值图表展示
-  GET_CONTRAST_DATA = '/v2/performance/contrast', //TODO 对比数据展示
-  GET_SECTION_DATA = '/v2/performance/section', //TODO 区间数据展示
-  GET_PERCENTILE_DATA = '/v2/performance/percentile', //TODO 百分位数据展示
+  GET_CONTRAST_DATA = '/v2/performance/contrast', //TODO 快/慢开比数据展示
+  GET_SECTION_DATA = '/v2/performance/section', //TODO 时间区间数据展示
+  GET_PERCENTILE_DATA = '/v2/performance/percentile', //TODO 百分比数据展示
 }
 
 /**
@@ -37,3 +37,24 @@ export const getChartSummaryData = (params: any) =>
 
 export const getLogDetails = (params: any) =>
   request.post<any>({ url: Api.GET_LOG_DETAILS, params })
+
+/**
+ * @description: 获取快/慢开比数据
+ */
+
+export const getContrastData = (params: any) =>
+  request.post<any>({ url: Api.GET_CONTRAST_DATA, params })
+
+/**
+ * @description: 获取时间区间数据
+ */
+
+export const getSectionData = (params: any) =>
+  request.post<any>({ url: Api.GET_SECTION_DATA, params })
+
+/**
+ * @description: 获取百分比数据
+ */
+
+export const getPercentileData = (params: any) =>
+  request.post<any>({ url: Api.GET_PERCENTILE_DATA, params })

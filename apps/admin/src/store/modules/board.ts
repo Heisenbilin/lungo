@@ -92,9 +92,17 @@ export const useBoardStore = defineStore({
     },
     addFilterValue(values: filterState): void {
       const oldFilter = JSON.stringify(this.filterState)
-      Object.assign(this.filterState, values)
       // 判断start_time和end_time是否有变化，如果有变化，通过dayjs计算出时间差值,调整展示维度
-      if (values.start_time && values.end_time) {
+      if (values.start_time || values.end_time) {
+        // 验证时间是否合法
+        if (
+          (values.start_time && !dayjs(values.start_time).isValid()) ||
+          (values.end_time && !dayjs(values.end_time).isValid())
+        ) {
+          message.error(`时间格式不正确`)
+          return
+        }
+        Object.assign(this.filterState, values)
         const dime = this.filterState.dimension
         const diffHour = dayjs(values.end_time).diff(dayjs(values.start_time), 'hour')
         if (diffHour <= 1 && (dime === 'day' || dime === 'hour')) {
@@ -106,6 +114,8 @@ export const useBoardStore = defineStore({
             this.filterState.dimension = 'hour'
           }
         }
+      } else {
+        Object.assign(this.filterState, values)
       }
       const newFilter = JSON.stringify(this.filterState)
       if (oldFilter !== newFilter) {

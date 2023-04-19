@@ -1,7 +1,7 @@
-import { cloneDeep, commafy, getDateWeekday } from '@vben/utils'
-import dayjs from 'dayjs'
+import { cloneDeep, commafy } from '@vben/utils'
 import { errorRateChartConfig, xAxisMaxLength } from '@vben/constants'
 import { type chartDataValue } from '@vben/types'
+import dayjs from 'dayjs'
 
 // 获取运行时异常图表的option
 export function getSummaryChartOption(data: any, timeFormatStr: string) {
@@ -25,7 +25,7 @@ export function getSummaryChartOption(data: any, timeFormatStr: string) {
     const rate = pvCount ? ((count * 100) / pvCount).toFixed(2) : null
     const userRate = userCount ? ((errorUserCount * 100) / userCount).toFixed(2) : null
     //使用{name:...,value:...}的格式可以往里面塞更多数据
-    timeList.push({ value: formatTime, name: `${item.time}${getDateWeekday(item.time)}` })
+    timeList.push({ value: formatTime, name: item.time })
     countList.push({
       name: `异常数量：${commafy(count)}`,
       value: count,
@@ -83,7 +83,7 @@ export function getAPISummaryChartOption(data, timeFormatStr) {
     const errorCount = item.error
     const totalCount = item.total
     const rate = totalCount ? ((successCount * 100) / totalCount).toFixed(2) : null //防止totalCount为0
-    timeList.push({ value: formatTime, name: `${item.time}${getDateWeekday(item.time)}` })
+    timeList.push({ value: formatTime, name: item.time })
     // 使用{name:...,value:...}的格式可以往里面塞更多数据
     countList.push({ name: `总请求数：${commafy(totalCount)}`, value: totalCount })
     rateList.push({
