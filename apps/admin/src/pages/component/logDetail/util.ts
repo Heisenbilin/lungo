@@ -315,10 +315,10 @@ const clearResourceData = (data, uaList) => {
         { name: '生成时间', value: item.upload_time },
         {
           name: '异常资源',
-          value: item.failsource || item.url,
+          value: item.failsource,
           copyable: true,
           isHref: true,
-          href: item.failsource || item.url,
+          href: item.failsource,
           title: '点击跳转至该文件',
         },
         {
