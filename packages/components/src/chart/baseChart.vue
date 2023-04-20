@@ -1,6 +1,8 @@
 <template>
   <div :style="{ height: height }">
-    <Spin size="large" class="h-full flex justify-center items-center" v-if="loading" />
+    <div class="h-full flex justify-center items-center" v-if="loading">
+      <Spin size="large" />
+    </div>
     <Empty
       v-else-if="chartOption === null"
       class="h-full flex justify-center items-center"

@@ -315,10 +315,10 @@ const clearResourceData = (data, uaList) => {
         { name: '生成时间', value: item.upload_time },
         {
           name: '异常资源',
-          value: item.failsource,
+          value: item.url,
           copyable: true,
           isHref: true,
-          href: item.failsource,
+          href: item.url,
           title: '点击跳转至该文件',
         },
         {
@@ -345,7 +345,7 @@ const clearResourceData = (data, uaList) => {
       //用户信息
       userInfo: getUserInfo(item, uaList),
       upload_time: item.upload_time,
-      failsource: item.failsource,
+      failsource: item.url,
     }))
     total = data.total
   }

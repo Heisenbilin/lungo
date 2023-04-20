@@ -3,6 +3,7 @@
     <a-tabs v-model:activeKey="activeKey" class="box-border w-full">
       <a-tab-pane key="1" tab="请求成功率">
         <BaseChart
+          v-if="activeKey === '1'"
           :requestParams="requestParams1"
           :requestFunc="getChartSummary"
           :getOptionFunc="getAmountChartOption"
@@ -10,6 +11,7 @@
       </a-tab-pane>
       <a-tab-pane key="2" tab="请求耗时">
         <BaseChart
+          v-if="activeKey === '2'"
           :requestParams="requestParams2"
           :requestFunc="getChartSummary"
           :getOptionFunc="getTimeConsumingChartOption"
@@ -17,6 +19,7 @@
       </a-tab-pane>
       <a-tab-pane key="3" tab="upstream请求成功率">
         <BaseChart
+          v-if="activeKey === '3'"
           :requestParams="requestParams3"
           :requestFunc="getChartSummary"
           :getOptionFunc="getAmountChartOption"
@@ -24,6 +27,7 @@
       </a-tab-pane>
       <a-tab-pane key="4" tab="upstream请求耗时">
         <BaseChart
+          v-if="activeKey === '4'"
           :requestParams="requestParams4"
           :requestFunc="getChartSummary"
           :getOptionFunc="getTimeConsumingChartOption"

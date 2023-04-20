@@ -76,7 +76,7 @@ const openLog = title => {
     visible: true,
     requestParams: {
       error_type: 'href',
-      err_content: title.data.name,
+      error_content: title.data.name,
     },
   })
 }

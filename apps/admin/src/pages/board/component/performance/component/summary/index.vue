@@ -81,6 +81,7 @@
       </template>
       <a-tab-pane key="average" tab="性能均值">
         <BaseChart
+          v-if="activeKey === 'average'"
           :requestParams="requestParams2"
           :requestFunc="getChartSummaryData"
           :getOptionFunc="getSummaryOption"
@@ -89,6 +90,7 @@
       </a-tab-pane>
       <a-tab-pane key="contrast" tab="快/慢开比">
         <BaseChart
+          v-if="activeKey === 'contrast'"
           :requestParams="requestParams2"
           :requestFunc="getContrastData"
           :getOptionFunc="getContrastChartOption"
@@ -97,6 +99,7 @@
       </a-tab-pane>
       <a-tab-pane key="percentile" tab="性能百分位">
         <BaseChart
+          v-if="activeKey === 'percentile'"
           :requestParams="requestParams3"
           :requestFunc="getPercentileData"
           :getOptionFunc="getPercentileChartOption"
@@ -163,11 +166,11 @@ const requestParams2 = computed(() => ({
 
 const activeKey = ref('average')
 const activeKey2 = ref('waterfall')
-const label = ref('firstbyte')
+const label = ref('load')
 
 const lableList = [
-  { label: '首字节', value: 'firstbyte' },
   { label: '页面完全加载', value: 'load' },
+  { label: '首字节', value: 'firstbyte' },
   { label: 'DOM Ready', value: 'ready' },
   { label: 'DOM 解析', value: 'dom' },
   { label: 'DNS 查询', value: 'dns' },

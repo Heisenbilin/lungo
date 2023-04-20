@@ -26,11 +26,11 @@ import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
 
 const boardStore = useBoardStore()
-const label = ref('firstbyte')
+const label = ref('load')
 
 const lableList = [
-  { label: '首字节', value: 'firstbyte' },
   { label: '页面完全加载', value: 'load' },
+  { label: '首字节', value: 'firstbyte' },
   { label: 'DOM Ready', value: 'ready' },
 ]
 

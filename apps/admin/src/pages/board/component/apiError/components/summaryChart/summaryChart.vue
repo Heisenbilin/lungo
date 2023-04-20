@@ -6,6 +6,7 @@
       </template>
       <a-tab-pane key="1" tab="异常量与异常率">
         <BaseChart
+          v-if="activeKey === '1'"
           :requestParams="requestParams1"
           :requestFunc="getChartSummaryData"
           :getOptionFunc="getAmountChartOption"
@@ -14,6 +15,7 @@
       </a-tab-pane>
       <a-tab-pane key="2" tab="成功耗时">
         <BaseChart
+          v-if="activeKey === '2'"
           :requestParams="requestParams2"
           :requestFunc="getChartSummaryData"
           :getOptionFunc="getTimeConsumingChartOption"
@@ -22,6 +24,7 @@
       </a-tab-pane>
       <a-tab-pane key="3" tab="失败耗时">
         <BaseChart
+          v-if="activeKey === '3'"
           :requestParams="requestParams3"
           :requestFunc="getChartSummaryData"
           :getOptionFunc="getTimeConsumingChartOption"
@@ -40,7 +43,6 @@ import { useBoardStore } from '@/store/modules/board'
 import { addTimeFilter } from '@/hooks/board/useDate'
 import { getApiAmountChartOption, getTimeConsumingChartOption } from './summaryChartConfig'
 import { BaseChart } from '@vben/components'
-
 
 const boardStore = useBoardStore()
 
