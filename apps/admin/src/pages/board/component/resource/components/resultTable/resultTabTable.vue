@@ -179,12 +179,7 @@ const openLog = record => {
     visible: true,
     requestParams: {
       error_type: props.type,
-      err_content:
-        props.type === 'href'
-          ? record.resource_url
-          : props.type === 'domain'
-          ? record.current_href
-          : record.successsource,
+      err_content: record.url || record.resource_currenthref || record.successsource,
     },
   })
 }

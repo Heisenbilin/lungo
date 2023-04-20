@@ -185,7 +185,7 @@ const lableList = [
 const requestParams3 = computed(() => ({
   ...requestParams2.value,
   percent_type: label.value,
-  percents: [50, 70, 80, 90, 99],
+  percents: [50, 70, 85, 95, 98],
 }))
 
 const loading = ref(true)
