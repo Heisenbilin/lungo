@@ -4,7 +4,11 @@
       <div>
         <span class="chart-title !mt-2 mr-2"> 性能优化建议 </span>
         <a-select v-model:value="currentUrl" class="min-w-min">
-          <a-select-option v-for="item in successList" :key="item.board_url" :value="item.board_url">
+          <a-select-option
+            v-for="item in successList"
+            :key="item.board_url"
+            :value="item.board_url"
+          >
             {{ item.board_url }}
           </a-select-option>
         </a-select>
@@ -17,8 +21,16 @@
       <a-spin size="large" v-if="lighthouseLoading === 0" />
       <a-empty v-else-if="lighthouseLoading === 1" :image="simpleImage" />
       <div class="w-full" v-else>
-        <audit-layout v-if="opportunityAudits.length" :audits="opportunityAudits" :group="groups['load-opportunities']" />
-        <audit-layout v-if="diagnosticAudits.length" :audits="diagnosticAudits" :group="groups.diagnostics" />
+        <audit-layout
+          v-if="opportunityAudits.length"
+          :audits="opportunityAudits"
+          :group="groups['load-opportunities']"
+        />
+        <audit-layout
+          v-if="diagnosticAudits.length"
+          :audits="diagnosticAudits"
+          :group="groups.diagnostics"
+        />
       </div>
     </div>
   </div>
@@ -31,7 +43,6 @@ import { getLighthouseAudits } from '@/apis/report/apis'
 import auditLayout from '@/pages/report//detail/audit/auditLayout.vue'
 import { useReportStore } from '@/store/modules/report'
 import { Empty } from 'ant-design-vue'
-
 
 const reportStore = useReportStore()
 

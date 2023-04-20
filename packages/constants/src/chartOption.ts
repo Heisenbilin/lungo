@@ -55,6 +55,7 @@ export const lineChartOption: any = {
     containLabel: true,
   },
   dataZoom: {
+    type: 'slider',
     show: false,
     start: 0,
     end: 100,
@@ -72,7 +73,21 @@ export const lineChartOption: any = {
 
 //柱状图基础配置
 export const barChartOption: any = {
-  tooltip: {},
+  tooltip: {
+    axisPointer: {
+      type: 'cross',
+    },
+    trigger: 'axis',
+    formatter: item =>
+      `<font style="color:green">${item[0]?.axisValue}</font><br/>` +
+      item.map(data => data.name).join('<br/>'),
+  },
+  dataZoom: {
+    type: 'slider',
+    show: false,
+    start: 0,
+    end: 100,
+  },
   legend: {},
   grid: {
     top: '10%',

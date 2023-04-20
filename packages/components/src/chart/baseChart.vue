@@ -1,7 +1,11 @@
 <template>
-  <div :style="{ height: height }" class="flex justify-center items-center">
-    <Spin size="large" v-if="loading" />
-    <Empty v-else-if="chartOption === null" :image="simpleImage" />
+  <div :style="{ height: height }">
+    <Spin size="large" class="h-full flex justify-center items-center" v-if="loading" />
+    <Empty
+      v-else-if="chartOption === null"
+      class="h-full flex justify-center items-center"
+      :image="simpleImage"
+    />
     <BasicChart
       v-else
       :chartOption="chartOption"

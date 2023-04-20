@@ -95,7 +95,7 @@
           :zrFuncs="{ click: addTimeFilter }"
         />
       </a-tab-pane>
-      <a-tab-pane key="percentile" tab="百分比">
+      <a-tab-pane key="percentile" tab="性能百分位">
         <BaseChart
           :requestParams="requestParams3"
           :requestFunc="getPercentileData"

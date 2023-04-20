@@ -1,4 +1,4 @@
-import { cloneDeep } from '@vben/utils'
+import { cloneDeep, commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { lineChartOption } from '@vben/constants'
 import { type chartDataValue } from '@vben/types'
@@ -237,7 +237,7 @@ export function getPercentileChartOption(data) {
           name: `${percentileKeys[index].split('_')[1]}%：<= ${item[key]}ms`,
         })
       })
-      pvList.push({ value: item.total, name: `采样PV数：${item.total}` })
+      pvList.push({ value: item.total, name: `采样PV数：${commafy(item.total)}` })
     })
   } catch (e) {
     console.log(e)
@@ -260,6 +260,7 @@ export function getPercentileChartOption(data) {
     type: 'bar',
     yAxisIndex: 1,
     name: '采样PV数',
+    barMaxWidth: 40,
   }
   // 把percentileArrs中的数据，添加到chartOption.series中
   percentileArrs.forEach((arr, index) => {

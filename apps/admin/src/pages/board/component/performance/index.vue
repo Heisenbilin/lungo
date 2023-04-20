@@ -2,8 +2,9 @@
   <div class="grid grid-cols-2 gap-3">
     <Summary />
     <UrlTable />
+    <Section />
     <template v-if="successList.length">
-      <performanceList
+      <Advice
         :successList="successList"
         :projectId="projectId"
         :startTime="startTime"
@@ -21,7 +22,8 @@ import { getListById } from '@/apis/report/apis'
 import dayjs from 'dayjs'
 import Summary from './component/summary/index.vue'
 import UrlTable from './component/urlTable/urlTable.vue'
-import performanceList from './component/performanceAdvise/performanceList.vue'
+import Section from './component/section/index.vue'
+import Advice from './component/advice/index.vue'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()
