@@ -88,7 +88,17 @@
           :zrFuncs="{ click: addTimeFilter }"
         />
       </a-tab-pane>
-      <a-tab-pane key="contrast" tab="快/慢开比">
+      <a-tab-pane key="contrast">
+        <template #tab>
+          快/慢开比
+          <a-tooltip :overlayStyle="{ maxWidth: '500px' }">
+            <template #title>
+              快开比: 页面完全加载时长 ≤ 某时长(如2s)的 采样PV / 总采样PV * 100% <br />
+              慢开比: 页面完全加载时长 ≥ 某时长(如5s)的 采样PV / 总采样PV * 100%
+            </template>
+            <QuestionCircleOutlined class="ml-2" />
+          </a-tooltip>
+        </template>
         <BaseChart
           v-if="activeKey === 'contrast'"
           :requestParams="requestParams2"
@@ -97,7 +107,17 @@
           :zrFuncs="{ click: addTimeFilter }"
         />
       </a-tab-pane>
-      <a-tab-pane key="percentile" tab="性能百分位">
+      <a-tab-pane key="percentile">
+        <template #tab>
+          性能百分位
+          <a-tooltip :overlayStyle="{ maxWidth: '500px' }">
+            <template #title>
+              各个性能指标的百分位数。<br />
+              例如：50%的页面页面完全加载时间的加载时间 ≤ 2.5s
+            </template>
+            <QuestionCircleOutlined class="ml-2" />
+          </a-tooltip>
+        </template>
         <BaseChart
           v-if="activeKey === 'percentile'"
           :requestParams="requestParams3"
