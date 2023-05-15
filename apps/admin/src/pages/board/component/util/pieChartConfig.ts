@@ -132,8 +132,8 @@ export function getCostTimeChartOption(data) {
   const chartOption = cloneDeep(pieChartOption)
   data = data.sort(compare('count'))
   let seriesData = data.map(item => ({
-    value: item.count,
-    name: item.costTime,
+    value: item.board_count,
+    name: item.board_key,
   }))
   chartOption.legend.selected = {
     '0 to 200': false,
@@ -248,6 +248,26 @@ export function getResolutionOption(data) {
   chartOption.legend.formatter = name => getMainInfo(name, 40)
   chartOption.tooltip.formatter = item =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>分辨率：${
+      item.data.name
+    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)`
+  chartOption.series[0].data = seriesData
+  return chartOption
+}
+
+//将接口返回值处理成“类型”图表数据
+export function getTypeOption(data) {
+  if (!(Array.isArray(data) && data.length)) {
+    return null
+  }
+  const chartOption = cloneDeep(pieChartOption)
+  data = data.sort(compare('board_count'))
+  let seriesData = data.map(item => ({
+    value: item.board_count,
+    name: item.board_key || '未知',
+  }))
+  chartOption.legend.formatter = name => getMainInfo(name, 40)
+  chartOption.tooltip.formatter = item =>
+    `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>类型：${
       item.data.name
     }</div>PV数：${commafy(item.data.value)} (${item.percent}%)`
   chartOption.series[0].data = seriesData

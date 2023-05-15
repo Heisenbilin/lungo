@@ -1,6 +1,6 @@
 <template>
   <div class="stability-title">
-    <h1 >四、项目稳定性指标</h1>
+    <h1>四、项目稳定性指标</h1>
     <div class="access-status float-right text-base l">
       <project-access-status />
     </div>
@@ -13,8 +13,8 @@
           <span class="text-red-500"> {{ runtimeTotal }} </span>）
         </div>
         <BaseChart
-          :requestParams="chartDataRequestParams"
-          :requestFunc="params => getTwoWeeksSummary({ ...params, board_type: 'runtime' })"
+          :requestParams="requestParams"
+          :requestFunc="params => getTwoWeeksSummaryReport({ ...params, board_type: 'runtime' })"
           :getOptionFunc="data => getTwoWeeksOption(data, 'runtime')"
           height="360px"
         />
@@ -25,8 +25,8 @@
           <span class="text-red-500"> {{ resourceTotal }} </span>）
         </div>
         <BaseChart
-          :requestParams="chartDataRequestParams"
-          :requestFunc="params => getTwoWeeksSummary({ ...params, board_type: 'resource' })"
+          :requestParams="requestParams"
+          :requestFunc="params => getTwoWeeksSummaryReport({ ...params, board_type: 'resource' })"
           :getOptionFunc="data => getTwoWeeksOption(data, 'resource')"
           height="360px"
         />
@@ -35,16 +35,11 @@
       <div class="w-full xl:w-1/2 p-4">
         <div class="chart-title">运行时异常Top10</div>
         <BaseChart
-          :requestParams="errorChartDataRequestParams"
+          :requestParams="requestParams"
           :bindFuncs="{
             click: title => openRuntimeLogDrawer(title.data.name, 'content'),
           }"
-          :requestFunc="
-            params => {
-              params.filter.boardType = 'runtimeTop'
-              return getChartDataByType(params)
-            }
-          "
+          :requestFunc="getRuntimeTopReport"
           :getOptionFunc="getTop10Option"
         />
       </div>
@@ -52,28 +47,23 @@
       <div class="w-full xl:w-1/2 p-4">
         <div class="chart-title">运行时异常Top10 URL</div>
         <BaseChart
-          :requestParams="chartDataRequestParams"
+          :requestParams="requestParams"
           :bindFuncs="{
             click: title => openRuntimeLogDrawer(title.data.name, 'domain'),
           }"
-          :requestFunc="params => getErrorSummary({ ...params, board_type: 'runtime' })"
-          :getOptionFunc="data => getTop10UrlOption(data, 'runtime')"
+          :requestFunc="getRuntimeUrlReport"
+          :getOptionFunc="getTop10Option"
         />
       </div>
 
       <div class="w-full xl:w-1/2 p-4">
         <div class="chart-title">资源异常Top10</div>
         <BaseChart
-          :requestParams="errorChartDataRequestParams"
+          :requestParams="requestParams"
           :bindFuncs="{
             click: title => openResourceLogDrawer(title.data.name, 'href'),
           }"
-          :requestFunc="
-            params => {
-              params.filter.boardType = 'resourceTop'
-              return getChartDataByType(params)
-            }
-          "
+          :requestFunc="getResourceTopReport"
           :getOptionFunc="getTop10Option"
         />
       </div>
@@ -81,30 +71,31 @@
       <div class="w-full xl:w-1/2 p-4">
         <div class="chart-title">资源异常Top10 URL</div>
         <BaseChart
-          :requestParams="chartDataRequestParams"
+          :requestParams="requestParams"
           :bindFuncs="{
             click: title => openResourceLogDrawer(title.data.name, 'domain'),
           }"
-          :requestFunc="params => getErrorSummary({ ...params, board_type: 'resource' })"
-          :getOptionFunc="data => getTop10UrlOption(data, 'resource')"
+          :requestFunc="getResourceUrlReport"
+          :getOptionFunc="getTop10Option"
         />
       </div>
 
       <div class="w-full xl:w-1/2 p-4">
         <div class="chart-title">接口异常Top10</div>
         <BaseChart
-          :requestParams="chartDataRequestParams"
+          :requestParams="requestParams"
           :bindFuncs="{ click: openApiTop10Log }"
-          :requestFunc="ApiErrorApis.getTop10Data"
+          :requestFunc="getInterfaceTopReport"
           :getOptionFunc="getTop10Option"
         />
       </div>
+
       <div class="w-full xl:w-1/2 p-4">
         <div class="chart-title">接口耗时统计</div>
         <BaseChart
-          :requestParams="chartDataRequestParams"
+          :requestParams="requestParams"
           :bindFuncs="{ click: openApiCostTimeLog }"
-          :requestFunc="ApiErrorApis.getCostTimeData"
+          :requestFunc="getCostTimeReport"
           :getOptionFunc="getCostTimeChartOption"
         />
       </div>
@@ -115,50 +106,40 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
-import * as ApiErrorApis from '@/apis/board/apiError'
-import { getTwoWeeksSummary, getErrorSummary, getErrorTotalSummary } from '@/apis/report/apis'
-import { getChartDataByType } from '@/apis/board/sourceMap'
-import { getTwoWeeksOption } from '../utils/configs'
 import {
-  getCostTimeChartOption,
-  getTop10Option,
-  getTop10UrlOption,
-} from '@/pages/board/component/util/pieChartConfig'
+  getTwoWeeksSummaryReport,
+  getRuntimeTopReport,
+  getRuntimeUrlReport,
+  getResourceTopReport,
+  getResourceUrlReport,
+  getInterfaceTopReport,
+  getCostTimeReport,
+} from '@/apis/report/index'
+import { getErrorTotalSummary } from '@/apis/report/apis'
+import { getTwoWeeksOption } from '../../utils/configs'
+import { getCostTimeChartOption, getTop10Option } from '@/pages/board/component/util/pieChartConfig'
 import { commafy } from '@vben/utils'
 import { logTypeEnum } from '@vben/constants'
-import projectAccessStatus from './projectAccessStatus.vue'
-import LogDrawer from '@/pages/component/logDetail/logDrawer.vue'
 import { BaseChart } from '@vben/components'
 import { useReportStore } from '@/store/modules/report'
-import { useUserStore } from '@/store/user'
-
+import projectAccessStatus from './projectAccessStatus.vue'
+import LogDrawer from '@/pages/component/logDetail/logDrawer.vue'
 
 const boardStore = useReportStore()
-const userStore = useUserStore()
-const userName = userStore.userInfo?.account || ''
 
 const resourceTotal = ref('')
 const runtimeTotal = ref('')
 
-const chartDataRequestParams = computed(() => ({
+const requestParams = computed(() => ({
   project_id: `${boardStore.boardInfoState.id}`,
   start_time: boardStore.filterState.start_time,
   end_time: boardStore.filterState.end_time,
 }))
 
-const errorChartDataRequestParams = computed(() => ({
-  boardid: '0x000',
-  filter: {
-    gteTime: boardStore.filterState.start_time,
-    lteTime: boardStore.filterState.end_time,
-  },
-  projectid: `${boardStore.boardInfoState.id}`,
-  userid: userName,
-}))
 //后台数据获取与处理
 async function initData() {
   //异常总数 数据获取与处理
-  let result = await getErrorTotalSummary(chartDataRequestParams.value)
+  let result = await getErrorTotalSummary(requestParams.value)
   if (result.stat === 1 && Object.keys(result.data).length) {
     resourceTotal.value = commafy(result.data.resourceTotal)
     runtimeTotal.value = commafy(result.data.runtimeTotal)
@@ -167,7 +148,7 @@ async function initData() {
   }
 }
 
-watch(() => chartDataRequestParams, initData, { immediate: true })
+watch(() => requestParams, initData, { immediate: true })
 
 /*
  *  LogDrawer

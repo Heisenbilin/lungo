@@ -1,5 +1,5 @@
 //版本号比较
-export const versionStringCompare = (version1 = '', version2 = '') => {
+export const versionStringCompare = (version1: string = '', version2: string = '') => {
   const arr1 = version1.split('.').map(e => +e)
   const arr2 = version2.split('.').map(e => +e)
   const length = Math.max(arr1.length, arr2.length)
@@ -10,8 +10,8 @@ export const versionStringCompare = (version1 = '', version2 = '') => {
   return 0
 }
 
-export const compare = function (prop) {
-  return function (obj1, obj2) {
+export const compare = function (prop: string) {
+  return function (obj1: any, obj2: any) {
     var val1 = obj1[prop]
     var val2 = obj2[prop]
     if (val1 > val2) {

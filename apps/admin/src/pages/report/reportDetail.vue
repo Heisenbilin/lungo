@@ -1,25 +1,22 @@
 <template>
-  <div class="weekly-main bg-$component-background-color" id="weekly-main-container"
-    ref="areaRef">
-    <div class="title text-color" >质量周报</div>
+  <div class="p-4 bg-color">
+    <div class="grid grid-cols-2 gap-3" ref="areaRef">
+      <UrlBase :score="score" />
 
-    <url-base :score="score" />
-    <a-divider style="background-color: #555" />
+      <url-performance
+        @performanceScoreChange="performanceScoreChange"
+        :lighthouseLoading="lighthouseLoading"
+        :preparedLighthouse="lighthouseLoading === 2 ? lighthouseData.categories.performance : {}"
+        :groups="lighthouseLoading === 2 ? lighthouseData.categoryGroups : {}"
+      />
 
-    <url-performance
-      @performanceScoreChange="performanceScoreChange"
-      :lighthouseLoading="lighthouseLoading"
-      :preparedLighthouse="lighthouseLoading === 2 ? lighthouseData.categories.performance : {}"
-      :groups="lighthouseLoading === 2 ? lighthouseData.categoryGroups : {}"
-    />
-    <a-divider style="background-color: #555" />
-
-    <url-stability
-      @stabilityScoreChange="stabilityScoreChange"
-      :lighthouseLoading="lighthouseLoading"
-      :preparedLighthouse="lighthouseLoading === 2 ? lighthouseData.categories.accessibility : {}"
-      :groups="lighthouseLoading === 2 ? lighthouseData.categoryGroups : {}"
-    />
+      <url-stability
+        @stabilityScoreChange="stabilityScoreChange"
+        :lighthouseLoading="lighthouseLoading"
+        :preparedLighthouse="lighthouseLoading === 2 ? lighthouseData.categories.accessibility : {}"
+        :groups="lighthouseLoading === 2 ? lighthouseData.categoryGroups : {}"
+      />
+    </div>
   </div>
 </template>
 
@@ -32,7 +29,7 @@ import { useUserStore } from '@/store/user'
 import { useWatermark } from '@vben/hooks'
 import { getQuery } from '@vben/router'
 
-import urlBase from './detail/urlBase.vue'
+import UrlBase from './detail/urlBase.vue'
 import urlPerformance from './detail/urlPerformance.vue'
 import urlStability from './detail/urlStability.vue'
 import { useAppTheme } from '@vben/hooks'
@@ -120,33 +117,20 @@ async function initAudits() {
     start_time: start_time + ' 00:00:00',
     project_id,
   }
-  //获取lighthouse建议数据
-  const lighthouse = await getLighthouseAudits(lighthouseParams)
+  try {
+    //获取lighthouse建议数据
+    const lighthouse = await getLighthouseAudits(lighthouseParams)
 
-  if (lighthouse.stat === 1 && lighthouse.data) {
-    //lighthouse数据预处理
-    lighthouseData.value = prepareReportResult(lighthouse.data)
+    if (lighthouse.stat === 1 && lighthouse.data) {
+      //lighthouse数据预处理
+      lighthouseData.value = prepareReportResult(lighthouse.data)
 
-    lighthouseLoading.value = 2
-  } else {
+      lighthouseLoading.value = 2
+    } else {
+      lighthouseLoading.value = 1
+    }
+  } catch {
     lighthouseLoading.value = 1
   }
 }
 </script>
-
-<style scoped lang="scss">
-.weekly-main {
-  box-sizing: content-box;
-  width: 800px;
-  height: auto;
-  margin: auto;
-  padding: 47px 90px;
-}
-
-.title {
-  font-size: 30px;
-  line-height: 24px;
-  margin: 20px;
-  text-align: center;
-}
-</style>

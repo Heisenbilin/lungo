@@ -25,9 +25,17 @@
 
     <div class="runtime-container">
       <div class="second-title">2.1 Runtime异常率({{ runtimeRate }})</div>
-      <a-spin size="large" class="loading" v-if="loading.runtimeLoading === 0" />
-      <a-empty v-else-if="loading.runtimeLoading === 1" class="empty" :image="simpleImage" />
-      <chart v-else chartName="runtime-main" class="avg-main" :option="runtimeErrorOption" />
+      <div :style="{ height: '360px' }">
+        <div class="h-full flex-center" v-if="stabilityLoading">
+          <a-spin size="large" />
+        </div>
+        <a-empty
+          v-else-if="runtimeChartOption === null"
+          class="h-full flex-center"
+          :image="simpleImage"
+        />
+        <BasicChart v-else :chartOption="runtimeChartOption" height="360px" />
+      </div>
       <div>
         <span class="rule"> 计算规则：Runtime / PV </span> <span class="rule">权重：33%</span>
         <div class="rule">
@@ -41,9 +49,17 @@
 
     <div class="resource-container">
       <div class="second-title">2.2 Resource异常率({{ resourceRate }})</div>
-      <a-spin size="large" class="loading" v-if="loading.runtimeLoading === 0" />
-      <a-empty v-else-if="loading.runtimeLoading === 1" :image="simpleImage" />
-      <chart v-else chartName="resource-main" class="avg-main" :option="resourceErrorOption" />
+      <div :style="{ height: '360px' }">
+        <div class="h-full flex-center" v-if="stabilityLoading">
+          <a-spin size="large" />
+        </div>
+        <a-empty
+          v-else-if="resourceChartOption === null"
+          class="h-full flex-center"
+          :image="simpleImage"
+        />
+        <BasicChart v-else :chartOption="resourceChartOption" height="360px" />
+      </div>
       <div>
         <span class="rule">计算规则：Resource / PV</span><span class="rule">权重：34%</span>
         <div class="rule">
@@ -62,8 +78,9 @@
       <div>
         <span class="rule">计算规则：白屏次数 / 检测次数</span><span class="rule">权重：33%</span>
         <div class="rule">
-          分值计算：<span class="top">0~1% 75~100分</span><span class="mid">1~3% 50~75分</span
-          ><span class="bot">3%以上 0~50分</span>
+          分值计算：<span class="top">0~1% 75~100分</span>
+          <span class="mid">1~3% 50~75分</span>
+          <span class="bot">3%以上 0~50分</span>
         </div>
       </div>
     </div>
@@ -79,14 +96,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import { Empty } from 'ant-design-vue'
+import { BasicChart } from '@vben/components'
 import { getErrSummary } from '@/apis/report/apis'
+import { getStabilityReport } from '@/apis/report/index'
 import { getStabilityAudits } from './util'
 import { getScore, getUrlErrorOptions } from './config'
+import { getTop10Option } from '@/pages/board/component/util/pieChartConfig'
 import { getQuery } from '@vben/router'
 import CircleProgress from '@vben/components/src/chart/circleProgress.vue'
-import chart from './chart.vue'
+// import chart from './chart.vue'
 import linkText from './linkText.vue'
 import AuditLayout from './audit/auditLayout.vue'
 
@@ -96,20 +116,77 @@ type Props = {
   groups: any
   lighthouseLoading: number
 }
+
 const props = defineProps<Props>()
-const stabilityScore: any = ref(0)
-const runtimeScore: any = ref(0)
-const resourceScore: any = ref(0)
-const whiteScore: any = ref(0)
-const runtimeData = ref([])
-const runtimeRate: any = ref(0)
-const resourceData = ref([])
-const resourceRate = ref(0)
-const whiteRate = ref(0)
+
+const { start_time, end_time, project_id, url } = getQuery()
+
+const requestParams = computed(() => ({
+  start_time,
+  end_time,
+  project_id,
+  board_url: decodeURIComponent(url),
+}))
+
+const stabilityLoading = ref<boolean>(true)
+
+const runtimeChartData = ref<any>(null)
+const runtimeChartOption = computed(() => getTop10Option(runtimeChartData.value))
+const runtimeScore = ref<number>(0)
+const runtimeRate = ref<string>('0%')
+
+const resourceChartData = ref<any>(null)
+const resourceChartOption = computed(() => getTop10Option(resourceChartData.value))
+const resourceScore = ref<number>(0)
+const resourceRate = ref<string>('0%')
+
+const whiteRate = ref<string>('0%')
+const whiteScore = ref<number>(0)
 const noWhite = ref(false)
-// const performanceScore = ref(0);
-const runtimeErrorOption = ref({})
-const resourceErrorOption = ref({})
+
+const stabilityScore = computed(() => {
+  const score = ((runtimeScore.value + resourceScore.value + whiteScore.value) / 3).toFixed(0)
+  emit('stabilityScoreChange', parseFloat(score))
+  return score
+})
+
+// 旧请求参数字符串，防止重复请求
+let oldParamsString: string = ''
+
+watch(
+  () => requestParams,
+  async val => {
+    const newPramsString = JSON.stringify(val.value)
+    if (newPramsString === oldParamsString) {
+      stabilityLoading.value = false
+      return
+    }
+    oldParamsString = newPramsString
+    stabilityLoading.value = true
+    try {
+      const result = await getStabilityReport(val.value)
+      if (result.stat === 1) {
+        runtimeChartData.value = result.data.runtime
+        let runtimeNum = parseFloat(result.data.runtimeerrorRate)
+        runtimeRate.value = result.data.runtimeerrorRate
+        runtimeScore.value = getScore(runtimeNum)
+        resourceChartData.value = result.data.resource
+        let resourceNum = parseFloat(result.data.resourceerrorRate)
+        resourceRate.value = result.data.resourceerrorRate
+        resourceScore.value = getScore(resourceNum)
+      } else {
+        runtimeChartData.value = null
+        resourceChartData.value = null
+      }
+    } catch {
+      runtimeChartData.value = null
+      resourceChartData.value = null
+    } finally {
+      stabilityLoading.value = false
+    }
+  },
+  { immediate: true, deep: true },
+)
 
 const loading = ref({
   runtimeLoading: 0,
@@ -117,15 +194,12 @@ const loading = ref({
   whiteLoading: 0,
   auditsLoading: 0,
 })
+
 const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE)
 
 const stabilityAudits: any = ref([])
 type Emits = { (e: 'stabilityScoreChange', score: number): void }
 const emit = defineEmits<Emits>()
-onMounted(() => {
-  initData()
-})
-
 //监听父组件lighthouse数据加载标识，解析lighthouse数据
 watch(
   () => props.lighthouseLoading,
@@ -138,75 +212,4 @@ watch(
     }
   },
 )
-
-async function initData() {
-  const { start_time, end_time, project_id, url: board_url } = getQuery()
-  const params = {
-    start_time,
-    end_time,
-    project_id,
-    board_url: decodeURIComponent(board_url as string),
-    board_type: 'runtime,resource',
-  }
-  // await initWhite(params);
-
-  //获取resource&runtime异常的总数统计
-  const result = await getErrSummary(params)
-  //runtime数据清洗
-  if (result.data.runtime.length) {
-    runtimeData.value = result.data.runtime.map(e => ({
-      value: e.board_count,
-      name: e.board_key,
-    }))
-    runtimeRate.value = result.data.runtimeerrorRate
-    let runtimeNum = parseFloat(runtimeRate.value)
-    runtimeScore.value = getScore(runtimeNum)
-    runtimeErrorOption.value = getUrlErrorOptions(runtimeData.value, runtimeScore.value)
-    loading.value.runtimeLoading = 2
-  } else {
-    loading.value.runtimeLoading = 1
-  }
-  //resource数据清洗
-  if (result.data.resource.length) {
-    resourceData.value = result.data.resource.map(e => ({
-      value: e.board_count,
-      name: e.board_key,
-    }))
-    resourceRate.value = result.data.resourceerrorRate
-    let resourceNum = parseFloat(resourceRate.value + '')
-    resourceScore.value = getScore(resourceNum)
-    resourceErrorOption.value = getUrlErrorOptions(resourceData.value, resourceScore.value)
-    loading.value.resourceLoading = 2
-  } else {
-    loading.value.resourceLoading = 1
-  }
-  let whiteNum = parseFloat(whiteRate.value + '')
-  whiteScore.value = getScore(whiteNum)
-  stabilityScore.value = (
-    (runtimeScore.value + resourceScore.value + whiteScore.value) /
-    3
-  ).toFixed(0)
-  emit('stabilityScoreChange', parseFloat(stabilityScore.value))
-}
-
-// async function initWhite(params) {
-//   let p = {
-//     start_time: `${params.start_time} 00:00:00`,
-//     end_time: `${params.end_time} 00:00:00`,
-//     url: params.board_url,
-//   };
-//   let result = await getWhiteRate(p);
-//   if (Object.keys(result.data).length === 0 || result.data.errcode) {
-//     //message.error("白屏部分："+result.data.msg);
-//     whiteRate.value = +'0%';
-//     noWhite.value = true;
-//   } else {
-//     whiteRate.value = result.data.rate ? result.data.rate : +'0%';
-//     noWhite.value = false;
-//   }
-// }
 </script>
-
-<style scoped lang="scss">
-@import './weekly.scss';
-</style>

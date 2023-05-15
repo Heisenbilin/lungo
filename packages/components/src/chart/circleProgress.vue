@@ -38,7 +38,7 @@ export default {
   props: {
     width: {
       type: [Number, String],
-      default: 160,
+      default: 140,
     }, // 圆的大小
     radius: {
       type: [Number, String],

@@ -131,23 +131,19 @@ export const useWaterfallChartOption = data => {
   chartOption.series[0].data = arr[0]
   chartOption.series[1].data = arr[1]
   chartOption.yAxis[1].data = arr[2]
-  if (data.firstbyte && data.ready && data.load) {
+  const lineList: any[] = []
+  if (data.firstbyte) {
+    lineList.push({ name: `首字节`, xAxis: data.firstbyte })
+  }
+  if (data.ready) {
+    lineList.push({ name: `DOM Ready`, xAxis: data.ready, label: { lineHeight: 40 } })
+  }
+  if (data.load) {
+    lineList.push({ name: `完全加载`, xAxis: data.load })
+  }
+  if (lineList.length) {
     chartOption.series[1].markLine = {
-      data: [
-        {
-          name: `首字节`,
-          xAxis: data.firstbyte,
-        },
-        {
-          name: `DOM Ready`,
-          xAxis: data.ready,
-          label: { lineHeight: 40 },
-        },
-        {
-          name: `完全加载`,
-          xAxis: data.load,
-        },
-      ],
+      data: lineList,
       symbol: ['none', 'none'],
       label: {
         formatter: item => `${item.name}：${commafy(item.value)}ms`,
@@ -170,7 +166,7 @@ const getColor = (standard, value) => {
 }
 
 export const useDataToWaterfallChartOption = data => {
-  if (!(typeof data === 'object' && Object.keys(data).length)) {
+  if (!data || !(typeof data === 'object' && Object.keys(data).length)) {
     return null
   }
   return useWaterfallChartOption(data)

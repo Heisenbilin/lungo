@@ -18,13 +18,14 @@ import { useReportStore } from '@/store/modules/report'
 import { useWatermark } from '@vben/hooks'
 import { storeToRefs } from '@vben/stores'
 import { useUserStore } from '@/store/user'
-
-import projectScore from '@/pages/report/total/projectScore.vue'
-import projectPerformance from '@/pages/report/total/projectPerformance.vue'
-import projectStability from '@/pages/report/total/stability/index.vue'
-import projectBase from '@/pages/report/total/projectBase.vue'
-import urlTable from '@/pages/report/total/urlTable.vue'
 import { useAppTheme } from '@vben/hooks';
+
+import projectScore from './components/score.vue'
+import projectPerformance from './components/performance.vue'
+import projectStability from './components/stability/index.vue'
+import projectBase from './components/base.vue'
+import urlTable from './components/urlTable.vue'
+
 const { isDark } = useAppTheme()
 
 const reprotStore = useReportStore()

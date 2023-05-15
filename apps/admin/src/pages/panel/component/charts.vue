@@ -52,8 +52,7 @@ import { getChartData } from '@/apis/board/sourceMap'
 import { usePanelStore } from '@/store/modules/panel'
 import { useUserStore } from '@/store/user'
 import { BaseChart } from '@vben/components'
-import uaInfo from '@/pages/report/total/components/uaInfo.vue'
-
+import uaInfo from '@/pages/report/total/components/uaInfo/index.vue'
 
 const panelStore = usePanelStore()
 const userStore = useUserStore()

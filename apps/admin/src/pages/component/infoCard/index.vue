@@ -36,7 +36,10 @@
       <InfoTag title="eventid" :content="projectInfo.eventid" />
       <InfoTag title="SDK">
         <template #content>
-          <SDKVersion :currentSDKVersion="projectInfo.sdk_version" />
+          <SDKVersion
+            :currentSDKVersion="projectInfo.sdk_version"
+            :latestSDKVersion="store.latestSDKVersionState"
+          />
         </template>
       </InfoTag>
       <InfoTag

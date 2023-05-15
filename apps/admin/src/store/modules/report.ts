@@ -1,5 +1,5 @@
-import { logTypeEnum, noNeedMessageKeys, allFilterKeys } from '@vben/constants'
-import { message } from 'ant-design-vue'
+import { logTypeEnum, allFilterKeys } from '@vben/constants' // noNeedMessageKeys,
+// import { message } from 'ant-design-vue'
 import type { BoardInfo, filter, filterState, logInfo, BoardState } from '@vben/types'
 import { defineStore } from '@vben/stores'
 import { getQuery, router } from '@vben/router'
@@ -79,24 +79,24 @@ export const useReportStore = defineStore({
       this.latestSDKVersionState = latestSDKVersion
     },
     addFilterValue(values: filterState): void {
-      console.log(JSON.stringify(values))
       const oldFilter = JSON.stringify(this.filterState)
       Object.assign(this.filterState, values)
       const newFilter = JSON.stringify(this.filterState)
       if (oldFilter !== newFilter) {
         this.setUrlQuery()
-        if (Object.keys(values).some(key => !noNeedMessageKeys.includes(key))) {
-          message.success(`已更新筛选条件`)
-        }
+        // if (Object.keys(values).some(key => !noNeedMessageKeys.includes(key))) {
+        //   message.success(`已更新筛选条件`)
+        // }
       }
     },
+
     delFilterValue(name: string): void {
       if (Object.keys(this.filterState).includes(name)) {
         delete this.filterState[name]
         this.setUrlQuery()
-        if (!noNeedMessageKeys.includes(name)) {
-          message.warning(`已删除筛选条件`)
-        }
+        // if (!noNeedMessageKeys.includes(name)) {
+        //   message.warning(`已删除筛选条件`)
+        // }
       }
     },
     initStateValue(info: BoardInfo, isUpdateFilter: boolean): void {

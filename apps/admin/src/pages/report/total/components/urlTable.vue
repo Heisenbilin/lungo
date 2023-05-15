@@ -1,9 +1,9 @@
 <template>
-  <div class="wrapper">
-    <h1 >五、页面详细质量周报</h1>
-    <div v-if="showLighthouseStatus" class="lighthouse-wrapper">
-      <span>URL执行lighthouse成功数量：{{ lighthouseSuccessTotal }}</span>
-      <span>URL执行lighthouse失败数量：{{ lighthouseErrorTotal }}</span>
+  <div class="relative">
+    <h1>五、页面详细质量周报</h1>
+    <div v-if="showLighthouseStatus" class="absolute top-0 right-0">
+      <span class="mr-5">URL执行lighthouse成功数量：{{ lighthouseSuccessTotal }}</span>
+      <span class="mr-5">URL执行lighthouse失败数量：{{ lighthouseErrorTotal }}</span>
       <a @click="operateLighthouse">
         <a-tooltip :overlayStyle="{ maxWidth: '200px' }">
           <template #title>
@@ -16,8 +16,15 @@
     </div>
   </div>
   <div v-if="loaded">
-    <a-table :columns="urlColumns" :data-source="urlList" :row-key="record => record.board_url" size="middle"
-      :pagination="pagination" @change="handleTableChange" tableLayout="fixed">
+    <a-table
+      :columns="urlColumns"
+      :data-source="urlList"
+      :row-key="record => record.board_url"
+      size="middle"
+      :pagination="pagination"
+      @change="handleTableChange"
+      tableLayout="fixed"
+    >
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'URL'">
           <a-tooltip title="点击进入原始页面">
@@ -36,15 +43,15 @@
 
 <script setup lang="ts">
 //页面详细质量周报表格
-import { ref, watch, computed, reactive, onActivated } from 'vue'
-import { getListById, retryLighthouse, getProjectLighthouseStatus } from '@/apis/report/apis'
-import { defaultColumns } from './config'
+import { ref, watch, computed, reactive } from 'vue'
+import { retryLighthouse } from '@/apis/report/apis'
+import { getProjectLighthouseStatus, getProjectBoardUrl } from '@/apis/report/index'
+import { defaultColumns } from '../config'
 import { commafy } from '@vben/utils'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useReportStore } from '@/store/modules/report'
 import { cloneDeep } from '@vben/utils'
-
 
 const reportStore = useReportStore()
 const projectId = computed(() => reportStore.boardInfoState.id)
@@ -158,11 +165,10 @@ const getUrlByPro = async (page = 1, order = null, field = null, limit = 10) => 
     order,
     field,
   }
-  const result = await getListById(params)
+  const result = await getProjectBoardUrl(params) 
 
   if (result.msg === 'success') {
-    //pageData.list = result.data
-    pagination.total = result.data.total
+    pagination.total = +result.data.total
     if (pagination.total / pagination.pageSize > 10) {
       pagination.showQuickJumper = true
     }
@@ -171,8 +177,8 @@ const getUrlByPro = async (page = 1, order = null, field = null, limit = 10) => 
         item.lighthouse_status === 'success'
           ? '成功'
           : item.lighthouse_status === 'error'
-            ? '失败'
-            : '未开始'
+          ? '失败'
+          : '未开始'
       let reason = (item.lighthouse_reason + '').toLowerCase()
       if (reason && reason.includes('error')) {
         reason = '检测异常'
@@ -213,32 +219,6 @@ const toReport = url => ({
     end_time: endTime.value,
   },
 })
-// onActivated(()=>{
-//       document.body.scrollTop = 0;
-//     document.documentElement.scrollTop = 0;
-// })
-  // //切换到页面顶部
-  // setTimeout(() => {
-  //   debugger
-  //   document.body.scrollTop = 0;
-  //   document.documentElement.scrollTop = 0;
-  // });
 </script>
 
-<style lang="scss" scoped>
-@import './board.scss';
-
-.wrapper {
-  position: relative;
-
-  .lighthouse-wrapper {
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    >span {
-      margin-right: 20px;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

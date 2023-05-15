@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="chart-container-full">
+    <div class="text-center text-2xl">项目信息</div>
     <div>
-      <span class="info-title">项目名称：</span
-      ><span class="info-content">{{ urlInfo.projectName }}</span>
+      <span class="info-title">项目名称：</span>
+      <span class="info-content">{{ urlInfo.projectName }}</span>
     </div>
     <div>
       <span class="info-title">页面URL：</span>
@@ -15,62 +16,42 @@
       <span class="info-content">{{ urlInfo.reportTime }}</span>
     </div>
   </div>
-  <div class="score-all">
-    <div>
-      <circle-progress ref="$circle" class="progress" key="duration-model" :progress="avgScore" />
-      <div class="pro-label">总评</div>
-    </div>
-    <div>
-      <circle-progress
-        ref="$circle"
-        class="progress"
-        key="duration-model"
-        :progress="score.performanceScore"
-      />
-      <div class="pro-label">性能</div>
-    </div>
-    <div>
-      <circle-progress
-        ref="$circle"
-        class="progress"
-        key="duration-model"
-        :progress="score.stabilityScore"
-      />
-      <div class="pro-label">稳定性</div>
-    </div>
-  </div>
-  <div class="score-range">
-    <span class="score-item">
-      <i class="el-icon-caret-top"></i>
-      <span class="score-text">0-49</span>
-    </span>
-    <span class="score-item">
-      <i class="el-icon-middle"></i>
-      <span class="score-text">50-74</span>
-    </span>
-    <span class="score-item">
-      <i class="el-icon-cicle"></i>
-      <span class="score-text">75-100</span>
-    </span>
-  </div>
 
-  <div class="suggestion">
-    <span class="info-title"> 总评分数计算规则： </span>
-    <span>
-      <ul>
-        <li>总评分数 = (性能评分+稳定性评分) / 2 。</li>
-        <li>
-          性能与稳定性都非常重要，开发者需充分考虑性能与稳定性两方面的质量，避免出现“偏科”的情况。
-        </li>
-      </ul>
-    </span>
+  <div class="flex h-20 flex-row justify-center chart-container-full">
+    <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="text-gray-500">
+        <a-tooltip :overlayStyle="{ maxWidth: '400px' }">
+          <template #title>
+            <ul>
+              <li>总评分数 = (性能评分+稳定性评分) / 2 。</li>
+              <li>
+                性能与稳定性都非常重要，开发者需充分考虑性能与稳定性两方面的质量，避免出现“偏科”的情况。
+              </li>
+            </ul>
+          </template>
+          总评分数
+          <QuestionCircleOutlined />
+        </a-tooltip>
+      </div>
+      <div class="flex items-end">
+        <div class="text-3xl font-medium">{{ avgScore || 0 }}</div>
+      </div>
+    </div>
+    <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="text-gray-500">性能得分</div>
+      <div class="text-3xl font-medium">{{ score.performanceScore }}</div>
+    </div>
+    <div class="w-1/5 grid justify-items-center content-center space-y-1">
+      <div class="text-gray-500">稳定性得分</div>
+      <div class="text-3xl font-medium">{{ score.stabilityScore }}</div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed,onActivated,  } from 'vue'
+import { ref, onMounted, computed, onActivated } from 'vue'
 import { getQuery } from '@vben/router'
-import CircleProgress from '@vben/components/src/chart/circleProgress.vue'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 
 //页面质量周报总评组件
@@ -107,8 +88,8 @@ onMounted(() => {
       .format('YYYY-MM-DD')}`,
   }
 })
-onActivated(()=>{
-  const {url} = getQuery()
+onActivated(() => {
+  const { url } = getQuery()
   urlInfo.value.boardURL = decodeURIComponent(url as string)
   // window.scrollTo(0, 0)
   // document.body.scrollTop = 0
@@ -117,8 +98,3 @@ onActivated(()=>{
   // console.log(document.body.scrollTop, document.documentElement.scrollTop);
 })
 </script>
-
-<style scoped lang="scss">
-html, body { scroll-behavior:smooth; }
-@import './weekly.scss';
-</style>

@@ -27,7 +27,7 @@
       <div class="w-1/8 grid justify-items-center content-center space-y-1">
         <div class="text-gray-500">平均耗时</div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ summaryData.averageTime }}</div>
+          <div class="text-3xl font-medium">{{ summaryData.averageTime || 0 }}</div>
           <div class="text-gray-500">ms</div>
         </div>
       </div>
