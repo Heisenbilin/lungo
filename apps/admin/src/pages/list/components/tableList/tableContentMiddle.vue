@@ -104,12 +104,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { scoreColumns, scoreData, barFinColor } from '../utils'
+import { scoreColumns, scoreData } from '../utils'
 import { getTendencyChartOption } from '../tendencyChartConfig'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 import { BasicChart } from '@vben/components'
 import { BoardInfo } from '@vben/types'
-import { cloneDeep } from '@vben/utils'
+import { cloneDeep, barFinColor } from '@vben/utils'
 import TableTtem from './tableItem.vue'
 
 const props = defineProps({

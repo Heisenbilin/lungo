@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 bg-color">
+  <div class="p-4 mb-10 bg-color">
     <div class="grid grid-cols-2 gap-3" ref="areaRef">
       <UrlBase :score="score" />
 

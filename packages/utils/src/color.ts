@@ -176,3 +176,17 @@ export function pickTextColorBasedOnBgColor(
   const L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
   return L < 0.8 ? darkColor : lightColor
 }
+
+
+//设置分数的颜色样式
+export const barFinColor = num => {
+  if (num < 50) {
+    return '#ec5c4c'
+  }
+  if (50 <= num && num < 75) {
+    return '#F2AE57'
+  }
+  if (75 <= num) {
+    return '#5eca75'
+  }
+}

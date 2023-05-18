@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container-full">
-    <div class="chart-title">响应码</div>
+    <div class="chart-title">性能报告 - 页面加载瀑布图</div>
     <BaseChart
       :requestParams="requestParams"
       :requestFunc="getAverageData"
@@ -8,17 +8,18 @@
     />
   </div>
   <div class="chart-container-full">
-    <div class="chart-title">响应码</div>
+    <div class="chart-title">性能报告 - 性能指标耗时统计</div>
     <BaseChart
       :requestParams="requestParams"
       :requestFunc="getProDayPerformanceReport"
       :getOptionFunc="getProOptions"
     />
   </div>
-
-  <div>
-    <div class="second-title">1.4 性能优化建议</div>
-    <a-spin size="large" class="loading" v-if="loading.auditsLoading === 0" />
+  <div class="chart-container-full">
+    <div class="chart-title">性能报告 - 优化建议</div>
+    <div class="h-full flex-center" v-if="loading.auditsLoading === 0">
+      <a-spin size="large" />
+    </div>
     <a-empty v-else-if="loading.auditsLoading === 1" :image="simpleImage" />
     <div v-else>
       <audit-layout
@@ -45,7 +46,6 @@ import { useDataToWaterfallChartOption } from '@vben/hooks'
 import { getQuery } from '@vben/router'
 import { Empty } from 'ant-design-vue'
 import { computed } from 'vue'
-import CircleProgress from '@vben/components/src/chart/circleProgress.vue'
 import auditLayout from './audit/auditLayout.vue'
 
 //页面质量周报性能组件

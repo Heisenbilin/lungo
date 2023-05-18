@@ -1,5 +1,4 @@
 import { accSub, accMul, accDiv, cloneDeep } from '@vben/utils' //accAdd,
-import { useAppTheme } from '@vben/hooks'
 
 const lineChartOption: any = {
   tooltip: {
@@ -48,6 +47,7 @@ export function getProOptions(data) {
 }
 
 export function getScore(num) {
+  if (num === 0) return 100
   if (num > 5) return 0
   if (num < 1) {
     return accSub(100, accMul(25, num))
@@ -61,48 +61,6 @@ export function getScore(num) {
   return 0
 }
 
-export function getUrlErrorOptions(data, score) {
-  if (!(Array.isArray(data.data) && data.data.length)) {
-    return null
-  }
-  return {
-    tooltip: {
-      trigger: 'item',
-    },
-    color: [score < 50 ? '#EC5C4C' : score < 75 ? '#F3A73B' : '#5ECA75'],
-    legend: {
-      orient: 'vertical',
-      right: 10,
-      top: 20,
-    },
-    series: [
-      {
-        name: '异常分布',
-        type: 'pie',
-        radius: ['40%', '70%'],
-        avoidLabelOverlap: false,
-        label: {
-          show: true,
-          position: 'center',
-          color: '#4c4a4a',
-          formatter: '{total|' + score + '分}',
-          rich: {
-            total: {
-              fontSize: 35,
-              fontFamily: '微软雅黑',
-              color: '#454c5c',
-            },
-          },
-        },
-        labelLine: {
-          show: false,
-        },
-        data: data,
-      },
-    ],
-  }
-}
-
 // export const getProDayChartOption = data => {
 //   const chartOption = cloneDeep(defaultTwoWeeksOption)
 
@@ -111,3 +69,140 @@ export function getUrlErrorOptions(data, score) {
 
 //   return chartOption
 // }
+
+export const PERFORMANCE_INDEX = [
+  {
+    name: 'DNS 域名解析时间',
+    rule: 'domainLookupEnd - domainLookupStart',
+    weight: '5%',
+    low: '>30ms',
+    middle: '15–30ms',
+    high: '0–15ms',
+  },
+  {
+    name: 'TCP 连接时间',
+    rule: 'connectEnd - connectStart',
+    weight: '5%',
+    low: '>300ms',
+    middle: '100–200ms',
+    high: '0–100ms',
+  },
+  {
+    name: 'TTFB',
+    rule: 'responseStart - requestStart',
+    weight: '15%',
+    low: '>500ms',
+    middle: '300–500ms',
+    high: '0–300ms',
+  },
+  {
+    name: 'FP 第一个像素渲染时间',
+    rule: 'getEntries：name === first-paint',
+    weight: '25%',
+    low: '>4000ms',
+    middle: '2000–4000ms',
+    high: '0–2000ms',
+  },
+  {
+    name: 'TTI',
+    rule: 'domInteractive - fetchStart',
+    weight: '5%',
+    low: '>7300ms',
+    middle: '3800–7300ms',
+    high: '0–3800ms',
+  },
+  {
+    name: 'FCP',
+    rule: 'first-contentful-paint',
+    weight: '5%',
+    low: '>4000ms',
+    middle: '2000–4000ms',
+    high: '0–2000ms',
+  },
+]
+
+export const PERFORMANCE_COLUMNS = [
+  {
+    title: '指标项',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: '计算规则',
+    dataIndex: 'rule',
+    key: 'rule',
+    align: 'rule',
+  },
+  {
+    title: '权重',
+    dataIndex: 'weight',
+    key: 'weight',
+    align: 'center',
+  },
+  {
+    title: '0~50分',
+    dataIndex: 'low',
+    key: 'low',
+    align: 'center',
+  },
+  {
+    title: '50～75分',
+    dataIndex: 'middle',
+    key: 'middle',
+    align: 'center',
+  },
+  {
+    title: '75~100分',
+    dataIndex: 'high',
+    key: 'high',
+    align: 'center',
+  },
+]
+
+export const STABILITY_INDEX = [
+  {
+    name: '运行时异常',
+    low: '>3%',
+    middle: '1-3%',
+    high: '0-1%',
+  },
+  {
+    name: '资源异常',
+    low: '>3%',
+    middle: '1-3%',
+    high: '0-1%',
+  },
+  {
+    name: '白屏异常',
+    low: '>3%',
+    middle: '1-3%',
+    high: '0-1%',
+  },
+]
+
+export const STABILITY_COLUMNS = [
+  {
+    title: '指标项',
+    dataIndex: 'name',
+    key: 'name',
+    align: 'center',
+  },
+  {
+    title: '0~50分',
+    dataIndex: 'low',
+    key: 'low',
+    align: 'center',
+  },
+  {
+    title: '50～75分',
+    dataIndex: 'middle',
+    key: 'middle',
+    align: 'center',
+  },
+  {
+    title: '75~100分',
+    dataIndex: 'high',
+    key: 'high',
+    align: 'center',
+  },
+]

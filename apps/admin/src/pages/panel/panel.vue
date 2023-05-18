@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4  bg-color">
+  <div class="p-4 pb-10 bg-color">
     <div class="grid grid-cols-2 gap-3">
       <div class="chart-container">
         <InfoCard boardType="panel" />

@@ -192,10 +192,10 @@ export const barFinColor = num => {
   if (num < 50) {
     return '#ec5c4c'
   }
-  if (49 < num && num < 75) {
+  if (50 <= num && num < 75) {
     return '#F2AE57'
   }
-  if (74 < num) {
+  if (75 <= num) {
     return '#5eca75'
   }
 }

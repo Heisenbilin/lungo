@@ -109,7 +109,7 @@ import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from '@vben/stores'
 import { BoardInfo } from '@vben/types'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
-import { barFinColor } from '../utils'
+import { barFinColor } from '@vben/utils'
 
 const props = defineProps({
   data: { type: Object, required: false, default: () => ({}) },

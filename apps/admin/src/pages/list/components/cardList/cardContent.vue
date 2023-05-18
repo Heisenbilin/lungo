@@ -108,9 +108,9 @@ import { BasicChart } from '@vben/components'
 import { Empty } from 'ant-design-vue'
 import { BoardInfo } from '@vben/types'
 import { useListStore } from '@/store/modules/list'
-import { scoreData, scoreColumns, barFinColor } from '../utils'
+import { scoreData, scoreColumns } from '../utils'
 import ContentItem from './contentItem.vue'
-import { cloneDeep } from '@vben/utils'
+import { cloneDeep, barFinColor } from '@vben/utils'
 import { useLinkToUrl, useStoreProject } from '@/hooks/board/useLink'
 
 const listStore = useListStore()

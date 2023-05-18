@@ -6,18 +6,14 @@
   </template>
 </template>
 
-<script setup lang = 'ts'>
-import { splitMarkdownLink } from './util';
-import { ref } from 'vue';
-
+<script setup lang="ts">
 //链接文字渲染组件
-  // props: ['text'],
+import { splitMarkdownLink } from './util'
+import { ref } from 'vue'
+
 const props = defineProps({
   text: String,
 })
-    const linkTextArr = ref(splitMarkdownLink(props.text));
-</script>
 
-<style scoped lang="scss">
-@import './weekly.scss';
-</style>
+const linkTextArr = ref(splitMarkdownLink(props.text))
+</script>

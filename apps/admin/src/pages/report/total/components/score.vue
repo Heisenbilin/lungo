@@ -4,19 +4,19 @@
     <a-spin size="large" v-if="loading === 'loading'" />
     <a-empty v-else-if="loading === 'empty'" :image="simpleImage" />
     <div v-else class="w-full flex-center gap-4 flex-wrap">
-      <div class="w-1/6">
+      <div class="w-full sm:w-1/3 lg:w-1/5 xl:1/6">
         <circle-progress ref="$circle" key="duration-model" :progress="total_score" />
         <div class="text-center font-medium text-lg">项目质量</div>
       </div>
-      <div class="w-1/6">
+      <div class="w-full sm:w-1/3 lg:w-1/5 xl:1/6">
         <circle-progress ref="$circle" key="duration-model" :progress="performance_score" />
         <div class="text-center font-medium text-lg">页面性能</div>
       </div>
-      <div class="w-1/6">
+      <div class="w-full sm:w-1/3 lg:w-1/5 xl:1/6">
         <circle-progress ref="$circle" key="duration-model" :progress="stability_score" />
         <div class="text-center font-medium text-lg">服务稳定</div>
       </div>
-      <div class="w-1/6">
+      <div class="w-full sm:w-1/3 lg:w-1/5 xl:1/6">
         <div class="flex-center h-[145px]">
           <div>
             <span class="text-6xl">{{ rank }}</span>
