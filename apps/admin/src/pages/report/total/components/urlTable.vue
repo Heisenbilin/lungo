@@ -1,22 +1,24 @@
 <template>
-  <div class="relative">
-    <h1>五、页面详细质量周报</h1>
-    <div v-if="showLighthouseStatus" class="absolute top-0 right-0">
-      <span class="mr-5">URL执行lighthouse成功数量：{{ lighthouseSuccessTotal }}</span>
-      <span class="mr-5">URL执行lighthouse失败数量：{{ lighthouseErrorTotal }}</span>
-      <a @click="operateLighthouse">
-        <a-tooltip :overlayStyle="{ maxWidth: '200px' }">
-          <template #title>
-            仅执行失败状态url，执行lighthouse时间较长，请稍后刷新页面查看
-          </template>
-          <InfoCircleOutlined />
-        </a-tooltip>
-        执行lighthouse
-      </a>
+  <div class="chart-container-full">
+    <div class="chart-title mb-3 relative">
+      页面列表
+      <div v-if="showLighthouseStatus" class="absolute top-0 right-0 text-sm font-normal">
+        <span class="mr-5">URL执行lighthouse成功数量：{{ lighthouseSuccessTotal }}</span>
+        <span class="mr-5">URL执行lighthouse失败数量：{{ lighthouseErrorTotal }}</span>
+        <a @click="operateLighthouse">
+          <a-tooltip :overlayStyle="{ maxWidth: '200px' }">
+            <template #title>
+              仅执行失败状态url，执行lighthouse时间较长，请稍后刷新页面查看
+            </template>
+            <InfoCircleOutlined />
+          </a-tooltip>
+          执行lighthouse
+        </a>
+      </div>
     </div>
-  </div>
-  <div v-if="loaded">
+
     <a-table
+      v-if="loaded"
       :columns="urlColumns"
       :data-source="urlList"
       :row-key="record => record.board_url"
@@ -165,7 +167,7 @@ const getUrlByPro = async (page = 1, order = null, field = null, limit = 10) => 
     order,
     field,
   }
-  const result = await getProjectBoardUrl(params) 
+  const result = await getProjectBoardUrl(params)
 
   if (result.msg === 'success') {
     pagination.total = +result.data.total

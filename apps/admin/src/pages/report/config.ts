@@ -61,15 +61,6 @@ export function getScore(num) {
   return 0
 }
 
-// export const getProDayChartOption = data => {
-//   const chartOption = cloneDeep(defaultTwoWeeksOption)
-
-//   chartOption.series[0].data = data.lastWeek[type]
-//   chartOption.series[1].data = data.currentWeek[type]
-
-//   return chartOption
-// }
-
 export const PERFORMANCE_INDEX = [
   {
     name: 'DNS 域名解析时间',

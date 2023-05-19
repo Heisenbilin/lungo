@@ -26,33 +26,32 @@
 </template>
 
 <script setup lang="ts">
-import linkText from '../linkText.vue';
-import auditTitle from './auditTitle.vue';
-import { caculateScale } from '../util';
+import linkText from '../linkText.vue'
+import auditTitle from './auditTitle.vue'
+import { caculateScale } from './util'
 
 //建议框架组件
-  // eslint-disable-next-line vue/require-prop-types
-  // props: ['audits', 'group'],
-  // interface propsType {
-  //   audits:Object,
-  //   group:Object
-  // }
-  const props = defineProps({
-    audits: {
-      type: Object,
-      default: () => {}
-    },
-    group: {
-      type: Object,
-      default: () => {}
-    }
-  });
+// eslint-disable-next-line vue/require-prop-types
+// props: ['audits', 'group'],
+// interface propsType {
+//   audits:Object,
+//   group:Object
+// }
+const props = defineProps({
+  audits: {
+    type: Object,
+    default: () => {},
+  },
+  group: {
+    type: Object,
+    default: () => {},
+  },
+})
 
-    const scale =
-      props.group.title === '优化建议' || props.group.title === 'Opportunities'
-        ? caculateScale(props.audits)
-        : null;
-
+const scale =
+  props.group.title === '优化建议' || props.group.title === 'Opportunities'
+    ? caculateScale(props.audits)
+    : null
 </script>
 
 <style scoped lang="scss">

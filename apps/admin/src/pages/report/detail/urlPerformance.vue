@@ -40,12 +40,13 @@
 import { ref, watch } from 'vue'
 import { getProDayPerformanceReport, getAveragePerformanceReport } from '@/apis/report/index'
 import { BaseChart } from '@vben/components'
-import { showAsPassed, _getWastedMs } from './util'
-import { getProOptions } from './config'
+import { showAsPassed, _getWastedMs } from './audit/util'
+import { getProOptions } from '../config'
 import { useDataToWaterfallChartOption } from '@vben/hooks'
-import { getQuery } from '@vben/router'
+// import { getQuery } from '@vben/router'
 import { Empty } from 'ant-design-vue'
 import { computed } from 'vue'
+import { useRouteQuery } from '@vben/router'
 import auditLayout from './audit/auditLayout.vue'
 
 //页面质量周报性能组件
@@ -74,12 +75,17 @@ const simpleImage = ref(Empty.PRESENTED_IMAGE_SIMPLE)
 const opportunityAudits = ref([])
 const diagnosticAudits = ref([])
 
-const { start_time, end_time, project_id, url } = getQuery()
+const startTime = useRouteQuery('start_time')
+const endTime = useRouteQuery('end_time')
+const projectId = useRouteQuery('project_id')
+const url = useRouteQuery('url', '')
+
+// const { start_time, end_time, project_id, url } = getQuery()
 const requestParams = computed(() => ({
-  start_time,
-  end_time,
-  project_id,
-  board_url: decodeURIComponent(url),
+  start_time: startTime.value,
+  end_time: endTime.value,
+  project_id: projectId.value,
+  board_url: decodeURIComponent(url.value),
 }))
 
 const getAverageData = async params => {

@@ -132,8 +132,8 @@ export function getCostTimeChartOption(data) {
   const chartOption = cloneDeep(pieChartOption)
   data = data.sort(compare('count'))
   let seriesData = data.map(item => ({
-    value: item.board_count,
-    name: item.board_key,
+    value: item.count || item.board_count,
+    name: item.costTime || item.board_key || '未知',
   }))
   chartOption.legend.selected = {
     '0 to 200': false,

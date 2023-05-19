@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 //链接文字渲染组件
-import { splitMarkdownLink } from './util'
+import { splitMarkdownLink } from './audit/util'
 import { ref } from 'vue'
 
 const props = defineProps({

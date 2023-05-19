@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { prepareReportResult, showAsPassed, _getWastedMs } from '@/pages/report/detail/util'
+import { prepareReportResult, showAsPassed, _getWastedMs } from '@/pages/report/detail/audit/util'
 import { getLighthouseAudits } from '@/apis/report/apis'
 import auditLayout from '@/pages/report//detail/audit/auditLayout.vue'
 import { useReportStore } from '@/store/modules/report'

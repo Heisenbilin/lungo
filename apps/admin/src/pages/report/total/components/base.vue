@@ -1,51 +1,44 @@
 <template>
-  <div class="report-title">二、基础项目指标</div>
-  <div class="flex flex-wrap w-full">
-    <div class="w-full xl:w-1/2 p-4">
-      <div class="chart-title">PV数据</div>
-      <BaseChart
-        :requestParams="requestParams"
-        :requestFunc="params => getTwoWeeksSummaryReport({ ...params, board_type: 'pv' })"
-        :getOptionFunc="data => getTwoWeeksOption(data, 'pv')"
-        height="360px"
-      />
-    </div>
-    <div class="w-full xl:w-1/2 p-4">
-      <div class="chart-title">UV数据</div>
-      <BaseChart
-        :requestParams="requestParams"
-        :requestFunc="params => getTwoWeeksSummaryReport({ ...params, board_type: 'uv' })"
-        :getOptionFunc="data => getTwoWeeksOption(data, 'uv')"
-        height="360px"
-      />
-    </div>
-    <div class="w-full xl:w-1/2 p-4">
-      <div class="chart-title">用户浏览器类型</div>
-      <BaseChart
-        :requestParams="requestParams"
-        :requestFunc="getBrowserReport"
-        :getOptionFunc="getTypeOption"
-        height="360px"
-      />
-    </div>
-    <div class="w-full xl:w-1/2 p-4">
-      <div class="chart-title">用户操作系统类型</div>
-      <BaseChart
-        :requestParams="requestParams"
-        :requestFunc="getOsReport"
-        :getOptionFunc="getTypeOption"
-        height="360px"
-      />
-    </div>
-    <div class="w-full p-4">
-      <div class="chart-title">用户地域分布</div>
-      <BaseChart
-        :requestParams="requestParams"
-        :requestFunc="getRegionReport"
-        :getOptionFunc="getUAMapOption"
-        height="500px"
-      />
-    </div>
+  <div class="chart-container">
+    <div class="chart-title">PV数据</div>
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="params => getTwoWeeksSummaryReport({ ...params, board_type: 'pv' })"
+      :getOptionFunc="data => getTwoWeeksOption(data, 'pv')"
+    />
+  </div>
+  <div class="chart-container">
+    <div class="chart-title">UV数据</div>
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="params => getTwoWeeksSummaryReport({ ...params, board_type: 'uv' })"
+      :getOptionFunc="data => getTwoWeeksOption(data, 'uv')"
+    />
+  </div>
+  <div class="chart-container">
+    <div class="chart-title">用户浏览器类型</div>
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getBrowserReport"
+      :getOptionFunc="getTypeOption"
+    />
+  </div>
+  <div class="chart-container">
+    <div class="chart-title">用户操作系统类型</div>
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getOsReport"
+      :getOptionFunc="getTypeOption"
+    />
+  </div>
+  <div class="chart-container-full">
+    <div class="chart-title">用户地域分布</div>
+    <BaseChart
+      :requestParams="requestParams"
+      :requestFunc="getRegionReport"
+      :getOptionFunc="getUAMapOption"
+      height="400px"
+    />
   </div>
 </template>
 
@@ -62,7 +55,6 @@ import { getTypeOption } from '@/pages/board/component/util/pieChartConfig'
 import { useReportStore } from '@/store/modules/report'
 import { BaseChart } from '@vben/components'
 import { getUAMapOption } from '@/pages/board/component/pv/component/uaMap/uaMapConfig'
-import uaInfo from './uaInfo/index.vue'
 
 const reportStore = useReportStore()
 

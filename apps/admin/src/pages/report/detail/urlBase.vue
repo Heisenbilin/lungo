@@ -3,38 +3,20 @@
     <a-card class="h-full" :bordered="false">
       <template #title>
         <div class="h-7">
-          <span class="mr-4">项目信息</span>
-          <!-- <a-select
-            v-model:value=""
+          <span class="mr-4">页面信息</span>
+          <a-select
+            v-model:value="boardURL"
             placeholder="请选择页面"
-            style="width: 360px"
+            style="min-width: 500px"
             showSearch
             optionFilterProp="label"
           >
-            <a-select-option
-              v-for="item of []"
-              :key="item.id"
-              :label="item.project_name"
-              :value="item.id"
-            >
-              <div>
-                <a-tag color="red" v-if="item.saas === 'yes'">学科</a-tag>
-                <a-tag color="blue" v-else>素质</a-tag>
-                {{ item.project_name }}
-              </div>
-            </a-select-option>
-          </a-select> -->
+            <a-select-option v-for="item of urlList" :label="item" :value="item"> </a-select-option>
+          </a-select>
         </div>
       </template>
-      <div>
-        <div class="py-1"><InfoTag title="项目名称" :content="urlInfo.projectName" /></div>
-        <div class="py-1">
-          <InfoTag title="页面URL">
-            <template #content>
-              <a :href="urlInfo.boardURL" target="_blank">{{ urlInfo.boardURL }}</a>
-            </template>
-          </InfoTag>
-        </div>
+      <div class="flex gap-3 flex-wrap">
+        <div class="py-1"><InfoTag title="所属项目" :content="urlInfo.projectName" /></div>
         <div class="py-1"><InfoTag title="报告时间" :content="urlInfo.reportTime" /></div>
       </div>
     </a-card>
@@ -102,19 +84,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, onActivated } from 'vue'
-import { getQuery } from '@vben/router'
+import { ref, onMounted, computed, onActivated, watch } from 'vue'
+import { addOrUpdateQuery, getQuery } from '@vben/router'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import {
   PERFORMANCE_COLUMNS,
   PERFORMANCE_INDEX,
   STABILITY_COLUMNS,
   STABILITY_INDEX,
-} from './config'
+} from '../config'
 import { barFinColor } from '@vben/utils'
 import InfoTag from '@/pages/component/infoCard/infoTag.vue'
 
 import dayjs from 'dayjs'
+import { getProjectBoardUrl } from '@/apis/report'
 
 //页面质量周报总评组件
 const props = defineProps({
@@ -132,26 +115,71 @@ const props = defineProps({
 const urlInfo = ref({
   //基本信息
   projectName: '',
-  boardURL: '',
   reportTime: '',
 })
+
+const boardURL = ref('')
+const urlList = ref([])
+
 const avgScore = computed(() => {
   const avg = (props.score.stabilityScore + props.score.performanceScore) / 2
   return avg.toFixed(0)
 })
 
 onMounted(() => {
-  const { start_time, end_time, url: board_url, project_name } = getQuery()
+  getUrlList()
+})
+onActivated(() => {
+  getUrlList()
+})
+
+const getUrlList = async () => {
+  const { start_time, end_time, project_id, url: board_url, project_name } = getQuery()
+  const decodeUrl = decodeURIComponent(board_url as string)
+  const newReportTime = `${start_time}至${dayjs(end_time as string)
+    .subtract(1, 'd')
+    .format('YYYY-MM-DD')}`
+  if (
+    project_id &&
+    board_url &&
+    start_time &&
+    end_time &&
+    (boardURL.value !== decodeUrl || newReportTime !== urlInfo.value.reportTime)
+  ) {
+    let params = {
+      project_id,
+      start_time,
+      end_time,
+      page: 1,
+      limit: 10000000,
+    }
+    try {
+      const result = await getProjectBoardUrl(params)
+      if (result.stat === 1) {
+        urlList.value = result.data.projectList.map(item => item.board_url)
+      } else {
+        urlList.value = []
+      }
+    } catch (err) {
+      urlList.value = []
+      console.log(err)
+    }
+  }
   urlInfo.value = {
     projectName: decodeURIComponent(project_name as string),
-    boardURL: decodeURIComponent(board_url as string),
     reportTime: `${start_time}至${dayjs(end_time as string)
       .subtract(1, 'd')
       .format('YYYY-MM-DD')}`,
   }
-})
-onActivated(() => {
-  const { url } = getQuery()
-  urlInfo.value.boardURL = decodeURIComponent(url as string)
+  boardURL.value = decodeURIComponent(board_url as string)
+  return []
+}
+
+// 监听url变化，改变路由
+watch(boardURL, () => {
+  console.log(boardURL.value)
+  addOrUpdateQuery({
+    url: encodeURIComponent(boardURL.value),
+  })
 })
 </script>

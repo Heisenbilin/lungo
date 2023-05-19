@@ -118,7 +118,7 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
 import linkText from '../linkText.vue'
-import { parseURL, bytesToSize, formatDuration, isURL, handleObjectType } from '../util'
+import { parseURL, bytesToSize, formatDuration, isURL, handleObjectType } from './util'
 
 const props = defineProps({
   details: {

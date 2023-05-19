@@ -1,6 +1,5 @@
 <template>
-  <h1>三、项目性能指标</h1>
-  <div class="w-full p-4">
+  <div class="chart-container-full">
     <div class="chart-title">本周页面加载均值瀑布图</div>
     <div :style="{ height: '360px' }">
       <div class="h-full flex justify-center items-center" v-if="loading">
@@ -14,7 +13,7 @@
       <BasicChart v-else :chartOption="currentWeekChartOption" height="360px" />
     </div>
   </div>
-  <div class="w-full p-4">
+  <div class="chart-container-full">
     <div class="chart-title">上周页面加载均值瀑布图</div>
     <div :style="{ height: '360px' }">
       <div class="h-full flex-center" v-if="loading">

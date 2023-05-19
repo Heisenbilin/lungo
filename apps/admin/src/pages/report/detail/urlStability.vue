@@ -53,10 +53,10 @@ import { ref, watch, computed } from 'vue'
 import { Empty } from 'ant-design-vue'
 import { BasicChart } from '@vben/components'
 import { getStabilityReport } from '@/apis/report/index'
-import { getStabilityAudits } from './util'
-import { getScore } from './config'
+import { getStabilityAudits } from './audit/util'
+import { getScore } from '../config'
 import { getTop10Option } from '@/pages/board/component/util/pieChartConfig'
-import { getQuery } from '@vben/router'
+import { getQuery, useRouteQuery } from '@vben/router'
 // import chart from './chart.vue'
 import AuditLayout from './audit/auditLayout.vue'
 
@@ -69,13 +69,16 @@ type Props = {
 
 const props = defineProps<Props>()
 
-const { start_time, end_time, project_id, url } = getQuery()
+const startTime = useRouteQuery('start_time')
+const endTime = useRouteQuery('end_time')
+const projectId = useRouteQuery('project_id')
+const url = useRouteQuery('url', '')
 
 const requestParams = computed(() => ({
-  start_time,
-  end_time,
-  project_id,
-  board_url: decodeURIComponent(url),
+  start_time: startTime.value,
+  end_time: endTime.value,
+  project_id: projectId.value,
+  board_url: decodeURIComponent(url.value),
 }))
 
 const stabilityLoading = ref<boolean>(true)

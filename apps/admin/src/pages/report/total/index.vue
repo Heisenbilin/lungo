@@ -1,5 +1,5 @@
 <template>
-  <div class="relative mt-3 chart-container " id="project-boardReport-content" ref="areaRef">
+  <div class="mt-3 mb-8 grid grid-cols-2 gap-3" ref="areaRef">
     <projectScore />
     <projectBase />
     <projectPerformance />
@@ -18,11 +18,11 @@ import { useReportStore } from '@/store/modules/report'
 import { useWatermark } from '@vben/hooks'
 import { storeToRefs } from '@vben/stores'
 import { useUserStore } from '@/store/user'
-import { useAppTheme } from '@vben/hooks';
+import { useAppTheme } from '@vben/hooks'
 
 import projectScore from './components/score.vue'
 import projectPerformance from './components/performance.vue'
-import projectStability from './components/stability/index.vue'
+import projectStability from './components/stability.vue'
 import projectBase from './components/base.vue'
 import urlTable from './components/urlTable.vue'
 

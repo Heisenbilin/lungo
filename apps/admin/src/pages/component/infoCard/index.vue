@@ -60,7 +60,7 @@
       <InfoTag>
         <template #content>
           <a class="link" @click="() => (store.alarmModalVisible = true)" color="warning">
-            <AlertTwoTone twoToneColor="#d4542d" key="alarm" class="mr-2" /> 预警设置
+            <AlertTwoTone twoToneColor="#d4542d" class="mr-2" /> 预警设置
           </a>
         </template>
       </InfoTag>
@@ -68,7 +68,7 @@
         <template #content>
           <router-link :to="panelUrl">
             <span @click="() => useStoreProject(projectInfo, 'panel')">
-              <PieChartOutlined style="color: #f77f00" key="data" class="mr-2" /> 数据大盘
+              <PieChartOutlined style="color: #f77f00" class="mr-2" /> 数据大盘
             </span>
           </router-link>
         </template>
@@ -77,7 +77,7 @@
         <template #content>
           <router-link :to="boardUrl">
             <span @click="() => useStoreProject(projectInfo, 'board')">
-              <AreaChartOutlined style="color: #7ed591" key="board" class="mr-2" /> 质量监控
+              <AreaChartOutlined style="color: #7ed591" class="mr-2" /> 质量监控
             </span>
           </router-link>
         </template>
@@ -86,7 +86,7 @@
         <template #content>
           <router-link :to="reportUrl">
             <span @click="() => useStoreProject(projectInfo, 'report')">
-              <FundOutlined style="color: #720096" key="report" class="mr-2" /> 质量周报
+              <FundOutlined style="color: #720096" class="mr-2" /> 质量周报
             </span>
           </router-link>
         </template>
