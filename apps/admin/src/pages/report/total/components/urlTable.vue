@@ -214,7 +214,7 @@ watch(
 const toReport = url => ({
   name: 'qcReport',
   query: {
-    project_id: projectId.value,
+    projectId: projectId.value,
     project_name: encodeURIComponent(reportStore.boardInfoState.project_name),
     url: encodeURIComponent(url),
     start_time: startTime.value,

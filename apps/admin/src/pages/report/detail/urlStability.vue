@@ -71,7 +71,7 @@ const props = defineProps<Props>()
 
 const startTime = useRouteQuery('start_time')
 const endTime = useRouteQuery('end_time')
-const projectId = useRouteQuery('project_id')
+const projectId = useRouteQuery('projectId')
 const url = useRouteQuery('url', '')
 
 const requestParams = computed(() => ({

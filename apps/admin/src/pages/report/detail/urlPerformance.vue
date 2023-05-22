@@ -77,7 +77,7 @@ const diagnosticAudits = ref([])
 
 const startTime = useRouteQuery('start_time')
 const endTime = useRouteQuery('end_time')
-const projectId = useRouteQuery('project_id')
+const projectId = useRouteQuery('projectId')
 const url = useRouteQuery('url', '')
 
 // const { start_time, end_time, project_id, url } = getQuery()

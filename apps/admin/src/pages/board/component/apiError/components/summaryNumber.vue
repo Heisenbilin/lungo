@@ -53,7 +53,9 @@
           </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ summaryData.score }}</div>
+          <div class="text-3xl font-medium" :style="{ color: barFinColor(summaryData.score) }">
+            {{ summaryData.score }}
+          </div>
           <div class="text-gray-500">分</div>
         </div>
       </div>
@@ -65,7 +67,7 @@
 //api异常数据汇总组件
 import { ref, watch, computed } from 'vue'
 import { getSummaryData } from '@/apis/board/apiError'
-import { commafy } from '@vben/utils'
+import { commafy, barFinColor } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 

@@ -134,7 +134,7 @@ onActivated(() => {
 })
 
 const getUrlList = async () => {
-  const { start_time, end_time, project_id, url: board_url, project_name } = getQuery()
+  const { start_time, end_time, projectId: project_id, url: board_url, project_name } = getQuery()
   const decodeUrl = decodeURIComponent(board_url as string)
   const newReportTime = `${start_time}至${dayjs(end_time as string)
     .subtract(1, 'd')
@@ -177,7 +177,6 @@ const getUrlList = async () => {
 
 // 监听url变化，改变路由
 watch(boardURL, () => {
-  console.log(boardURL.value)
   addOrUpdateQuery({
     url: encodeURIComponent(boardURL.value),
   })

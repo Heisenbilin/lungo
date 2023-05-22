@@ -64,7 +64,9 @@
           </a-tooltip>
         </div>
         <div class="flex items-end">
-          <div class="text-3xl font-medium">{{ averageData.score }}</div>
+          <div class="text-3xl font-medium" :style="{ color: barFinColor(averageData.score) }">
+            {{ averageData.score }}
+          </div>
           <div class="text-gray-500">分</div>
         </div>
       </div>
@@ -156,7 +158,7 @@ import {
   getPercentileData,
 } from '@/apis/board/performance'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
-import { commafy } from '@vben/utils'
+import { commafy, barFinColor } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
 import { addTimeFilter } from '@/hooks/board/useDate'

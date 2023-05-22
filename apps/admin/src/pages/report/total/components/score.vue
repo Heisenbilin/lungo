@@ -17,6 +17,7 @@
           <div class="text-3xl font-medium" :style="{ color: barFinColor(rankData.total_score) }">
             {{ rankData.total_score || 0 }}
           </div>
+          <div class="text-gray-500">分</div>
         </div>
       </div>
       <div class="w-1/5 grid justify-items-center content-center space-y-1">
@@ -35,11 +36,14 @@
             <QuestionCircleOutlined />
           </a-tooltip>
         </div>
-        <div
-          class="text-3xl font-medium"
-          :style="{ color: barFinColor(rankData.performance_score) }"
-        >
-          {{ rankData.performance_score || 0 }}
+        <div class="flex items-end">
+          <div
+            class="text-3xl font-medium"
+            :style="{ color: barFinColor(rankData.performance_score) }"
+          >
+            {{ rankData.performance_score || 0 }}
+          </div>
+          <div class="text-gray-500">分</div>
         </div>
       </div>
 
@@ -59,8 +63,11 @@
             <QuestionCircleOutlined />
           </a-tooltip>
         </div>
-        <div class="text-3xl font-medium" :style="{ color: barFinColor(rankData.stable_score) }">
-          {{ rankData.stable_score || 0 }}
+        <div class="flex items-end">
+          <div class="text-3xl font-medium" :style="{ color: barFinColor(rankData.stable_score) }">
+            {{ rankData.stable_score || 0 }}
+          </div>
+          <div class="text-gray-500">分</div>
         </div>
       </div>
       <div class="w-1/5 grid justify-items-center content-center space-y-1">

@@ -4,6 +4,7 @@
       <UrlBase :score="score" />
 
       <url-performance
+        v-if="isActivated"
         @performanceScoreChange="performanceScoreChange"
         :lighthouseLoading="lighthouseLoading"
         :preparedLighthouse="lighthouseLoading === 2 ? lighthouseData.categories.performance : {}"
@@ -11,6 +12,7 @@
       />
 
       <url-stability
+        v-if="isActivated"
         @stabilityScoreChange="stabilityScoreChange"
         :lighthouseLoading="lighthouseLoading"
         :preparedLighthouse="lighthouseLoading === 2 ? lighthouseData.categories.accessibility : {}"
@@ -21,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, ref, onActivated, onDeactivated } from 'vue'
+import { watch, ref, onActivated, onDeactivated } from 'vue'
 import { prepareReportResult } from './detail/audit/util'
 import { getLighthouseAudits } from '@/apis/report/apis'
 import { useReportStore } from '@/store/modules/report'
@@ -38,6 +40,13 @@ const reportStore = useReportStore()
 const userStore = useUserStore()
 const userName = userStore.userInfo?.account || ''
 
+const isActivated = ref(false)
+
+const url = useRouteQuery('url', '')
+const projectId = useRouteQuery('projectId')
+const startTime = useRouteQuery('start_time')
+const endTime = useRouteQuery('end_time')
+
 const watchFunc: any[] = []
 const initWatch = () => {
   // 从其他页面返回时，重新生成水印
@@ -46,7 +55,12 @@ const initWatch = () => {
     () => setWatermark(`${userName}-${reportStore.boardInfoState.project_name}`),
     { immediate: true },
   )
+  const auditWatch = watch(() => [url, projectId, startTime, endTime], initAudits, {
+    immediate: true,
+    deep: true,
+  })
   watchFunc.push(watermarkWatch)
+  watchFunc.push(auditWatch)
 }
 
 const areaRef = ref<Nullable<HTMLElement>>(null)
@@ -56,19 +70,16 @@ watch(isDark, () => {
 })
 
 onDeactivated(() => {
+  isActivated.value = false
   while (watchFunc.length) watchFunc.pop()()
 })
+
 const score = ref({
   performanceScore: 0,
   stabilityScore: 0,
 })
 const lighthouseLoading = ref(0)
 const lighthouseData = <any>ref([])
-
-const url = useRouteQuery('url', '')
-const projectId = useRouteQuery('project_id')
-const startTime = useRouteQuery('start_time')
-const endTime = useRouteQuery('end_time')
 
 function performanceScoreChange(newScore) {
   score.value.performanceScore = newScore
@@ -85,6 +96,7 @@ async function initAudits() {
     project_id: projectId.value,
   }
   try {
+    lighthouseLoading.value = 0
     //获取lighthouse建议数据
     const lighthouse = await getLighthouseAudits(lighthouseParams)
 
@@ -101,8 +113,8 @@ async function initAudits() {
   }
 }
 
-watch([url, projectId, startTime, endTime], () => {
-  initAudits()
+onActivated(() => {
   initWatch()
+  isActivated.value = true
 })
 </script>
