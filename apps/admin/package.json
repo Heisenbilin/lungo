@@ -41,7 +41,7 @@
     "@xes/fe-utils": "^2.1.4",
     "@xes/tal-oss-huatuo": "^0.0.9",
     "@xes/uc": "0.0.22",
-    "@xes/xes_fe_log": "^2.4.2",
+    "@xes/xes_fe_log": "^2.4.5",
     "ant-design-vue": "^3.2.14",
     "clean": "^4.0.2",
     "dayjs": "^1.11.7",

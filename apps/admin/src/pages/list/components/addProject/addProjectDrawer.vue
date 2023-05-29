@@ -697,7 +697,7 @@ import {
 } from '@ant-design/icons-vue'
 import { handleUaParse, handleProjectParams, initEditFormData } from '../utils'
 import { useAuth } from '@/hooks/board/useAuth'
-import { cloneDeep, buildUUID } from '@vben/utils'
+import { cloneDeep, buildUUID, getGlobalConfig } from '@vben/utils'
 import { useListStore } from '@/store/modules/list'
 import { storeToRefs } from '@vben/stores'
 import { saveAs } from 'file-saver'
@@ -754,10 +754,13 @@ watch(groups, newGroups => {
 // SDK推荐配置
 const recommendMode = ref('normal')
 const recommendSDKConfig = computed(() => {
+  const { dpEnv } = getGlobalConfig(import.meta.env)
+  const isTest = dpEnv === 'test' // 是否是测试环境
   const params = [
     formState.basic_info.appid,
     formState.basic_info.eventid,
     formState.basic_info.saas === 'yes',
+    isTest,
   ]
   switch (recommendMode.value) {
     case 'normal':

@@ -16,7 +16,7 @@ import { registerComponents } from '../init-components'
 import 'ant-design-vue/dist/antd.less'
 import XesLoggerSDK from '@xes/xes_fe_log'
 
-const SDKConfig = {
+const SDKConfig: any = {
   // *****SDK推荐配置*****
   // 完整配置项及其说明请访问https://app.xesv5.com/doc/pages/fedata/fe-log-sdk/access.html查看
   baseURL: '', // 日志上传使用的接口
