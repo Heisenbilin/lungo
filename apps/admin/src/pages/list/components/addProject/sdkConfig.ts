@@ -2,7 +2,7 @@ const computeBaseURL = (isSaas: boolean, isTest: boolean) => {
   if (isSaas) {
     return isTest ? 'https://dj-test.saasz.vdyoo.com/appid/' : 'https://dj.saasz.vdyoo.com/appid/'
   } else {
-    return isTest ? 'https://dj-test.xesv5.com/appid/' : ''
+    return isTest ? 'https://dj-test.xesimg.com/appid/' : ''
   }
 }
 
