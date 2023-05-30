@@ -26,7 +26,6 @@ export const config = { ...staticConfig, ...dynamicConfig }
 export const siteSetting = { GITHUB_URL, DOC_URL, SITE_URL }
 
 export const logSDKConfig: any = (appid: string) => {
-  console.log('appid', appid)
   let baseURL = ''
   //如果appid以100开头，说明是生产环境项目，否则是测试环境项目
   if (!appid.toString().startsWith('100')) {

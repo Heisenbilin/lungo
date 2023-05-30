@@ -144,6 +144,16 @@ const handleTableChange = async (page, _, sorter) => {
       getUrlByPro(1, sorter.order, sorter.field)
     }
   }
+  // pageSize变化，请求新数据
+  else if (page.pageSize !== pagination.pageSize) {
+    pagination.pageSize = page.pageSize
+    //无order
+    if (!sorter.order) {
+      getUrlByPro(1)
+    } else {
+      getUrlByPro(1, sorter.order, sorter.field)
+    }
+  }
   //case2: 非默认排序下的页面跳转，保留排序状态跳转页面
   else if (sorter.order) {
     pagination.current = page.current
