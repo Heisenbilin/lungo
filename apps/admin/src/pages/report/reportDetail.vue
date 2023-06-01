@@ -90,6 +90,7 @@ function stabilityScoreChange(newScore) {
 }
 
 async function initAudits() {
+  if (!url.value || !projectId.value || !startTime.value) return
   const lighthouseParams = {
     project_url: decodeURIComponent(url.value),
     start_time: startTime.value + ' 00:00:00',
