@@ -111,7 +111,7 @@ export const projectListColumns = [
     title: 'SDK',
     dataIndex: 'sdk',
     key: 'sdk',
-    width: '40px',
+    width: '42px',
   },
   {
     title: '实时评分',
@@ -173,7 +173,7 @@ export const projectListColumns = [
     title: '看板',
     key: 'screen',
     dataIndex: 'screen',
-    width: '160px',
+    width: '140px',
     fixed: 'right',
     align: 'center',
   },
@@ -182,7 +182,7 @@ export const projectListColumns = [
     key: 'action',
     dataIndex: 'action',
     fixed: 'right',
-    width: '50px',
+    width: '60px',
     align: 'center',
   },
 ]
