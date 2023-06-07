@@ -13,6 +13,7 @@ export default {
     list: '项目列表',
     board: '质量监控',
     panel: '数据大盘',
+    custom: '自定义看板',
     report: '质量周报',
     urlReport: '页面质量周报',
     group: '用户组管理',

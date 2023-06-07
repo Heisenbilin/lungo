@@ -13,6 +13,7 @@ export default {
     list: 'Project List',
     board: 'Board',
     panel: 'Panel',
+    custom: 'Custom Board',
     report: 'Weekly Report',
     urlReport: 'Url Report',
     group: 'User Group',

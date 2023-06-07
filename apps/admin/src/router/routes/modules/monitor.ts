@@ -42,6 +42,16 @@ const Monitor: RouteRecordItem = {
       },
     },
     {
+      path: 'custom',
+      name: 'Custom',
+      component: () => import('@/pages/custom/customBoard.vue'),
+      meta: {
+        title: 'routes.monitor.custom',
+        icon: 'ion:grid-outline',
+        hideMenu: true,
+      },
+    },
+    {
       path: 'qcReport',
       name: 'qcReport',
       component: () => import('@/pages/report/reportDetail.vue'),

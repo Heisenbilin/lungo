@@ -3,12 +3,12 @@
     <template #rightExtra>
       <div class="flex justify-end h-8 gap-3 2xl:gap-2 items-center" id="projectList">
         <div class="flex gap-3 2xl:gap-6">
-          <a-select v-model:value="projectType" style="min-width: 130px">
+          <a-select v-model:value="projectType" style="width: 120px">
             <a-selectOption :value="''">所有应用</a-selectOption>
             <a-selectOption :value="0">非编辑器应用</a-selectOption>
             <a-selectOption :value="1">编辑器应用</a-selectOption>
           </a-select>
-          <a-select v-model:value="saasType" style="min-width: 110px">
+          <a-select v-model:value="saasType" style="width: 100px">
             <a-selectOption :value="''">学科&素质</a-selectOption>
             <a-selectOption :value="'yes'">学科</a-selectOption>
             <a-selectOption :value="'no'">素质</a-selectOption>
@@ -45,11 +45,10 @@
           />
         </div>
         <div>
-          <span class="pr-1">数据维度:</span>
-          <a-radioGroup v-model:value="dimension">
-            <a-radioButton value="week">周</a-radioButton>
-            <a-radioButton value="day">天</a-radioButton>
-          </a-radioGroup>
+          <a-select v-model:value="dimension" style="width: 80px">
+            <a-selectOption :value="'week'">周维度</a-selectOption>
+            <a-selectOption :value="'day'">天维度</a-selectOption>
+          </a-select>
         </div>
         <a-button
           type="primary"
@@ -143,6 +142,9 @@
         />
       </div>
     </a-tabPane>
+    <a-tabPane key="custom" tab="自定义看板">
+      <customList />
+    </a-tabPane>
   </a-tabs>
   <addProjectModal
     v-if="addProjectVisible"
@@ -153,19 +155,20 @@
   <uc-group-modal />
 </template>
 <script setup lang="ts">
-import { ref, watch, h, computed, provide } from 'vue'
+import { ref, watch, h, computed } from 'vue'
 import { checkProjectData } from '@/apis/list'
 import { message, Modal } from 'ant-design-vue'
 import { AppstoreOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
+import { addOrUpdateQuery, getQuery } from '@vben/router'
 import { useListStore } from '@/store/modules/list'
 import { useUserStore } from '@/store/user'
 import { storeToRefs } from '@vben/stores'
 import cardList from './cardList/index.vue'
 import tableList from './tableList/index.vue'
+import customList from './customList/index.vue'
 import addProjectModal from './addProject/addProjectDrawer.vue'
 import UcGroupModal from './ucGroupModal.vue'
 import dayjs from 'dayjs'
-import { addOrUpdateQuery, getQuery } from '@vben/router'
 
 const {
   tabKey = 'all',
@@ -342,5 +345,8 @@ const onInputKeyDown = e => {
 <style scoped>
 :deep(.ant-tabs-extra-content) {
   float: v-bind('styles.floatAction') !important;
+}
+:deep(.ant-select-selector) {
+  padding: 0 7px !important;
 }
 </style>
