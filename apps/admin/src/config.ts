@@ -36,7 +36,7 @@ export const logSDKConfig: any = (appid: string) => {
     // 完整配置项及其说明请访问https://app.xesv5.com/doc/pages/fedata/fe-log-sdk/access.html查看
     baseURL, // 日志上传使用的接口
     appid: `${__VITE_SDK_APPID__}`, // 日志上传的appid
-    common: { eventid: 'web-swaydat' }, // 项目的唯一标识
+    common: { eventid: 'web-swaydet' }, // 项目的唯一标识
     disableAgif: true, // 关闭展现日志上传(a.gif)
     clickMsg: { open: false }, // 关闭交互日志上传(b.gif)
     //【***注意***】trace打开后可能会造成跨域问题, 需要服务器做traceid header的跨域支持
