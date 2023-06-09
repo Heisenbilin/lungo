@@ -38,7 +38,7 @@
     <BaseChart
       :requestParams="requestParams"
       :requestFunc="getResolutionData"
-      :getOptionFunc="getDeviceTypeOption"
+      :getOptionFunc="getResolutionOption"
     />
   </div>
 </template>
@@ -51,7 +51,7 @@ import {
   getClientTypeOption,
   getDeviceTypeOption,
   getResolutionOption,
-} from '../../util/pieChartConfig'
+} from '@/logics/chartOption/pie'
 import { clientUserAgent } from '@vben/constants'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'

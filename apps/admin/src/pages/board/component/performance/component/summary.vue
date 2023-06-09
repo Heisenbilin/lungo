@@ -150,7 +150,7 @@ import {
   getSummaryChartOption,
   getContrastChartOption,
   getPercentileChartOption,
-} from './chartConfig'
+} from '@/logics/chartOption/performance'
 import {
   getChartSummaryData,
   getAverageData,

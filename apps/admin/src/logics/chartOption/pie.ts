@@ -180,13 +180,15 @@ export function getNetworkTypeOption(data) {
   let seriesData = data.map(item => ({
     value: item.board_count,
     name: item.board_key || '未知',
-    // pageload: item.pageload || 0,
+    pageload: item.pageload || null,
   }))
   chartOption.legend.formatter = name => getMainInfo(name, 40)
   chartOption.tooltip.formatter = item =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>网络类型：${
       item.data.name
-    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)`
+    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)${
+      item.data.pageload !== null ? `<br/>页面平均加载时间: ${commafy(item.data.pageload)}ms` : ''
+    }`
   chartOption.series[0].data = seriesData
   return chartOption
 }
@@ -201,13 +203,15 @@ export function getClientTypeOption(data) {
   let seriesData = data.map(item => ({
     value: item.board_count,
     name: clientUserAgent[item.board_key] || '未知',
-    // pageload: item.pageload || 0,
+    pageload: item.pageload || null,
   }))
   chartOption.legend.formatter = name => getMainInfo(name, 40)
   chartOption.tooltip.formatter = item =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>客户端：${
       item.data.name
-    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)`
+    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)${
+      item.data.pageload !== null ? `<br/>页面平均加载时间: ${commafy(item.data.pageload)}ms` : ''
+    }`
   chartOption.series[0].data = seriesData
   return chartOption
 }
@@ -228,7 +232,9 @@ export function getDeviceTypeOption(data) {
   chartOption.tooltip.formatter = item =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>设备：${
       item.data.name
-    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)`
+    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)${
+      item.data.pageload !== null ? `<br/>页面平均加载时间: ${commafy(item.data.pageload)}ms` : ''
+    }`
   chartOption.series[0].data = seriesData
   return chartOption
 }
@@ -243,13 +249,15 @@ export function getResolutionOption(data) {
   let seriesData = data.map(item => ({
     value: item.board_count,
     name: item.board_key || '未知',
-    // pageload: item.pageload || 0,
+    pageload: item.pageload || null,
   }))
   chartOption.legend.formatter = name => getMainInfo(name, 40)
   chartOption.tooltip.formatter = item =>
     `<div style='display:block;word-break:break-all;white-space:pre-wrap;'>分辨率：${
       item.data.name
-    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)`
+    }</div>PV数：${commafy(item.data.value)} (${item.percent}%)${
+      item.data.pageload !== null ? `<br/>页面平均加载时间: ${commafy(item.data.pageload)}ms` : ''
+    }`
   chartOption.series[0].data = seriesData
   return chartOption
 }

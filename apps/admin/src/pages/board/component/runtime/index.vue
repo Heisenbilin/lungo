@@ -3,11 +3,13 @@
     <SummaryData />
     <ResultTabs />
     <DetailPieCharts />
+    <UACharts modelType="runtime" />
   </div>
 </template>
 
 <script setup lang="ts">
-import SummaryData from "./components/summary/summaryData.vue";
-import ResultTabs from "./components/resultTable/resultTabs.vue";
-import DetailPieCharts from "./components/detailPieCharts.vue";
+import SummaryData from './components/summary/summaryData.vue'
+import ResultTabs from './components/resultTable/resultTabs.vue'
+import DetailPieCharts from './components/detailPieCharts.vue'
+import UACharts from '@/pages/component/uaCharts.vue'
 </script>

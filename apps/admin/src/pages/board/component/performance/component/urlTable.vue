@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { computed, watch, ref, reactive } from 'vue'
-import { getDefaultColumns } from './urlTableConfig'
+import { getDefaultColumns } from '@/logics/chartOption/performance'
 import { getUrlListData } from '@/apis/board/performance'
 import { debounce, commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'

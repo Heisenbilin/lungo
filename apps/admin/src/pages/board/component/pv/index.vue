@@ -33,7 +33,7 @@ import { useBoardStore } from '@/store/modules/board'
 import PVUVSummary from './component/pvuvsummary.vue'
 import uaInfo from './component/uaInfo/index.vue'
 import UrlTable from './component/urlTable/urlTable.vue'
-import UAMap from './component/uaMap/index.vue'
+import UAMap from './component/uaMap.vue'
 import DetailPieCharts from './component/detailPieCharts.vue'
 
 const boardStore = useBoardStore()

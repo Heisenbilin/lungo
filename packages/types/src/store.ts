@@ -103,4 +103,5 @@ export interface BoardState {
   alarmModalVisible: boolean
   latestSDKVersionState: string
   tabState: string
+  uaCollapseState?: boolean
 }

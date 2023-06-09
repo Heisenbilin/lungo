@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { getErrorHrefData, getFErrorData, getFTimesData } from '@/apis/board/resource'
-import { getFaultTolerantOption, getFaultTolerantTimesOption } from '../../../util/pieChartConfig'
+import { getFaultTolerantOption, getFaultTolerantTimesOption } from '@/logics/chartOption/pie'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { logTypeEnum } from '@vben/constants'
 import { useBoardStore } from '@/store/modules/board'

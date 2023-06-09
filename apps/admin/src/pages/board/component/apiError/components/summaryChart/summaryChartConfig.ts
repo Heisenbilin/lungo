@@ -1,6 +1,6 @@
 import { cloneDeep, commafy } from '@vben/utils'
 import dayjs from 'dayjs'
-import { getAPISummaryChartOption } from '../../../util/errorSummaryChartConfig'
+import { getAPISummaryChartOption } from '@/logics/chartOption/errorSummary'
 
 //“请求数量”与“请求耗时”图表基础配置
 const summaryChartConfig: any = {

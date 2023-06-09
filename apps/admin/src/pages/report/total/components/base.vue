@@ -51,10 +51,10 @@ import {
   getBrowserReport,
   getOsReport,
 } from '@/apis/report/index'
-import { getTypeOption } from '@/pages/board/component/util/pieChartConfig'
+import { getTypeOption } from '@/logics/chartOption/pie'
 import { useReportStore } from '@/store/modules/report'
 import { BaseChart } from '@vben/components'
-import { getUAMapOption } from '@/pages/board/component/pv/component/uaMap/uaMapConfig'
+import { getUAMapOption } from '@/logics/chartOption/map'
 
 const reportStore = useReportStore()
 

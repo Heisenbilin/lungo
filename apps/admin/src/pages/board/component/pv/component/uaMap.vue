@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { getRegionData } from '@/apis/board/pv'
-import { getUAMapOption } from './uaMapConfig'
+import { getUAMapOption } from '@/logics/chartOption/map'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
 

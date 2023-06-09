@@ -19,6 +19,16 @@
       <a-tab-pane key="gateway" :tab="tabNameConfig.gateway">
         <GatewayBoard v-if="activeKey === 'gateway'" />
       </a-tab-pane>
+      <template #rightExtra>
+        <a-button
+          v-if="activeKey !== 'pageview'"
+          size="small"
+          class="mr-4"
+          @click="() => (uaCollapseState = !uaCollapseState)"
+        >
+          {{ uaCollapseState ? '收起' : '展开' }}用户信息
+        </a-button>
+      </template>
     </a-tabs>
   </div>
   <LogDrawer />
@@ -90,6 +100,8 @@ onActivated(initWatch)
 onDeactivated(() => {
   while (watchFunc.length) watchFunc.pop()()
 })
+
+const { uaCollapseState } = storeToRefs(boardStore)
 
 // const handleStart = () => {
 //   intro()

@@ -11,6 +11,7 @@
         :endTime="endTime"
       />
     </template>
+    <UACharts modelType="performance" />
   </div>
 </template>
 
@@ -20,10 +21,11 @@ import { useBoardStore } from '@/store/modules/board'
 import { useReportStore } from '@/store/modules/report'
 import { getListById } from '@/apis/report/apis'
 import dayjs from 'dayjs'
-import Summary from './component/summary/index.vue'
-import UrlTable from './component/urlTable/urlTable.vue'
-import Section from './component/section/index.vue'
-import Advice from './component/advice/index.vue'
+import Summary from './component/summary.vue'
+import UrlTable from './component/urlTable.vue'
+import Section from './component/section.vue'
+import Advice from './component/advice.vue'
+import UACharts from '@/pages/component/uaCharts.vue'
 
 const boardStore = useBoardStore()
 const reportStore = useReportStore()

@@ -75,7 +75,7 @@
 //runtime异常数据汇总组件
 import { ref, computed } from 'vue'
 import { useBoardStore } from '@/store/modules/board'
-import { getSummaryChartOption } from '../../../util/errorSummaryChartConfig'
+import { getSummaryChartOption } from '@/logics/chartOption/errorSummary'
 import { commafy, barFinColor } from '@vben/utils'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getSummaryData, getChartData } from '@/apis/board/runtime'

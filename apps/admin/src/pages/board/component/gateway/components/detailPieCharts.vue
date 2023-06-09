@@ -42,7 +42,7 @@
 import { computed } from 'vue'
 import { getStatusSummary, getCostTime } from '@/apis/board/gateway'
 import { useBoardStore } from '@/store/modules/board'
-import { getStatusChartOption, getGateWayCostTimeChartOption } from '../../util/pieChartConfig'
+import { getStatusChartOption, getGateWayCostTimeChartOption } from '@/logics/chartOption/pie'
 import { logTypeEnum } from '@vben/constants'
 import { BaseChart } from '@vben/components'
 

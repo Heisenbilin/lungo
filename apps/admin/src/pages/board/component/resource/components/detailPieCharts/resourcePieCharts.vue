@@ -41,7 +41,7 @@
 //api异常详情相关饼图组件
 import { computed } from 'vue'
 import { getTop10Data, getFileTypeData } from '@/apis/board/resource'
-import { getTop10Option, getErrorTypeOption } from '../../../util/pieChartConfig'
+import { getTop10Option, getErrorTypeOption } from '@/logics/chartOption/pie'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { logTypeEnum } from '@vben/constants'
 import { useBoardStore } from '@/store/modules/board'

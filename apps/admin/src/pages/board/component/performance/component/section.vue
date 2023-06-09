@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { getSectionChartOption } from './chartConfig'
+import { getSectionChartOption } from '@/logics/chartOption/performance'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getSectionData } from '@/apis/board/performance'
 import { useBoardStore } from '@/store/modules/board'

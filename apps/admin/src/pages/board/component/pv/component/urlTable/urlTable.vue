@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { computed, watch, ref, reactive } from 'vue'
-import { getDefaultColumns } from './urlTableConfig'
+import { getDefaultColumns } from '@/logics/chartOption/pageview'
 import { getUrlListData } from '@/apis/board/pv'
 import { useBoardStore } from '@/store/modules/board'
 import { debounce, commafy } from '@vben/utils'

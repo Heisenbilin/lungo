@@ -2,7 +2,7 @@ import { getMap, registerMap } from '@vben/hooks'
 import { cloneDeep, commafy } from '@vben/utils'
 import china from './chinaMapData.json'
 
-registerMap('china', china)
+registerMap('china', china as any)
 var mapFeatures = getMap('china').geoJson.features
 var geoCoordMap = {}
 mapFeatures.forEach(v => {
@@ -60,13 +60,10 @@ const defaultOption: any = {
   },
   tooltip: {
     trigger: 'item',
-    formatter: params => {
-      if (params.data && 'pageload' in params.data) {
-        return `${params.name}<br/>PV数: ${commafy(
-          params.value[2] !== undefined ? params.value[2] : params.value,
-        )}`
-      }
-    },
+    formatter: params =>
+      `${params.name}<br/>PV数: ${commafy(
+        params.value[2] !== undefined ? params.value[2] : params.value,
+      )}<br/>${params.data.pageload ? `页面平均加载时间: ${commafy(params.data.pageload)}ms` : ''}`,
   },
   grid: {
     left: '65%',

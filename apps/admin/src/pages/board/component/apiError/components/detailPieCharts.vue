@@ -32,7 +32,7 @@
 import { computed } from 'vue'
 import { getStatusData, getCostTimeData } from '@/apis/board/apiError'
 import { useBoardStore } from '@/store/modules/board'
-import { getStatusChartOption, getCostTimeChartOption } from '../../util/pieChartConfig'
+import { getStatusChartOption, getCostTimeChartOption } from '@/logics/chartOption/pie'
 import { logTypeEnum } from '@vben/constants'
 import { BaseChart } from '@vben/components'
 

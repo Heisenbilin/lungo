@@ -55,9 +55,8 @@ import { BasicChart } from '@vben/components'
 import { getStabilityReport } from '@/apis/report/index'
 import { getStabilityAudits } from './audit/util'
 import { getScore } from '../config'
-import { getTop10Option } from '@/pages/board/component/util/pieChartConfig'
-import { getQuery, useRouteQuery } from '@vben/router'
-// import chart from './chart.vue'
+import { getTop10Option } from '@/logics/chartOption/pie'
+import {  useRouteQuery } from '@vben/router'
 import AuditLayout from './audit/auditLayout.vue'
 
 //页面质量周报稳定性组件

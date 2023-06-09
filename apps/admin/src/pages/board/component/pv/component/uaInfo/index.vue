@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { getBrowserData, getOSData } from '@/apis/board/pv'
-import { getUAOption, getUAVersionOption } from './uaInfoConfig'
+import { getUAOption, getUAVersionOption } from '@/logics/chartOption/pageview'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart, BasicChart } from '@vben/components'
 

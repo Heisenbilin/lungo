@@ -67,7 +67,7 @@
 <script setup lang="ts">
 // pv与uv图表
 import { computed, reactive, ref } from 'vue'
-import { getPVUVChartOption } from './chartsConfig'
+import { getPVUVChartOption } from '@/logics/chartOption/pageview'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import { getSummaryData, getPageViewData } from '@/apis/board/pv'
 import { useBoardStore } from '@/store/modules/board'

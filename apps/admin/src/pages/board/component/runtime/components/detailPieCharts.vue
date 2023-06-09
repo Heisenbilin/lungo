@@ -15,7 +15,7 @@
 <script setup lang="ts">
 // 运行时异常详情相关饼图组件
 import { computed } from 'vue'
-import { getTop10Option } from '../../util/pieChartConfig'
+import { getTop10Option } from '@/logics/chartOption/pie'
 import { useBoardStore } from '@/store/modules/board'
 import { logTypeEnum } from '@vben/constants'
 import { getTop10Data } from '@/apis/board/runtime'

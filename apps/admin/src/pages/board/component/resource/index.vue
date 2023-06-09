@@ -5,6 +5,7 @@
     <ResultTabs :faultTolerantStatus="faultTolerantStatus" />
     <ResourcePieCharts />
     <FaultTolerantPieCharts :faultTolerantStatus="faultTolerantStatus" />
+    <UACharts modelType="resource" />
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import summaryChartTab from './components/summary/summaryChartTab.vue'
 import ResultTabs from './components/resultTable/resultTabs.vue'
 import ResourcePieCharts from './components/detailPieCharts/resourcePieCharts.vue'
 import FaultTolerantPieCharts from './components/detailPieCharts/faultTolerantPieCharts.vue'
+import UACharts from '@/pages/component/uaCharts.vue'
 
 const boardStore = useBoardStore()
 

@@ -20,9 +20,7 @@
                 : '本看板数据范围：接入本平台后数据永久保存'
             "
           >
-            <a href="https://cloud.tal.com/gateway-fe#/config/upstreamList" target="_blank">
-              <InfoCircleOutlined />
-            </a>
+            <InfoCircleOutlined />
           </a-tooltip>
         </span>
         <a-range-picker

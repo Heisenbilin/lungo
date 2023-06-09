@@ -107,7 +107,7 @@ import {
 } from '@/apis/report/index'
 import { getErrorTotalSummary } from '@/apis/report/apis'
 import { getTwoWeeksOption } from '../utils/configs'
-import { getCostTimeChartOption, getTop10Option } from '@/pages/board/component/util/pieChartConfig'
+import { getCostTimeChartOption, getTop10Option } from '@/logics/chartOption/pie'
 import { commafy } from '@vben/utils'
 import { logTypeEnum } from '@vben/constants'
 import { BaseChart } from '@vben/components'

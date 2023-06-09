@@ -1,6 +1,6 @@
 import { cloneDeep, commafy } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
-import { lineChartOption } from '@vben/constants'
+import { lineChartOption, barChartOption } from '@vben/constants'
 import { type chartDataValue } from '@vben/types'
 import dayjs from 'dayjs'
 
@@ -277,6 +277,88 @@ export function getPercentileChartOption(data) {
     chartOption.dataZoom.show = true
     chartOption.grid.bottom = '15%'
   }
+
+  return chartOption
+}
+
+const defaultColumns = [
+  {
+    title: '序号',
+    align: 'center',
+    width: '5%',
+    key: 'serial',
+  },
+  {
+    title: '页面URL',
+    dataIndex: 'url',
+    key: 'url',
+    width: '40%',
+    // slots: { customRender: "url" },
+  },
+  {
+    title: 'PV',
+    dataIndex: 'count',
+    key: 'count',
+    align: 'center',
+    customRender: item => commafy(item.text),
+  },
+  {
+    title: '首字节',
+    dataIndex: 'firstbyte',
+    key: 'firstbyte',
+    align: 'center',
+    customRender: item => commafy(item.text) + ' ms',
+  },
+  {
+    title: 'DOM Ready',
+    dataIndex: 'dom',
+    key: 'dom',
+    align: 'center',
+    customRender: item => commafy(item.text) + ' ms',
+  },
+  {
+    title: '页面完全加载',
+    dataIndex: 'load',
+    key: 'load',
+    align: 'center',
+    customRender: item => commafy(item.text) + ' ms',
+  },
+  {
+    title: '操作',
+    align: 'center',
+    width: '15%',
+    key: 'operation',
+    // slots: { customRender: "operation" },
+  },
+]
+
+export const getDefaultColumns = () => {
+  return cloneDeep(defaultColumns)
+}
+
+//获取百分比图表的option
+export function getSectionChartOption(data) {
+  //1 数据为空时，返回null，图表为空状态
+  if (!(Array.isArray(data) && data.length)) {
+    return null
+  }
+
+  const chartOption = cloneDeep(barChartOption)
+  const costList: chartDataValue[] = []
+  const pvList: chartDataValue[] = []
+
+  try {
+    data.forEach(item => {
+      costList.push({ value: item.key + 's' })
+      pvList.push({ value: item.count, name: `采样PV数：${commafy(item.count)}` })
+    })
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+
+  chartOption.xAxis.data = costList
+  chartOption.series[0].data = pvList
 
   return chartOption
 }

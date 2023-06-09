@@ -14,6 +14,7 @@
     <SummaryChart />
     <ResultTabs />
     <DetailPieCharts />
+    <UACharts modelType="request" />
   </div>
 </template>
 
@@ -27,6 +28,7 @@ import SummaryNumber from './components/summaryNumber.vue'
 import SummaryChart from './components/summaryChart/summaryChart.vue'
 import ResultTabs from './components/resultTable/resultTabs.vue'
 import DetailPieCharts from './components/detailPieCharts.vue'
+import UACharts from '@/pages/component/uaCharts.vue'
 
 const boardStore = useBoardStore()
 

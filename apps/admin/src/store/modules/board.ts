@@ -23,6 +23,8 @@ export const useBoardStore = defineStore({
     latestSDKVersionState: '',
     // tab页
     tabState: '',
+    // 用户信息展开标志
+    uaCollapseState: false,
   }),
   getters: {
     // 根据时间范围与展示维度计算合适的日期格式化规则
