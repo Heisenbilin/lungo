@@ -1,8 +1,23 @@
 <template>
-  <template v-if="uaCollapseState">
+  <template v-if="mustShow || uaCollapseState">
+    <div class="chart-container">
+      <div class="chart-title">
+        用户浏览器类型
+        <a-tag color="blue" class="filter-tag"> 单击筛选：网络 </a-tag>
+      </div>
+
+      <uaInfo type="browser" />
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">
+        用户操作系统类型
+        <a-tag color="blue" class="filter-tag"> 单击筛选：网络 </a-tag>
+      </div>
+      <uaInfo type="browser" />
+    </div>
     <div class="chart-container-full">
       <div class="chart-title">
-        地域分布 <a-tag color="blue" class="filter-tag"> 单击筛选：地域 </a-tag>
+        用户地域分布 <a-tag color="blue" class="filter-tag"> 单击筛选：地域 </a-tag>
       </div>
       <BaseChart
         height="500px"
@@ -14,7 +29,7 @@
     </div>
     <div class="chart-container">
       <div class="chart-title">
-        网络类型
+        用户网络类型
         <a-tag color="blue" class="filter-tag"> 单击筛选：网络 </a-tag>
       </div>
       <BaseChart
@@ -26,7 +41,7 @@
     </div>
     <div class="chart-container">
       <div class="chart-title">
-        客户端类型 <a-tag color="blue" class="filter-tag"> 单击筛选：客户端 </a-tag>
+        用户客户端类型 <a-tag color="blue" class="filter-tag"> 单击筛选：客户端 </a-tag>
       </div>
       <BaseChart
         :requestParams="requestParams"
@@ -37,7 +52,7 @@
     </div>
     <div class="chart-container">
       <div class="chart-title">
-        设备类型 <a-tag color="blue" class="filter-tag"> 单击筛选：设备 </a-tag>
+        用户设备类型 <a-tag color="blue" class="filter-tag"> 单击筛选：设备 </a-tag>
       </div>
       <BaseChart
         :requestParams="requestParams"
@@ -47,7 +62,7 @@
       />
     </div>
     <div class="chart-container">
-      <div class="chart-title">分辨率</div>
+      <div class="chart-title">用户分辨率类型</div>
       <BaseChart
         :requestParams="requestParams"
         :requestFunc="getResolutionData"
@@ -76,10 +91,12 @@ import { getUAMapOption } from '@/logics/chartOption/map'
 import { clientUserAgent } from '@vben/constants'
 import { useBoardStore } from '@/store/modules/board'
 import { BaseChart } from '@vben/components'
+import uaInfo from './uaInfo.vue'
 
 //页面质量周报稳定性组件
 type Props = {
-  modelType?: 'pv' | 'performance' | 'runtime' | 'resource' | 'request'
+  modelType: 'pv' | 'performance' | 'runtime' | 'resource' | 'request'
+  mustShow?: boolean
 }
 
 const props = defineProps<Props>()

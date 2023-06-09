@@ -12,16 +12,7 @@
     </div>
     <PVUVSummary />
     <UrlTable />
-    <div class="chart-container">
-      <div class="chart-title">浏览器类型</div>
-      <uaInfo type="browser" />
-    </div>
-    <div class="chart-container">
-      <div class="chart-title">操作系统类型</div>
-      <uaInfo type="os" />
-    </div>
-    <UAMap />
-    <DetailPieCharts />
+    <UACharts modelType="pv" mustShow="true"/>
   </div>
 </template>
 
@@ -29,12 +20,9 @@
 import { computed } from 'vue'
 import { versionStringCompare } from '@vben/utils'
 import { useBoardStore } from '@/store/modules/board'
-//通用看板组件
 import PVUVSummary from './component/pvuvsummary.vue'
-import uaInfo from './component/uaInfo/index.vue'
+import UACharts from '@/pages/component/uaCharts.vue'
 import UrlTable from './component/urlTable/urlTable.vue'
-import UAMap from './component/uaMap.vue'
-import DetailPieCharts from './component/detailPieCharts.vue'
 
 const boardStore = useBoardStore()
 

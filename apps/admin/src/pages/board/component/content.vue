@@ -20,14 +20,14 @@
         <GatewayBoard v-if="activeKey === 'gateway'" />
       </a-tab-pane>
       <template #rightExtra>
-        <a-button
-          v-if="activeKey !== 'pageview'"
-          size="small"
-          class="mr-4"
-          @click="() => (uaCollapseState = !uaCollapseState)"
-        >
-          {{ uaCollapseState ? '收起' : '展开' }}用户信息
-        </a-button>
+        <div class="mr-4">
+          <a-switch
+            v-if="activeKey !== 'pageview'"
+            v-model:checked="uaCollapseState"
+            checked-children="用户信息"
+            un-checked-children="用户信息"
+          />
+        </div>
       </template>
     </a-tabs>
   </div>

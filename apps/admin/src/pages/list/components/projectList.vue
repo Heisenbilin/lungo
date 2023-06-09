@@ -142,9 +142,6 @@
         />
       </div>
     </a-tabPane>
-    <a-tabPane key="custom" tab="自定义看板">
-      <customList />
-    </a-tabPane>
   </a-tabs>
   <addProjectModal
     v-if="addProjectVisible"
