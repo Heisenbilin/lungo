@@ -22,7 +22,7 @@
       <template #rightExtra>
         <div class="mr-4">
           <a-switch
-            v-if="activeKey !== 'pageview'"
+            v-if="!['pageview', 'gateway'].includes(activeKey)"
             v-model:checked="uaCollapseState"
             checked-children="用户信息"
             un-checked-children="用户信息"

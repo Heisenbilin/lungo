@@ -12,7 +12,7 @@
     </div>
     <PVUVSummary />
     <UrlTable />
-    <UACharts modelType="pv" mustShow="true"/>
+    <UACharts modelType="pv" :mustShow="true" />
   </div>
 </template>
 
