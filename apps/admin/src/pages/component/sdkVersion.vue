@@ -6,7 +6,7 @@
         :title="`日志上报SDK可更新至${latestSDKVersion}版本，点击查看`"
         color="red"
       >
-        <a href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log" target="_blank">
+        <a href="https://npm.100tal.com/~/package/@xes/xes_fe_log" target="_blank">
           <span>低于2.1.0&nbsp;</span>
           <ExclamationCircleOutlined style="color: red" />
         </a>
@@ -18,7 +18,7 @@
         :title="`日志上报SDK可更新至${latestSDKVersion}版本，点击查看`"
         color="red"
       >
-        <a href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log" target="_blank">
+        <a href="https://npm.100tal.com/~/package/@xes/xes_fe_log" target="_blank">
           <span>{{ currentSDKVersion }}&nbsp;</span>
           <ExclamationCircleOutlined style="color: red" />
         </a>

@@ -193,7 +193,7 @@ const loading = ref('loading')
 //华佗用户组应用列表
 const huatuoProjectList = ref<any[]>([])
 //当前最新sdk版本号
-const latestSDKVersion = ref('2.4.2')
+const latestSDKVersion = ref('2.4.5')
 //关闭项目的天数阈值
 const closeDays = ref('')
 

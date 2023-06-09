@@ -7,7 +7,7 @@
     <template #title>
       <a
         class="py-2 text-white dark:text-white hover:text-white dark:hover:text-white"
-        href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log"
+        href="https://npm.100tal.com/~/package/@xes/xes_fe_log"
         target="_blank"
       >
         <div>日志上报SDK可更新至{{ latestSDKVersion }}版本, 点击查看</div>
@@ -15,7 +15,7 @@
     </template>
     <a-button
       type="link"
-      href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log"
+      href="https://npm.100tal.com/~/package/@xes/xes_fe_log"
       target="_blank"
       style="padding: 0"
     >

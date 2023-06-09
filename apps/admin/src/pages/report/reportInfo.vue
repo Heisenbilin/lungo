@@ -14,7 +14,7 @@
       v-if="!isSafeSDK"
     >
       <a
-        href="https://npm.100tal.com/#/detial?name=%40xes%2Fxes_fe_log"
+        href="https://npm.100tal.com/~/package/@xes/xes_fe_log"
         target="_blank"
         class="text-red-500"
       >
